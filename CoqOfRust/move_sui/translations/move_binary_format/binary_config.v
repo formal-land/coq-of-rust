@@ -456,13 +456,18 @@ Module binary_config.
           M.read (|
             let~ names :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 14 ]
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 14 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
                   ] :=
               M.alloc (|
                 M.borrow (|
@@ -534,13 +539,19 @@ Module binary_config.
               |) in
             let~ values :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "slice")
+                      (Ty.path "&")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]
                   ] :=
               M.alloc (|
                 (* Unsize *)

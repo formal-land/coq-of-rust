@@ -60,13 +60,13 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       (let event := M.alloc (| event |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           event,
           [
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageLoad" |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -111,7 +111,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageUnload" |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -147,7 +147,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
                 let c := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -214,7 +214,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
                 let s := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -284,8 +284,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "y" |) in
                 let x := M.copy (| γ0_0 |) in
                 let y := M.copy (| γ0_1 |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -399,9 +399,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ pressed : Ty.path "enums::WebEvent" :=
+        let~ pressed : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
           M.alloc (| Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ] |) in
-        let~ pasted : Ty.path "enums::WebEvent" :=
+        let~ pasted : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
           M.alloc (|
             Value.StructTuple
               "enums::WebEvent::Paste"
@@ -421,17 +421,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               ]
           |) in
-        let~ click : Ty.path "enums::WebEvent" :=
+        let~ click : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
           M.alloc (|
             Value.StructRecord
               "enums::WebEvent::Click"
               [ ("x", Value.Integer IntegerKind.I64 20); ("y", Value.Integer IntegerKind.I64 80) ]
           |) in
-        let~ load : Ty.path "enums::WebEvent" :=
+        let~ load : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
           M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
-        let~ unload : Ty.path "enums::WebEvent" :=
+        let~ unload : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
           M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -439,7 +439,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| pressed |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -447,7 +447,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| pasted |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -455,7 +455,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| click |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -463,7 +463,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| load |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

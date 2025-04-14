@@ -14,9 +14,14 @@ Module journaled_state.
           M.read (|
             let~ hash :
                 Ty.apply
-                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  [] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -32,7 +37,7 @@ Module journaled_state.
                   [ M.borrow (| Pointer.Kind.Ref, code |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -146,7 +151,7 @@ Module journaled_state.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -228,7 +233,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -240,7 +245,7 @@ Module journaled_state.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -406,7 +411,10 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -516,7 +524,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -846,13 +854,13 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1407,13 +1415,13 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1884,13 +1892,13 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -2113,7 +2121,7 @@ Module journaled_state.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ is_cold : Ty.path "bool" :=
+            let~ is_cold : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
@@ -2219,7 +2227,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           let is_delegate_account_cold := M.alloc (| is_delegate_account_cold |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|

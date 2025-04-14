@@ -48,9 +48,14 @@ Module bound.
           M.read (|
             let~ bounds :
                 Ty.apply
-                  (Ty.path "&mut")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -69,7 +74,7 @@ Module bound.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -92,7 +97,7 @@ Module bound.
                   |)
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -123,7 +128,7 @@ Module bound.
           let to := M.alloc (| to |) in
           let factor := M.alloc (| factor |) in
           M.read (|
-            let~ units : Ty.path "u128" :=
+            let~ units : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.alloc (|
                 M.cast
                   (Ty.path "u128")
@@ -282,12 +287,16 @@ Module bound.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let units := M.alloc (| units |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -305,7 +314,7 @@ Module bound.
                               0
                             |) in
                           let max := M.copy (| γ0_0 |) in
-                          let~ new_units : Ty.path "u128" :=
+                          let~ new_units : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "u128",
@@ -327,9 +336,9 @@ Module bound.
                                 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -392,7 +401,11 @@ Module bound.
                                                       [
                                                         M.read (|
                                                           let~ res :
-                                                              Ty.path "alloc::string::String" :=
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -595,7 +608,7 @@ Module bound.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
@@ -769,11 +782,15 @@ Module bound.
                 M.deref (|
                   M.read (|
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ]
+                        ],
                       scope,
                       [
                         fun γ =>
@@ -918,11 +935,15 @@ Module bound.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ]
+                    ],
                   scope,
                   [
                     fun γ =>

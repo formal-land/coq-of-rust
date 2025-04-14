@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "payment_channel::AccountId" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -155,7 +155,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -304,7 +304,7 @@ Module Impl_core_cmp_PartialEq_payment_channel_Error_for_payment_channel_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr : Ty.path "isize" :=
+          let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -316,7 +316,7 @@ Module Impl_core_cmp_PartialEq_payment_channel_Error_for_payment_channel_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr : Ty.path "isize" :=
+          let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "isize",
@@ -964,7 +964,11 @@ Module Impl_payment_channel_PaymentChannel.
         let amount := M.alloc (| amount |) in
         let signature := M.alloc (| signature |) in
         M.read (|
-          let~ encodable : Ty.tuple [ Ty.path "payment_channel::AccountId"; Ty.path "u128" ] :=
+          let~ encodable :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.tuple [ Ty.path "payment_channel::AccountId"; Ty.path "u128" ] ] :=
             M.alloc (|
               Value.Tuple
                 [
@@ -998,7 +1002,11 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
             |) in
           let~ message :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -1017,7 +1025,7 @@ Module Impl_payment_channel_PaymentChannel.
                 []
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1042,11 +1050,15 @@ Module Impl_payment_channel_PaymentChannel.
               |)
             |) in
           let~ pub_key :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 33 ] [ Ty.path "u8" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 33 ] [ Ty.path "u8" ]
+                ] :=
             M.alloc (|
               repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 33 |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1088,10 +1100,14 @@ Module Impl_payment_channel_PaymentChannel.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
-                                  (Ty.tuple [])),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                                    (Ty.tuple [])
+                                ],
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1116,11 +1132,15 @@ Module Impl_payment_channel_PaymentChannel.
               |)
             |) in
           let~ signature_account_id :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+                ] :=
             M.alloc (|
               repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1284,12 +1304,16 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
         let signature := M.alloc (| signature |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "payment_channel::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1375,9 +1399,9 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1419,9 +1443,9 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1465,9 +1489,9 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1576,10 +1600,14 @@ Module Impl_payment_channel_PaymentChannel.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
-                                            (Ty.path "payment_channel::Error")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                                              (Ty.path "payment_channel::Error")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1679,12 +1707,16 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
         let signature := M.alloc (| signature |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "payment_channel::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1788,7 +1820,7 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1859,12 +1891,16 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "payment_channel::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1947,7 +1983,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ now : Ty.path "u64" :=
+              let~ now : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u64",
@@ -1976,7 +2012,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let~ expiration : Ty.path "u64" :=
+              let~ expiration : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u64",
@@ -1993,7 +2029,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2039,7 +2075,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
@@ -2086,15 +2122,23 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "payment_channel::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "payment_channel::Error" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                  ],
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "payment_channel::PaymentChannel",
@@ -2110,7 +2154,7 @@ Module Impl_payment_channel_PaymentChannel.
                           0
                         |) in
                       let expiration := M.copy (| γ0_0 |) in
-                      let~ now : Ty.path "u64" :=
+                      let~ now : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "u64",
@@ -2144,9 +2188,9 @@ Module Impl_payment_channel_PaymentChannel.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.tuple []),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2183,7 +2227,7 @@ Module Impl_payment_channel_PaymentChannel.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -2280,12 +2324,16 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
         let signature := M.alloc (| signature |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "payment_channel::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2371,9 +2419,9 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2417,9 +2465,9 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2461,7 +2509,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ amount_to_withdraw : Ty.path "u128" :=
+              let~ amount_to_withdraw : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u128",
@@ -2478,7 +2526,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   let β :=
                     M.SubPointer.get_struct_record_field (|
@@ -2495,9 +2543,9 @@ Module Impl_payment_channel_PaymentChannel.
                     |)
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2593,10 +2641,14 @@ Module Impl_payment_channel_PaymentChannel.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
-                                            (Ty.path "payment_channel::Error")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                                              (Ty.path "payment_channel::Error")
+                                          ],
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>

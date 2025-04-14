@@ -102,20 +102,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.path "generics_implementation::Val" :=
+        let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "generics_implementation::Val" ] :=
           M.alloc (|
             Value.StructRecord
               "generics_implementation::Val"
               [ ("val", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let~ y : Ty.apply (Ty.path "generics_implementation::GenVal") [] [ Ty.path "i32" ] :=
+        let~ y :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "generics_implementation::GenVal") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
             Value.StructRecord
               "generics_implementation::GenVal"
               [ ("gen_val", Value.Integer IntegerKind.I32 3) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

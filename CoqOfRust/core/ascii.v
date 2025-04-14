@@ -271,7 +271,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ n : Ty.path "usize" :=
+            let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "usize",

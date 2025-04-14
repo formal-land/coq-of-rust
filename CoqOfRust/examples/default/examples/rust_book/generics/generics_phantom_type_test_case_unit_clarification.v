@@ -23,7 +23,11 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         let f := M.alloc (| f |) in
         M.never_to_any (|
           M.read (|
-            M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+            M.match_operator (|
+              Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+              M.deref (| M.read (| self |) |),
+              []
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -94,7 +98,11 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         let f := M.alloc (| f |) in
         M.never_to_any (|
           M.read (|
-            M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+            M.match_operator (|
+              Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
+              M.deref (| M.read (| self |) |),
+              []
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -404,9 +412,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ one_foot :
             Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              (Ty.path "*")
               []
-              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                  []
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
@@ -414,9 +427,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ one_meter :
             Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              (Ty.path "*")
               []
-              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                  []
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
@@ -424,9 +442,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ two_feet :
             Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              (Ty.path "*")
               []
-              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                  []
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -455,9 +478,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ two_meters :
             Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              (Ty.path "*")
               []
-              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ] :=
+              [
+                Ty.apply
+                  (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                  []
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -484,8 +512,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| one_meter |); M.read (| one_meter |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -556,8 +584,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

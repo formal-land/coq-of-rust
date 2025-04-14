@@ -1300,12 +1300,16 @@ Module range.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

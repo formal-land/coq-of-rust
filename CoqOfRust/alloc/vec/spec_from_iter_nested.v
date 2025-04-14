@@ -44,21 +44,31 @@ Module vec.
         | [], [], [ iterator ] =>
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ vector :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
-                        [ T; Ty.path "alloc::alloc::Global" ] :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.apply
+                        [
+                          Ty.apply
                             (Ty.path "alloc::vec::Vec")
                             []
-                            [ T; Ty.path "alloc::alloc::Global" ]),
+                            [ T; Ty.path "alloc::alloc::Global" ]
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ T; Ty.path "alloc::alloc::Global" ]
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -112,7 +122,15 @@ Module vec.
                                 |) in
                               let element := M.copy (| γ0_0 |) in
                               M.match_operator (|
-                                None,
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ T; Ty.path "alloc::alloc::Global" ]
+                                  ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.tuple
@@ -141,7 +159,8 @@ Module vec.
                                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let lower := M.copy (| γ0_0 |) in
-                                      let~ initial_capacity : Ty.path "usize" :=
+                                      let~ initial_capacity :
+                                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -179,9 +198,14 @@ Module vec.
                                         |) in
                                       let~ vector :
                                           Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                            (Ty.path "*")
                                             []
-                                            [ T; Ty.path "alloc::alloc::Global" ] :=
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ T; Ty.path "alloc::alloc::Global" ]
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -200,8 +224,8 @@ Module vec.
                                             [ M.read (| initial_capacity |) ]
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -224,7 +248,7 @@ Module vec.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -250,7 +274,7 @@ Module vec.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -318,14 +342,22 @@ Module vec.
             (let iterator := M.alloc (| iterator |) in
             M.read (|
               let~ vector :
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ T; Ty.path "alloc::alloc::Global" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ]
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -412,7 +444,7 @@ Module vec.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

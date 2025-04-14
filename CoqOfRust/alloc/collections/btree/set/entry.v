@@ -64,11 +64,15 @@ Module collections.
                 let f := M.alloc (| f |) in
                 M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      ],
                     M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
@@ -515,11 +519,15 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "alloc::collections::btree::set::entry::OccupiedEntry")
-                        []
-                        [ T; A ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::set::entry::OccupiedEntry")
+                          []
+                          [ T; A ]
+                      ],
                     self,
                     [
                       fun γ =>
@@ -591,7 +599,7 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 M.read (|
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -604,7 +612,7 @@ Module collections.
                               0
                             |) in
                           let entry := M.copy (| γ0_0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple [],
@@ -653,7 +661,7 @@ Module collections.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "&") [] [ T ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                         M.deref (| M.read (| self |) |),
                         [
                           fun γ =>
@@ -962,9 +970,14 @@ Module collections.
                 M.read (|
                   let~ _ :
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "alloc::collections::btree::set_val::SetValZST" ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply

@@ -29,7 +29,7 @@ Module slice.
             let value := M.alloc (| value |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -69,10 +69,10 @@ Module slice.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let last := M.copy (| γ1_0 |) in
                       let elems := M.copy (| γ1_1 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -96,11 +96,11 @@ Module slice.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
-                                    Ty.tuple [],
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -149,7 +149,8 @@ Module slice.
                                                     0
                                                   |) in
                                                 let el := M.copy (| γ0_0 |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.tuple [],
@@ -223,7 +224,7 @@ Module slice.
             M.read (|
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -255,11 +256,11 @@ Module slice.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -300,7 +301,7 @@ Module slice.
                                           0
                                         |) in
                                       let item := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             M.deref (| M.read (| item |) |),

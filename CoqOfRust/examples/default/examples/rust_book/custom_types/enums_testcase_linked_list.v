@@ -115,7 +115,7 @@ Module Impl_enums_testcase_linked_list_List.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "u32"),
+            Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -192,7 +192,7 @@ Module Impl_enums_testcase_linked_list_List.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.path "alloc::string::String"),
+            Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ],
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -221,7 +221,8 @@ Module Impl_enums_testcase_linked_list_List.
                       |),
                       [
                         M.read (|
-                          let~ res : Ty.path "alloc::string::String" :=
+                          let~ res :
+                              Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "alloc::string::String",
@@ -346,7 +347,8 @@ Module Impl_enums_testcase_linked_list_List.
                       |),
                       [
                         M.read (|
-                          let~ res : Ty.path "alloc::string::String" :=
+                          let~ res :
+                              Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.path "alloc::string::String",
@@ -412,7 +414,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ list : Ty.path "enums_testcase_linked_list::List" :=
+        let~ list : Ty.apply (Ty.path "*") [] [ Ty.path "enums_testcase_linked_list::List" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "enums_testcase_linked_list::List",
@@ -425,7 +427,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               list,
@@ -441,7 +443,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               list,
@@ -457,7 +459,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.write (|
               list,
@@ -473,8 +475,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -552,8 +554,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

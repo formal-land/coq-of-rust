@@ -23,14 +23,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ i : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 3 |) in
+        let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+          M.alloc (| Value.Integer IntegerKind.U64 3 |) in
         let o := M.copy (| Value.DeclaredButUndefined |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] := InlineAssembly in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             M.alloc (|
               Value.Tuple
                 [
@@ -46,7 +47,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -70,7 +71,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

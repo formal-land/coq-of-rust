@@ -16,15 +16,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (M.catch_return (|
+      (M.catch_return
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ]) (|
         ltac:(M.monadic
           (M.read (|
-            let~ number_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+            let~ number_str :
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
               M.alloc (| mk_str (| "10" |) |) in
-            let~ number : Ty.path "i32" :=
+            let~ number : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.path "i32"),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -67,8 +72,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

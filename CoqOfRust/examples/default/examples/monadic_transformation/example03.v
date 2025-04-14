@@ -12,7 +12,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] ] :=
           M.alloc (|
             Value.Tuple
               [
@@ -24,9 +28,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "alloc::vec::Vec")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply

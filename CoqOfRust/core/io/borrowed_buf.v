@@ -235,7 +235,7 @@ Module io.
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.read (|
-              let~ len : Ty.path "usize" :=
+              let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -520,17 +520,22 @@ Module io.
             M.read (|
               let~ buf :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "slice")
+                        (Ty.path "&")
                         []
                         [
                           Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            (Ty.path "slice")
                             []
-                            [ Ty.path "u8" ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [ Ty.path "u8" ]
+                            ]
                         ]
                     ] :=
                 M.alloc (|
@@ -642,17 +647,22 @@ Module io.
                     M.read (|
                       let~ buf :
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "*")
                             []
                             [
                               Ty.apply
-                                (Ty.path "slice")
+                                (Ty.path "&mut")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    (Ty.path "slice")
                                     []
-                                    [ Ty.path "u8" ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ]
                                 ]
                             ] :=
                         M.alloc (|
@@ -771,17 +781,22 @@ Module io.
             M.read (|
               let~ buf :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "slice")
+                        (Ty.path "&")
                         []
                         [
                           Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            (Ty.path "slice")
                             []
-                            [ Ty.path "u8" ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [ Ty.path "u8" ]
+                            ]
                         ]
                     ] :=
                 M.alloc (|
@@ -894,17 +909,22 @@ Module io.
                     M.read (|
                       let~ buf :
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "*")
                             []
                             [
                               Ty.apply
-                                (Ty.path "slice")
+                                (Ty.path "&mut")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    (Ty.path "slice")
                                     []
-                                    [ Ty.path "u8" ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ]
                                 ]
                             ] :=
                         M.alloc (|
@@ -1090,7 +1110,7 @@ Module io.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -1128,7 +1148,7 @@ Module io.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -1463,17 +1483,22 @@ Module io.
             M.read (|
               let~ buf :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
                     [
                       Ty.apply
-                        (Ty.path "slice")
+                        (Ty.path "&")
                         []
                         [
                           Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            (Ty.path "slice")
                             []
-                            [ Ty.path "u8" ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [ Ty.path "u8" ]
+                            ]
                         ]
                     ] :=
                 M.alloc (|
@@ -1618,17 +1643,22 @@ Module io.
                     M.read (|
                       let~ buf :
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "*")
                             []
                             [
                               Ty.apply
-                                (Ty.path "slice")
+                                (Ty.path "&mut")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    (Ty.path "slice")
                                     []
-                                    [ Ty.path "u8" ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ]
                                 ]
                             ] :=
                         M.alloc (|
@@ -1998,7 +2028,7 @@ Module io.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ filled : Ty.path "usize" :=
+                  let~ filled : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -2023,9 +2053,9 @@ Module io.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2072,7 +2102,7 @@ Module io.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -2119,7 +2149,7 @@ Module io.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       let β :=
                         M.SubPointer.get_struct_record_field (|
@@ -2144,7 +2174,7 @@ Module io.
                         |)
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -2234,17 +2264,22 @@ Module io.
                 M.read (|
                   let~ uninit :
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "*")
                         []
                         [
                           Ty.apply
-                            (Ty.path "slice")
+                            (Ty.path "&mut")
                             []
                             [
                               Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                (Ty.path "slice")
                                 []
-                                [ Ty.path "u8" ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.path "u8" ]
+                                ]
                             ]
                         ] :=
                     M.alloc (|
@@ -2272,8 +2307,8 @@ Module io.
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],
@@ -2342,7 +2377,7 @@ Module io.
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -2411,7 +2446,7 @@ Module io.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
@@ -2507,9 +2542,9 @@ Module io.
             (let self := M.alloc (| self |) in
             let buf := M.alloc (| buf |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2569,12 +2604,17 @@ Module io.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 let~ _ :
                     Ty.apply
-                      (Ty.path "&mut")
+                      (Ty.path "*")
                       []
-                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2699,12 +2739,17 @@ Module io.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 let~ _ :
                     Ty.apply
-                      (Ty.path "&mut")
+                      (Ty.path "*")
                       []
-                      [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ] :=
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2733,7 +2778,7 @@ Module io.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   let β :=
                     M.SubPointer.get_struct_record_field (|

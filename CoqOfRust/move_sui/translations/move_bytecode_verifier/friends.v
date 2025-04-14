@@ -47,10 +47,14 @@ Module friends.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError")),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                              (Ty.path "move_binary_format::errors::VMError")
+                          ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -140,14 +144,23 @@ Module friends.
     | [], [], [ module ] =>
       ltac:(M.monadic
         (let module := M.alloc (| module |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
           ltac:(M.monadic
             (M.read (|
               let~ self_handle :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -163,9 +176,9 @@ Module friends.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -255,9 +268,14 @@ Module friends.
                 |) in
               let~ self_address :
                   Ty.apply
-                    (Ty.path "&")
+                    (Ty.path "*")
                     []
-                    [ Ty.path "move_core_types::account_address::AccountAddress" ] :=
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -313,7 +331,7 @@ Module friends.
                     ]
                   |)
                 |) in
-              let~ has_external_friend : Ty.path "bool" :=
+              let~ has_external_friend : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -400,21 +418,25 @@ Module friends.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some
-                                    (Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::ModuleHandle"
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path "bool")),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::ModuleHandle"
+                                                ]
+                                            ]
+                                        ]
+                                        (Ty.path "bool")
+                                    ],
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -490,9 +512,9 @@ Module friends.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

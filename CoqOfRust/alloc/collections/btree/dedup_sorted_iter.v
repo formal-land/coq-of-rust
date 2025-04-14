@@ -94,17 +94,17 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (|
+              M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ K; V ] ]) (|
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
-                          (let~ next : Ty.tuple [ K; V ] :=
+                          (let~ next : Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ] :=
                             M.copy (|
                               M.match_operator (|
-                                Some (Ty.tuple [ K; V ]),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -162,10 +162,17 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let~ peeked : Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] :=
+                          let~ peeked :
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] :=
                             M.copy (|
                               M.match_operator (|
-                                Some (Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -223,7 +230,7 @@ Module collections.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>

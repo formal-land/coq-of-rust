@@ -867,7 +867,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "u8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -879,7 +879,7 @@ Module ascii.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "u8" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -922,7 +922,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "u8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -934,7 +934,7 @@ Module ascii.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "u8" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -986,7 +986,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "u8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -998,7 +998,7 @@ Module ascii.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "u8" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -1058,7 +1058,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.path "u8" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -1124,11 +1124,15 @@ Module ascii.
             (let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1217,11 +1221,15 @@ Module ascii.
             (let d := M.alloc (| d |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1288,9 +1296,9 @@ Module ascii.
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1305,7 +1313,7 @@ Module ascii.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
@@ -1322,7 +1330,7 @@ Module ascii.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ byte : Ty.path "u8" :=
+              let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u8",
@@ -1620,14 +1628,24 @@ Module ascii.
             M.read (|
               let~ ascii_ptr :
                   Ty.apply
-                    (Ty.path "*const")
+                    (Ty.path "*")
                     []
-                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    [
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                        ]
                     ] :=
                 M.alloc (|
                   M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                 |) in
-              let~ str_ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "str" ] :=
+              let~ str_ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "str" ] ] :=
                 M.alloc (|
                   M.cast (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ]) (M.read (| ascii_ptr |))
                 |) in
@@ -1784,17 +1802,29 @@ Module ascii.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ],
                 M.match_operator (|
-                  Some
-                    (Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 6 ]
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                        Ty.path "usize"
-                      ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 6 ]
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                          Ty.path "usize"
+                        ]
+                    ],
                   self,
                   [
                     fun γ =>
@@ -1963,7 +1993,7 @@ Module ascii.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ byte : Ty.path "u8" :=
+                        let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "u8",
@@ -1976,7 +2006,11 @@ Module ascii.
                               [ M.read (| M.deref (| M.read (| self |) |) |) ]
                             |)
                           |) in
-                        let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+                        let~ hi :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               get_constant (|
@@ -2007,7 +2041,11 @@ Module ascii.
                               |)
                             |)
                           |) in
-                        let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+                        let~ lo :
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               get_constant (|

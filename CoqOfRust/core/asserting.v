@@ -28,7 +28,11 @@ Module asserting.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
-          M.match_operator (| None, β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            β1,
+            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -113,7 +117,7 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let to := M.alloc (| to |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -177,11 +181,15 @@ Module asserting.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
                 "core::asserting::Capture",

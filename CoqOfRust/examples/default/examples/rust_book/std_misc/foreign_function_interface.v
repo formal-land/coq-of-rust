@@ -54,13 +54,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ z : Ty.path "foreign_function_interface::Complex" :=
+        let~ z : Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ] :=
           M.alloc (|
             Value.StructRecord
               "foreign_function_interface::Complex"
               [ ("re", M.read (| UnsupportedLiteral |)); ("im", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let~ z_sqrt : Ty.path "foreign_function_interface::Complex" :=
+        let~ z_sqrt : Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "foreign_function_interface::Complex",
@@ -68,8 +68,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| z |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -150,8 +150,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -271,7 +271,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -320,11 +320,15 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
         let f := M.alloc (| f |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

@@ -83,7 +83,7 @@ Module fmt.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -147,7 +147,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -159,7 +159,7 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -886,10 +886,14 @@ Module fmt.
           let is_nonnegative := M.alloc (| is_nonnegative |) in
           let prefix := M.alloc (| prefix |) in
           let buf := M.alloc (| buf |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ width : Ty.path "usize" :=
+                let~ width : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "usize",
@@ -897,11 +901,15 @@ Module fmt.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |) ]
                     |)
                   |) in
-                let~ sign : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] :=
+                let~ sign :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] ] :=
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -910,7 +918,7 @@ Module fmt.
                             M.use (M.alloc (| UnOp.not (| M.read (| is_nonnegative |) |) |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 sign,
@@ -919,7 +927,7 @@ Module fmt.
                                   [ Value.UnicodeChar 45 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               let β := width in
                               M.write (|
@@ -935,7 +943,7 @@ Module fmt.
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -964,7 +972,7 @@ Module fmt.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.write (|
                                         sign,
@@ -973,7 +981,7 @@ Module fmt.
                                           [ Value.UnicodeChar 43 ]
                                       |)
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       let β := width in
                                       M.write (|
@@ -993,16 +1001,25 @@ Module fmt.
                   |) in
                 let~ prefix :
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "*")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-                  M.copy (|
-                    M.match_operator (|
-                      Some
-                        (Ty.apply
+                      [
+                        Ty.apply
                           (Ty.path "core::option::Option")
                           []
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ] :=
+                  M.copy (|
+                    M.match_operator (|
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1028,7 +1045,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 let β := width in
                                 M.write (|
@@ -1081,11 +1098,15 @@ Module fmt.
                     |)
                   |) in
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ],
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
@@ -1095,9 +1116,9 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1256,9 +1277,9 @@ Module fmt.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1422,7 +1443,7 @@ Module fmt.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ old_fill : Ty.path "char" :=
+                        let~ old_fill : Ty.apply (Ty.path "*") [] [ Ty.path "char" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "char",
@@ -1445,7 +1466,8 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let~ old_align : Ty.path "core::fmt::rt::Alignment" :=
+                        let~ old_align :
+                            Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::rt::Alignment" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "core::fmt::rt::Alignment",
@@ -1472,9 +1494,9 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1583,10 +1605,11 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let~ post_padding : Ty.path "core::fmt::PostPadding" :=
+                        let~ post_padding :
+                            Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::PostPadding" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "core::fmt::PostPadding"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::PostPadding" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -1704,9 +1727,9 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1828,9 +1851,9 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1938,7 +1961,7 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
@@ -1949,7 +1972,7 @@ Module fmt.
                               M.read (| old_fill |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
@@ -1972,10 +1995,11 @@ Module fmt.
                             0
                           |) in
                         let min := M.copy (| γ0_0 |) in
-                        let~ post_padding : Ty.path "core::fmt::PostPadding" :=
+                        let~ post_padding :
+                            Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::PostPadding" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "core::fmt::PostPadding"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::PostPadding" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2093,9 +2117,9 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -2204,9 +2228,9 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -2412,12 +2436,16 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2516,10 +2544,11 @@ Module fmt.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+                let~ s :
+                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2538,7 +2567,10 @@ Module fmt.
                               |) in
                             let max := M.copy (| γ0_0 |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2667,11 +2699,15 @@ Module fmt.
                     |)
                   |) in
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ],
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
@@ -2722,7 +2758,7 @@ Module fmt.
                             0
                           |) in
                         let width := M.copy (| γ0_0 |) in
-                        let~ chars_count : Ty.path "usize" :=
+                        let~ chars_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "usize",
@@ -2745,11 +2781,15 @@ Module fmt.
                             |)
                           |) in
                         M.match_operator (|
-                          Some
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                            ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2802,12 +2842,20 @@ Module fmt.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let~ align : Ty.path "core::fmt::Alignment" :=
+                                (let~ align :
+                                    Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Alignment" ] :=
                                   M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] |) in
-                                let~ post_padding : Ty.path "core::fmt::PostPadding" :=
+                                let~ post_padding :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::fmt::PostPadding" ] :=
                                   M.copy (|
                                     M.match_operator (|
-                                      Some (Ty.path "core::fmt::PostPadding"),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "core::fmt::PostPadding" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -2928,9 +2976,9 @@ Module fmt.
                                       ]
                                     |)
                                   |) in
-                                let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3119,13 +3167,17 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let padding := M.alloc (| padding |) in
           let default := M.alloc (| default |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ align : Ty.path "core::fmt::Alignment" :=
+                let~ align : Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Alignment" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "core::fmt::Alignment"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Alignment" ],
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "core::fmt::Formatter",
@@ -3155,9 +3207,17 @@ Module fmt.
                     |)
                   |) in
                 M.match_operator (|
-                  None,
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error" ]
+                    ],
                   M.match_operator (|
-                    Some (Ty.tuple [ Ty.path "usize"; Ty.path "usize" ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                     align,
                     [
                       fun γ =>
@@ -3206,10 +3266,10 @@ Module fmt.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let pre_pad := M.copy (| γ0_0 |) in
                         let post_pad := M.copy (| γ0_1 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.use
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3243,11 +3303,11 @@ Module fmt.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.tuple [] :=
+                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -3295,9 +3355,10 @@ Module fmt.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3541,15 +3602,23 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let formatted := M.alloc (| formatted |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3567,7 +3636,8 @@ Module fmt.
                             0
                           |) in
                         let width := M.copy (| γ0_0 |) in
-                        let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+                        let~ formatted :
+                            Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "core::num::fmt::Formatted",
@@ -3588,7 +3658,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let~ old_fill : Ty.path "char" :=
+                        let~ old_fill : Ty.apply (Ty.path "*") [] [ Ty.path "char" ] :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
@@ -3596,7 +3666,8 @@ Module fmt.
                               "fill"
                             |)
                           |) in
-                        let~ old_align : Ty.path "core::fmt::rt::Alignment" :=
+                        let~ old_align :
+                            Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::rt::Alignment" ] :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
@@ -3604,9 +3675,9 @@ Module fmt.
                               "align"
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3635,7 +3706,11 @@ Module fmt.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ sign : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+                                  let~ sign :
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
                                     M.copy (|
                                       M.SubPointer.get_struct_record_field (|
                                         formatted,
@@ -3643,9 +3718,9 @@ Module fmt.
                                         "sign"
                                       |)
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -3768,7 +3843,7 @@ Module fmt.
                                             val))
                                       ]
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
@@ -3779,7 +3854,7 @@ Module fmt.
                                         mk_str (| "" |)
                                       |)
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.write (|
                                         width,
@@ -3812,7 +3887,7 @@ Module fmt.
                                         |)
                                       |)
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
@@ -3823,7 +3898,7 @@ Module fmt.
                                         Value.UnicodeChar 48
                                       |)
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
@@ -3838,7 +3913,7 @@ Module fmt.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ len : Ty.path "usize" :=
+                        let~ len : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "usize",
@@ -3853,16 +3928,25 @@ Module fmt.
                           |) in
                         let~ ret :
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "*")
                               []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ] :=
-                          M.copy (|
-                            M.match_operator (|
-                              Some
-                                (Ty.apply
+                              [
+                                Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                              ] :=
+                          M.copy (|
+                            M.match_operator (|
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                                ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -3907,10 +3991,17 @@ Module fmt.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ post_padding : Ty.path "core::fmt::PostPadding" :=
+                                    (let~ post_padding :
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "core::fmt::PostPadding" ] :=
                                       M.copy (|
                                         M.match_operator (|
-                                          Some (Ty.path "core::fmt::PostPadding"),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "core::fmt::PostPadding" ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -4039,10 +4130,10 @@ Module fmt.
                                           ]
                                         |)
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -4187,7 +4278,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
@@ -4198,7 +4289,7 @@ Module fmt.
                               M.read (| old_fill |)
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.alloc (|
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
@@ -4295,12 +4386,16 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let formatted := M.alloc (| formatted |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4336,9 +4431,9 @@ Module fmt.
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4472,10 +4567,10 @@ Module fmt.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4510,11 +4605,11 @@ Module fmt.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -4567,7 +4662,7 @@ Module fmt.
                                             |) in
                                           let part := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.deref (| M.read (| part |) |),
                                             [
                                               fun γ =>
@@ -4579,12 +4674,13 @@ Module fmt.
                                                       0
                                                     |) in
                                                   let nzeroes := M.copy (| γ0_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.loop (|
-                                                      Ty.tuple [],
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -4634,9 +4730,16 @@ Module fmt.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                let~ _ : Ty.tuple [] :=
+                                                                let~ _ :
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ] :=
                                                                   M.match_operator (|
-                                                                    Some (Ty.tuple []),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -4814,7 +4917,11 @@ Module fmt.
                                                                           val))
                                                                     ]
                                                                   |) in
-                                                                let~ _ : Ty.tuple [] :=
+                                                                let~ _ :
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ] :=
                                                                   M.alloc (|
                                                                     let β := nzeroes in
                                                                     M.write (|
@@ -4863,7 +4970,11 @@ Module fmt.
                                                                 (M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (|
-                                                                      let~ _ : Ty.tuple [] :=
+                                                                      let~ _ :
+                                                                          Ty.apply
+                                                                            (Ty.path "*")
+                                                                            []
+                                                                            [ Ty.tuple [] ] :=
                                                                         M.alloc (|
                                                                           M.never_to_any (|
                                                                             M.read (|
@@ -4879,7 +4990,7 @@ Module fmt.
                                                         |)))
                                                     |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -4903,9 +5014,16 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -5138,16 +5256,25 @@ Module fmt.
                                                   let v := M.copy (| γ0_0 |) in
                                                   let~ s :
                                                       Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 5 ]
-                                                        [ Ty.path "u8" ] :=
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                                            [ Ty.path "u8" ]
+                                                        ] :=
                                                     M.alloc (|
                                                       repeat (|
                                                         Value.Integer IntegerKind.U8 0,
                                                         Value.Integer IntegerKind.Usize 5
                                                       |)
                                                     |) in
-                                                  let~ len : Ty.path "usize" :=
+                                                  let~ len :
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "usize" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "usize",
@@ -5165,10 +5292,11 @@ Module fmt.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.use
                                                       (M.match_operator (|
-                                                        Some (Ty.tuple []),
+                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -5309,11 +5437,21 @@ Module fmt.
                                                             ltac:(M.monadic
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
-                                                                Ty.tuple [],
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ],
                                                                 ltac:(M.monadic
-                                                                  (let~ _ : Ty.tuple [] :=
+                                                                  (let~ _ :
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ] :=
                                                                     M.match_operator (|
-                                                                      Some (Ty.tuple []),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -5383,7 +5521,11 @@ Module fmt.
                                                                               |) in
                                                                             let c :=
                                                                               M.copy (| γ0_0 |) in
-                                                                            let~ _ : Ty.tuple [] :=
+                                                                            let~ _ :
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ] :=
                                                                               M.alloc (|
                                                                                 M.write (|
                                                                                   M.deref (|
@@ -5416,7 +5558,11 @@ Module fmt.
                                                                                   |)
                                                                                 |)
                                                                               |) in
-                                                                            let~ _ : Ty.tuple [] :=
+                                                                            let~ _ :
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [ Ty.tuple [] ] :=
                                                                               M.alloc (|
                                                                                 let β := v in
                                                                                 M.write (|
@@ -5444,9 +5590,10 @@ Module fmt.
                                                               |)))
                                                         ]
                                                       |)) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -5650,9 +5797,10 @@ Module fmt.
                                                       0
                                                     |) in
                                                   let buf := M.copy (| γ0_0 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -5881,11 +6029,15 @@ Module fmt.
           let fmt := M.alloc (| fmt |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -6049,8 +6201,10 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::fmt::Alignment" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::fmt::Alignment" ] ],
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
                 "core::fmt::Formatter",
@@ -6472,7 +6626,8 @@ Module fmt.
           let name1 := M.alloc (| name1 |) in
           let value1 := M.alloc (| value1 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -6483,7 +6638,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6556,7 +6715,8 @@ Module fmt.
           let name2 := M.alloc (| name2 |) in
           let value2 := M.alloc (| value2 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -6567,7 +6727,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6586,7 +6750,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6664,7 +6832,8 @@ Module fmt.
           let name3 := M.alloc (| name3 |) in
           let value3 := M.alloc (| value3 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -6675,7 +6844,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6694,7 +6867,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6713,7 +6890,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6796,7 +6977,8 @@ Module fmt.
           let name4 := M.alloc (| name4 |) in
           let value4 := M.alloc (| value4 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -6807,7 +6989,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6826,7 +7012,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6845,7 +7035,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6864,7 +7058,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6955,7 +7153,8 @@ Module fmt.
           let name5 := M.alloc (| name5 |) in
           let value5 := M.alloc (| value5 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -6966,7 +7165,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -6985,7 +7188,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -7004,7 +7211,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -7023,7 +7234,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -7042,7 +7257,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
@@ -7113,9 +7332,9 @@ Module fmt.
           let names := M.alloc (| names |) in
           let values := M.alloc (| values |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -7170,7 +7389,7 @@ Module fmt.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -7194,7 +7413,11 @@ Module fmt.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    let~ kind :
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Eq" []
                                       |) in
@@ -7238,7 +7461,8 @@ Module fmt.
                       |)))
                 ]
               |) in
-            let~ builder : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -7249,10 +7473,10 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -7358,11 +7582,11 @@ Module fmt.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -7442,9 +7666,14 @@ Module fmt.
                                       let value := M.copy (| γ1_1 |) in
                                       let~ _ :
                                           Ty.apply
-                                            (Ty.path "&mut")
+                                            (Ty.path "*")
                                             []
-                                            [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.path "core::fmt::builders::DebugStruct" ]
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7551,7 +7780,8 @@ Module fmt.
           let name := M.alloc (| name |) in
           let value1 := M.alloc (| value1 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -7562,7 +7792,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7630,7 +7864,8 @@ Module fmt.
           let value1 := M.alloc (| value1 |) in
           let value2 := M.alloc (| value2 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -7641,7 +7876,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7659,7 +7898,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7730,7 +7973,8 @@ Module fmt.
           let value2 := M.alloc (| value2 |) in
           let value3 := M.alloc (| value3 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -7741,7 +7985,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7759,7 +8007,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7777,7 +8029,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7851,7 +8107,8 @@ Module fmt.
           let value3 := M.alloc (| value3 |) in
           let value4 := M.alloc (| value4 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -7862,7 +8119,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7880,7 +8141,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7898,7 +8163,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7916,7 +8185,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -7993,7 +8266,8 @@ Module fmt.
           let value4 := M.alloc (| value4 |) in
           let value5 := M.alloc (| value5 |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -8004,7 +8278,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -8022,7 +8300,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -8040,7 +8322,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -8058,7 +8344,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -8076,7 +8366,11 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
@@ -8143,7 +8437,8 @@ Module fmt.
           let name := M.alloc (| name |) in
           let values := M.alloc (| values |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -8154,10 +8449,10 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -8195,11 +8490,11 @@ Module fmt.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -8260,9 +8555,14 @@ Module fmt.
                                       let value := M.copy (| γ0_0 |) in
                                       let~ _ :
                                           Ty.apply
-                                            (Ty.path "&mut")
+                                            (Ty.path "*")
                                             []
-                                            [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.path "core::fmt::builders::DebugTuple" ]
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -8440,19 +8740,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Arguments" ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Arguments" ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Arguments" ],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -8488,7 +8788,7 @@ Module fmt.
         ltac:(M.monadic
           (let pieces := M.alloc (| pieces |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               get_constant (| "core::fmt::new_const_discriminant", Ty.tuple [] |) in
             M.alloc (|
               Value.StructRecord
@@ -8533,7 +8833,7 @@ Module fmt.
           (let pieces := M.alloc (| pieces |) in
           let args := M.alloc (| args |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               get_constant (| "core::fmt::new_v1_discriminant", Ty.tuple [] |) in
             M.alloc (|
               Value.StructRecord
@@ -8619,7 +8919,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ pieces_length : Ty.path "usize" :=
+            let~ pieces_length : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "usize",
@@ -8735,18 +9035,22 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                            ]
-                                        ]
-                                        (Ty.path "usize")),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                              ]
+                                          ]
+                                          (Ty.path "usize")
+                                      ],
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -8779,7 +9083,7 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "usize"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -8816,7 +9120,7 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.path "usize"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8958,11 +9262,15 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                ],
               M.alloc (|
                 Value.Tuple
                   [
@@ -9038,9 +9346,14 @@ Module fmt.
           M.read (|
             let~ s :
                 Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -9052,11 +9365,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -9307,10 +9624,14 @@ Module fmt.
       ltac:(M.monadic
         (let output := M.alloc (| output |) in
         let args := M.alloc (| args |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ formatter : Ty.path "core::fmt::Formatter" :=
+              let~ formatter : Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Formatter" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::fmt::Formatter",
@@ -9322,10 +9643,11 @@ Module fmt.
                     ]
                   |)
                 |) in
-              let~ idx : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ idx : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
+                M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.SubPointer.get_struct_record_field (| args, "core::fmt::Arguments", "fmt" |),
                   [
                     fun γ =>
@@ -9333,7 +9655,7 @@ Module fmt.
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -9425,11 +9747,11 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
-                                    Ty.tuple [],
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -9500,9 +9822,18 @@ Module fmt.
                                                 let arg := M.copy (| γ1_1 |) in
                                                 let~ piece :
                                                     Ty.apply
-                                                      (Ty.path "&")
+                                                      (Ty.path "*")
                                                       []
-                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ]
                                                       ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -9546,9 +9877,10 @@ Module fmt.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -9585,9 +9917,16 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -9754,10 +10093,12 @@ Module fmt.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -9894,7 +10235,8 @@ Module fmt.
                                                       ]
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     let β := idx in
                                                     M.write (|
@@ -9927,7 +10269,7 @@ Module fmt.
                         let fmt := M.copy (| γ0_0 |) in
                         M.use
                           (M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -10011,11 +10353,11 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
-                                    Ty.tuple [],
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                      (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -10086,9 +10428,18 @@ Module fmt.
                                                 let arg := M.copy (| γ1_1 |) in
                                                 let~ piece :
                                                     Ty.apply
-                                                      (Ty.path "&")
+                                                      (Ty.path "*")
                                                       []
-                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ]
                                                       ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -10132,9 +10483,10 @@ Module fmt.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -10171,9 +10523,16 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -10340,9 +10699,10 @@ Module fmt.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -10487,7 +10847,8 @@ Module fmt.
                                                           val))
                                                     ]
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     let β := idx in
                                                     M.write (|
@@ -10511,9 +10872,9 @@ Module fmt.
                           |))))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -10563,9 +10924,9 @@ Module fmt.
                             0
                           |) in
                         let piece := M.copy (| γ0_0 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -10732,7 +11093,7 @@ Module fmt.
         let arg := M.alloc (| arg |) in
         let args := M.alloc (| args |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -10749,7 +11110,7 @@ Module fmt.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -10766,7 +11127,7 @@ Module fmt.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -10783,8 +11144,8 @@ Module fmt.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -10814,7 +11175,7 @@ Module fmt.
                   |)
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -10845,18 +11206,18 @@ Module fmt.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -10916,7 +11277,11 @@ Module fmt.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let~ value : Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ] :=
+          let~ value :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ],
@@ -10981,7 +11346,10 @@ Module fmt.
         let cnt := M.alloc (| cnt |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.deref (| M.read (| cnt |) |),
             [
               fun γ =>
@@ -10999,9 +11367,9 @@ Module fmt.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::fmt::rt::Count::Param", 0 |) in
                   let i := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -11009,9 +11377,9 @@ Module fmt.
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -11155,13 +11523,17 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -11196,11 +11568,11 @@ Module fmt.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -11246,9 +11618,9 @@ Module fmt.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -11507,11 +11879,15 @@ Module fmt.
           let args := M.alloc (| args |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -12362,7 +12738,15 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              ],
             β1,
             [
               fun γ =>
@@ -12396,7 +12780,15 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            None,
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              ],
             β1,
             [
               fun γ =>
@@ -12475,7 +12867,7 @@ Module fmt.
             [
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -12565,12 +12957,16 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -12676,7 +13072,10 @@ Module fmt.
                     ]
                   |) in
                 let~ printable_range :
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ] :=
                   M.alloc (|
                     Value.StructRecord
                       "core::ops::range::Range"
@@ -12685,13 +13084,15 @@ Module fmt.
                         ("end_", Value.Integer IntegerKind.Usize 0)
                       ]
                   |) in
-                let~ rest : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] := M.copy (| self |) in
-                let~ _ : Ty.tuple [] :=
+                let~ rest :
+                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+                  M.copy (| self |) in
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.loop (|
-                    Ty.tuple [],
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -12725,7 +13126,7 @@ Module fmt.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.match_operator (|
-                                None,
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -12804,18 +13205,22 @@ Module fmt.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Some
-                                                    (Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u8" ]
-                                                          ]
-                                                      ]
-                                                      (Ty.path "bool")),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ]
+                                                        ]
+                                                        (Ty.path "bool")
+                                                    ],
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -12849,7 +13254,7 @@ Module fmt.
                                           0
                                         |) in
                                       let non_printable_start := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           let β :=
                                             M.SubPointer.get_struct_record_field (|
@@ -12866,7 +13271,7 @@ Module fmt.
                                             |)
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             rest,
@@ -12901,7 +13306,11 @@ Module fmt.
                                             |)
                                           |)
                                         |) in
-                                      let~ chars : Ty.path "core::str::iter::Chars" :=
+                                      let~ chars :
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [ Ty.path "core::str::iter::Chars" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "core::str::iter::Chars",
@@ -12919,9 +13328,9 @@ Module fmt.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -12952,7 +13361,11 @@ Module fmt.
                                                     0
                                                   |) in
                                                 let c := M.copy (| γ0_0 |) in
-                                                let~ esc : Ty.path "core::char::EscapeDebug" :=
+                                                let~ esc :
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [ Ty.path "core::char::EscapeDebug" ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.path "core::char::EscapeDebug",
@@ -12976,9 +13389,10 @@ Module fmt.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -13020,9 +13434,16 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -13238,9 +13659,16 @@ Module fmt.
                                                                     val))
                                                               ]
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -13391,7 +13819,11 @@ Module fmt.
                                                                     val))
                                                               ]
                                                             |) in
-                                                          let~ _ : Ty.tuple [] :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ] :=
                                                             M.alloc (|
                                                               M.write (|
                                                                 M.SubPointer.get_struct_record_field (|
@@ -13430,7 +13862,8 @@ Module fmt.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ : Ty.tuple [] :=
+                                                let~ _ :
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                   M.alloc (|
                                                     let β :=
                                                       M.SubPointer.get_struct_record_field (|
@@ -13463,7 +13896,7 @@ Module fmt.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             rest,
@@ -13492,7 +13925,7 @@ Module fmt.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -13503,9 +13936,9 @@ Module fmt.
                         ]
                       |)))
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -13733,12 +14166,16 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -13843,7 +14280,7 @@ Module fmt.
                           val))
                     ]
                   |) in
-                let~ esc : Ty.path "core::char::EscapeDebug" :=
+                let~ esc : Ty.apply (Ty.path "*") [] [ Ty.path "core::char::EscapeDebug" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "core::char::EscapeDebug",
@@ -13860,9 +14297,9 @@ Module fmt.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -14025,11 +14462,15 @@ Module fmt.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -14249,7 +14690,11 @@ Module fmt.
         (let ptr_addr := M.alloc (| ptr_addr |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let~ old_width : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
+          let~ old_width :
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ] :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| f |) |),
@@ -14257,7 +14702,7 @@ Module fmt.
                 "width"
               |)
             |) in
-          let~ old_flags : Ty.path "u32" :=
+          let~ old_flags : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| f |) |),
@@ -14265,9 +14710,9 @@ Module fmt.
                 "flags"
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -14287,7 +14732,7 @@ Module fmt.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         let β :=
                           M.SubPointer.get_struct_record_field (|
@@ -14315,7 +14760,7 @@ Module fmt.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -14348,7 +14793,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
@@ -14392,7 +14837,7 @@ Module fmt.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
@@ -14421,9 +14866,14 @@ Module fmt.
             |) in
           let~ ret :
               Ty.apply
-                (Ty.path "core::result::Result")
+                (Ty.path "*")
                 []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -14448,7 +14898,7 @@ Module fmt.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -14459,7 +14909,7 @@ Module fmt.
                 M.read (| old_width |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -14789,7 +15239,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -14806,7 +15257,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -14837,9 +15296,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_11 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14865,9 +15329,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14893,9 +15362,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14921,9 +15395,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14949,9 +15428,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14977,9 +15461,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15005,9 +15494,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15033,9 +15527,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15061,9 +15560,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15089,9 +15593,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15117,9 +15626,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15145,9 +15659,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15230,7 +15749,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -15247,7 +15767,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -15276,9 +15804,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_10 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15304,9 +15837,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15332,9 +15870,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15360,9 +15903,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15388,9 +15936,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15416,9 +15969,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15444,9 +16002,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15472,9 +16035,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15500,9 +16068,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15528,9 +16101,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15556,9 +16134,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15641,7 +16224,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -15658,7 +16242,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -15685,9 +16277,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_9 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15713,9 +16310,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15741,9 +16343,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15769,9 +16376,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15797,9 +16409,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15825,9 +16442,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15853,9 +16475,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15881,9 +16508,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15909,9 +16541,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -15937,9 +16574,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16021,7 +16663,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -16038,7 +16681,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -16063,9 +16714,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_8 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16091,9 +16747,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16119,9 +16780,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16147,9 +16813,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16175,9 +16846,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16203,9 +16879,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16231,9 +16912,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16259,9 +16945,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16287,9 +16978,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16371,7 +17067,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -16388,7 +17085,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -16411,9 +17116,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_7 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16439,9 +17149,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16467,9 +17182,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16495,9 +17215,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16523,9 +17248,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16551,9 +17281,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16579,9 +17314,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16607,9 +17347,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16691,7 +17436,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -16708,7 +17454,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -16729,9 +17483,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_6 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16757,9 +17516,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16785,9 +17549,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16813,9 +17582,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16841,9 +17615,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16869,9 +17648,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16897,9 +17681,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -16976,7 +17765,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -16993,7 +17783,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -17012,9 +17810,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_5 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17040,9 +17843,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17068,9 +17876,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17096,9 +17909,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17124,9 +17942,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17152,9 +17975,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17231,7 +18059,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -17248,7 +18077,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -17265,9 +18102,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_4 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17293,9 +18135,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17321,9 +18168,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17349,9 +18201,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17377,9 +18234,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17456,7 +18318,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -17473,7 +18336,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -17488,9 +18359,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_3 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17516,9 +18392,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17544,9 +18425,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17572,9 +18458,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17651,7 +18542,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -17668,7 +18560,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -17681,9 +18581,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_2 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17709,9 +18614,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17737,9 +18647,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17816,7 +18731,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -17833,7 +18749,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -17844,9 +18768,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_1 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17872,9 +18801,14 @@ Module fmt.
                       |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -17951,7 +18885,8 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ builder : Ty.path "core::fmt::builders::DebugTuple" :=
+            let~ builder :
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugTuple",
@@ -17968,7 +18903,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              None,
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.deref (| M.read (| self |) |),
               [
                 fun γ =>
@@ -17977,9 +18920,14 @@ Module fmt.
                     let value_T := M.alloc (| γ0_0 |) in
                     let~ _ :
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "core::fmt::builders::DebugTuple" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -18375,7 +19323,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ d : Ty.path "core::fmt::builders::DebugStruct" :=
+            let~ d : Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::fmt::builders::DebugStruct",
@@ -18391,9 +19339,16 @@ Module fmt.
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] :=
+            let~ _ :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ] :=
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

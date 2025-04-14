@@ -16,13 +16,18 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       M.read (|
         let~ opt :
             Ty.apply
-              (Ty.path "core::option::Option")
+              (Ty.path "*")
               []
               [
                 Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                  ]
               ] :=
           M.alloc (|
             M.call_closure (|
@@ -113,21 +118,25 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -180,10 +189,14 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Some
-                                                    (Ty.function
-                                                      [ Ty.tuple [ Ty.path "i32" ] ]
-                                                      (Ty.path "i32")),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.function
+                                                        [ Ty.tuple [ Ty.path "i32" ] ]
+                                                        (Ty.path "i32")
+                                                    ],
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -270,24 +283,28 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
                                 [
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ];
-                                  Ty.path "core::num::error::ParseIntError"
-                                ])),
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ];
+                                    Ty.path "core::num::error::ParseIntError"
+                                  ])
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -365,9 +382,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ numbers :
             Ty.apply
-              (Ty.path "alloc::vec::Vec")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -427,9 +449,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ empty :
             Ty.apply
-              (Ty.path "alloc::vec::Vec")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -450,9 +477,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ strings :
             Ty.apply
-              (Ty.path "alloc::vec::Vec")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -510,8 +542,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -607,8 +639,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -704,8 +736,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

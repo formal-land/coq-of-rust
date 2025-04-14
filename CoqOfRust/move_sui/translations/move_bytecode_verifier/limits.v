@@ -72,10 +72,15 @@ Module limits.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                              (Ty.path "move_binary_format::errors::VMError")),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ]
+                                ]
+                                (Ty.path "move_binary_format::errors::VMError")
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -147,18 +152,26 @@ Module limits.
         ltac:(M.monadic
           (let config := M.alloc (| config |) in
           let module := M.alloc (| module |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ limit_check : Ty.path "move_bytecode_verifier::limits::LimitsVerifier" :=
+                let~ limit_check :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_bytecode_verifier::limits::LimitsVerifier" ] :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::limits::LimitsVerifier"
                       [ ("module", M.read (| module |)) ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -269,9 +282,9 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -382,9 +395,9 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -495,9 +508,9 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -608,9 +621,9 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -768,12 +781,16 @@ Module limits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -793,7 +810,7 @@ Module limits.
                           let limit := M.copy (| γ0_0 |) in
                           M.use
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -924,11 +941,11 @@ Module limits.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.tuple [] :=
+                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -1004,7 +1021,7 @@ Module limits.
                                                   let idx := M.copy (| γ1_0 |) in
                                                   let struct_handle := M.copy (| γ1_1 |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -1154,13 +1171,17 @@ Module limits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1280,11 +1301,11 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1354,9 +1375,9 @@ Module limits.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let idx := M.copy (| γ1_0 |) in
                                           let function_handle := M.copy (| γ1_1 |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -1375,7 +1396,7 @@ Module limits.
                                                       |) in
                                                     let limit := M.copy (| γ0_0 |) in
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1484,9 +1505,9 @@ Module limits.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -1505,7 +1526,7 @@ Module limits.
                                                       |) in
                                                     let limit := M.copy (| γ0_0 |) in
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1703,13 +1724,17 @@ Module limits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1773,11 +1798,11 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1833,7 +1858,7 @@ Module limits.
                                           let sign := M.copy (| γ0_0 |) in
                                           M.use
                                             (M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -1881,11 +1906,18 @@ Module limits.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
-                                                      Ty.tuple [],
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       ltac:(M.monadic
-                                                        (let~ _ : Ty.tuple [] :=
+                                                        (let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ] :=
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1952,7 +1984,10 @@ Module limits.
                                                                     |) in
                                                                   let ty := M.copy (| γ0_0 |) in
                                                                   M.match_operator (|
-                                                                    Some (Ty.tuple []),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -2122,10 +2157,10 @@ Module limits.
                             |)))
                       ]
                     |)) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2189,11 +2224,11 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2247,7 +2282,7 @@ Module limits.
                                             |) in
                                           let cons := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -2399,13 +2434,18 @@ Module limits.
                     |)) in
                 let~ sdefs :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "slice")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -2440,10 +2480,10 @@ Module limits.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2475,11 +2515,11 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2538,7 +2578,7 @@ Module limits.
                                             |) in
                                           let sdef := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -2564,7 +2604,7 @@ Module limits.
                                                   let fdefs := M.alloc (| γ1_0 |) in
                                                   M.use
                                                     (M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2603,11 +2643,21 @@ Module limits.
                                                           ltac:(M.monadic
                                                             (let iter := M.copy (| γ |) in
                                                             M.loop (|
-                                                              Ty.tuple [],
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               ltac:(M.monadic
-                                                                (let~ _ : Ty.tuple [] :=
+                                                                (let~ _ :
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ] :=
                                                                   M.match_operator (|
-                                                                    Some (Ty.tuple []),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -2678,7 +2728,10 @@ Module limits.
                                                                           let fdef :=
                                                                             M.copy (| γ0_0 |) in
                                                                           M.match_operator (|
-                                                                            Some (Ty.tuple []),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [ Ty.tuple [] ],
                                                                             M.alloc (|
                                                                               M.call_closure (|
                                                                                 Ty.apply
@@ -2922,12 +2975,16 @@ Module limits.
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
           let ty := M.alloc (| ty |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2951,12 +3008,12 @@ Module limits.
                               0
                             |) in
                           let max := M.alloc (| γ1_0 |) in
-                          let~ size : Ty.path "usize" :=
+                          let~ size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                             M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.use
                               (M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path
@@ -2996,11 +3053,11 @@ Module limits.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
-                                        Ty.tuple [],
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         ltac:(M.monadic
-                                          (let~ _ : Ty.tuple [] :=
+                                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.tuple []),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -3056,12 +3113,12 @@ Module limits.
                                                       |) in
                                                     let t := M.copy (| γ0_0 |) in
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       t,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.find_or_pattern (|
+                                                            (M.find_or_pattern (Ty.tuple []) (|
                                                               γ,
                                                               [
                                                                 fun γ =>
@@ -3166,7 +3223,7 @@ Module limits.
                                 ]
                               |)) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3275,18 +3332,27 @@ Module limits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ defs :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "slice")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -3321,9 +3387,9 @@ Module limits.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3342,7 +3408,7 @@ Module limits.
                             |) in
                           let max_function_definitions := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3420,13 +3486,18 @@ Module limits.
                   |) in
                 let~ defs :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "slice")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -3461,9 +3532,9 @@ Module limits.
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3482,7 +3553,7 @@ Module limits.
                             |) in
                           let max_struct_definitions := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3558,9 +3629,9 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3580,7 +3651,7 @@ Module limits.
                           let max_fields_in_struct := M.copy (| γ0_0 |) in
                           M.use
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3615,11 +3686,11 @@ Module limits.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.tuple [] :=
+                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -3680,7 +3751,7 @@ Module limits.
                                                     |) in
                                                   let def := M.copy (| γ0_0 |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (|
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
@@ -3712,7 +3783,10 @@ Module limits.
                                                             |) in
                                                           let fields := M.alloc (| γ1_0 |) in
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -3855,13 +3929,17 @@ Module limits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3981,11 +4059,11 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -4056,7 +4134,7 @@ Module limits.
                                           let idx := M.copy (| γ1_0 |) in
                                           let constant := M.copy (| γ1_1 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -4074,16 +4152,20 @@ Module limits.
                                                       0
                                                     |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.path
-                                                                  "move_core_types::runtime_value::MoveValue"),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::runtime_value::MoveValue"
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -4189,14 +4271,18 @@ Module limits.
                                                                               | [ α0 ] =>
                                                                                 ltac:(M.monadic
                                                                                   (M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            []
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "move_binary_format::errors::PartialVMError")),
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.function
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              []
+                                                                                          ]
+                                                                                          (Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError")
+                                                                                      ],
                                                                                     M.alloc (|
                                                                                       α0
                                                                                     |),
@@ -4320,7 +4406,10 @@ Module limits.
                                                             |) in
                                                           let cons := M.copy (| γ0_0 |) in
                                                           M.match_operator (|
-                                                            Some (Ty.tuple []),
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -4341,7 +4430,10 @@ Module limits.
                                                                     |) in
                                                                   let lim := M.copy (| γ0_0 |) in
                                                                   M.match_operator (|
-                                                                    Some (Ty.tuple []),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ],
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -4441,8 +4533,14 @@ Module limits.
                                                                                               M.read (|
                                                                                                 let~
                                                                                                       res :
-                                                                                                    Ty.path
-                                                                                                      "alloc::string::String" :=
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "*")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "alloc::string::String"
+                                                                                                      ] :=
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
                                                                                                       Ty.path
@@ -4632,12 +4730,16 @@ Module limits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let config := M.alloc (| config |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4657,7 +4759,7 @@ Module limits.
                           let max_idenfitier_len := M.copy (| γ0_0 |) in
                           M.use
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4777,11 +4879,11 @@ Module limits.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
-                                      Ty.tuple [],
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       ltac:(M.monadic
-                                        (let~ _ : Ty.tuple [] :=
+                                        (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -4857,7 +4959,7 @@ Module limits.
                                                   let idx := M.copy (| γ1_0 |) in
                                                   let identifier := M.copy (| γ1_1 |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>

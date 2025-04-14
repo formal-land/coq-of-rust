@@ -7,26 +7,32 @@ use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
 
-pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
+pub(crate) fn compile_pattern<'a>(
+    env: &Env<'a>,
+    generics: &'a rustc_middle::ty::Generics,
+    pat: &Pat<'a>,
+) -> Rc<Pattern> {
     match &pat.kind {
         PatKind::Wild => Rc::new(Pattern::Wild),
-        PatKind::AscribeUserType { subpattern, .. } => compile_pattern(env, subpattern),
+        PatKind::AscribeUserType { subpattern, .. } => compile_pattern(env, generics, subpattern),
         PatKind::Binding {
             name,
             mode,
             var: _,
-            ty: _,
+            ty,
             subpattern,
             is_primary: _,
         } => {
             let name = to_valid_coq_name(IsValue::Yes, name.as_str());
+            let ty = crate::thir_ty::compile_type(env, &pat.span, generics, ty);
             let rustc_ast::ast::BindingMode(by_ref, _) = mode;
             let is_with_ref = matches!(by_ref, rustc_ast::ast::ByRef::Yes(_));
             let pattern = subpattern
                 .as_ref()
-                .map(|subpattern| compile_pattern(env, subpattern));
+                .map(|subpattern| compile_pattern(env, generics, subpattern));
             Rc::new(Pattern::Binding {
                 name,
+                ty,
                 is_with_ref,
                 pattern,
             })
@@ -47,7 +53,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 .map(|field| {
                     (
                         variant.fields.get(field.field).unwrap().name.to_string(),
-                        compile_pattern(env, &field.pattern),
+                        compile_pattern(env, generics, &field.pattern),
                     )
                 })
                 .collect();
@@ -69,7 +75,8 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 let mut fields: Vec<_> = tys.iter().map(|_| Rc::new(Pattern::Wild)).collect();
 
                 for subpattern in subpatterns {
-                    fields[subpattern.field.index()] = compile_pattern(env, &subpattern.pattern);
+                    fields[subpattern.field.index()] =
+                        compile_pattern(env, generics, &subpattern.pattern);
                 }
 
                 return Rc::new(Pattern::Tuple(fields));
@@ -82,7 +89,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 .map(|field| {
                     (
                         variant.fields.get(field.field).unwrap().name.to_string(),
-                        compile_pattern(env, &field.pattern),
+                        compile_pattern(env, generics, &field.pattern),
                     )
                 })
                 .collect();
@@ -96,7 +103,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 Rc::new(Pattern::StructRecord(path, fields))
             }
         }
-        PatKind::Deref { subpattern } => Rc::new(Pattern::Deref(compile_pattern(env, subpattern))),
+        PatKind::Deref { subpattern } => {
+            Rc::new(Pattern::Deref(compile_pattern(env, generics, subpattern)))
+        }
         PatKind::Constant { value } => {
             if let rustc_middle::mir::Const::Ty(ty, constant) = value {
                 // Brutal way to handle the case of rustc_middle::ty::TyKind::Str
@@ -184,13 +193,17 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             slice,
             suffix,
         } => {
-            let prefix: Vec<Rc<Pattern>> =
-                prefix.iter().map(|pat| compile_pattern(env, pat)).collect();
-            let suffix: Vec<Rc<Pattern>> =
-                suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
+            let prefix: Vec<Rc<Pattern>> = prefix
+                .iter()
+                .map(|pat| compile_pattern(env, generics, pat))
+                .collect();
+            let suffix: Vec<Rc<Pattern>> = suffix
+                .iter()
+                .map(|pat| compile_pattern(env, generics, pat))
+                .collect();
             let slice_pattern: Option<Rc<Pattern>> = slice
                 .as_ref()
-                .map(|pat_middle| compile_pattern(env, pat_middle));
+                .map(|pat_middle| compile_pattern(env, generics, pat_middle));
             Rc::new(Pattern::Slice {
                 prefix_patterns: prefix,
                 slice_pattern,
@@ -198,7 +211,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             })
         }
         PatKind::Or { pats } => Rc::new(Pattern::Or(
-            pats.iter().map(|pat| compile_pattern(env, pat)).collect(),
+            pats.iter()
+                .map(|pat| compile_pattern(env, generics, pat))
+                .collect(),
         )),
         PatKind::Never => {
             emit_warning_with_note(
@@ -230,6 +245,6 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
 
             Rc::new(Pattern::Wild)
         }
-        PatKind::ExpandedConstant { subpattern, .. } => compile_pattern(env, subpattern),
+        PatKind::ExpandedConstant { subpattern, .. } => compile_pattern(env, generics, subpattern),
     }
 }

@@ -31,8 +31,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -148,11 +148,12 @@ Module main.
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
-          let~ acc : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ acc : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
+            M.alloc (| Value.Integer IntegerKind.U32 0 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.use
               (M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
@@ -177,11 +178,11 @@ Module main.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
-                          (let~ _ : Ty.tuple [] :=
+                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -220,10 +221,10 @@ Module main.
                                         0
                                       |) in
                                     let i := M.copy (| γ0_0 |) in
-                                    let~ addition : Ty.path "u32" :=
+                                    let~ addition : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                       M.copy (|
                                         M.match_operator (|
-                                          Some (Ty.path "u32"),
+                                          Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -261,7 +262,7 @@ Module main.
                                           ]
                                         |)
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         let β := acc in
                                         M.write (|

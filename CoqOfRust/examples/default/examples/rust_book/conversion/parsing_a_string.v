@@ -15,9 +15,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -30,9 +35,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -45,9 +55,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :
             Ty.apply
-              (Ty.path "core::result::Result")
+              (Ty.path "*")
               []
-              [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ] :=
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply

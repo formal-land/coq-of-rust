@@ -19,7 +19,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.path "i32"),
+          Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -86,9 +86,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _x :
             Ty.apply
-              (Ty.path "alloc::boxed::Box")
+              (Ty.path "*")
               []
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -107,7 +112,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
-        let~ _ : Ty.path "i32" :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "i32",
@@ -115,8 +120,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 3; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

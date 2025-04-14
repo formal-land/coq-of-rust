@@ -22,14 +22,18 @@ Module str.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                    Ty.path "core::str::error::Utf8Error"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ]
+                ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -103,14 +107,18 @@ Module str.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                    Ty.path "core::str::error::Utf8Error"
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ]
+                ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply

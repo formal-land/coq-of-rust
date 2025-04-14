@@ -54,8 +54,8 @@ Module main.
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -157,7 +157,7 @@ Module main.
         (let arg := M.alloc (| arg |) in
         M.read (|
           let result := M.copy (| Value.DeclaredButUndefined |) in
-          let~ _ : Ty.tuple [] := InlineAssembly in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := InlineAssembly in
           result
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

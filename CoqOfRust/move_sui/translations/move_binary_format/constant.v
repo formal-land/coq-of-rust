@@ -28,15 +28,23 @@ Module constant.
     | [], [], [ sig ] =>
       ltac:(M.monadic
         (let sig := M.alloc (| sig |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::option::Option")
+            []
+            [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                  ],
                 sig,
                 [
                   fun γ =>
@@ -232,9 +240,11 @@ Module constant.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.path
-                                            "move_core_types::runtime_value::MoveTypeLayout"),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -391,7 +401,7 @@ Module constant.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.find_or_pattern (|
+                      (M.find_or_pattern (Ty.tuple []) (|
                         γ,
                         [
                           fun γ =>
@@ -488,15 +498,23 @@ Module constant.
     | [], [], [ ty ] =>
       ltac:(M.monadic
         (let ty := M.alloc (| ty |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::option::Option")
+            []
+            [ Ty.path "move_binary_format::file_format::SignatureToken" ]) (|
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                  ],
                 ty,
                 [
                   fun γ =>
@@ -675,9 +693,13 @@ Module constant.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.path
-                                            "move_binary_format::file_format::SignatureToken"),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -888,7 +910,11 @@ Module constant.
         ltac:(M.monadic
           (let ty := M.alloc (| ty |) in
           let v := M.alloc (| v |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_binary_format::file_format::Constant" ]) (|
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
@@ -899,7 +925,10 @@ Module constant.
                       ("type_",
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1003,11 +1032,15 @@ Module constant.
                       ("data",
                         M.read (|
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                              ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1144,13 +1177,24 @@ Module constant.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_core_types::runtime_value::MoveValue" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ ty : Ty.path "move_core_types::runtime_value::MoveTypeLayout" :=
+                let~ ty :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.path "move_core_types::runtime_value::MoveTypeLayout"),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply

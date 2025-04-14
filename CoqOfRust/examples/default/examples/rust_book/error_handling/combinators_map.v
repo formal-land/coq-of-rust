@@ -45,7 +45,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 self,
                 [
                   fun γ =>
@@ -290,7 +290,10 @@ Definition peel (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let food := M.alloc (| food |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Peeled" ]),
+          Ty.apply
+            (Ty.path "*")
+            []
+            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Peeled" ] ],
           food,
           [
             fun γ =>
@@ -332,8 +335,10 @@ Definition chop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let peeled := M.alloc (| peeled |) in
       M.read (|
         M.match_operator (|
-          Some
-            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ]),
+          Ty.apply
+            (Ty.path "*")
+            []
+            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ] ],
           peeled,
           [
             fun γ =>
@@ -394,10 +399,14 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.function
-                          [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
-                          (Ty.path "combinators_map::Cooked")),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
+                            (Ty.path "combinators_map::Cooked")
+                        ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -485,10 +494,14 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "combinators_map::Food" ] ]
-                                  (Ty.path "combinators_map::Peeled")),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.path "combinators_map::Food" ] ]
+                                    (Ty.path "combinators_map::Peeled")
+                                ],
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -508,10 +521,14 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.path "combinators_map::Peeled" ] ]
-                              (Ty.path "combinators_map::Chopped")),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "combinators_map::Peeled" ] ]
+                                (Ty.path "combinators_map::Chopped")
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -537,10 +554,14 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.function
-                          [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
-                          (Ty.path "combinators_map::Cooked")),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
+                            (Ty.path "combinators_map::Cooked")
+                        ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -581,7 +602,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let food := M.alloc (| food |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           food,
           [
             fun γ =>
@@ -589,7 +610,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -654,7 +675,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],
@@ -719,24 +740,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ apple :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "combinators_map::Food::Apple" [] ]
           |) in
         let~ carrot :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ]
+              ] :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "combinators_map::Food::Carrot" [] ]
           |) in
         let~ potato :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ]
+              ] :=
           M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let~ cooked_apple :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ],
@@ -763,7 +800,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let~ cooked_carrot :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ],
@@ -790,7 +831,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let~ cooked_potato :
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ] :=
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Cooked" ],
@@ -798,7 +843,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| potato |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -806,7 +851,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| cooked_apple |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -814,7 +859,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| cooked_carrot |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],

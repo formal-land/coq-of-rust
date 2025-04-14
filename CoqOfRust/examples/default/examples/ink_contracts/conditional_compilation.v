@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -399,7 +399,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -418,7 +418,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 |)
               |)
             |) in
-          let~ caller : Ty.path "conditional_compilation::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "conditional_compilation::AccountId",
@@ -447,7 +448,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -521,7 +522,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller : Ty.path "conditional_compilation::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "conditional_compilation::AccountId",
@@ -550,7 +552,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
               |)
             |) in
-          let~ block_number : Ty.path "u32" :=
+          let~ block_number : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u32",
@@ -579,7 +581,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -598,7 +600,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 |)
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -670,7 +672,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -731,7 +733,8 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ caller : Ty.path "conditional_compilation::AccountId" :=
+          let~ caller :
+              Ty.apply (Ty.path "*") [] [ Ty.path "conditional_compilation::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "conditional_compilation::AccountId",
@@ -760,7 +763,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -796,7 +799,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|

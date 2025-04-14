@@ -433,10 +433,10 @@ Module algorithms.
       ltac:(M.monadic
         (let left := M.alloc (| left |) in
         let right := M.alloc (| right |) in
-        M.catch_return (|
+        M.catch_return (Ty.path "core::cmp::Ordering") (|
           ltac:(M.monadic
             (M.read (|
-              let~ l : Ty.path "usize" :=
+              let~ l : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -466,7 +466,11 @@ Module algorithms.
                   |)
                 |) in
               let~ lhs :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -496,7 +500,11 @@ Module algorithms.
                   |)
                 |) in
               let~ rhs :
-                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ] :=
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -525,10 +533,10 @@ Module algorithms.
                     |)
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -580,11 +588,11 @@ Module algorithms.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.tuple [],
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                              (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -634,7 +642,7 @@ Module algorithms.
                                           |) in
                                         let i := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "i8",

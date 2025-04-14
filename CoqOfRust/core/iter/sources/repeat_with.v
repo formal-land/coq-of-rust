@@ -259,14 +259,14 @@ Module iter.
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
-              M.catch_return (|
+              M.catch_return R (|
                 ltac:(M.monadic
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
-                        Ty.path "never",
+                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
                         ltac:(M.monadic
-                          (let~ item : A :=
+                          (let~ item : Ty.apply (Ty.path "*") [] [ A ] :=
                             M.alloc (|
                               M.call_closure (|
                                 A,
@@ -292,13 +292,13 @@ Module iter.
                                 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.alloc (|
                               M.write (|
                                 init,
                                 M.read (|
                                   M.match_operator (|
-                                    Some Acc,
+                                    Ty.apply (Ty.path "*") [] [ Acc ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply

@@ -1328,12 +1328,12 @@ Module transaction.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (|
+            M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1344,7 +1344,7 @@ Module transaction.
                                   UnOp.not (|
                                     M.read (|
                                       M.match_operator (|
-                                        Some (Ty.path "bool"),
+                                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "alloy_primitives::signature::parity::Parity",
@@ -1432,9 +1432,9 @@ Module transaction.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

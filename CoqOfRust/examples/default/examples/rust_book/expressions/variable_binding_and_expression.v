@@ -17,9 +17,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
-        let~ _ : Ty.path "i32" := x in
-        let~ _ : Ty.path "i32" :=
+        let~ x : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 5 |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] := x in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "i32",
@@ -27,7 +28,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| x |); Value.Integer IntegerKind.I32 1 ]
             |)
           |) in
-        let~ _ : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.Integer IntegerKind.I32 15 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

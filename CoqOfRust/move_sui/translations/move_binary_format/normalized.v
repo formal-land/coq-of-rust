@@ -136,7 +136,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_binary_format::normalized::Type"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Type" ],
               self,
               [
                 fun γ =>
@@ -497,11 +497,15 @@ Module normalized.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               self,
               [
                 fun γ =>
@@ -950,7 +954,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -962,7 +966,7 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -975,7 +979,7 @@ Module normalized.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -997,7 +1001,7 @@ Module normalized.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -1063,7 +1067,7 @@ Module normalized.
                             let __arg1_2 := M.alloc (| γ2_2 |) in
                             let __arg1_3 := M.alloc (| γ2_3 |) in
                             M.match_operator (|
-                              Some (Ty.path "core::cmp::Ordering"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -1094,7 +1098,7 @@ Module normalized.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some (Ty.path "core::cmp::Ordering"),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -1128,7 +1132,10 @@ Module normalized.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.path "core::cmp::Ordering"),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -1440,7 +1447,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -1452,7 +1459,7 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -1465,7 +1472,10 @@ Module normalized.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -1531,11 +1541,15 @@ Module normalized.
                     let __arg1_2 := M.alloc (| γ2_2 |) in
                     let __arg1_3 := M.alloc (| γ2_3 |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1568,11 +1582,15 @@ Module normalized.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -1612,11 +1630,15 @@ Module normalized.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1984,43 +2006,46 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              None,
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
@@ -2077,7 +2102,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2089,7 +2114,7 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -2111,7 +2136,7 @@ Module normalized.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Some (Ty.path "bool"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -2559,18 +2584,29 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ]
+                      ],
                     M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
@@ -2799,21 +2835,30 @@ Module normalized.
                           let name := M.alloc (| γ0_2 |) in
                           let type_arguments := M.alloc (| γ0_3 |) in
                           let~ __serde_state :
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
+                              Ty.apply
+                                (Ty.path "*")
                                 []
-                                []
-                                __S
-                                "SerializeStructVariant" :=
-                            M.copy (|
-                              M.match_operator (|
-                                Some
-                                  (Ty.associated_in_trait
+                                [
+                                  Ty.associated_in_trait
                                     "serde::ser::Serializer"
                                     []
                                     []
                                     __S
-                                    "SerializeStructVariant"),
+                                    "SerializeStructVariant"
+                                ] :=
+                            M.copy (|
+                              M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStructVariant"
+                                  ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -2913,9 +2958,9 @@ Module normalized.
                                 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2992,9 +3037,9 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3071,9 +3116,9 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3147,9 +3192,9 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3614,20 +3659,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -3706,9 +3772,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3787,9 +3853,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3974,20 +4040,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4066,9 +4153,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4147,9 +4234,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4339,20 +4426,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4438,9 +4546,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4519,9 +4627,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4608,9 +4716,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4803,20 +4911,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4923,9 +5052,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5004,9 +5133,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5085,9 +5214,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5174,9 +5303,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5263,9 +5392,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5352,9 +5481,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5547,20 +5676,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -5639,9 +5789,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5720,9 +5870,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5907,20 +6057,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -5999,9 +6170,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -6080,9 +6251,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -6267,18 +6438,29 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
-                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ]
+                      ],
                     M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
@@ -8173,21 +8355,30 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           let __field1 := M.alloc (| γ0_1 |) in
                           let~ __serde_state :
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
+                              Ty.apply
+                                (Ty.path "*")
                                 []
-                                []
-                                __S
-                                "SerializeTupleVariant" :=
-                            M.copy (|
-                              M.match_operator (|
-                                Some
-                                  (Ty.associated_in_trait
+                                [
+                                  Ty.associated_in_trait
                                     "serde::ser::Serializer"
                                     []
                                     []
                                     __S
-                                    "SerializeTupleVariant"),
+                                    "SerializeTupleVariant"
+                                ] :=
+                            M.copy (|
+                              M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeTupleVariant"
+                                  ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -8273,9 +8464,9 @@ Module normalized.
                                 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8351,9 +8542,9 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8652,21 +8843,30 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           let __field1 := M.alloc (| γ0_1 |) in
                           let~ __serde_state :
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
+                              Ty.apply
+                                (Ty.path "*")
                                 []
-                                []
-                                __S
-                                "SerializeTupleVariant" :=
-                            M.copy (|
-                              M.match_operator (|
-                                Some
-                                  (Ty.associated_in_trait
+                                [
+                                  Ty.associated_in_trait
                                     "serde::ser::Serializer"
                                     []
                                     []
                                     __S
-                                    "SerializeTupleVariant"),
+                                    "SerializeTupleVariant"
+                                ] :=
+                            M.copy (|
+                              M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeTupleVariant"
+                                  ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -8752,9 +8952,9 @@ Module normalized.
                                 ]
                               |)
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8830,9 +9030,9 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -9684,20 +9884,41 @@ Module normalized.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
-            M.catch_return (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ]) (|
               ltac:(M.monadic
                 (M.read (|
                   let~ __serde_state :
-                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
-                      M.match_operator (|
-                        Some
-                          (Ty.associated_in_trait
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.associated_in_trait
                             "serde::ser::Serializer"
                             []
                             []
                             __S
-                            "SerializeStruct"),
+                            "SerializeStruct"
+                        ] :=
+                    M.copy (|
+                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -9820,9 +10041,9 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -9901,9 +10122,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -9982,9 +10203,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10063,9 +10284,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10152,9 +10373,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10241,9 +10462,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10331,9 +10552,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10421,9 +10642,9 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10792,13 +11013,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -10929,7 +11150,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -11049,7 +11270,10 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -11359,13 +11583,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -11504,7 +11728,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -11627,7 +11851,10 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -12015,19 +12242,19 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -12221,7 +12448,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -12269,7 +12496,7 @@ Module normalized.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -12407,7 +12634,10 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -12461,11 +12691,15 @@ Module normalized.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -12905,13 +13139,18 @@ Module normalized.
           M.read (|
             let~ names :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 6 ]
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
                   ] :=
               M.alloc (|
                 M.borrow (|
@@ -12942,13 +13181,19 @@ Module normalized.
               |) in
             let~ values :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "slice")
+                      (Ty.path "&")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]
                   ] :=
               M.alloc (|
                 (* Unsize *)
@@ -13109,7 +13354,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -13157,7 +13402,7 @@ Module normalized.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -13205,7 +13450,7 @@ Module normalized.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.path "core::cmp::Ordering"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -13260,7 +13505,7 @@ Module normalized.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some (Ty.path "core::cmp::Ordering"),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -13318,7 +13563,10 @@ Module normalized.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.path "core::cmp::Ordering"),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -13480,7 +13728,10 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -13534,11 +13785,15 @@ Module normalized.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -13595,11 +13850,15 @@ Module normalized.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13671,11 +13930,15 @@ Module normalized.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -13750,11 +14013,15 @@ Module normalized.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -13949,37 +14216,37 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
@@ -14468,7 +14735,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -14588,7 +14855,10 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -14720,13 +14990,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -15015,7 +15285,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -15135,7 +15405,10 @@ Module normalized.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -15267,13 +15540,13 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -16021,7 +16294,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_binary_format::normalized::Bytecode"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Bytecode" ],
               self,
               [
                 fun γ =>
@@ -17852,11 +18125,15 @@ Module normalized.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               self,
               [
                 fun γ =>
@@ -20248,7 +20525,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -20260,7 +20537,7 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -20273,7 +20550,7 @@ Module normalized.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -20295,7 +20572,7 @@ Module normalized.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.path "core::cmp::Ordering"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -21351,7 +21628,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.match_operator (|
-                              Some (Ty.path "core::cmp::Ordering"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -21666,7 +21943,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.match_operator (|
-                              Some (Ty.path "core::cmp::Ordering"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -22427,7 +22704,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -22439,7 +22716,7 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -22452,7 +22729,10 @@ Module normalized.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -22488,11 +22768,15 @@ Module normalized.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -23674,11 +23958,15 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -24020,11 +24308,15 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -24907,151 +25199,258 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              None,
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      None,
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ],
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (M.match_operator (|
-                                                                              None,
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.tuple [] ],
                                                                               Value.DeclaredButUndefined,
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
-                                                                                      None,
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            []
+                                                                                        ],
                                                                                       Value.DeclaredButUndefined,
                                                                                       [
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (M.match_operator (|
-                                                                                              None,
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.tuple
+                                                                                                    []
+                                                                                                ],
                                                                                               Value.DeclaredButUndefined,
                                                                                               [
                                                                                                 fun
                                                                                                     γ =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
-                                                                                                      None,
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "*")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.tuple
+                                                                                                            []
+                                                                                                        ],
                                                                                                       Value.DeclaredButUndefined,
                                                                                                       [
                                                                                                         fun
                                                                                                             γ =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              None,
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "*")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.tuple
+                                                                                                                    []
+                                                                                                                ],
                                                                                                               Value.DeclaredButUndefined,
                                                                                                               [
                                                                                                                 fun
                                                                                                                     γ =>
                                                                                                                   ltac:(M.monadic
                                                                                                                     (M.match_operator (|
-                                                                                                                      None,
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "*")
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.tuple
+                                                                                                                            []
+                                                                                                                        ],
                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                       [
                                                                                                                         fun
                                                                                                                             γ =>
                                                                                                                           ltac:(M.monadic
                                                                                                                             (M.match_operator (|
-                                                                                                                              None,
+                                                                                                                              Ty.apply
+                                                                                                                                (Ty.path
+                                                                                                                                  "*")
+                                                                                                                                []
+                                                                                                                                [
+                                                                                                                                  Ty.tuple
+                                                                                                                                    []
+                                                                                                                                ],
                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                               [
                                                                                                                                 fun
                                                                                                                                     γ =>
                                                                                                                                   ltac:(M.monadic
                                                                                                                                     (M.match_operator (|
-                                                                                                                                      None,
+                                                                                                                                      Ty.apply
+                                                                                                                                        (Ty.path
+                                                                                                                                          "*")
+                                                                                                                                        []
+                                                                                                                                        [
+                                                                                                                                          Ty.tuple
+                                                                                                                                            []
+                                                                                                                                        ],
                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                       [
                                                                                                                                         fun
                                                                                                                                             γ =>
                                                                                                                                           ltac:(M.monadic
                                                                                                                                             (M.match_operator (|
-                                                                                                                                              None,
+                                                                                                                                              Ty.apply
+                                                                                                                                                (Ty.path
+                                                                                                                                                  "*")
+                                                                                                                                                []
+                                                                                                                                                [
+                                                                                                                                                  Ty.tuple
+                                                                                                                                                    []
+                                                                                                                                                ],
                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                               [
                                                                                                                                                 fun
                                                                                                                                                     γ =>
                                                                                                                                                   ltac:(M.monadic
                                                                                                                                                     (M.match_operator (|
-                                                                                                                                                      None,
+                                                                                                                                                      Ty.apply
+                                                                                                                                                        (Ty.path
+                                                                                                                                                          "*")
+                                                                                                                                                        []
+                                                                                                                                                        [
+                                                                                                                                                          Ty.tuple
+                                                                                                                                                            []
+                                                                                                                                                        ],
                                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                                       [
                                                                                                                                                         fun
                                                                                                                                                             γ =>
                                                                                                                                                           ltac:(M.monadic
                                                                                                                                                             (M.match_operator (|
-                                                                                                                                                              None,
+                                                                                                                                                              Ty.apply
+                                                                                                                                                                (Ty.path
+                                                                                                                                                                  "*")
+                                                                                                                                                                []
+                                                                                                                                                                [
+                                                                                                                                                                  Ty.tuple
+                                                                                                                                                                    []
+                                                                                                                                                                ],
                                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                                               [
                                                                                                                                                                 fun
                                                                                                                                                                     γ =>
                                                                                                                                                                   ltac:(M.monadic
                                                                                                                                                                     (M.match_operator (|
-                                                                                                                                                                      None,
+                                                                                                                                                                      Ty.apply
+                                                                                                                                                                        (Ty.path
+                                                                                                                                                                          "*")
+                                                                                                                                                                        []
+                                                                                                                                                                        [
+                                                                                                                                                                          Ty.tuple
+                                                                                                                                                                            []
+                                                                                                                                                                        ],
                                                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                                                       [
                                                                                                                                                                         fun
                                                                                                                                                                             γ =>
                                                                                                                                                                           ltac:(M.monadic
                                                                                                                                                                             (M.match_operator (|
-                                                                                                                                                                              None,
+                                                                                                                                                                              Ty.apply
+                                                                                                                                                                                (Ty.path
+                                                                                                                                                                                  "*")
+                                                                                                                                                                                []
+                                                                                                                                                                                [
+                                                                                                                                                                                  Ty.tuple
+                                                                                                                                                                                    []
+                                                                                                                                                                                ],
                                                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                                                               [
                                                                                                                                                                                 fun
                                                                                                                                                                                     γ =>
                                                                                                                                                                                   ltac:(M.monadic
                                                                                                                                                                                     (M.match_operator (|
-                                                                                                                                                                                      None,
+                                                                                                                                                                                      Ty.apply
+                                                                                                                                                                                        (Ty.path
+                                                                                                                                                                                          "*")
+                                                                                                                                                                                        []
+                                                                                                                                                                                        [
+                                                                                                                                                                                          Ty.tuple
+                                                                                                                                                                                            []
+                                                                                                                                                                                        ],
                                                                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                                                                       [
                                                                                                                                                                                         fun
                                                                                                                                                                                             γ =>
                                                                                                                                                                                           ltac:(M.monadic
                                                                                                                                                                                             (M.match_operator (|
-                                                                                                                                                                                              None,
+                                                                                                                                                                                              Ty.apply
+                                                                                                                                                                                                (Ty.path
+                                                                                                                                                                                                  "*")
+                                                                                                                                                                                                []
+                                                                                                                                                                                                [
+                                                                                                                                                                                                  Ty.tuple
+                                                                                                                                                                                                    []
+                                                                                                                                                                                                ],
                                                                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                                                                               [
                                                                                                                                                                                                 fun
@@ -25144,7 +25543,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -25156,7 +25555,7 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -25178,7 +25577,7 @@ Module normalized.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      Some (Ty.path "bool"),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -27845,13 +28244,18 @@ Module normalized.
           M.read (|
             let~ names :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 8 ]
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 8 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
                   ] :=
               M.alloc (|
                 M.borrow (|
@@ -27881,13 +28285,19 @@ Module normalized.
               |) in
             let~ values :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
                   [
                     Ty.apply
-                      (Ty.path "slice")
+                      (Ty.path "&")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]
                   ] :=
               M.alloc (|
                 (* Unsize *)
@@ -28081,49 +28491,55 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              None,
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      None,
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              None,
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      None,
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              None,
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      None,
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ],
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
@@ -28560,11 +28976,16 @@ Module normalized.
           M.read (|
             let~ friends :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_core_types::language_storage::ModuleId";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_core_types::language_storage::ModuleId";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -28586,12 +29007,17 @@ Module normalized.
               |) in
             let~ structs :
                 Ty.apply
-                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_core_types::identifier::Identifier";
-                    Ty.path "move_binary_format::normalized::Struct";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                      []
+                      [
+                        Ty.path "move_core_types::identifier::Identifier";
+                        Ty.path "move_binary_format::normalized::Struct";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -28754,25 +29180,29 @@ Module normalized.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinition"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "move_core_types::identifier::Identifier";
-                                            Ty.path "move_binary_format::normalized::Struct"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinition"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.tuple
+                                            [
+                                              Ty.path "move_core_types::identifier::Identifier";
+                                              Ty.path "move_binary_format::normalized::Struct"
+                                            ])
+                                      ],
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -28812,11 +29242,16 @@ Module normalized.
               |) in
             let~ dependencies :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_core_types::language_storage::ModuleId";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_core_types::language_storage::ModuleId";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -28838,11 +29273,16 @@ Module normalized.
               |) in
             let~ constants :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_binary_format::normalized::Constant";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::normalized::Constant";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -28984,21 +29424,25 @@ Module normalized.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::Constant"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.path "move_binary_format::normalized::Constant")),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Constant"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path "move_binary_format::normalized::Constant")
+                                      ],
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -29034,12 +29478,17 @@ Module normalized.
               |) in
             let~ functions :
                 Ty.apply
-                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_core_types::identifier::Identifier";
-                    Ty.path "move_binary_format::normalized::Function";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                      []
+                      [
+                        Ty.path "move_core_types::identifier::Identifier";
+                        Ty.path "move_binary_format::normalized::Function";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -29204,25 +29653,29 @@ Module normalized.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinition"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "move_core_types::identifier::Identifier";
-                                            Ty.path "move_binary_format::normalized::Function"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.tuple
+                                            [
+                                              Ty.path "move_core_types::identifier::Identifier";
+                                              Ty.path "move_binary_format::normalized::Function"
+                                            ])
+                                      ],
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -29453,7 +29906,7 @@ Module normalized.
           let s := M.alloc (| s |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_binary_format::normalized::Type"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Type" ],
               s,
               [
                 fun γ =>
@@ -29468,9 +29921,14 @@ Module normalized.
                     let shi := M.alloc (| γ1_0 |) in
                     let~ s_handle :
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -29489,9 +29947,9 @@ Module normalized.
                           ]
                         |)
                       |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.tuple []),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -29572,9 +30030,14 @@ Module normalized.
                       |) in
                     let~ m_handle :
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "*")
                           []
-                          [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -29756,7 +30219,7 @@ Module normalized.
                       |) in
                     let struct_inst := M.alloc (| γ1_0 |) in
                     M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Type" ],
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -29773,9 +30236,14 @@ Module normalized.
                             let type_actuals := M.alloc (| γ1_1 |) in
                             let~ s_handle :
                                 Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "*")
                                   []
-                                  [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                                  ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -29796,9 +30264,14 @@ Module normalized.
                               |) in
                             let~ m_handle :
                                 Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "*")
                                   []
-                                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                                  ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -30135,22 +30608,26 @@ Module normalized.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Some
-                                                          (Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::SignatureToken"
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                            (Ty.path
-                                                              "move_binary_format::normalized::Type")),
+                                                        Ty.apply
+                                                          (Ty.path "*")
+                                                          []
+                                                          [
+                                                            Ty.function
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken"
+                                                                      ]
+                                                                  ]
+                                                              ]
+                                                              (Ty.path
+                                                                "move_binary_format::normalized::Type")
+                                                          ],
                                                         M.alloc (| α0 |),
                                                         [
                                                           fun γ =>
@@ -30502,7 +30979,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "bool"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               self,
               [
                 fun γ =>
@@ -30673,18 +31150,23 @@ Module normalized.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "move_binary_format::normalized::Type" ]
-                                              ]
-                                          ]
-                                          (Ty.path "bool")),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.path "move_binary_format::normalized::Type"
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -30714,7 +31196,22 @@ Module normalized.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern
+                      (Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                        ]) (|
                       γ,
                       [
                         fun γ =>
@@ -30836,14 +31333,21 @@ Module normalized.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_core_types::language_storage::TypeTag" ]) (|
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
                 [
                   M.read (|
                     M.match_operator (|
-                      Some (Ty.path "move_core_types::language_storage::TypeTag"),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_core_types::language_storage::TypeTag" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -30865,12 +31369,15 @@ Module normalized.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.match_operator (|
-                              Some (Ty.path "move_core_types::language_storage::TypeTag"),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_core_types::language_storage::TypeTag" ],
                               self,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.find_or_pattern (|
+                                    (M.find_or_pattern (Ty.tuple []) (|
                                       γ,
                                       [
                                         fun γ =>
@@ -31309,17 +31816,21 @@ Module normalized.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Some
-                                                                          (Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::normalized::Type"
-                                                                                ]
-                                                                            ]
-                                                                            (Ty.path
-                                                                              "move_core_types::language_storage::TypeTag")),
+                                                                        Ty.apply
+                                                                          (Ty.path "*")
+                                                                          []
+                                                                          [
+                                                                            Ty.function
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::normalized::Type"
+                                                                                  ]
+                                                                              ]
+                                                                              (Ty.path
+                                                                                "move_core_types::language_storage::TypeTag")
+                                                                          ],
                                                                         M.alloc (| α0 |),
                                                                         [
                                                                           fun γ =>
@@ -31442,17 +31953,28 @@ Module normalized.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_core_types::language_storage::StructTag" ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "move_core_types::language_storage::StructTag" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_core_types::language_storage::StructTag" ]
+                    ],
                   M.match_operator (|
-                    Some (Ty.path "move_core_types::language_storage::TypeTag"),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_core_types::language_storage::TypeTag" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -31615,12 +32137,12 @@ Module normalized.
           let type_args := M.alloc (| type_args |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_binary_format::normalized::Type"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Type" ],
               self,
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.find_or_pattern (|
+                    (M.find_or_pattern (Ty.tuple []) (|
                       γ,
                       [
                         fun γ =>
@@ -32122,22 +32644,26 @@ Module normalized.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Some
-                                                  (Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::normalized::Type"
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path
-                                                      "move_binary_format::normalized::Type")),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::normalized::Type"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path
+                                                        "move_binary_format::normalized::Type")
+                                                  ],
                                                 M.alloc (| α0 |),
                                                 [
                                                   fun γ =>
@@ -32405,9 +32931,14 @@ Module normalized.
           M.read (|
             let~ handle :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -32434,20 +32965,31 @@ Module normalized.
               |) in
             let~ fields :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "move_binary_format::normalized::Field"; Ty.path "alloc::alloc::Global"
-                  ] :=
-              M.copy (|
-                M.match_operator (|
-                  Some
-                    (Ty.apply
+                  [
+                    Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       []
                       [
                         Ty.path "move_binary_format::normalized::Field";
                         Ty.path "alloc::alloc::Global"
-                      ]),
+                      ]
+                  ] :=
+              M.copy (|
+                M.match_operator (|
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::normalized::Field";
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ],
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -32671,22 +33213,26 @@ Module normalized.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Some
-                                                (Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::FieldDefinition"
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path
-                                                    "move_binary_format::normalized::Field")),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.function
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldDefinition"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                    (Ty.path
+                                                      "move_binary_format::normalized::Field")
+                                                ],
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -32725,7 +33271,8 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ name : Ty.path "move_core_types::identifier::Identifier" :=
+            let~ name :
+                Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::identifier::Identifier" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "move_core_types::identifier::Identifier",
@@ -32769,7 +33316,8 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ s : Ty.path "move_binary_format::normalized::Struct" :=
+            let~ s :
+                Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Struct" ] :=
               M.alloc (|
                 Value.StructRecord
                   "move_binary_format::normalized::Struct"
@@ -33012,24 +33560,28 @@ Module normalized.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::StructTypeParameter"
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::AbilitySet" ])),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructTypeParameter"
+                                        ]
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::AbilitySet" ])
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -33106,9 +33658,14 @@ Module normalized.
           M.read (|
             let~ fhandle :
                 Ty.apply
-                  (Ty.path "&")
+                  (Ty.path "*")
                   []
-                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -33133,7 +33690,8 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ name : Ty.path "move_core_types::identifier::Identifier" :=
+            let~ name :
+                Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::identifier::Identifier" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "move_core_types::identifier::Identifier",
@@ -33179,11 +33737,16 @@ Module normalized.
               |) in
             let~ code :
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "*")
                   []
                   [
-                    Ty.path "move_binary_format::normalized::Bytecode";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::normalized::Bytecode";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ] :=
               M.alloc (|
                 M.call_closure (|
@@ -33302,27 +33865,31 @@ Module normalized.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::CodeUnit"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.function
                                           [
-                                            Ty.path "move_binary_format::normalized::Bytecode";
-                                            Ty.path "alloc::alloc::Global"
-                                          ])),
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CodeUnit"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Bytecode";
+                                              Ty.path "alloc::alloc::Global"
+                                            ])
+                                      ],
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -33518,22 +34085,26 @@ Module normalized.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Some
-                                                                (Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::Bytecode"
-                                                                          ]
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::normalized::Bytecode")),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.function
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::Bytecode"
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                    (Ty.path
+                                                                      "move_binary_format::normalized::Bytecode")
+                                                                ],
                                                               M.alloc (| α0 |),
                                                               [
                                                                 fun γ =>
@@ -33583,7 +34154,8 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ f : Ty.path "move_binary_format::normalized::Function" :=
+            let~ f :
+                Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Function" ] :=
               M.alloc (|
                 Value.StructRecord
                   "move_binary_format::normalized::Function"
@@ -33838,21 +34410,25 @@ Module normalized.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "move_binary_format::normalized::Type")
+                                            ],
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -34084,21 +34660,25 @@ Module normalized.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "move_binary_format::normalized::Type")
+                                            ],
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -34159,13 +34739,17 @@ Module normalized.
         ltac:(M.monadic
           (let m := M.alloc (| m |) in
           let func_name := M.alloc (| func_name |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_binary_format::normalized::Function" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -34209,11 +34793,11 @@ Module normalized.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -34272,7 +34856,7 @@ Module normalized.
                                             |) in
                                           let func_defs := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -34492,7 +35076,7 @@ Module normalized.
           (let ty := M.alloc (| ty |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_binary_format::normalized::Type"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Type" ],
               ty,
               [
                 fun γ =>
@@ -34795,17 +35379,21 @@ Module normalized.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Some
-                                                  (Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::language_storage::TypeTag"
-                                                        ]
-                                                    ]
-                                                    (Ty.path
-                                                      "move_binary_format::normalized::Type")),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::language_storage::TypeTag"
+                                                          ]
+                                                      ]
+                                                      (Ty.path
+                                                        "move_binary_format::normalized::Type")
+                                                  ],
                                                 M.alloc (| α0 |),
                                                 [
                                                   fun γ =>
@@ -35272,7 +35860,7 @@ Module normalized.
           let bytecode := M.alloc (| bytecode |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "move_binary_format::normalized::Bytecode"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::normalized::Bytecode" ],
               bytecode,
               [
                 fun γ =>
@@ -35858,7 +36446,10 @@ Module normalized.
                       |) in
                     let fhi_idx := M.alloc (| γ1_0 |) in
                     M.match_operator (|
-                      None,
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::normalized::Bytecode" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -35897,9 +36488,14 @@ Module normalized.
                             let type_parameters := M.alloc (| γ1_1 |) in
                             let~ type_params :
                                 Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "*")
                                   []
-                                  [ Ty.path "move_binary_format::file_format::Signature" ] :=
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ]
+                                  ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -36130,22 +36726,26 @@ Module normalized.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Some
-                                                            (Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::SignatureToken"
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path
-                                                                "move_binary_format::normalized::Type")),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.function
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::SignatureToken"
+                                                                        ]
+                                                                    ]
+                                                                ]
+                                                                (Ty.path
+                                                                  "move_binary_format::normalized::Type")
+                                                            ],
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
@@ -37274,15 +37874,23 @@ Module normalized.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    ],
                   self,
                   [
                     fun γ =>
@@ -37316,9 +37924,9 @@ Module normalized.
                         let module := M.alloc (| γ1_1 |) in
                         let name := M.alloc (| γ1_2 |) in
                         let type_arguments := M.alloc (| γ1_3 |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -37560,9 +38168,9 @@ Module normalized.
                                   val))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -37640,9 +38248,9 @@ Module normalized.
                                       0
                                     |) in
                                   let first_ty := M.copy (| γ0_0 |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -37772,9 +38380,9 @@ Module normalized.
                                             val))
                                       ]
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -37949,10 +38557,10 @@ Module normalized.
                                             val))
                                       ]
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.use
                                       (M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -38087,11 +38695,12 @@ Module normalized.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
-                                                Ty.tuple [],
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 ltac:(M.monadic
-                                                  (let~ _ : Ty.tuple [] :=
+                                                  (let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -38163,9 +38772,16 @@ Module normalized.
                                                                 0
                                                               |) in
                                                             let ty := M.copy (| γ0_0 |) in
-                                                            let~ _ : Ty.tuple [] :=
+                                                            let~ _ :
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ] :=
                                                               M.match_operator (|
-                                                                Some (Ty.tuple []),
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [ Ty.tuple [] ],
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -38394,9 +39010,9 @@ Module normalized.
                                               |)))
                                         ]
                                       |)) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -39318,7 +39934,22 @@ Module normalized.
         let si_idx := M.alloc (| si_idx |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.tuple
+                  [
+                    Ty.path "move_core_types::identifier::Identifier";
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::normalized::Type";
+                        Ty.path "alloc::alloc::Global"
+                      ]
+                  ]
+              ],
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -39356,7 +39987,22 @@ Module normalized.
                   let def := M.alloc (| γ1_0 |) in
                   let type_parameters := M.alloc (| γ1_1 |) in
                   M.match_operator (|
-                    None,
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "move_core_types::identifier::Identifier";
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ]
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -39404,11 +40050,16 @@ Module normalized.
                           let name := M.copy (| γ0_0 |) in
                           let~ types :
                               Ty.apply
-                                (Ty.path "alloc::vec::Vec")
+                                (Ty.path "*")
                                 []
                                 [
-                                  Ty.path "move_binary_format::normalized::Type";
-                                  Ty.path "alloc::alloc::Global"
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::normalized::Type";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
                                 ] :=
                             M.alloc (|
                               M.call_closure (|
@@ -39620,22 +40271,26 @@ Module normalized.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Some
-                                                    (Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::SignatureToken"
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.path
-                                                        "move_binary_format::normalized::Type")),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                        (Ty.path
+                                                          "move_binary_format::normalized::Type")
+                                                    ],
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -39709,7 +40364,22 @@ Module normalized.
         let idx := M.alloc (| idx |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.tuple
+                  [
+                    Ty.path "move_binary_format::normalized::FieldRef";
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::normalized::Type";
+                        Ty.path "alloc::alloc::Global"
+                      ]
+                  ]
+              ],
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -39746,7 +40416,11 @@ Module normalized.
                     |) in
                   let handle := M.alloc (| γ1_0 |) in
                   let type_parameters := M.alloc (| γ1_1 |) in
-                  let~ field_ref : Ty.path "move_binary_format::normalized::FieldRef" :=
+                  let~ field_ref :
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "move_binary_format::normalized::FieldRef" ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "move_binary_format::normalized::FieldRef",
@@ -39784,11 +40458,16 @@ Module normalized.
                     |) in
                   let~ types :
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "move_binary_format::normalized::Type";
-                          Ty.path "alloc::alloc::Global"
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::normalized::Type";
+                              Ty.path "alloc::alloc::Global"
+                            ]
                         ] :=
                     M.alloc (|
                       M.call_closure (|
@@ -39985,21 +40664,25 @@ Module normalized.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Some
-                                            (Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type")),
+                                          Ty.apply
+                                            (Ty.path "*")
+                                            []
+                                            [
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "move_binary_format::normalized::Type")
+                                            ],
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>

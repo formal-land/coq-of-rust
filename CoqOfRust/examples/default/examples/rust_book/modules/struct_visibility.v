@@ -79,16 +79,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ open_box :
             Ty.apply
-              (Ty.path "struct_visibility::my::OpenBox")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "struct_visibility::my::OpenBox")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
               [ ("contents", mk_str (| "public information" |)) ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -161,9 +166,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ _closed_box :
             Ty.apply
-              (Ty.path "struct_visibility::my::ClosedBox")
+              (Ty.path "*")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              [
+                Ty.apply
+                  (Ty.path "struct_visibility::my::ClosedBox")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply

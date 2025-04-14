@@ -146,7 +146,8 @@ Module interpreter.
           ltac:(M.monadic
             (let base := M.alloc (| base |) in
             M.read (|
-              let~ instruction_pointer : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ instruction_pointer :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
@@ -251,7 +252,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
@@ -297,7 +298,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
@@ -1020,34 +1021,39 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::sync::Arc")
+                                              []
+                                              [
+                                                Ty.path "revm_bytecode::eof::Eof";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::sync::Arc")
-                                            []
-                                            [
-                                              Ty.path "revm_bytecode::eof::Eof";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
+                                        [ Ty.path "revm_bytecode::eof::types_section::TypesSection"
                                         ]
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
-                                  ])),
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1259,26 +1265,30 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::sync::Arc")
-                                            []
-                                            [
-                                              Ty.path "revm_bytecode::eof::Eof";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::sync::Arc")
+                                              []
+                                              [
+                                                Ty.path "revm_bytecode::eof::Eof";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1864,34 +1874,38 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [
-                                  Ty.tuple
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::sync::Arc")
+                                              []
+                                              [
+                                                Ty.path "revm_bytecode::eof::Eof";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::sync::Arc")
-                                            []
-                                            [
-                                              Ty.path "revm_bytecode::eof::Eof";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                  ])),
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -2027,9 +2041,9 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2065,9 +2079,9 @@ Module interpreter.
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -2152,7 +2166,7 @@ Module interpreter.
                                         (M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let~ _ : Ty.tuple [] :=
+                                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.alloc (|
                                                   M.never_to_any (|
                                                     M.call_closure (|
@@ -2217,9 +2231,9 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2255,9 +2269,9 @@ Module interpreter.
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -2342,7 +2356,7 @@ Module interpreter.
                                         (M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let~ _ : Ty.tuple [] :=
+                                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.alloc (|
                                                   M.never_to_any (|
                                                     M.call_closure (|

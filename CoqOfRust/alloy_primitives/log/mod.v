@@ -17,7 +17,8 @@ Module log.
       ltac:(M.monadic
         (let logs := M.alloc (| logs |) in
         M.read (|
-          let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
+          let~ bloom :
+              Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::bloom::Bloom" ] :=
             M.copy (|
               get_associated_constant (|
                 Ty.path "alloy_primitives::bits::bloom::Bloom",
@@ -25,10 +26,10 @@ Module log.
                 Ty.path "alloy_primitives::bits::bloom::Bloom"
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.use
               (M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.associated_in_trait
@@ -54,11 +55,11 @@ Module log.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
-                          (let~ _ : Ty.tuple [] :=
+                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -112,7 +113,7 @@ Module log.
                                         0
                                       |) in
                                     let log := M.copy (| γ0_0 |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.tuple [],
@@ -546,13 +547,13 @@ Module log.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -583,7 +584,7 @@ Module log.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -704,7 +705,7 @@ Module log.
           (let topics := M.alloc (| topics |) in
           let data := M.alloc (| data |) in
           M.read (|
-            let~ this : Ty.path "alloy_primitives::log::LogData" :=
+            let~ this : Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::log::LogData" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "alloy_primitives::log::LogData",
@@ -1060,7 +1061,7 @@ Module log.
           (let self := M.alloc (| self |) in
           let topics := M.alloc (| topics |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1094,7 +1095,7 @@ Module log.
           (let self := M.alloc (| self |) in
           let topics := M.alloc (| topics |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1116,7 +1117,7 @@ Module log.
                   [ M.borrow (| Pointer.Kind.MutRef, topics |); Value.Integer IntegerKind.Usize 4 ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1551,13 +1552,13 @@ Module log.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1590,7 +1591,7 @@ Module log.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1816,13 +1817,17 @@ Module log.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.function
-                              [ Ty.tuple [ Ty.path "alloy_primitives::log::LogData" ] ]
-                              (Ty.apply
-                                (Ty.path "alloy_primitives::log::Log")
-                                []
-                                [ Ty.path "alloy_primitives::log::LogData" ])),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "alloy_primitives::log::LogData" ] ]
+                                (Ty.apply
+                                  (Ty.path "alloy_primitives::log::Log")
+                                  []
+                                  [ Ty.path "alloy_primitives::log::LogData" ])
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -1972,7 +1977,11 @@ Module log.
           (let address := M.alloc (| address |) in
           let data := M.alloc (| data |) in
           M.read (|
-            let~ this : Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ],

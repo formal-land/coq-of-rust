@@ -2,6 +2,7 @@ use crate::env::emit_warning_with_note;
 use crate::env::Env;
 use crate::expression::*;
 use crate::path::*;
+use crate::ty::*;
 use serde::Serialize;
 use std::rc::Rc;
 use std::vec;
@@ -12,6 +13,7 @@ pub(crate) enum Pattern {
     Wild,
     Binding {
         name: String,
+        ty: Rc<CoqType>,
         is_with_ref: bool,
         pattern: Option<Rc<Pattern>>,
     },
@@ -38,6 +40,9 @@ impl Pattern {
             rustc_hir::PatKind::Binding(binding_annotation, _, ident, sub_pattern) => {
                 Rc::new(Pattern::Binding {
                     name: to_valid_coq_name(IsValue::Yes, ident.as_str()),
+                    ty: CoqType::path(&[
+                        "Type for variables in patterns in function parameters is not handled",
+                    ]),
                     is_with_ref: matches!(
                         binding_annotation,
                         rustc_hir::BindingMode(rustc_hir::ByRef::Yes(_), _)
@@ -101,15 +106,16 @@ impl Pattern {
 
     /// We return a vector, and we know that each variable of this vector is unique
     /// as we can only bound a variable once in a pattern.
-    pub(crate) fn get_free_vars(&self) -> Vec<String> {
+    pub(crate) fn get_free_vars(&self) -> Vec<(String, Rc<CoqType>)> {
         match self {
             Pattern::Wild => vec![],
             Pattern::Binding {
                 name,
+                ty,
                 is_with_ref: _,
                 pattern,
             } => {
-                let mut free_vars = vec![name.clone()];
+                let mut free_vars = vec![(name.clone(), ty.clone())];
 
                 if let Some(pattern) = pattern {
                     free_vars.extend(pattern.get_free_vars());

@@ -32,7 +32,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ path : Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] :=
+        let~ path :
+            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
@@ -45,7 +46,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "." |) |) |) ]
             |)
           |) in
-        let~ _display : Ty.path "std::path::Display" :=
+        let~ _display : Ty.apply (Ty.path "*") [] [ Ty.path "std::path::Display" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::path::Display",
@@ -53,7 +54,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| path |) |) |) ]
             |)
           |) in
-        let~ new_path : Ty.path "std::path::PathBuf" :=
+        let~ new_path : Ty.apply (Ty.path "*") [] [ Ty.path "std::path::PathBuf" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::path::PathBuf",
@@ -105,7 +106,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -118,7 +119,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, new_path |); mk_str (| "c" |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -131,7 +132,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, new_path |); mk_str (| "myfile.tar.gz" |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -145,7 +146,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -197,7 +198,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let s := M.copy (| γ0_0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple [],

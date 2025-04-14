@@ -24,7 +24,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ output : Ty.path "std::process::Output" :=
+        let~ output : Ty.apply (Ty.path "*") [] [ Ty.path "std::process::Output" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "std::process::Output",
@@ -90,10 +90,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                (Ty.path "std::process::Output")),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                  (Ty.path "std::process::Output")
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -171,7 +175,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.match_operator (|
-          Some (Ty.tuple []),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -200,7 +204,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ s : Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] :=
+                let~ s :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
@@ -252,8 +260,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -324,7 +332,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ s : Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] :=
+                (let~ s :
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
@@ -376,8 +388,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],

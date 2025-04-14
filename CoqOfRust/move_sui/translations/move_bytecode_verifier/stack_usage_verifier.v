@@ -58,11 +58,19 @@ Module stack_usage_verifier.
           let module := M.alloc (| module |) in
           let function_context := M.alloc (| function_context |) in
           let _meter := M.alloc (| _meter |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ verifier :
-                    Ty.path "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier" :=
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier"
+                      ] :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier"
@@ -138,10 +146,10 @@ Module stack_usage_verifier.
                           |))
                       ]
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -213,11 +221,11 @@ Module stack_usage_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -265,7 +273,7 @@ Module stack_usage_verifier.
                                             |) in
                                           let block_id := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -515,20 +523,29 @@ Module stack_usage_verifier.
           let config := M.alloc (| config |) in
           let block_id := M.alloc (| block_id |) in
           let cfg := M.alloc (| cfg |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.read (|
                 let~ code :
                     Ty.apply
-                      (Ty.path "&")
+                      (Ty.path "*")
                       []
                       [
                         Ty.apply
-                          (Ty.path "alloc::vec::Vec")
+                          (Ty.path "&")
                           []
                           [
-                            Ty.path "move_binary_format::file_format::Bytecode";
-                            Ty.path "alloc::alloc::Global"
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::Bytecode";
+                                Ty.path "alloc::alloc::Global"
+                              ]
                           ]
                       ] :=
                   M.alloc (|
@@ -549,9 +566,9 @@ Module stack_usage_verifier.
                       |)
                     |)
                   |) in
-                let~ stack_size_increment : Ty.path "u64" :=
+                let~ stack_size_increment : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-                let~ block_start : Ty.path "u16" :=
+                let~ block_start : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u16",
@@ -572,12 +589,12 @@ Module stack_usage_verifier.
                       ]
                     |)
                   |) in
-                let~ overall_push : Ty.path "u64" :=
+                let~ overall_push : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -643,11 +660,11 @@ Module stack_usage_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
-                              Ty.tuple [],
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -695,9 +712,12 @@ Module stack_usage_verifier.
                                             |) in
                                           let i := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            None,
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.match_operator (|
-                                              Some (Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -880,9 +900,10 @@ Module stack_usage_verifier.
                                                     M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let num_pops := M.copy (| γ0_0 |) in
                                                   let num_pushes := M.copy (| γ0_1 |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -924,9 +945,10 @@ Module stack_usage_verifier.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -946,7 +968,10 @@ Module stack_usage_verifier.
                                                             let max_push_size :=
                                                               M.copy (| γ0_0 |) in
                                                             M.match_operator (|
-                                                              Some (Ty.tuple []),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -1049,9 +1074,10 @@ Module stack_usage_verifier.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1143,9 +1169,10 @@ Module stack_usage_verifier.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1251,9 +1278,10 @@ Module stack_usage_verifier.
                                                             |)))
                                                       ]
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1360,7 +1388,7 @@ Module stack_usage_verifier.
                                                       ]
                                                     |) in
                                                   M.match_operator (|
-                                                    Some (Ty.tuple []),
+                                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -1469,11 +1497,15 @@ Module stack_usage_verifier.
                       ]
                     |)) in
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1720,12 +1752,12 @@ Module stack_usage_verifier.
             [
               M.read (|
                 M.match_operator (|
-                  Some (Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
                   instruction,
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -1794,7 +1826,7 @@ Module stack_usage_verifier.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -1943,7 +1975,7 @@ Module stack_usage_verifier.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -2185,7 +2217,7 @@ Module stack_usage_verifier.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -2414,7 +2446,7 @@ Module stack_usage_verifier.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -2455,7 +2487,7 @@ Module stack_usage_verifier.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -2528,7 +2560,7 @@ Module stack_usage_verifier.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.find_or_pattern (|
+                        (M.find_or_pattern (Ty.tuple []) (|
                           γ,
                           [
                             fun γ =>
@@ -2574,7 +2606,7 @@ Module stack_usage_verifier.
                             γ,
                             "move_binary_format::file_format::Bytecode::Ret"
                           |) in
-                        let~ return_count : Ty.path "usize" :=
+                        let~ return_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "usize",
@@ -2619,9 +2651,14 @@ Module stack_usage_verifier.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ function_handle :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -2651,7 +2688,7 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ arg_count : Ty.path "u64" :=
+                        let~ arg_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
@@ -2705,7 +2742,7 @@ Module stack_usage_verifier.
                                 ]
                               |))
                           |) in
-                        let~ return_count : Ty.path "u64" :=
+                        let~ return_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
@@ -2774,9 +2811,14 @@ Module stack_usage_verifier.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ func_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -2810,9 +2852,14 @@ Module stack_usage_verifier.
                           |) in
                         let~ function_handle :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -2848,7 +2895,7 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ arg_count : Ty.path "u64" :=
+                        let~ arg_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
@@ -2902,7 +2949,7 @@ Module stack_usage_verifier.
                                 ]
                               |))
                           |) in
-                        let~ return_count : Ty.path "u64" :=
+                        let~ return_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
@@ -2971,9 +3018,14 @@ Module stack_usage_verifier.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_definition :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3003,10 +3055,10 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count : Ty.path "usize" :=
+                        let~ field_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "usize"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3083,9 +3135,16 @@ Module stack_usage_verifier.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -3119,9 +3178,14 @@ Module stack_usage_verifier.
                           |) in
                         let~ struct_definition :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3157,10 +3221,10 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count : Ty.path "usize" :=
+                        let~ field_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "usize"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3237,9 +3301,14 @@ Module stack_usage_verifier.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_definition :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3269,10 +3338,10 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count : Ty.path "usize" :=
+                        let~ field_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "usize"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3349,9 +3418,16 @@ Module stack_usage_verifier.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ struct_inst :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefInstantiation"
+                                  ]
                               ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -3385,9 +3461,14 @@ Module stack_usage_verifier.
                           |) in
                         let~ struct_definition :
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "*")
                               []
-                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -3423,10 +3504,10 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count : Ty.path "usize" :=
+                        let~ field_count : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "usize"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,

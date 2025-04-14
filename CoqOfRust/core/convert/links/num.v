@@ -18,8 +18,8 @@ Module Impl_TryFrom_u64_for_usize.
     }
     { constructor.
       run_symbolic.
-      instantiate (1 := Result.Ok _).
-      with_strategy transparent [φ] reflexivity.
+      { eapply Result.Ok; shelve. }
+      { with_strategy transparent [φ] reflexivity. }
     }
   Defined.
 

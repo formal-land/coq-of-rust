@@ -113,7 +113,7 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ la : Ty.path "mutual_loop::LoopA" :=
+        let~ la : Ty.apply (Ty.path "*") [] [ Ty.path "mutual_loop::LoopA" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "mutual_loop::LoopA",
@@ -121,7 +121,7 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
               []
             |)
           |) in
-        let~ lb : Ty.path "mutual_loop::LoopB" :=
+        let~ lb : Ty.apply (Ty.path "*") [] [ Ty.path "mutual_loop::LoopB" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "mutual_loop::LoopB",

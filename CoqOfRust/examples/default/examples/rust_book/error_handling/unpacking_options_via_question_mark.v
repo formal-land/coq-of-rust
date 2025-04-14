@@ -24,13 +24,19 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    None,
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
                     Value.DeclaredButUndefined,
                     [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                   |)))
@@ -87,7 +93,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "unpacking_options_via_question_mark::Job" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -147,12 +153,15 @@ Module Impl_unpacking_options_via_question_mark_Person.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.catch_return (|
+        M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
           ltac:(M.monadic
             (M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.match_operator (|
-                  Some (Ty.path "unpacking_options_via_question_mark::PhoneNumber"),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -181,7 +190,10 @@ Module Impl_unpacking_options_via_question_mark_Person.
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.match_operator (|
-                              Some (Ty.path "unpacking_options_via_question_mark::Job"),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "unpacking_options_via_question_mark::Job" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -359,7 +371,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ p : Ty.path "unpacking_options_via_question_mark::Person" :=
+        let~ p :
+            Ty.apply (Ty.path "*") [] [ Ty.path "unpacking_options_via_question_mark::Person" ] :=
           M.alloc (|
             Value.StructRecord
               "unpacking_options_via_question_mark::Person"
@@ -389,9 +402,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ])
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.tuple []),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             M.alloc (|
               Value.Tuple
                 [
@@ -428,7 +441,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -471,7 +484,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                let~ kind :
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

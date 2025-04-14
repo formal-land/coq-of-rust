@@ -139,118 +139,136 @@ Module modexp.
                   | [ α0; α1; α2; α3 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.path "u64";
-                                  Ty.path "u64";
-                                  Ty.path "u64";
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ]
-                                        []
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "u64")),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "u64";
+                                    Ty.path "u64";
+                                    Ty.path "u64";
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path "u64")
+                          ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let a := M.copy (| γ |) in
                               M.match_operator (|
-                                Some
-                                  (Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "u64";
-                                          Ty.path "u64";
-                                          Ty.path "u64";
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                []
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.path "u64")),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "u64";
+                                            Ty.path "u64";
+                                            Ty.path "u64";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.path "u64")
+                                  ],
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let b := M.copy (| γ |) in
                                       M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u64";
-                                                  Ty.path "u64";
-                                                  Ty.path "u64";
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "ruint::Uint")
-                                                        [
-                                                          Value.Integer IntegerKind.Usize 256;
-                                                          Value.Integer IntegerKind.Usize 4
-                                                        ]
-                                                        []
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "u64";
+                                                    Ty.path "u64";
+                                                    Ty.path "u64";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          []
+                                                      ]
+                                                  ]
+                                              ]
+                                              (Ty.path "u64")
+                                          ],
                                         M.alloc (| α2 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let c := M.copy (| γ |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path "u64";
-                                                          Ty.path "u64";
-                                                          Ty.path "u64";
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "ruint::Uint")
-                                                                [
-                                                                  Value.Integer
-                                                                    IntegerKind.Usize
-                                                                    256;
-                                                                  Value.Integer IntegerKind.Usize 4
-                                                                ]
-                                                                []
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "u64")),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path "u64";
+                                                            Ty.path "u64";
+                                                            Ty.path "u64";
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
+                                                                  ]
+                                                                  []
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path "u64")
+                                                  ],
                                                 M.alloc (| α3 |),
                                                 [
                                                   fun γ =>
@@ -387,118 +405,136 @@ Module modexp.
                   | [ α0; α1; α2; α3 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.path "u64";
-                                  Ty.path "u64";
-                                  Ty.path "u64";
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ]
-                                        []
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "u64")),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "u64";
+                                    Ty.path "u64";
+                                    Ty.path "u64";
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path "u64")
+                          ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let a := M.copy (| γ |) in
                               M.match_operator (|
-                                Some
-                                  (Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "u64";
-                                          Ty.path "u64";
-                                          Ty.path "u64";
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                []
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.path "u64")),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "u64";
+                                            Ty.path "u64";
+                                            Ty.path "u64";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.path "u64")
+                                  ],
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let b := M.copy (| γ |) in
                                       M.match_operator (|
-                                        Some
-                                          (Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "u64";
-                                                  Ty.path "u64";
-                                                  Ty.path "u64";
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "ruint::Uint")
-                                                        [
-                                                          Value.Integer IntegerKind.Usize 256;
-                                                          Value.Integer IntegerKind.Usize 4
-                                                        ]
-                                                        []
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64")),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "u64";
+                                                    Ty.path "u64";
+                                                    Ty.path "u64";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          []
+                                                      ]
+                                                  ]
+                                              ]
+                                              (Ty.path "u64")
+                                          ],
                                         M.alloc (| α2 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let c := M.copy (| γ |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path "u64";
-                                                          Ty.path "u64";
-                                                          Ty.path "u64";
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "ruint::Uint")
-                                                                [
-                                                                  Value.Integer
-                                                                    IntegerKind.Usize
-                                                                    256;
-                                                                  Value.Integer IntegerKind.Usize 4
-                                                                ]
-                                                                []
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "u64")),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path "u64";
+                                                            Ty.path "u64";
+                                                            Ty.path "u64";
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
+                                                                  ]
+                                                                  []
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path "u64")
+                                                  ],
                                                 M.alloc (| α3 |),
                                                 [
                                                   fun γ =>
@@ -564,10 +600,11 @@ Module modexp.
         (let exp_length := M.alloc (| exp_length |) in
         let exp_highp := M.alloc (| exp_highp |) in
         M.read (|
-          let~ iteration_count : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-          let~ _ : Ty.tuple [] :=
+          let~ iteration_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+            M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.match_operator (|
-              Some (Ty.tuple []),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -606,7 +643,7 @@ Module modexp.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.alloc (|
                         M.write (| iteration_count, Value.Integer IntegerKind.U64 0 |)
                       |) in
@@ -614,7 +651,7 @@ Module modexp.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.tuple []),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -630,7 +667,7 @@ Module modexp.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.alloc (|
                                 M.write (|
                                   iteration_count,
@@ -670,7 +707,7 @@ Module modexp.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -692,7 +729,7 @@ Module modexp.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         M.write (|
                                           iteration_count,
@@ -878,12 +915,19 @@ Module modexp.
         let gas_limit := M.alloc (| gas_limit |) in
         let min_gas := M.alloc (| min_gas |) in
         let calc_gas := M.alloc (| calc_gas |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -932,9 +976,14 @@ Module modexp.
                 |) in
               let~ base_len :
                   Ty.apply
-                    (Ty.path "ruint::Uint")
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                    [] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -998,9 +1047,14 @@ Module modexp.
                 |) in
               let~ exp_len :
                   Ty.apply
-                    (Ty.path "ruint::Uint")
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                    [] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1064,9 +1118,14 @@ Module modexp.
                 |) in
               let~ mod_len :
                   Ty.apply
-                    (Ty.path "ruint::Uint")
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                    [] :=
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1129,7 +1188,18 @@ Module modexp.
                   |)
                 |) in
               M.match_operator (|
-                None,
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]
+                  ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1167,7 +1237,18 @@ Module modexp.
                         |) in
                       let base_len := M.copy (| γ0_0 |) in
                       M.match_operator (|
-                        None,
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ]
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1210,9 +1291,9 @@ Module modexp.
                                   0
                                 |) in
                               let mod_len := M.copy (| γ0_0 |) in
-                              let~ _ : Ty.tuple [] :=
+                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.tuple []),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -1286,7 +1367,18 @@ Module modexp.
                                   ]
                                 |) in
                               M.match_operator (|
-                                None,
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ]
+                                  ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1329,7 +1421,8 @@ Module modexp.
                                           0
                                         |) in
                                       let exp_len := M.copy (| γ0_0 |) in
-                                      let~ exp_highp_len : Ty.path "usize" :=
+                                      let~ exp_highp_len :
+                                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -1346,9 +1439,14 @@ Module modexp.
                                         |) in
                                       let~ input :
                                           Ty.apply
-                                            (Ty.path "&")
+                                            (Ty.path "*")
                                             []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -1420,22 +1518,32 @@ Module modexp.
                                         |) in
                                       let~ exp_highp :
                                           Ty.apply
-                                            (Ty.path "ruint::Uint")
+                                            (Ty.path "*")
+                                            []
                                             [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ]
-                                            [] :=
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
+                                                []
+                                            ] :=
                                         M.copy (|
                                           let~ right_padded_highp :
                                               Ty.apply
-                                                (Ty.path "alloc::borrow::Cow")
+                                                (Ty.path "*")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ]
+                                                    (Ty.path "alloc::borrow::Cow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                                        [ Ty.path "u8" ]
+                                                    ]
                                                 ] :=
                                             M.alloc (|
                                               M.call_closure (|
@@ -1464,13 +1572,18 @@ Module modexp.
                                             |) in
                                           let~ out :
                                               Ty.apply
-                                                (Ty.path "alloc::borrow::Cow")
+                                                (Ty.path "*")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ]
+                                                    (Ty.path "alloc::borrow::Cow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                                        [ Ty.path "u8" ]
+                                                    ]
                                                 ] :=
                                             M.alloc (|
                                               M.call_closure (|
@@ -1635,7 +1748,7 @@ Module modexp.
                                             |)
                                           |)
                                         |) in
-                                      let~ gas_cost : Ty.path "u64" :=
+                                      let~ gas_cost : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "u64",
@@ -1684,9 +1797,9 @@ Module modexp.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.tuple []),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -1745,7 +1858,8 @@ Module modexp.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let~ input_len : Ty.path "usize" :=
+                                      let~ input_len :
+                                          Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -1772,9 +1886,14 @@ Module modexp.
                                         |) in
                                       let~ input :
                                           Ty.apply
-                                            (Ty.path "alloc::borrow::Cow")
+                                            (Ty.path "*")
                                             []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::borrow::Cow")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -1796,7 +1915,20 @@ Module modexp.
                                           |)
                                         |) in
                                       M.match_operator (|
-                                        None,
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileOutput";
+                                                Ty.path
+                                                  "revm_precompile::interface::PrecompileErrors"
+                                              ]
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.tuple
@@ -1865,7 +1997,20 @@ Module modexp.
                                               let base := M.copy (| γ0_0 |) in
                                               let input := M.copy (| γ0_1 |) in
                                               M.match_operator (|
-                                                None,
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "revm_precompile::interface::PrecompileOutput";
+                                                        Ty.path
+                                                          "revm_precompile::interface::PrecompileErrors"
+                                                      ]
+                                                  ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.tuple
@@ -1916,9 +2061,13 @@ Module modexp.
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let exponent := M.copy (| γ0_0 |) in
                                                       let modulus := M.copy (| γ0_1 |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.match_operator (|
-                                                          Some (Ty.tuple []),
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -1933,9 +2082,16 @@ Module modexp.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                let~ _ : Ty.tuple [] :=
+                                                                let~ _ :
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ] :=
                                                                   M.match_operator (|
-                                                                    Some (Ty.tuple []),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [ Ty.tuple [] ],
                                                                     M.alloc (|
                                                                       Value.Tuple
                                                                         [
@@ -1992,7 +2148,10 @@ Module modexp.
                                                                           let right_val :=
                                                                             M.copy (| γ0_1 |) in
                                                                           M.match_operator (|
-                                                                            Some (Ty.tuple []),
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [ Ty.tuple [] ],
                                                                             M.alloc (|
                                                                               Value.Tuple []
                                                                             |),
@@ -2038,8 +2197,14 @@ Module modexp.
                                                                                     M.never_to_any (|
                                                                                       M.read (|
                                                                                         let~ kind :
-                                                                                            Ty.path
-                                                                                              "core::panicking::AssertKind" :=
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "core::panicking::AssertKind"
+                                                                                              ] :=
                                                                                           M.alloc (|
                                                                                             Value.StructTuple
                                                                                               "core::panicking::AssertKind::Eq"
@@ -2115,11 +2280,16 @@ Module modexp.
                                                         |) in
                                                       let~ output :
                                                           Ty.apply
-                                                            (Ty.path "alloc::vec::Vec")
+                                                            (Ty.path "*")
                                                             []
                                                             [
-                                                              Ty.path "u8";
-                                                              Ty.path "alloc::alloc::Global"
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
                                                             ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
@@ -2356,9 +2526,14 @@ Module modexp.
         M.read (|
           let~ mul :
               Ty.apply
-                (Ty.path "ruint::Uint")
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                [] :=
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -2381,9 +2556,14 @@ Module modexp.
             |) in
           let~ iter_count :
               Ty.apply
-                (Ty.path "ruint::Uint")
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                [] :=
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -2417,9 +2597,14 @@ Module modexp.
             |) in
           let~ gas :
               Ty.apply
-                (Ty.path "ruint::Uint")
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                [] :=
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -2533,11 +2718,15 @@ Module modexp.
           (let x := M.alloc (| x |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "ruint::Uint")
-                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                  []),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2580,11 +2769,16 @@ Module modexp.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "ruint::Uint")
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
+                        ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2659,12 +2853,17 @@ Module modexp.
                           ltac:(M.monadic
                             (let~ x :
                                 Ty.apply
-                                  (Ty.path "ruint::Uint")
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [] :=
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2691,12 +2890,17 @@ Module modexp.
                               |) in
                             let~ x_sq :
                                 Ty.apply
-                                  (Ty.path "ruint::Uint")
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [] :=
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ] :=
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2986,9 +3190,14 @@ Module modexp.
         M.read (|
           let~ multiplication_complexity :
               Ty.apply
-                (Ty.path "ruint::Uint")
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                [] :=
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -3003,7 +3212,7 @@ Module modexp.
                 [ M.read (| base_length |); M.read (| mod_length |) ]
               |)
             |) in
-          let~ iteration_count : Ty.path "u64" :=
+          let~ iteration_count : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -3016,9 +3225,14 @@ Module modexp.
             |) in
           let~ gas :
               Ty.apply
-                (Ty.path "ruint::Uint")
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                [] :=
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -3159,7 +3373,7 @@ Module modexp.
           (let base_length := M.alloc (| base_length |) in
           let mod_length := M.alloc (| mod_length |) in
           M.read (|
-            let~ max_length : Ty.path "u64" :=
+            let~ max_length : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -3167,7 +3381,7 @@ Module modexp.
                   [ M.read (| base_length |); M.read (| mod_length |) ]
                 |)
               |) in
-            let~ words : Ty.path "u64" :=
+            let~ words : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -3175,9 +3389,9 @@ Module modexp.
                   [ M.read (| max_length |); Value.Integer IntegerKind.U64 8 ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3199,7 +3413,7 @@ Module modexp.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           let β := words in
                           M.write (|
@@ -3217,9 +3431,14 @@ Module modexp.
               |) in
             let~ words :
                 Ty.apply
-                  (Ty.path "ruint::Uint")
-                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                  [] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply

@@ -184,7 +184,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "erc20::AccountId" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -528,9 +528,14 @@ Module Impl_erc20_Erc20.
         M.read (|
           let~ balances :
               Ty.apply
-                (Ty.path "erc20::Mapping")
+                (Ty.path "*")
                 []
-                [ Ty.path "erc20::AccountId"; Ty.path "u128" ] :=
+                [
+                  Ty.apply
+                    (Ty.path "erc20::Mapping")
+                    []
+                    [ Ty.path "erc20::AccountId"; Ty.path "u128" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -552,7 +557,7 @@ Module Impl_erc20_Erc20.
                 []
               |)
             |) in
-          let~ caller : Ty.path "erc20::AccountId" :=
+          let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc20::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "erc20::AccountId",
@@ -571,7 +576,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -591,7 +596,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -895,10 +900,11 @@ Module Impl_erc20_Erc20.
         let from := M.alloc (| from |) in
         let to := M.alloc (| to |) in
         let value := M.alloc (| value |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc20::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ from_balance : Ty.path "u128" :=
+              let~ from_balance : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u128",
@@ -914,9 +920,9 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -945,7 +951,7 @@ Module Impl_erc20_Erc20.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -976,7 +982,7 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let~ to_balance : Ty.path "u128" :=
+              let~ to_balance : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u128",
@@ -992,7 +998,7 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1023,7 +1029,7 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -1084,7 +1090,7 @@ Module Impl_erc20_Erc20.
         let to := M.alloc (| to |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ from : Ty.path "erc20::AccountId" :=
+          let~ from : Ty.apply (Ty.path "*") [] [ Ty.path "erc20::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "erc20::AccountId",
@@ -1146,7 +1152,7 @@ Module Impl_erc20_Erc20.
         let spender := M.alloc (| spender |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ owner : Ty.path "erc20::AccountId" :=
+          let~ owner : Ty.apply (Ty.path "*") [] [ Ty.path "erc20::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "erc20::AccountId",
@@ -1165,7 +1171,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1195,7 +1201,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -1254,10 +1260,11 @@ Module Impl_erc20_Erc20.
         let from := M.alloc (| from |) in
         let to := M.alloc (| to |) in
         let value := M.alloc (| value |) in
-        M.catch_return (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc20::Error" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller : Ty.path "erc20::AccountId" :=
+              let~ caller : Ty.apply (Ty.path "*") [] [ Ty.path "erc20::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "erc20::AccountId",
@@ -1276,7 +1283,7 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let~ allowance : Ty.path "u128" :=
+              let~ allowance : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "u128",
@@ -1299,9 +1306,9 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1330,9 +1337,9 @@ Module Impl_erc20_Erc20.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1442,7 +1449,7 @@ Module Impl_erc20_Erc20.
                         val))
                   ]
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],

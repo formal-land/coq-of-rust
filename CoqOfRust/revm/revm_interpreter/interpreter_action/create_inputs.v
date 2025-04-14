@@ -532,31 +532,31 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                None,
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        None,
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                None,
+                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                 Value.DeclaredButUndefined,
                                                 [
                                                   fun γ =>
@@ -597,7 +597,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -628,7 +628,7 @@ Module interpreter_action.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -659,7 +659,7 @@ Module interpreter_action.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -693,7 +693,7 @@ Module interpreter_action.
                     ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -789,7 +789,7 @@ Module interpreter_action.
             let nonce := M.alloc (| nonce |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "alloy_primitives::bits::address::Address"),
+                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::bits::address::Address" ],
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs",

@@ -24,7 +24,7 @@ Module num.
             (let mant := M.alloc (| mant |) in
             let exp := M.alloc (| exp |) in
             M.read (|
-              let~ nbits : Ty.path "i64" :=
+              let~ nbits : Ty.apply (Ty.path "*") [] [ Ty.path "i64" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "i64",

@@ -148,8 +148,8 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -265,7 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ rectangle : Ty.path "generics_bounds::Rectangle" :=
+        let~ rectangle : Ty.apply (Ty.path "*") [] [ Ty.path "generics_bounds::Rectangle" ] :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Rectangle"
@@ -274,7 +274,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("height", M.read (| UnsupportedLiteral |))
               ]
           |) in
-        let~ _triangle : Ty.path "generics_bounds::Triangle" :=
+        let~ _triangle : Ty.apply (Ty.path "*") [] [ Ty.path "generics_bounds::Triangle" ] :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Triangle"
@@ -283,7 +283,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("height", M.read (| UnsupportedLiteral |))
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
               Ty.tuple [],
@@ -300,8 +300,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

@@ -77,7 +77,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 1 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
@@ -85,7 +93,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -146,7 +154,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 1 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
@@ -154,7 +170,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I8 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -215,7 +231,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
@@ -223,7 +247,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -284,7 +308,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
@@ -292,7 +324,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I16 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -353,7 +385,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 4 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -361,7 +401,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -422,7 +462,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 4 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -430,7 +478,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I32 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -491,7 +539,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 8 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -499,7 +555,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -560,7 +616,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 8 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -568,7 +632,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I64 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -630,9 +694,14 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 16 ]
-                  [ Ty.path "u8" ] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -643,7 +712,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -705,9 +774,14 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 16 ]
-                  [ Ty.path "u8" ] :=
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -718,7 +792,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I128 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -779,7 +853,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 8 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -787,7 +869,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -848,7 +930,15 @@ Module random.
           (let source := M.alloc (| source |) in
           M.read (|
             let~ bytes :
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 8 ]
+                      [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
@@ -856,7 +946,7 @@ Module random.
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Isize 0 |)) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],

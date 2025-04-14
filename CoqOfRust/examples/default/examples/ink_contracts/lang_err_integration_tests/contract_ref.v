@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            None,
+            Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::AccountId" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -264,11 +264,15 @@ Module Impl_contract_ref_FlipperRef.
         (let succeed := M.alloc (| succeed |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -319,7 +323,7 @@ Module Impl_contract_ref_FlipperRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_struct_record_field (|
@@ -403,7 +407,11 @@ Module Impl_contract_ref_ContractRef.
         let flipper_code_hash := M.alloc (| flipper_code_hash |) in
         M.read (|
           let~ salt :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -411,7 +419,7 @@ Module Impl_contract_ref_ContractRef.
                 [ M.read (| version |) ]
               |)
             |) in
-          let~ flipper : Ty.path "contract_ref::FlipperRef" :=
+          let~ flipper : Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::FlipperRef" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "contract_ref::FlipperRef",
@@ -462,7 +470,11 @@ Module Impl_contract_ref_ContractRef.
         let succeed := M.alloc (| succeed |) in
         M.read (|
           let~ salt :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
+                ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
@@ -470,7 +482,7 @@ Module Impl_contract_ref_ContractRef.
                 [ M.read (| version |) ]
               |)
             |) in
-          let~ flipper : Ty.path "contract_ref::FlipperRef" :=
+          let~ flipper : Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::FlipperRef" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "contract_ref::FlipperRef",
@@ -522,7 +534,7 @@ Module Impl_contract_ref_ContractRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

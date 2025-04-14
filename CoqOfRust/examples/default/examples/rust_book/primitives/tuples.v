@@ -16,7 +16,7 @@ Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       (let pair_ := M.alloc (| pair_ |) in
       M.read (|
         M.match_operator (|
-          None,
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "bool"; Ty.path "i32" ] ],
           pair_,
           [
             fun γ =>
@@ -194,20 +194,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ long_tuple :
-            Ty.tuple
+            Ty.apply
+              (Ty.path "*")
+              []
               [
-                Ty.path "u8";
-                Ty.path "u16";
-                Ty.path "u32";
-                Ty.path "u64";
-                Ty.path "i8";
-                Ty.path "i16";
-                Ty.path "i32";
-                Ty.path "i64";
-                Ty.path "f32";
-                Ty.path "f64";
-                Ty.path "char";
-                Ty.path "bool"
+                Ty.tuple
+                  [
+                    Ty.path "u8";
+                    Ty.path "u16";
+                    Ty.path "u32";
+                    Ty.path "u64";
+                    Ty.path "i8";
+                    Ty.path "i16";
+                    Ty.path "i32";
+                    Ty.path "i64";
+                    Ty.path "f32";
+                    Ty.path "f64";
+                    Ty.path "char";
+                    Ty.path "bool"
+                  ]
               ] :=
           M.alloc (|
             Value.Tuple
@@ -226,8 +231,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Value.Bool true
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -294,8 +299,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -363,11 +368,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ tuple_of_tuples :
-            Ty.tuple
+            Ty.apply
+              (Ty.path "*")
+              []
               [
-                Ty.tuple [ Ty.path "u8"; Ty.path "u16"; Ty.path "u32" ];
-                Ty.tuple [ Ty.path "u64"; Ty.path "i8" ];
-                Ty.path "i16"
+                Ty.tuple
+                  [
+                    Ty.tuple [ Ty.path "u8"; Ty.path "u16"; Ty.path "u32" ];
+                    Ty.tuple [ Ty.path "u64"; Ty.path "i8" ];
+                    Ty.path "i16"
+                  ]
               ] :=
           M.alloc (|
             Value.Tuple
@@ -382,8 +392,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Value.Integer IntegerKind.I16 (-2)
               ]
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -453,10 +463,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ pair_ : Ty.tuple [ Ty.path "i32"; Ty.path "bool" ] :=
+        let~ pair_ : Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "i32"; Ty.path "bool" ] ] :=
           M.alloc (| Value.Tuple [ Value.Integer IntegerKind.I32 1; Value.Bool true ] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -515,8 +525,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -588,8 +598,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -657,8 +667,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -725,12 +735,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ tuple :
-            Ty.tuple
+            Ty.apply
+              (Ty.path "*")
+              []
               [
-                Ty.path "i32";
-                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                Ty.path "f64";
-                Ty.path "bool"
+                Ty.tuple
+                  [
+                    Ty.path "i32";
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.path "f64";
+                    Ty.path "bool"
+                  ]
               ] :=
           M.alloc (|
             Value.Tuple
@@ -742,7 +757,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
           |) in
         M.match_operator (|
-          None,
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           tuple,
           [
             fun γ =>
@@ -755,8 +770,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let b := M.copy (| γ0_1 |) in
                 let c := M.copy (| γ0_2 |) in
                 let d := M.copy (| γ0_3 |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -870,7 +885,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ matrix : Ty.path "tuples::Matrix" :=
+                let~ matrix : Ty.apply (Ty.path "*") [] [ Ty.path "tuples::Matrix" ] :=
                   M.alloc (|
                     Value.StructTuple
                       "tuples::Matrix"
@@ -881,8 +896,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.read (| UnsupportedLiteral |)
                       ]
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],

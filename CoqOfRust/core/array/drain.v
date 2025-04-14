@@ -23,9 +23,14 @@ Module array.
           M.read (|
             let~ array :
                 Ty.apply
-                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  (Ty.path "*")
                   []
-                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -44,7 +49,11 @@ Module array.
                   [ M.read (| array |) ]
                 |)
               |) in
-            let~ drain : Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] :=
+            let~ drain :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] :=
               M.alloc (|
                 Value.StructTuple
                   "core::array::drain::Drain"
@@ -201,13 +210,13 @@ Module array.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (|
+            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
+                  let~ p : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*const") [] [ T ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ T ] ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -349,7 +358,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ n : Ty.path "usize" :=
+              let~ n : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -477,7 +486,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
+              let~ p : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.ConstPointer,

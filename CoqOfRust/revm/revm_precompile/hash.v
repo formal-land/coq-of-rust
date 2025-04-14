@@ -62,7 +62,7 @@ Module hash.
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
         M.read (|
-          let~ cost : Ty.path "u64" :=
+          let~ cost : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -98,14 +98,18 @@ Module hash.
               |)
             |) in
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -147,14 +151,14 @@ Module hash.
                 ltac:(M.monadic
                   (let~ output :
                       Ty.apply
-                        (Ty.path "generic_array::GenericArray")
+                        (Ty.path "*")
                         []
                         [
-                          Ty.path "u8";
                           Ty.apply
-                            (Ty.path "typenum::uint::UInt")
+                            (Ty.path "generic_array::GenericArray")
                             []
                             [
+                              Ty.path "u8";
                               Ty.apply
                                 (Ty.path "typenum::uint::UInt")
                                 []
@@ -175,8 +179,14 @@ Module hash.
                                                 (Ty.path "typenum::uint::UInt")
                                                 []
                                                 [
-                                                  Ty.path "typenum::uint::UTerm";
-                                                  Ty.path "typenum::bit::B1"
+                                                  Ty.apply
+                                                    (Ty.path "typenum::uint::UInt")
+                                                    []
+                                                    [
+                                                      Ty.path "typenum::uint::UTerm";
+                                                      Ty.path "typenum::bit::B1"
+                                                    ];
+                                                  Ty.path "typenum::bit::B0"
                                                 ];
                                               Ty.path "typenum::bit::B0"
                                             ];
@@ -185,8 +195,7 @@ Module hash.
                                       Ty.path "typenum::bit::B0"
                                     ];
                                   Ty.path "typenum::bit::B0"
-                                ];
-                              Ty.path "typenum::bit::B0"
+                                ]
                             ]
                         ] :=
                     M.alloc (|
@@ -442,7 +451,7 @@ Module hash.
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
         M.read (|
-          let~ gas_used : Ty.path "u64" :=
+          let~ gas_used : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.path "u64",
@@ -478,14 +487,18 @@ Module hash.
               |)
             |) in
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -527,9 +540,14 @@ Module hash.
                 ltac:(M.monadic
                   (let~ hasher :
                       Ty.apply
-                        (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                        (Ty.path "*")
                         []
-                        [ Ty.path "ripemd::Ripemd160Core" ] :=
+                        [
+                          Ty.apply
+                            (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                            []
+                            [ Ty.path "ripemd::Ripemd160Core" ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -551,7 +569,7 @@ Module hash.
                         []
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -573,16 +591,21 @@ Module hash.
                     |) in
                   let~ output :
                       Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 32 ]
-                        [ Ty.path "u8" ] :=
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ]
+                        ] :=
                     M.alloc (|
                       repeat (|
                         Value.Integer IntegerKind.U8 0,
                         Value.Integer IntegerKind.Usize 32
                       |)
                     |) in
-                  let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],

@@ -56,7 +56,8 @@ Module gcd.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ other : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
+            let~ other :
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],

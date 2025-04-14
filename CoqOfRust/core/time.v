@@ -93,7 +93,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Nanoseconds" ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -191,7 +191,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -433,13 +433,13 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -572,13 +572,13 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      None,
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -610,7 +610,10 @@ Module time.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -739,7 +742,7 @@ Module time.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::cmp::Ordering"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -850,7 +853,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1112,7 +1115,7 @@ Module time.
           let nanos := M.alloc (| nanos |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1143,7 +1146,7 @@ Module time.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ secs : Ty.path "u64" :=
+                    (let~ secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "u64",
@@ -1183,7 +1186,7 @@ Module time.
                           ]
                         |)
                       |) in
-                    let~ nanos : Ty.path "u32" :=
+                    let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "u32",
@@ -1263,7 +1266,7 @@ Module time.
         ltac:(M.monadic
           (let millis := M.alloc (| millis |) in
           M.read (|
-            let~ secs : Ty.path "u64" :=
+            let~ secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -1274,7 +1277,7 @@ Module time.
                   ]
                 |)
               |) in
-            let~ subsec_millis : Ty.path "u32" :=
+            let~ subsec_millis : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
               M.alloc (|
                 M.cast
                   (Ty.path "u32")
@@ -1287,7 +1290,7 @@ Module time.
                     ]
                   |))
               |) in
-            let~ subsec_nanos : Ty.path "core::time::Nanoseconds" :=
+            let~ subsec_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Nanoseconds" ] :=
               M.alloc (|
                 Value.StructTuple
                   "core::time::Nanoseconds"
@@ -1333,7 +1336,7 @@ Module time.
         ltac:(M.monadic
           (let micros := M.alloc (| micros |) in
           M.read (|
-            let~ secs : Ty.path "u64" :=
+            let~ secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -1344,7 +1347,7 @@ Module time.
                   ]
                 |)
               |) in
-            let~ subsec_micros : Ty.path "u32" :=
+            let~ subsec_micros : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
               M.alloc (|
                 M.cast
                   (Ty.path "u32")
@@ -1357,7 +1360,7 @@ Module time.
                     ]
                   |))
               |) in
-            let~ subsec_nanos : Ty.path "core::time::Nanoseconds" :=
+            let~ subsec_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Nanoseconds" ] :=
               M.alloc (|
                 Value.StructTuple
                   "core::time::Nanoseconds"
@@ -1403,7 +1406,7 @@ Module time.
         ltac:(M.monadic
           (let nanos := M.alloc (| nanos |) in
           M.read (|
-            let~ secs : Ty.path "u64" :=
+            let~ secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "u64",
@@ -1416,7 +1419,7 @@ Module time.
                   ]
                 |)
               |) in
-            let~ subsec_nanos : Ty.path "u32" :=
+            let~ subsec_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
               M.alloc (|
                 M.cast
                   (Ty.path "u32")
@@ -1431,7 +1434,7 @@ Module time.
                     ]
                   |))
               |) in
-            let~ subsec_nanos : Ty.path "core::time::Nanoseconds" :=
+            let~ subsec_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Nanoseconds" ] :=
               M.alloc (|
                 Value.StructTuple "core::time::Nanoseconds" [ M.read (| subsec_nanos |) ]
               |) in
@@ -1464,9 +1467,9 @@ Module time.
         ltac:(M.monadic
           (let weeks := M.alloc (| weeks |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1639,9 +1642,9 @@ Module time.
         ltac:(M.monadic
           (let days := M.alloc (| days |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1795,9 +1798,9 @@ Module time.
         ltac:(M.monadic
           (let hours := M.alloc (| hours |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1928,9 +1931,9 @@ Module time.
         ltac:(M.monadic
           (let mins := M.alloc (| mins |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2395,7 +2398,7 @@ Module time.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2490,15 +2493,20 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::time::Duration" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::time::Duration" ]
+                    ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2533,7 +2541,7 @@ Module time.
                             0
                           |) in
                         let secs := M.copy (| γ0_0 |) in
-                        let~ nanos : Ty.path "u32" :=
+                        let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "u32",
@@ -2564,9 +2572,9 @@ Module time.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2593,7 +2601,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.alloc (|
                                       let β := nanos in
                                       M.write (|
@@ -2614,7 +2622,7 @@ Module time.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple []),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -2643,7 +2651,7 @@ Module time.
                                               0
                                             |) in
                                           let new_secs := M.copy (| γ0_0 |) in
-                                          let~ _ : Ty.tuple [] :=
+                                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.alloc (|
                                               M.write (| secs, M.read (| new_secs |) |)
                                             |) in
@@ -2664,9 +2672,9 @@ Module time.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2677,9 +2685,9 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -2779,7 +2787,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
@@ -2846,15 +2854,20 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::time::Duration" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::time::Duration" ]
+                    ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2889,10 +2902,10 @@ Module time.
                             0
                           |) in
                         let secs := M.copy (| γ0_0 |) in
-                        let~ nanos : Ty.path "u32" :=
+                        let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some (Ty.path "u32"),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2967,7 +2980,7 @@ Module time.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some (Ty.path "u32"),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -2998,7 +3011,7 @@ Module time.
                                                 0
                                               |) in
                                             let sub_secs := M.copy (| γ0_0 |) in
-                                            let~ _ : Ty.tuple [] :=
+                                            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                               M.alloc (|
                                                 M.write (| secs, M.read (| sub_secs |) |)
                                               |) in
@@ -3062,9 +3075,9 @@ Module time.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3075,9 +3088,9 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.tuple []),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -3177,7 +3190,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
@@ -3242,10 +3255,11 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ total_nanos : Ty.path "u64" :=
+                let~ total_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u64",
@@ -3268,7 +3282,7 @@ Module time.
                       ]
                     |)
                   |) in
-                let~ extra_secs : Ty.path "u64" :=
+                let~ extra_secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u64",
@@ -3283,7 +3297,7 @@ Module time.
                       ]
                     |)
                   |) in
-                let~ nanos : Ty.path "u32" :=
+                let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.cast
                       (Ty.path "u32")
@@ -3300,9 +3314,9 @@ Module time.
                         ]
                       |))
                   |) in
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3337,7 +3351,7 @@ Module time.
                             |) in
                           let s := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            Some (Ty.tuple []),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3368,9 +3382,9 @@ Module time.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.tuple []),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -3381,9 +3395,10 @@ Module time.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let~ _ : Ty.tuple [] :=
+                                                  let~ _ :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some (Ty.tuple []),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -3491,7 +3506,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
@@ -3556,8 +3571,10 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ] ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -3573,7 +3590,15 @@ Module time.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
-                      None,
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::time::Duration" ]
+                        ],
                       M.alloc (|
                         Value.Tuple
                           [
@@ -3615,7 +3640,15 @@ Module time.
                             let secs := M.copy (| γ0_0 |) in
                             let extra_secs := M.copy (| γ0_1 |) in
                             M.match_operator (|
-                              None,
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::time::Duration" ]
+                                ],
                               M.alloc (|
                                 Value.Tuple
                                   [
@@ -3664,7 +3697,7 @@ Module time.
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let nanos := M.copy (| γ0_0 |) in
                                     let extra_nanos := M.copy (| γ0_1 |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.alloc (|
                                         let β := nanos in
                                         M.write (|
@@ -3711,9 +3744,9 @@ Module time.
                                           |)
                                         |)
                                       |) in
-                                    let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                       M.match_operator (|
-                                        Some (Ty.tuple []),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -3724,9 +3757,9 @@ Module time.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ : Ty.tuple [] :=
+                                              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                 M.match_operator (|
-                                                  Some (Ty.tuple []),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -4069,7 +4102,7 @@ Module time.
           (let secs := M.alloc (| secs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -4158,7 +4191,7 @@ Module time.
           (let secs := M.alloc (| secs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::Duration"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -4410,7 +4443,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ self_nanos : Ty.path "f64" :=
+            let~ self_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "f64",
@@ -4452,7 +4485,7 @@ Module time.
                   ]
                 |)
               |) in
-            let~ rhs_nanos : Ty.path "f64" :=
+            let~ rhs_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "f64",
@@ -4524,7 +4557,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ self_nanos : Ty.path "f32" :=
+            let~ self_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "f32" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "f32",
@@ -4566,7 +4599,7 @@ Module time.
                   ]
                 |)
               |) in
-            let~ rhs_nanos : Ty.path "f32" :=
+            let~ rhs_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "f32" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "f32",
@@ -4640,12 +4673,16 @@ Module time.
       | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "core::time::Duration"; Ty.path "core::time::TryFromFloatSecsError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4684,7 +4721,7 @@ Module time.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ bits : Ty.path "u32" :=
+                let~ bits : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u32",
@@ -4692,7 +4729,7 @@ Module time.
                       [ M.read (| secs |) ]
                     |)
                   |) in
-                let~ mant : Ty.path "u32" :=
+                let~ mant : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u32",
@@ -4727,7 +4764,7 @@ Module time.
                       ]
                     |)
                   |) in
-                let~ exp : Ty.path "i16" :=
+                let~ exp : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "i16",
@@ -4759,9 +4796,20 @@ Module time.
                     |)
                   |) in
                 M.match_operator (|
-                  None,
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::time::Duration";
+                          Ty.path "core::time::TryFromFloatSecsError"
+                        ]
+                    ],
                   M.match_operator (|
-                    Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4784,7 +4832,7 @@ Module time.
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -4803,7 +4851,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ t : Ty.path "u64" :=
+                                  let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u64",
@@ -4830,7 +4878,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ nanos_offset : Ty.path "i32" :=
+                                  let~ nanos_offset : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "i32",
@@ -4841,7 +4889,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ nanos_tmp : Ty.path "u128" :=
+                                  let~ nanos_tmp : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -4883,7 +4931,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ nanos : Ty.path "u32" :=
+                                  let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                     M.alloc (|
                                       M.cast
                                         (Ty.path "u32")
@@ -4893,7 +4941,7 @@ Module time.
                                           [ M.read (| nanos_tmp |); M.read (| nanos_offset |) ]
                                         |))
                                     |) in
-                                  let~ rem_mask : Ty.path "u128" :=
+                                  let~ rem_mask : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -4911,7 +4959,8 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ rem_msb_mask : Ty.path "u128" :=
+                                  let~ rem_msb_mask :
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -4929,7 +4978,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ rem : Ty.path "u128" :=
+                                  let~ rem : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -4937,7 +4986,7 @@ Module time.
                                         [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
                                       |)
                                     |) in
-                                  let~ is_tie : Ty.path "bool" :=
+                                  let~ is_tie : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -4945,7 +4994,7 @@ Module time.
                                         [ M.read (| rem |); M.read (| rem_msb_mask |) ]
                                       |)
                                     |) in
-                                  let~ is_even : Ty.path "bool" :=
+                                  let~ is_even : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -4960,7 +5009,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ rem_msb : Ty.path "bool" :=
+                                  let~ rem_msb : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -4975,7 +5024,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ add_ns : Ty.path "bool" :=
+                                  let~ add_ns : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       UnOp.not (|
                                         LogicalOp.or (|
@@ -4988,7 +5037,7 @@ Module time.
                                         |)
                                       |)
                                     |) in
-                                  let~ nanos : Ty.path "u32" :=
+                                  let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u32",
@@ -5000,7 +5049,10 @@ Module time.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -5057,7 +5109,10 @@ Module time.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -5079,7 +5134,7 @@ Module time.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ secs : Ty.path "u64" :=
+                                          let~ secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5111,7 +5166,7 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ t : Ty.path "u64" :=
+                                          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5145,9 +5200,11 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ nanos_offset : Ty.path "i32" :=
+                                          let~ nanos_offset :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                                             M.alloc (| Value.Integer IntegerKind.I32 23 |) in
-                                          let~ nanos_tmp : Ty.path "u64" :=
+                                          let~ nanos_tmp :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5177,7 +5234,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ nanos : Ty.path "u32" :=
+                                          let~ nanos :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "u32")
@@ -5190,7 +5248,8 @@ Module time.
                                                   ]
                                                 |))
                                             |) in
-                                          let~ rem_mask : Ty.path "u64" :=
+                                          let~ rem_mask :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5208,7 +5267,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ rem_msb_mask : Ty.path "u64" :=
+                                          let~ rem_msb_mask :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5226,7 +5286,7 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ rem : Ty.path "u64" :=
+                                          let~ rem : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5234,7 +5294,8 @@ Module time.
                                                 [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
                                               |)
                                             |) in
-                                          let~ is_tie : Ty.path "bool" :=
+                                          let~ is_tie :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -5242,7 +5303,8 @@ Module time.
                                                 [ M.read (| rem |); M.read (| rem_msb_mask |) ]
                                               |)
                                             |) in
-                                          let~ is_even : Ty.path "bool" :=
+                                          let~ is_even :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -5260,7 +5322,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ rem_msb : Ty.path "bool" :=
+                                          let~ rem_msb :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -5278,7 +5341,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ add_ns : Ty.path "bool" :=
+                                          let~ add_ns :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               UnOp.not (|
                                                 LogicalOp.or (|
@@ -5291,7 +5355,8 @@ Module time.
                                                 |)
                                               |)
                                             |) in
-                                          let~ nanos : Ty.path "u32" :=
+                                          let~ nanos :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u32",
@@ -5303,7 +5368,10 @@ Module time.
                                               |)
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -5366,7 +5434,10 @@ Module time.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -5388,7 +5459,8 @@ Module time.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let~ secs : Ty.path "u64" :=
+                                                  let~ secs :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "u64",
@@ -5507,12 +5579,16 @@ Module time.
       | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
-          M.catch_return (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "core::time::Duration"; Ty.path "core::time::TryFromFloatSecsError" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.tuple []),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5551,7 +5627,7 @@ Module time.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ bits : Ty.path "u64" :=
+                let~ bits : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u64",
@@ -5559,7 +5635,7 @@ Module time.
                       [ M.read (| secs |) ]
                     |)
                   |) in
-                let~ mant : Ty.path "u64" :=
+                let~ mant : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "u64",
@@ -5594,7 +5670,7 @@ Module time.
                       ]
                     |)
                   |) in
-                let~ exp : Ty.path "i16" :=
+                let~ exp : Ty.apply (Ty.path "*") [] [ Ty.path "i16" ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "i16",
@@ -5626,9 +5702,20 @@ Module time.
                     |)
                   |) in
                 M.match_operator (|
-                  None,
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::time::Duration";
+                          Ty.path "core::time::TryFromFloatSecsError"
+                        ]
+                    ],
                   M.match_operator (|
-                    Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5651,7 +5738,7 @@ Module time.
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -5670,7 +5757,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ t : Ty.path "u128" :=
+                                  let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -5697,7 +5784,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ nanos_offset : Ty.path "i32" :=
+                                  let~ nanos_offset : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "i32",
@@ -5708,7 +5795,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ nanos_tmp : Ty.path "u128" :=
+                                  let~ nanos_tmp : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -5750,7 +5837,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ nanos : Ty.path "u32" :=
+                                  let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                     M.alloc (|
                                       M.cast
                                         (Ty.path "u32")
@@ -5760,7 +5847,7 @@ Module time.
                                           [ M.read (| nanos_tmp |); M.read (| nanos_offset |) ]
                                         |))
                                     |) in
-                                  let~ rem_mask : Ty.path "u128" :=
+                                  let~ rem_mask : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -5778,7 +5865,8 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ rem_msb_mask : Ty.path "u128" :=
+                                  let~ rem_msb_mask :
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -5796,7 +5884,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ rem : Ty.path "u128" :=
+                                  let~ rem : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u128",
@@ -5804,7 +5892,7 @@ Module time.
                                         [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
                                       |)
                                     |) in
-                                  let~ is_tie : Ty.path "bool" :=
+                                  let~ is_tie : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -5812,7 +5900,7 @@ Module time.
                                         [ M.read (| rem |); M.read (| rem_msb_mask |) ]
                                       |)
                                     |) in
-                                  let~ is_even : Ty.path "bool" :=
+                                  let~ is_even : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -5827,7 +5915,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ rem_msb : Ty.path "bool" :=
+                                  let~ rem_msb : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -5842,7 +5930,7 @@ Module time.
                                         ]
                                       |)
                                     |) in
-                                  let~ add_ns : Ty.path "bool" :=
+                                  let~ add_ns : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                     M.alloc (|
                                       UnOp.not (|
                                         LogicalOp.or (|
@@ -5855,7 +5943,7 @@ Module time.
                                         |)
                                       |)
                                     |) in
-                                  let~ nanos : Ty.path "u32" :=
+                                  let~ nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path "u32",
@@ -5867,7 +5955,10 @@ Module time.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -5924,7 +6015,10 @@ Module time.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -5946,7 +6040,7 @@ Module time.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ secs : Ty.path "u64" :=
+                                          let~ secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u64",
@@ -5978,7 +6072,7 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ t : Ty.path "u128" :=
+                                          let~ t : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u128",
@@ -6012,9 +6106,11 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ nanos_offset : Ty.path "i32" :=
+                                          let~ nanos_offset :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
                                             M.alloc (| Value.Integer IntegerKind.I32 52 |) in
-                                          let~ nanos_tmp : Ty.path "u128" :=
+                                          let~ nanos_tmp :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u128",
@@ -6044,7 +6140,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ nanos : Ty.path "u32" :=
+                                          let~ nanos :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "u32")
@@ -6057,7 +6154,8 @@ Module time.
                                                   ]
                                                 |))
                                             |) in
-                                          let~ rem_mask : Ty.path "u128" :=
+                                          let~ rem_mask :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u128",
@@ -6075,7 +6173,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ rem_msb_mask : Ty.path "u128" :=
+                                          let~ rem_msb_mask :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u128",
@@ -6093,7 +6192,7 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ rem : Ty.path "u128" :=
+                                          let~ rem : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u128",
@@ -6101,7 +6200,8 @@ Module time.
                                                 [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
                                               |)
                                             |) in
-                                          let~ is_tie : Ty.path "bool" :=
+                                          let~ is_tie :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -6109,7 +6209,8 @@ Module time.
                                                 [ M.read (| rem |); M.read (| rem_msb_mask |) ]
                                               |)
                                             |) in
-                                          let~ is_even : Ty.path "bool" :=
+                                          let~ is_even :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -6127,7 +6228,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ rem_msb : Ty.path "bool" :=
+                                          let~ rem_msb :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -6145,7 +6247,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let~ add_ns : Ty.path "bool" :=
+                                          let~ add_ns :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                                             M.alloc (|
                                               UnOp.not (|
                                                 LogicalOp.or (|
@@ -6158,7 +6261,8 @@ Module time.
                                                 |)
                                               |)
                                             |) in
-                                          let~ nanos : Ty.path "u32" :=
+                                          let~ nanos :
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "u32",
@@ -6170,7 +6274,10 @@ Module time.
                                               |)
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -6233,7 +6340,10 @@ Module time.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Some (Ty.tuple [ Ty.path "u64"; Ty.path "u32" ]),
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -6255,7 +6365,8 @@ Module time.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let~ secs : Ty.path "u64" :=
+                                                  let~ secs :
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.path "u64",
@@ -6427,7 +6538,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (| M.read (| self |) |),
@@ -6529,7 +6640,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (| M.read (| self |) |),
@@ -6673,7 +6784,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (| M.read (| self |) |),
@@ -6775,7 +6886,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   M.deref (| M.read (| self |) |),
@@ -6822,12 +6933,14 @@ Module time.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
-            let~ total_secs : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ total_nanos : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ _ : Ty.tuple [] :=
+            let~ total_secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+              M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ total_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+              M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       I,
@@ -6848,11 +6961,11 @@ Module time.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -6893,7 +7006,7 @@ Module time.
                                           0
                                         |) in
                                       let entry := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             total_secs,
@@ -6943,13 +7056,13 @@ Module time.
                                             |)
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             total_nanos,
                                             M.read (|
                                               M.match_operator (|
-                                                Some (Ty.path "u64"),
+                                                Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -6998,7 +7111,11 @@ Module time.
                                                           γ,
                                                           "core::option::Option::None"
                                                         |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.alloc (|
                                                           M.write (|
                                                             total_secs,
@@ -7104,7 +7221,7 @@ Module time.
                         |)))
                   ]
                 |)) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   total_secs,
@@ -7144,7 +7261,7 @@ Module time.
                   |)
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   total_nanos,
@@ -7194,12 +7311,14 @@ Module time.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
-            let~ total_secs : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ total_nanos : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ _ : Ty.tuple [] :=
+            let~ total_secs : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+              M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ total_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
+              M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.use
                 (M.match_operator (|
-                  Some (Ty.tuple []),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       I,
@@ -7220,11 +7339,11 @@ Module time.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
-                          Ty.tuple [],
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
+                            (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                               M.match_operator (|
-                                Some (Ty.tuple []),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -7266,7 +7385,7 @@ Module time.
                                           0
                                         |) in
                                       let entry := M.copy (| γ0_0 |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             total_secs,
@@ -7316,13 +7435,13 @@ Module time.
                                             |)
                                           |)
                                         |) in
-                                      let~ _ : Ty.tuple [] :=
+                                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.alloc (|
                                           M.write (|
                                             total_nanos,
                                             M.read (|
                                               M.match_operator (|
-                                                Some (Ty.path "u64"),
+                                                Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -7371,7 +7490,11 @@ Module time.
                                                           γ,
                                                           "core::option::Option::None"
                                                         |) in
-                                                      let~ _ : Ty.tuple [] :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [ Ty.tuple [] ] :=
                                                         M.alloc (|
                                                           M.write (|
                                                             total_secs,
@@ -7479,7 +7602,7 @@ Module time.
                         |)))
                   ]
                 |)) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   total_secs,
@@ -7519,7 +7642,7 @@ Module time.
                   |)
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.write (|
                   total_nanos,
@@ -7755,10 +7878,11 @@ Module time.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ prefix : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+            let~ prefix :
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7788,11 +7912,15 @@ Module time.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7861,11 +7989,15 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                        ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -7980,11 +8112,15 @@ Module time.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                                ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -8373,7 +8509,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -8413,7 +8549,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
                 "core::time::TryFromFloatSecsError",
@@ -8549,7 +8685,7 @@ Module time.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -8605,7 +8741,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.path "core::time::TryFromFloatSecsErrorKind"),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::TryFromFloatSecsErrorKind" ],
               self,
               [
                 fun γ =>
@@ -8668,7 +8804,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.path "isize" :=
+            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",
@@ -8680,7 +8816,7 @@ Module time.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr : Ty.path "isize" :=
+            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.path "isize",

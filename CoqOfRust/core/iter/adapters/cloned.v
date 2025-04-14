@@ -167,17 +167,24 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.function [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ] R),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.function [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ] R ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| γ |) in
                               M.match_operator (|
-                                Some
-                                  (Ty.function
-                                    [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                    R),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                      R
+                                  ],
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
@@ -917,7 +924,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ item : Ty.apply (Ty.path "&") [] [ T ] :=
+                let~ item : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ T ],

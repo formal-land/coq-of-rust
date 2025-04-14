@@ -111,7 +111,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ b : Ty.path "scoping_rules_lifetimes_traits::Borrowed" :=
+        let~ b : Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "scoping_rules_lifetimes_traits::Borrowed",
@@ -127,8 +127,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

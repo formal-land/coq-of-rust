@@ -41,11 +41,15 @@ Module ops.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ],
                 self,
                 [
                   fun γ =>
@@ -145,7 +149,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
                 self,
                 [
                   fun γ =>
@@ -265,7 +272,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -277,7 +284,7 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr : Ty.path "isize" :=
+              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -299,7 +306,7 @@ Module ops.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Some (Ty.path "bool"),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -427,13 +434,13 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        None,
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -468,7 +475,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.path "isize" :=
+              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "isize",
@@ -480,7 +487,7 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -503,7 +510,7 @@ Module ops.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 self,
                 [
                   fun γ =>
@@ -630,17 +637,21 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::ops::control_flow::ControlFlow")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::ops::control_flow::ControlFlow")
-                        []
-                        [ B; Ty.path "core::convert::Infallible" ];
-                      C
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [ B; Ty.path "core::convert::Infallible" ];
+                        C
+                      ]
+                  ],
                 self,
                 [
                   fun γ =>
@@ -721,7 +732,10 @@ Module ops.
             (let residual := M.alloc (| residual |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
                 residual,
                 [
                   fun γ =>
@@ -798,7 +812,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -841,7 +855,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.path "bool"),
+                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -887,7 +901,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ B ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ B ] ],
                 self,
                 [
                   fun γ =>
@@ -939,7 +953,10 @@ Module ops.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ] ],
                 self,
                 [
                   fun γ =>
@@ -1017,7 +1034,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ C ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ C ] ],
                 self,
                 [
                   fun γ =>
@@ -1071,7 +1088,10 @@ Module ops.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ] ],
                 self,
                 [
                   fun γ =>
@@ -1152,11 +1172,15 @@ Module ops.
             (let r := M.alloc (| r |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "core::ops::control_flow::ControlFlow")
-                    []
-                    [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                  ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1256,7 +1280,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some R,
+                Ty.apply (Ty.path "*") [] [ R ],
                 self,
                 [
                   fun γ =>

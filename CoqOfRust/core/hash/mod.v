@@ -13,7 +13,7 @@ Module hash.
           M.read (|
             M.use
               (M.match_operator (|
-                Some (Ty.tuple []),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
@@ -34,11 +34,11 @@ Module hash.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.tuple [],
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         ltac:(M.monadic
-                          (let~ _ : Ty.tuple [] :=
+                          (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.tuple []),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -460,7 +460,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -493,7 +493,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.read (|
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -516,7 +516,7 @@ Module hash.
                   ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -994,7 +994,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let x := M.alloc (| x |) in
           M.read (|
-            let~ hasher : Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher" :=
+            let~ hasher :
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher" ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher",
@@ -1010,7 +1014,7 @@ Module hash.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [],
@@ -1351,7 +1355,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1363,7 +1367,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -1461,7 +1466,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1473,7 +1478,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -1571,7 +1577,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1583,7 +1589,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -1681,7 +1688,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1693,7 +1700,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -1791,7 +1799,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1803,7 +1811,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -1901,7 +1910,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -1913,7 +1922,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2011,7 +2021,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2023,7 +2033,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2121,7 +2132,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2133,7 +2144,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2231,7 +2243,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2243,7 +2255,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2341,7 +2354,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2353,7 +2366,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2451,7 +2465,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2463,7 +2477,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2561,7 +2576,7 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen : Ty.path "usize" :=
+              let~ newlen : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
@@ -2573,7 +2588,8 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              let~ ptr :
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
@@ -2711,7 +2727,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -2751,7 +2767,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              None,
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               β1,
               [
                 fun γ =>
@@ -2812,14 +2828,14 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let value_T := M.alloc (| γ0_0 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -2873,7 +2889,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2882,7 +2898,7 @@ Module hash.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -2901,7 +2917,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -2955,7 +2971,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2966,7 +2982,7 @@ Module hash.
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -2985,7 +3001,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3004,7 +3020,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3058,7 +3074,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3071,7 +3087,7 @@ Module hash.
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
                       let value_D := M.alloc (| γ0_3 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3090,7 +3106,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3109,7 +3125,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3128,7 +3144,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3187,7 +3203,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3202,7 +3218,7 @@ Module hash.
                       let value_C := M.alloc (| γ0_2 |) in
                       let value_D := M.alloc (| γ0_3 |) in
                       let value_E := M.alloc (| γ0_4 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3221,7 +3237,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3240,7 +3256,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3259,7 +3275,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3278,7 +3294,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3337,7 +3353,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3354,7 +3370,7 @@ Module hash.
                       let value_D := M.alloc (| γ0_3 |) in
                       let value_E := M.alloc (| γ0_4 |) in
                       let value_F := M.alloc (| γ0_5 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3373,7 +3389,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3392,7 +3408,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3411,7 +3427,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3430,7 +3446,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3449,7 +3465,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3508,7 +3524,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3527,7 +3543,7 @@ Module hash.
                       let value_E := M.alloc (| γ0_4 |) in
                       let value_F := M.alloc (| γ0_5 |) in
                       let value_G := M.alloc (| γ0_6 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3546,7 +3562,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3565,7 +3581,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3584,7 +3600,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3603,7 +3619,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3622,7 +3638,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3641,7 +3657,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3700,7 +3716,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3721,7 +3737,7 @@ Module hash.
                       let value_F := M.alloc (| γ0_5 |) in
                       let value_G := M.alloc (| γ0_6 |) in
                       let value_H := M.alloc (| γ0_7 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3740,7 +3756,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3759,7 +3775,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3778,7 +3794,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3797,7 +3813,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3816,7 +3832,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3835,7 +3851,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3854,7 +3870,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3913,7 +3929,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3936,7 +3952,7 @@ Module hash.
                       let value_G := M.alloc (| γ0_6 |) in
                       let value_H := M.alloc (| γ0_7 |) in
                       let value_I := M.alloc (| γ0_8 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3955,7 +3971,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3974,7 +3990,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -3993,7 +4009,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4012,7 +4028,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4031,7 +4047,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4050,7 +4066,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4069,7 +4085,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4088,7 +4104,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4148,7 +4164,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -4173,7 +4189,7 @@ Module hash.
                       let value_H := M.alloc (| γ0_7 |) in
                       let value_I := M.alloc (| γ0_8 |) in
                       let value_J := M.alloc (| γ0_9 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4192,7 +4208,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4211,7 +4227,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4230,7 +4246,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4249,7 +4265,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4268,7 +4284,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4287,7 +4303,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4306,7 +4322,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4325,7 +4341,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4344,7 +4360,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4404,7 +4420,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -4431,7 +4447,7 @@ Module hash.
                       let value_I := M.alloc (| γ0_8 |) in
                       let value_J := M.alloc (| γ0_9 |) in
                       let value_K := M.alloc (| γ0_10 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4450,7 +4466,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4469,7 +4485,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4488,7 +4504,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4507,7 +4523,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4526,7 +4542,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4545,7 +4561,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4564,7 +4580,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4583,7 +4599,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4602,7 +4618,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4621,7 +4637,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4681,7 +4697,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -4710,7 +4726,7 @@ Module hash.
                       let value_J := M.alloc (| γ0_9 |) in
                       let value_K := M.alloc (| γ0_10 |) in
                       let value_L := M.alloc (| γ0_11 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4729,7 +4745,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4748,7 +4764,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4767,7 +4783,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4786,7 +4802,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4805,7 +4821,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4824,7 +4840,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4843,7 +4859,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4862,7 +4878,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4881,7 +4897,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4900,7 +4916,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4919,7 +4935,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -4972,7 +4988,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -5040,7 +5056,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -5085,7 +5101,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [],
@@ -5133,7 +5149,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -5157,7 +5173,7 @@ Module hash.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let address := M.copy (| γ0_0 |) in
                       let metadata := M.copy (| γ0_1 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -5185,7 +5201,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -5245,7 +5261,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                None,
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -5269,7 +5285,7 @@ Module hash.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let address := M.copy (| γ0_0 |) in
                       let metadata := M.copy (| γ0_1 |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],
@@ -5297,7 +5313,7 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [],

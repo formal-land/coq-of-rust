@@ -141,11 +141,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ age : Ty.path "generics_new_type_idiom::Years" :=
+        let~ age : Ty.apply (Ty.path "*") [] [ Ty.path "generics_new_type_idiom::Years" ] :=
           M.alloc (|
             Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer IntegerKind.I64 5 ]
           |) in
-        let~ age_days : Ty.path "generics_new_type_idiom::Days" :=
+        let~ age_days : Ty.apply (Ty.path "*") [] [ Ty.path "generics_new_type_idiom::Days" ] :=
           M.alloc (|
             M.call_closure (|
               Ty.path "generics_new_type_idiom::Days",
@@ -158,8 +158,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, age |) ]
             |)
           |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],
@@ -242,8 +242,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
+        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.call_closure (|
                 Ty.tuple [],

@@ -78,7 +78,7 @@ Module Impl_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         let by_ := M.alloc (| by_ |) in
         M.read (|
-          let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               let β :=
                 M.SubPointer.get_struct_record_field (|
