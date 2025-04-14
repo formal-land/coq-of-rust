@@ -402,11 +402,10 @@ Module Impl_revm_precompile_Precompiles.
         (let spec := M.alloc (| spec |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ] ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ] ],
             spec,
             [
               fun γ =>
@@ -598,21 +597,20 @@ Module Impl_revm_precompile_Precompiles.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ])
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::Precompiles";
+                                      Ty.path "alloc::alloc::Global"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -826,21 +824,20 @@ Module Impl_revm_precompile_Precompiles.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ])
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::Precompiles";
+                                      Ty.path "alloc::alloc::Global"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1042,21 +1039,20 @@ Module Impl_revm_precompile_Precompiles.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ])
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::Precompiles";
+                                      Ty.path "alloc::alloc::Global"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1253,21 +1249,20 @@ Module Impl_revm_precompile_Precompiles.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ])
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::Precompiles";
+                                      Ty.path "alloc::alloc::Global"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1457,21 +1452,20 @@ Module Impl_revm_precompile_Precompiles.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ])
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::Precompiles";
+                                      Ty.path "alloc::alloc::Global"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1675,21 +1669,20 @@ Module Impl_revm_precompile_Precompiles.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ])
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::Precompiles";
+                                      Ty.path "alloc::alloc::Global"
+                                    ])
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -2562,24 +2555,22 @@ Module Impl_revm_precompile_Precompiles.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some
-                                    (Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "revm_precompile::PrecompileWithAddress"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "alloy_primitives::bits::address::Address")
-                                      ]),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                            ]
+                                        ]
+                                        (Ty.path "alloy_primitives::bits::address::Address")
+                                    ],
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -2831,38 +2822,37 @@ Module Impl_revm_precompile_Precompiles.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some
-                                    (Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [
-                                        Ty.function
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                        (Ty.tuple
                                           [
-                                            Ty.tuple
-                                              [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                          ]
-                                          (Ty.tuple
-                                            [
-                                              Ty.path "alloy_primitives::bits::address::Address";
-                                              Ty.function
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                                  Ty.path "u64"
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
+                                            Ty.path "alloy_primitives::bits::address::Address";
+                                            Ty.function
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
                                                   []
-                                                  [
-                                                    Ty.path
-                                                      "revm_precompile::interface::PrecompileOutput";
-                                                    Ty.path
-                                                      "revm_precompile::interface::PrecompileErrors"
-                                                  ])
-                                            ])
-                                      ]),
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                                Ty.path "u64"
+                                              ]
+                                              (Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ])
+                                          ])
+                                    ],
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -3369,7 +3359,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 self,
                 [
                   fun γ =>
@@ -3793,7 +3783,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
         (let spec_id := M.alloc (| spec_id |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_precompile::PrecompileSpecId" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
             spec_id,
             [
               fun γ =>

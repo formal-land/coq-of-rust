@@ -107,7 +107,7 @@ Module bls12_381.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -166,7 +166,7 @@ Module bls12_381.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -309,23 +309,22 @@ Module bls12_381.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.match_operator (|
-                                                                        Some
-                                                                          (Ty.apply
-                                                                            (Ty.path "*")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "array")
-                                                                                [
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    2
-                                                                                ]
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument"
-                                                                                ]
-                                                                            ]),
+                                                                        Ty.apply
+                                                                          (Ty.path "*")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "array")
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  2
+                                                                              ]
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument"
+                                                                              ]
+                                                                          ],
                                                                         M.alloc (|
                                                                           Value.Tuple
                                                                             [
@@ -488,7 +487,7 @@ Module bls12_381.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p2_affine" ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p2_affine" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -713,7 +712,7 @@ Module bls12_381.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p2_affine" ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "blst::blst_p2_affine" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply

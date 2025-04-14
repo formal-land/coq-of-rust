@@ -87,16 +87,15 @@ Module type_safety.
             let~ idx : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
               M.alloc (| M.cast (Ty.path "usize") (M.read (| i |)) |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -643,7 +642,7 @@ Module type_safety.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -760,7 +759,7 @@ Module type_safety.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -991,7 +990,7 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1127,7 +1126,7 @@ Module type_safety.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1244,7 +1243,7 @@ Module type_safety.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1476,7 +1475,7 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1742,7 +1741,7 @@ Module type_safety.
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.use
                     (M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1778,7 +1777,7 @@ Module type_safety.
                               ltac:(M.monadic
                                 (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1837,7 +1836,7 @@ Module type_safety.
                                             |) in
                                           let ty := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -2058,7 +2057,7 @@ Module type_safety.
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2133,7 +2132,7 @@ Module type_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2179,7 +2178,7 @@ Module type_safety.
                                         let block_id := M.copy (| γ0_0 |) in
                                         M.use
                                           (M.match_operator (|
-                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -2284,11 +2283,7 @@ Module type_safety.
                                                             []
                                                             [ Ty.tuple [] ] :=
                                                         M.match_operator (|
-                                                          Some
-                                                            (Ty.apply
-                                                              (Ty.path "*")
-                                                              []
-                                                              [ Ty.tuple [] ]),
+                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -2445,11 +2440,10 @@ Module type_safety.
                                                                     |)
                                                                   |) in
                                                                 M.match_operator (|
-                                                                  Some
-                                                                    (Ty.apply
-                                                                      (Ty.path "*")
-                                                                      []
-                                                                      [ Ty.tuple [] ]),
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [ Ty.tuple [] ],
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       Ty.apply
@@ -2705,11 +2699,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2942,11 +2935,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3046,7 +3038,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3218,7 +3210,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   operand,
                   [
                     fun γ =>
@@ -3344,16 +3336,15 @@ Module type_safety.
                     ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                      ],
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -3529,7 +3520,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3574,11 +3565,10 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             M.read (|
                               M.match_operator (|
-                                Some
-                                  (Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -3768,7 +3758,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3825,7 +3815,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3870,11 +3860,10 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             M.read (|
                               M.match_operator (|
-                                Some
-                                  (Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -4086,11 +4075,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -4323,11 +4311,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -4427,7 +4414,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -4561,7 +4548,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -4581,12 +4568,10 @@ Module type_safety.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -4789,7 +4774,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4834,11 +4819,10 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             M.read (|
                               M.match_operator (|
-                                Some
-                                  (Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -5082,7 +5066,7 @@ Module type_safety.
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5211,7 +5195,7 @@ Module type_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -5281,14 +5265,13 @@ Module type_safety.
                                               ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -5545,14 +5528,13 @@ Module type_safety.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -5669,7 +5651,7 @@ Module type_safety.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -5870,7 +5852,7 @@ Module type_safety.
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -5952,7 +5934,7 @@ Module type_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6008,7 +5990,7 @@ Module type_safety.
                                           |) in
                                         let return_type := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -6209,19 +6191,18 @@ Module type_safety.
         let type_args := M.alloc (| type_args |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "move_binary_format::file_format::Signature";
-                      Ty.path "move_binary_format::errors::PartialVMError"
-                    ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::Signature";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+              ],
             M.alloc (|
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -6313,7 +6294,7 @@ Module type_safety.
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.use
                       (M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -6403,7 +6384,7 @@ Module type_safety.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -6615,11 +6596,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::Signature" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::Signature" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::Signature" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6748,7 +6728,7 @@ Module type_safety.
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -6877,7 +6857,7 @@ Module type_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -6947,14 +6927,13 @@ Module type_safety.
                                               ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -7211,14 +7190,13 @@ Module type_safety.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -7335,7 +7313,7 @@ Module type_safety.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -7430,7 +7408,7 @@ Module type_safety.
                   |)) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -7625,11 +7603,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -7862,11 +7839,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -7966,7 +7942,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8034,11 +8010,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::Signature" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::Signature" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::Signature" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -8167,7 +8142,7 @@ Module type_safety.
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -8212,7 +8187,7 @@ Module type_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -8262,7 +8237,7 @@ Module type_safety.
                                           |) in
                                         let sig := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -8483,7 +8458,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8503,12 +8478,10 @@ Module type_safety.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -8691,11 +8664,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -8928,11 +8900,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -9032,7 +9003,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9102,7 +9073,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -9293,7 +9264,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9313,12 +9284,10 @@ Module type_safety.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -9526,11 +9495,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -9763,11 +9731,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -9867,7 +9834,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9937,7 +9904,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -10129,7 +10096,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -10149,12 +10116,10 @@ Module type_safety.
                                   [
                                     M.read (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -10362,11 +10327,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -10599,11 +10563,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -10708,11 +10671,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -10945,11 +10907,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -11049,7 +11010,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -11111,16 +11072,15 @@ Module type_safety.
                   ]
                 |) in
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  ],
                 signer_reference_operand,
                 [
                   fun γ =>
@@ -11133,17 +11093,15 @@ Module type_safety.
                         |) in
                       let inner := M.copy (| γ0_0 |) in
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
-                                ]
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                          ],
                         M.deref (| M.read (| inner |) |),
                         [
                           fun γ =>
@@ -11281,11 +11239,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -11518,11 +11475,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -11627,11 +11583,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -11864,11 +11819,10 @@ Module type_safety.
                               |)
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -11968,7 +11922,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -12043,11 +11997,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -12149,11 +12102,10 @@ Module type_safety.
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -12224,7 +12176,7 @@ Module type_safety.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -12855,7 +12807,7 @@ Module type_safety.
             (M.read (|
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   bytecode,
                   [
                     fun γ =>
@@ -12873,11 +12825,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13118,14 +13069,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -13317,7 +13265,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -13337,14 +13285,13 @@ Module type_safety.
                                           [
                                             M.read (|
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::AbilitySet"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet"
+                                                  ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -13535,14 +13482,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -13796,14 +13742,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -13916,7 +13861,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -14013,11 +13958,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -14258,14 +14202,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -14372,7 +14313,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -14496,11 +14437,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -14741,14 +14681,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -14855,7 +14792,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -14995,7 +14932,7 @@ Module type_safety.
                           |) in
                         M.use
                           (M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -15131,7 +15068,7 @@ Module type_safety.
                                     ltac:(M.monadic
                                       (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                         M.match_operator (|
-                                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -15206,14 +15143,13 @@ Module type_safety.
                                                       ] :=
                                                   M.copy (|
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -15476,14 +15412,13 @@ Module type_safety.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::SignatureToken"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -15605,7 +15540,7 @@ Module type_safety.
                                                     |)
                                                   |) in
                                                 M.match_operator (|
-                                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -15753,11 +15688,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -15998,14 +15932,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -16112,7 +16043,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           operand,
                           [
                             fun γ =>
@@ -16125,7 +16056,7 @@ Module type_safety.
                                   |) in
                                 let inner := M.copy (| γ0_0 |) in
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -16302,7 +16233,7 @@ Module type_safety.
                           |) in
                         let field_handle_index := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16562,7 +16493,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16739,7 +16670,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16886,7 +16817,7 @@ Module type_safety.
                           |) in
                         let field_handle_index := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -17146,7 +17077,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17323,7 +17254,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -17470,7 +17401,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17611,7 +17542,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17752,7 +17683,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17893,7 +17824,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18034,7 +17965,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18175,7 +18106,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18374,7 +18305,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18533,7 +18464,7 @@ Module type_safety.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -18728,7 +18659,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -18748,14 +18679,13 @@ Module type_safety.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.apply
-                                                      (Ty.path "*")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::AbilitySet"
-                                                      ]),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -18996,7 +18926,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19180,7 +19110,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19317,7 +19247,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19454,7 +19384,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19630,7 +19560,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19949,7 +19879,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20130,7 +20060,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20314,7 +20244,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20625,7 +20555,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20802,7 +20732,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20984,7 +20914,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -21295,7 +21225,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21472,7 +21402,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -21619,11 +21549,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -21864,14 +21793,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21978,7 +21904,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           operand,
                           [
                             fun γ =>
@@ -22024,7 +21950,7 @@ Module type_safety.
                                         ltac:(M.monadic
                                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -22045,14 +21971,13 @@ Module type_safety.
                                                               [
                                                                 M.read (|
                                                                   M.match_operator (|
-                                                                    Some
-                                                                      (Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::AbilitySet"
-                                                                        ]),
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::AbilitySet"
+                                                                      ],
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -22265,7 +22190,7 @@ Module type_safety.
                                             |) in
                                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -22454,11 +22379,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -22699,14 +22623,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -22819,11 +22740,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -23064,14 +22984,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -23184,11 +23101,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               ref_operand,
                               [
                                 fun γ =>
@@ -23241,7 +23157,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -23261,14 +23177,13 @@ Module type_safety.
                                             [
                                               M.read (|
                                                 M.match_operator (|
-                                                  Some
-                                                    (Ty.apply
-                                                      (Ty.path "*")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::AbilitySet"
-                                                      ]),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    ],
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -23457,7 +23372,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -23540,11 +23455,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -23785,14 +23699,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -23900,7 +23811,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -23965,7 +23876,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24110,11 +24021,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -24355,14 +24265,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -24470,7 +24377,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -24535,7 +24442,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24680,11 +24587,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -24925,14 +24831,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -25040,7 +24943,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -25105,7 +25008,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -25326,14 +25229,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -25587,14 +25489,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -25714,14 +25615,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -25975,14 +25875,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -26095,7 +25994,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -26145,7 +26044,7 @@ Module type_safety.
                                             |) in
                                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -26355,14 +26254,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -26616,14 +26514,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -26743,14 +26640,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -27004,14 +26900,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -27124,7 +27019,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -27181,7 +27076,7 @@ Module type_safety.
                                             |) in
                                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -27391,14 +27286,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -27652,14 +27546,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -27779,14 +27672,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -28040,14 +27932,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -28160,7 +28051,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -28233,7 +28124,7 @@ Module type_safety.
                                             |) in
                                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -28423,11 +28314,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -28668,14 +28558,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -28782,7 +28669,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -28824,7 +28711,7 @@ Module type_safety.
                                   |) in
                                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -29028,14 +28915,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -29289,14 +29175,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -29416,14 +29301,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -29677,14 +29561,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -29797,7 +29680,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -29818,14 +29701,13 @@ Module type_safety.
                                                     [
                                                       M.read (|
                                                         M.match_operator (|
-                                                          Some
-                                                            (Ty.apply
-                                                              (Ty.path "*")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::AbilitySet"
-                                                              ]),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet"
+                                                            ],
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -30004,7 +29886,7 @@ Module type_safety.
                                             |) in
                                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -30234,14 +30116,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -30495,14 +30376,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -30622,14 +30502,13 @@ Module type_safety.
                                         ] :=
                                     M.copy (|
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::SignatureToken"
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -30883,14 +30762,13 @@ Module type_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::SignatureToken"
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -31003,7 +30881,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -31052,7 +30930,7 @@ Module type_safety.
                                               Value.Bool true
                                             |) in
                                           M.match_operator (|
-                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -31237,7 +31115,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31501,7 +31379,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -31678,7 +31556,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -31825,7 +31703,7 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32089,7 +31967,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32266,7 +32144,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32452,7 +32330,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32763,7 +32641,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32940,7 +32818,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -33122,7 +33000,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -33433,7 +33311,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -33610,7 +33488,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -33792,7 +33670,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -34099,7 +33977,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -34276,7 +34154,7 @@ Module type_safety.
                             ]
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -34502,7 +34380,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -34629,21 +34507,20 @@ Module type_safety.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Some
-                                                            (Ty.apply
-                                                              (Ty.path "*")
-                                                              []
-                                                              [
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::SignatureToken"
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.path "bool")
-                                                              ]),
+                                                          Ty.apply
+                                                            (Ty.path "*")
+                                                            []
+                                                            [
+                                                              Ty.function
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::SignatureToken"
+                                                                    ]
+                                                                ]
+                                                                (Ty.path "bool")
+                                                            ],
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
@@ -34701,7 +34578,7 @@ Module type_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -34753,7 +34630,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -34946,11 +34823,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -35191,14 +35067,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -35385,7 +35258,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -35455,7 +35328,7 @@ Module type_safety.
                                     |) in
                                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -35716,7 +35589,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -35935,7 +35808,7 @@ Module type_safety.
                             |)
                           |) in
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -36081,11 +35954,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -36326,14 +36198,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -36446,11 +36315,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -36691,14 +36559,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -36885,7 +36750,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -36972,7 +36837,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -37096,11 +36961,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -37341,14 +37205,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -37535,7 +37396,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -37605,7 +37466,7 @@ Module type_safety.
                                     |) in
                                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -37798,11 +37659,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -38043,14 +37903,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -38237,7 +38094,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -38364,7 +38221,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -38527,11 +38384,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -38772,14 +38628,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -38892,11 +38745,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -39137,14 +38989,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -39257,11 +39106,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -39502,14 +39350,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -39617,7 +39462,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -39805,7 +39650,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -39927,11 +39772,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -40172,14 +40016,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -40287,7 +40128,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -40352,7 +40193,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -40497,11 +40338,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -40742,14 +40582,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -40857,7 +40694,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -40922,7 +40759,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -41067,11 +40904,10 @@ Module type_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.copy (|
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -41312,14 +41148,11 @@ Module type_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -41427,7 +41260,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -41492,7 +41325,7 @@ Module type_safety.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -41652,11 +41485,7 @@ Module type_safety.
         let type_args := M.alloc (| type_args |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "move_binary_format::file_format::SignatureToken" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -41833,7 +41662,7 @@ Module type_safety.
             (M.read (|
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -41898,11 +41727,10 @@ Module type_safety.
                   ]
                 |) in
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                 token,
                 [
                   fun γ =>
@@ -42091,11 +41919,10 @@ Module type_safety.
                         |) in
                       let struct_inst := M.alloc (| γ1_0 |) in
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -42351,27 +42178,26 @@ Module type_safety.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Some
-                                                                  (Ty.apply
-                                                                    (Ty.path "*")
-                                                                    []
-                                                                    [
-                                                                      Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::SignatureToken"
-                                                                                ]
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_binary_format::file_format::SignatureToken")
-                                                                    ]),
+                                                                Ty.apply
+                                                                  (Ty.path "*")
+                                                                  []
+                                                                  [
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ]
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.path
+                                                                        "move_binary_format::file_format::SignatureToken")
+                                                                  ],
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -42542,7 +42368,7 @@ Module type_safety.
                       let idx := M.alloc (| γ1_0 |) in
                       let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                         M.match_operator (|
-                          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -42555,7 +42381,7 @@ Module type_safety.
                                   |) in
                                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -42724,16 +42550,15 @@ Module type_safety.
         let mut_ref_only := M.alloc (| mut_ref_only |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+              ],
             vector_ref_ty,
             [
               fun γ =>
@@ -42746,16 +42571,15 @@ Module type_safety.
                     |) in
                   let referred_type := M.copy (| γ0_0 |) in
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                      ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -42767,16 +42591,15 @@ Module type_safety.
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -42811,16 +42634,15 @@ Module type_safety.
                     |) in
                   let referred_type := M.copy (| γ0_0 |) in
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                      ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

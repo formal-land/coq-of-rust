@@ -104,7 +104,7 @@ Module collections.
                           (let~ next : Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ] :=
                             M.copy (|
                               M.match_operator (|
-                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ]),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -169,11 +169,10 @@ Module collections.
                                 [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] :=
                             M.copy (|
                               M.match_operator (|
-                                Some
-                                  (Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -231,7 +230,7 @@ Module collections.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>

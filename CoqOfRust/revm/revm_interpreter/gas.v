@@ -27,23 +27,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "revm_interpreter::gas::Gas" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::Gas" ],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -411,19 +407,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -975,7 +971,7 @@ Module gas.
             let~ max_refund_quotient : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1103,7 +1099,7 @@ Module gas.
           let cost := M.alloc (| cost |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "bool" ],
@@ -1131,7 +1127,7 @@ Module gas.
                       M.alloc (| UnOp.not (| M.read (| overflow |) |) |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1189,11 +1185,10 @@ Module gas.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.path "revm_interpreter::gas::MemoryExtensionResult" ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.path "revm_interpreter::gas::MemoryExtensionResult" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1228,7 +1223,7 @@ Module gas.
                         let additional_cost := M.copy (| γ0_0 |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1341,14 +1336,13 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -1598,13 +1592,13 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1761,7 +1755,7 @@ Module gas.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

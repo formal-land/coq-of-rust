@@ -57,21 +57,20 @@ Module block.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path
-                                          "revm_context_interface::block::blob::BlobExcessGasAndPrice"
-                                      ]
-                                  ]
-                                  (Ty.path "u128")
-                              ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path
+                                        "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                                    ]
+                                ]
+                                (Ty.path "u128")
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -148,21 +147,20 @@ Module block.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path
-                                          "revm_context_interface::block::blob::BlobExcessGasAndPrice"
-                                      ]
-                                  ]
-                                  (Ty.path "u64")
-                              ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path
+                                        "revm_context_interface::block::blob::BlobExcessGasAndPrice"
+                                    ]
+                                ]
+                                (Ty.path "u64")
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>

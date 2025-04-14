@@ -137,7 +137,7 @@ Module table.
           let instruction := M.alloc (| instruction |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               self,
               [
                 fun γ =>
@@ -269,34 +269,33 @@ Module table.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Some
-                                    (Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.function
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&mut")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "revm_interpreter::interpreter::Interpreter")
-                                                          []
-                                                          [ WIRE ]
-                                                      ];
-                                                    Ty.apply (Ty.path "&mut") [] [ H ]
-                                                  ]
-                                                  (Ty.tuple [])
-                                              ]
-                                          ]
-                                          CI
-                                      ]),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.function
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "revm_interpreter::interpreter::Interpreter")
+                                                        []
+                                                        [ WIRE ]
+                                                    ];
+                                                  Ty.apply (Ty.path "&mut") [] [ H ]
+                                                ]
+                                                (Ty.tuple [])
+                                            ]
+                                        ]
+                                        CI
+                                    ],
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -365,21 +364,20 @@ Module table.
                 M.deref (|
                   M.read (|
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 256 ]
-                                  [ CI ]
-                              ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 256 ]
+                                [ CI ]
+                            ]
+                        ],
                       self,
                       [
                         fun γ =>
@@ -489,21 +487,16 @@ Module table.
             M.deref (|
               M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 256 ]
-                              [ CI ]
-                          ]
-                      ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ]
+                        ]
+                    ],
                   self,
                   [
                     fun γ =>
@@ -576,21 +569,20 @@ Module table.
                             |)
                           |) in
                         M.match_operator (|
-                          Some
-                            (Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 256 ]
-                                      [ CI ]
-                                  ]
-                              ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 256 ]
+                                    [ CI ]
+                                ]
+                            ],
                           self,
                           [
                             fun γ =>
@@ -887,11 +879,10 @@ Module table.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>

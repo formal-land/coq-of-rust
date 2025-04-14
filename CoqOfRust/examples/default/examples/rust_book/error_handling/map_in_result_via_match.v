@@ -20,16 +20,15 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       let second_number_str := M.alloc (| second_number_str |) in
       M.read (|
         M.match_operator (|
-          Some
-            (Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-              ]),
+          Ty.apply
+            (Ty.path "*")
+            []
+            [
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+            ],
           M.alloc (|
             M.call_closure (|
               Ty.apply
@@ -47,16 +46,15 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let first_number := M.copy (| γ0_0 |) in
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                      ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                    ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -139,7 +137,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let result := M.alloc (| result |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           result,
           [
             fun γ =>

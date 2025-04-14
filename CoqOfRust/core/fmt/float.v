@@ -583,7 +583,7 @@ Module fmt.
             let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ],
                   force_sign,
                   [
                     fun γ =>
@@ -600,16 +600,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1135,7 +1134,7 @@ Module fmt.
             let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ],
                   force_sign,
                   [
                     fun γ =>
@@ -1152,16 +1151,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1284,7 +1282,7 @@ Module fmt.
             let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ],
                   force_sign,
                   [
                     fun γ =>
@@ -1301,16 +1299,15 @@ Module fmt.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1350,16 +1347,15 @@ Module fmt.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                        ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

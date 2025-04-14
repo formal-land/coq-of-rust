@@ -298,7 +298,7 @@ Module iter.
                                 init,
                                 M.read (|
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Acc ]),
+                                    Ty.apply (Ty.path "*") [] [ Acc ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply

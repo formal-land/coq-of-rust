@@ -801,25 +801,25 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                         Value.DeclaredButUndefined,
                                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                       |)))
@@ -1070,7 +1070,7 @@ Module eof.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -1110,7 +1110,7 @@ Module eof.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
@@ -1161,7 +1161,7 @@ Module eof.
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                               M.match_operator (|
-                                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "core::cmp::Ordering",
@@ -1213,11 +1213,7 @@ Module eof.
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [ Ty.path "core::cmp::Ordering" ]),
+                                        Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "core::cmp::Ordering",
@@ -1269,11 +1265,10 @@ Module eof.
                                                   "core::cmp::Ordering::Equal"
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [ Ty.path "core::cmp::Ordering" ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path "core::cmp::Ordering",
@@ -1423,12 +1418,11 @@ Module eof.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -1482,16 +1476,15 @@ Module eof.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::cmp::Ordering" ]
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::cmp::Ordering" ]
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1556,16 +1549,15 @@ Module eof.
                                 |) in
                               let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.match_operator (|
-                                Some
-                                  (Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "core::cmp::Ordering" ]
-                                    ]),
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::cmp::Ordering" ]
+                                  ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1634,16 +1626,15 @@ Module eof.
                                           "core::cmp::Ordering::Equal"
                                         |) in
                                       M.match_operator (|
-                                        Some
-                                          (Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "core::cmp::Ordering" ]
-                                            ]),
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::cmp::Ordering" ]
+                                          ],
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -1704,16 +1695,15 @@ Module eof.
                                                   "core::cmp::Ordering::Equal"
                                                 |) in
                                               M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::option::Option")
-                                                        []
-                                                        [ Ty.path "core::cmp::Ordering" ]
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "core::cmp::Ordering" ]
+                                                  ],
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -1960,34 +1950,12 @@ Module eof.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
-                                Ty.path "usize"
-                              ];
-                            Ty.path "revm_bytecode::eof::EofDecodeError"
-                          ]
-                      ]),
-                  M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
                         []
                         [
                           Ty.tuple
@@ -1996,9 +1964,29 @@ Module eof.
                                 (Ty.path "&")
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                              Ty.path "u16"
-                            ]
-                        ]),
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                              Ty.path "usize"
+                            ];
+                          Ty.path "revm_bytecode::eof::EofDecodeError"
+                        ]
+                    ],
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                            Ty.path "u16"
+                          ]
+                      ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2163,7 +2151,7 @@ Module eof.
                         let num_sections := M.copy (| γ0_1 |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2215,7 +2203,7 @@ Module eof.
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2302,7 +2290,7 @@ Module eof.
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.use
                             (M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2340,7 +2328,7 @@ Module eof.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -2449,8 +2437,7 @@ Module eof.
                                                   let~ _ :
                                                       Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -2697,7 +2684,7 @@ Module eof.
                         |);
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3246,7 +3233,7 @@ Module eof.
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.use
                   (M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
@@ -3288,7 +3275,7 @@ Module eof.
                             ltac:(M.monadic
                               (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                 M.match_operator (|
-                                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3391,7 +3378,7 @@ Module eof.
                   |)) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3557,7 +3544,7 @@ Module eof.
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                           M.use
                             (M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
@@ -3599,7 +3586,7 @@ Module eof.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                           M.match_operator (|
-                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -3960,41 +3947,39 @@ Module eof.
                       |)
                     |) in
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.path "revm_bytecode::eof::header::EofHeader";
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                ];
-                              Ty.path "revm_bytecode::eof::EofDecodeError"
-                            ]
-                        ]),
-                    M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
                           []
                           [
                             Ty.tuple
                               [
+                                Ty.path "revm_bytecode::eof::header::EofHeader";
                                 Ty.apply
                                   (Ty.path "&")
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                Ty.path "u16"
-                              ]
-                          ]),
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                              ];
+                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                          ]
+                      ],
+                    M.match_operator (|
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "u16"
+                            ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4151,7 +4136,7 @@ Module eof.
                           let kind := M.copy (| γ0_1 |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -4190,41 +4175,39 @@ Module eof.
                               ]
                             |) in
                           M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "revm_bytecode::eof::header::EofHeader";
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                        ];
-                                      Ty.path "revm_bytecode::eof::EofDecodeError"
-                                    ]
-                                ]),
-                            M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
                                   []
                                   [
                                     Ty.tuple
                                       [
+                                        Ty.path "revm_bytecode::eof::header::EofHeader";
                                         Ty.apply
                                           (Ty.path "&")
                                           []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                        Ty.path "u8"
-                                      ]
-                                  ]),
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                      ];
+                                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                                  ]
+                              ],
+                            M.match_operator (|
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.path "u8"
+                                    ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4398,7 +4381,7 @@ Module eof.
                                   let version := M.copy (| γ0_1 |) in
                                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -4439,43 +4422,39 @@ Module eof.
                                       ]
                                     |) in
                                   M.match_operator (|
-                                    Some
-                                      (Ty.apply
-                                        (Ty.path "*")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path "revm_bytecode::eof::header::EofHeader";
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ];
-                                              Ty.path "revm_bytecode::eof::EofDecodeError"
-                                            ]
-                                        ]),
-                                    M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
+                                    Ty.apply
+                                      (Ty.path "*")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
                                           []
                                           [
                                             Ty.tuple
                                               [
+                                                Ty.path "revm_bytecode::eof::header::EofHeader";
                                                 Ty.apply
                                                   (Ty.path "&")
                                                   []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                  ];
-                                                Ty.path "u8"
-                                              ]
-                                          ]),
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                              ];
+                                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                                          ]
+                                      ],
+                                    M.match_operator (|
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "u8"
+                                            ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -4663,7 +4642,7 @@ Module eof.
                                           let kind_types := M.copy (| γ0_1 |) in
                                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -4710,40 +4689,18 @@ Module eof.
                                               ]
                                             |) in
                                           M.match_operator (|
-                                            Some
-                                              (Ty.apply
-                                                (Ty.path "*")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path
-                                                            "revm_bytecode::eof::header::EofHeader";
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "slice")
-                                                                []
-                                                                [ Ty.path "u8" ]
-                                                            ]
-                                                        ];
-                                                      Ty.path "revm_bytecode::eof::EofDecodeError"
-                                                    ]
-                                                ]),
-                                            M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
+                                            Ty.apply
+                                              (Ty.path "*")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
                                                   []
                                                   [
                                                     Ty.tuple
                                                       [
+                                                        Ty.path
+                                                          "revm_bytecode::eof::header::EofHeader";
                                                         Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -4752,10 +4709,30 @@ Module eof.
                                                               (Ty.path "slice")
                                                               []
                                                               [ Ty.path "u8" ]
-                                                          ];
-                                                        Ty.path "u16"
-                                                      ]
-                                                  ]),
+                                                          ]
+                                                      ];
+                                                    Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                  ]
+                                              ],
+                                            M.match_operator (|
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ];
+                                                      Ty.path "u16"
+                                                    ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -4965,8 +4942,7 @@ Module eof.
                                                   let~ _ :
                                                       Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -5026,41 +5002,18 @@ Module eof.
                                                       ]
                                                     |) in
                                                   M.match_operator (|
-                                                    Some
-                                                      (Ty.apply
-                                                        (Ty.path "*")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "revm_bytecode::eof::header::EofHeader";
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ]
-                                                                ];
-                                                              Ty.path
-                                                                "revm_bytecode::eof::EofDecodeError"
-                                                            ]
-                                                        ]),
-                                                    M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
+                                                    Ty.apply
+                                                      (Ty.path "*")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
                                                           []
                                                           [
                                                             Ty.tuple
                                                               [
+                                                                Ty.path
+                                                                  "revm_bytecode::eof::header::EofHeader";
                                                                 Ty.apply
                                                                   (Ty.path "&")
                                                                   []
@@ -5069,10 +5022,31 @@ Module eof.
                                                                       (Ty.path "slice")
                                                                       []
                                                                       [ Ty.path "u8" ]
-                                                                  ];
-                                                                Ty.path "u8"
-                                                              ]
-                                                          ]),
+                                                                  ]
+                                                              ];
+                                                            Ty.path
+                                                              "revm_bytecode::eof::EofDecodeError"
+                                                          ]
+                                                      ],
+                                                    M.match_operator (|
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u8" ]
+                                                                ];
+                                                              Ty.path "u8"
+                                                            ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -5288,11 +5262,10 @@ Module eof.
                                                                 []
                                                                 [ Ty.tuple [] ] :=
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.tuple [] ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.tuple [] ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -5342,41 +5315,18 @@ Module eof.
                                                               ]
                                                             |) in
                                                           M.match_operator (|
-                                                            Some
-                                                              (Ty.apply
-                                                                (Ty.path "*")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "core::result::Result")
-                                                                    []
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_bytecode::eof::header::EofHeader";
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [ Ty.path "u8" ]
-                                                                            ]
-                                                                        ];
-                                                                      Ty.path
-                                                                        "revm_bytecode::eof::EofDecodeError"
-                                                                    ]
-                                                                ]),
-                                                            M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
+                                                            Ty.apply
+                                                              (Ty.path "*")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
                                                                   []
                                                                   [
                                                                     Ty.tuple
                                                                       [
+                                                                        Ty.path
+                                                                          "revm_bytecode::eof::header::EofHeader";
                                                                         Ty.apply
                                                                           (Ty.path "&")
                                                                           []
@@ -5385,19 +5335,39 @@ Module eof.
                                                                               (Ty.path "slice")
                                                                               []
                                                                               [ Ty.path "u8" ]
-                                                                          ];
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
-                                                                          []
-                                                                          [
-                                                                            Ty.path "u16";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ];
-                                                                        Ty.path "usize"
-                                                                      ]
-                                                                  ]),
+                                                                          ]
+                                                                      ];
+                                                                    Ty.path
+                                                                      "revm_bytecode::eof::EofDecodeError"
+                                                                  ]
+                                                              ],
+                                                            M.match_operator (|
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ];
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path "u16";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ];
+                                                                      Ty.path "usize"
+                                                                    ]
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -5664,11 +5634,10 @@ Module eof.
                                                                         []
                                                                         [ Ty.tuple [] ] :=
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.tuple [] ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -5744,11 +5713,10 @@ Module eof.
                                                                         []
                                                                         [ Ty.tuple [] ] :=
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.tuple [] ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -5814,11 +5782,10 @@ Module eof.
                                                                         []
                                                                         [ Ty.tuple [] ] :=
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.tuple [] ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.tuple [] ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -5932,46 +5899,19 @@ Module eof.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
-                                                                    Some
-                                                                      (Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "revm_bytecode::eof::header::EofHeader";
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "slice")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u8"
-                                                                                        ]
-                                                                                    ]
-                                                                                ];
-                                                                              Ty.path
-                                                                                "revm_bytecode::eof::EofDecodeError"
-                                                                            ]
-                                                                        ]),
-                                                                    M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
+                                                                    Ty.apply
+                                                                      (Ty.path "*")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
                                                                           []
                                                                           [
                                                                             Ty.tuple
                                                                               [
+                                                                                Ty.path
+                                                                                  "revm_bytecode::eof::header::EofHeader";
                                                                                 Ty.apply
                                                                                   (Ty.path "&")
                                                                                   []
@@ -5982,10 +5922,32 @@ Module eof.
                                                                                       []
                                                                                       [ Ty.path "u8"
                                                                                       ]
-                                                                                  ];
-                                                                                Ty.path "u8"
-                                                                              ]
-                                                                          ]),
+                                                                                  ]
+                                                                              ];
+                                                                            Ty.path
+                                                                              "revm_bytecode::eof::EofDecodeError"
+                                                                          ]
+                                                                      ],
+                                                                    M.match_operator (|
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8" ]
+                                                                                ];
+                                                                              Ty.path "u8"
+                                                                            ]
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -6252,26 +6214,24 @@ Module eof.
                                                                                 ] :=
                                                                             M.copy (|
                                                                               M.match_operator (|
-                                                                                Some
-                                                                                  (Ty.apply
-                                                                                    (Ty.path "*")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "slice")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "u8"
-                                                                                            ]
-                                                                                        ]
-                                                                                    ]),
+                                                                                Ty.apply
+                                                                                  (Ty.path "*")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ],
                                                                                 kind_container_or_data,
                                                                                 [
                                                                                   fun γ =>
@@ -6286,64 +6246,62 @@ Module eof.
                                                                                             3
                                                                                         |) in
                                                                                       M.match_operator (|
-                                                                                        Some
-                                                                                          (Ty.apply
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u8"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ],
+                                                                                        M.match_operator (|
+                                                                                          Ty.apply
                                                                                             (Ty.path
                                                                                               "*")
                                                                                             []
                                                                                             [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
+                                                                                              Ty.tuple
                                                                                                 [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
-                                                                                                      "slice")
+                                                                                                      "&")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "slice")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "u8"
+                                                                                                        ]
+                                                                                                    ];
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "alloc::vec::Vec")
                                                                                                     []
                                                                                                     [
                                                                                                       Ty.path
-                                                                                                        "u8"
-                                                                                                    ]
+                                                                                                        "u16";
+                                                                                                      Ty.path
+                                                                                                        "alloc::alloc::Global"
+                                                                                                    ];
+                                                                                                  Ty.path
+                                                                                                    "usize"
                                                                                                 ]
-                                                                                            ]),
-                                                                                        M.match_operator (|
-                                                                                          Some
-                                                                                            (Ty.apply
-                                                                                              (Ty.path
-                                                                                                "*")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.tuple
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "&")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "slice")
-                                                                                                          []
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "u8"
-                                                                                                          ]
-                                                                                                      ];
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "alloc::vec::Vec")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "u16";
-                                                                                                        Ty.path
-                                                                                                          "alloc::alloc::Global"
-                                                                                                      ];
-                                                                                                    Ty.path
-                                                                                                      "usize"
-                                                                                                  ]
-                                                                                              ]),
+                                                                                            ],
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.apply
@@ -6661,15 +6619,14 @@ Module eof.
                                                                                                         []
                                                                                                     ] :=
                                                                                                 M.match_operator (|
-                                                                                                  Some
-                                                                                                    (Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "*")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.tuple
-                                                                                                          []
-                                                                                                      ]),
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "*")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.tuple
+                                                                                                        []
+                                                                                                    ],
                                                                                                   M.alloc (|
                                                                                                     Value.Tuple
                                                                                                       []
@@ -6796,54 +6753,52 @@ Module eof.
                                                                                                   |)
                                                                                                 |) in
                                                                                               M.match_operator (|
-                                                                                                Some
-                                                                                                  (Ty.apply
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "*")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "&")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "slice")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "u8"
+                                                                                                          ]
+                                                                                                      ]
+                                                                                                  ],
+                                                                                                M.match_operator (|
+                                                                                                  Ty.apply
                                                                                                     (Ty.path
                                                                                                       "*")
                                                                                                     []
                                                                                                     [
-                                                                                                      Ty.apply
-                                                                                                        (Ty.path
-                                                                                                          "&")
-                                                                                                        []
+                                                                                                      Ty.tuple
                                                                                                         [
                                                                                                           Ty.apply
                                                                                                             (Ty.path
-                                                                                                              "slice")
+                                                                                                              "&")
                                                                                                             []
                                                                                                             [
-                                                                                                              Ty.path
-                                                                                                                "u8"
-                                                                                                            ]
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "slice")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "u8"
+                                                                                                                ]
+                                                                                                            ];
+                                                                                                          Ty.path
+                                                                                                            "u8"
                                                                                                         ]
-                                                                                                    ]),
-                                                                                                M.match_operator (|
-                                                                                                  Some
-                                                                                                    (Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "*")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "&")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "slice")
-                                                                                                                  []
-                                                                                                                  [
-                                                                                                                    Ty.path
-                                                                                                                      "u8"
-                                                                                                                  ]
-                                                                                                              ];
-                                                                                                            Ty.path
-                                                                                                              "u8"
-                                                                                                          ]
-                                                                                                      ]),
+                                                                                                    ],
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
                                                                                                       Ty.apply
@@ -7123,15 +7078,14 @@ Module eof.
                                                                                                                 []
                                                                                                             ] :=
                                                                                                         M.match_operator (|
-                                                                                                          Some
-                                                                                                            (Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "*")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.tuple
-                                                                                                                  []
-                                                                                                              ]),
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "*")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.tuple
+                                                                                                                []
+                                                                                                            ],
                                                                                                           M.alloc (|
                                                                                                             Value.Tuple
                                                                                                               []
@@ -7242,47 +7196,19 @@ Module eof.
                                                                               |)
                                                                             |) in
                                                                           M.match_operator (|
-                                                                            Some
-                                                                              (Ty.apply
-                                                                                (Ty.path "*")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.tuple
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "revm_bytecode::eof::header::EofHeader";
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "slice")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u8"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ];
-                                                                                      Ty.path
-                                                                                        "revm_bytecode::eof::EofDecodeError"
-                                                                                    ]
-                                                                                ]),
-                                                                            M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
+                                                                            Ty.apply
+                                                                              (Ty.path "*")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
                                                                                   []
                                                                                   [
                                                                                     Ty.tuple
                                                                                       [
+                                                                                        Ty.path
+                                                                                          "revm_bytecode::eof::header::EofHeader";
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "&")
@@ -7296,11 +7222,36 @@ Module eof.
                                                                                                 Ty.path
                                                                                                   "u8"
                                                                                               ]
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "u16"
-                                                                                      ]
-                                                                                  ]),
+                                                                                          ]
+                                                                                      ];
+                                                                                    Ty.path
+                                                                                      "revm_bytecode::eof::EofDecodeError"
+                                                                                  ]
+                                                                              ],
+                                                                            M.match_operator (|
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ]
+                                                                                        ];
+                                                                                      Ty.path "u16"
+                                                                                    ]
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.apply
@@ -7580,49 +7531,19 @@ Module eof.
                                                                                       |)
                                                                                     |) in
                                                                                   M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.apply
-                                                                                        (Ty.path
-                                                                                          "*")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "core::result::Result")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.tuple
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "revm_bytecode::eof::header::EofHeader";
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "&")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.apply
-                                                                                                        (Ty.path
-                                                                                                          "slice")
-                                                                                                        []
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "u8"
-                                                                                                        ]
-                                                                                                    ]
-                                                                                                ];
-                                                                                              Ty.path
-                                                                                                "revm_bytecode::eof::EofDecodeError"
-                                                                                            ]
-                                                                                        ]),
-                                                                                    M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
+                                                                                    Ty.apply
+                                                                                      (Ty.path "*")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
                                                                                           (Ty.path
-                                                                                            "*")
+                                                                                            "core::result::Result")
                                                                                           []
                                                                                           [
                                                                                             Ty.tuple
                                                                                               [
+                                                                                                Ty.path
+                                                                                                  "revm_bytecode::eof::header::EofHeader";
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "&")
@@ -7636,11 +7557,38 @@ Module eof.
                                                                                                         Ty.path
                                                                                                           "u8"
                                                                                                       ]
-                                                                                                  ];
-                                                                                                Ty.path
-                                                                                                  "u8"
-                                                                                              ]
-                                                                                          ]),
+                                                                                                  ]
+                                                                                              ];
+                                                                                            Ty.path
+                                                                                              "revm_bytecode::eof::EofDecodeError"
+                                                                                          ]
+                                                                                      ],
+                                                                                    M.match_operator (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "slice")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "u8"
+                                                                                                    ]
+                                                                                                ];
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.apply
@@ -7916,15 +7864,14 @@ Module eof.
                                                                                                     []
                                                                                                 ] :=
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.tuple
-                                                                                                      []
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.tuple
+                                                                                                    []
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 Value.Tuple
                                                                                                   []

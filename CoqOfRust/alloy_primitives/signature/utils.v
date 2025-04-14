@@ -69,7 +69,7 @@ Module signature.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -159,7 +159,7 @@ Module signature.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               v,
               [
                 fun γ =>
@@ -239,7 +239,7 @@ Module signature.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u8" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
               v,
               [
                 fun γ =>

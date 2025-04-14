@@ -205,18 +205,17 @@ Module errmap.
                         ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
-                                []
-                                []
-                                __S
-                                "SerializeStruct"
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -297,7 +296,7 @@ Module errmap.
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -378,7 +377,7 @@ Module errmap.
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -587,18 +586,17 @@ Module errmap.
                         ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.associated_in_trait
-                                "serde::ser::Serializer"
-                                []
-                                []
-                                __S
-                                "SerializeStruct"
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct"
+                          ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -679,7 +677,7 @@ Module errmap.
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -769,7 +767,7 @@ Module errmap.
                     |) in
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1326,7 +1324,7 @@ Module errmap.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1384,11 +1382,7 @@ Module errmap.
                                             Ty.apply (Ty.path "*") [] [ Ty.path "anyhow::Error" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "anyhow::Error" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "anyhow::Error" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "alloc::string::String",
@@ -1823,7 +1817,7 @@ Module errmap.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1877,11 +1871,7 @@ Module errmap.
                                             Ty.apply (Ty.path "*") [] [ Ty.path "anyhow::Error" ] :=
                                           M.copy (|
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "anyhow::Error" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "anyhow::Error" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "alloc::string::String",
@@ -2693,35 +2683,34 @@ Module errmap.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Some
-                            (Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                              []
-                                              [
-                                                Ty.path "u64";
-                                                Ty.path "move_core_types::errmap::ErrorDescription";
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.path "move_core_types::errmap::ErrorDescription" ])
-                              ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                            []
+                                            [
+                                              Ty.path "u64";
+                                              Ty.path "move_core_types::errmap::ErrorDescription";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_core_types::errmap::ErrorDescription" ])
+                            ],
                           M.alloc (| α0 |),
                           [
                             fun γ =>

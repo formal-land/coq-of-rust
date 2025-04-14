@@ -21,7 +21,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ number : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
           M.alloc (| Value.Integer IntegerKind.U8 4 |) in
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           number,
           [
             fun γ =>

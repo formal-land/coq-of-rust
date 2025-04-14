@@ -166,7 +166,7 @@ Module u256.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -611,7 +611,7 @@ Module u256.
                 Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "move_core_types::u256::U256CastError",
@@ -1010,7 +1010,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -1164,7 +1164,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1664,16 +1664,15 @@ Module u256.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                      [ Ty.path "u8" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -1939,7 +1938,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               self,
               [
                 fun γ =>
@@ -2005,7 +2004,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               self,
               [
                 fun γ =>
@@ -2071,7 +2070,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               self,
               [
                 fun γ =>
@@ -2138,7 +2137,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               self,
               [
                 fun γ =>
@@ -2151,7 +2150,7 @@ Module u256.
                       |) in
                     let lhs := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
                       rhs,
                       [
                         fun γ =>
@@ -2221,7 +2220,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               self,
               [
                 fun γ =>
@@ -2234,7 +2233,7 @@ Module u256.
                       |) in
                     let lhs := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
                       rhs,
                       [
                         fun γ =>
@@ -2304,7 +2303,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
               self,
               [
                 fun γ =>
@@ -2317,7 +2316,7 @@ Module u256.
                       |) in
                     let lhs := M.copy (| γ0_0 |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
                       rhs,
                       [
                         fun γ =>
@@ -3676,7 +3675,7 @@ Module u256.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3777,7 +3776,7 @@ Module u256.
               (M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3889,7 +3888,7 @@ Module u256.
             let~ max_val : Ty.apply (Ty.path "*") [] [ Ty.path "u128" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "u128" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3940,7 +3939,7 @@ Module u256.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ T ]),
+              Ty.apply (Ty.path "*") [] [ T ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -5183,16 +5182,15 @@ Module u256.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5299,16 +5297,15 @@ Module u256.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5415,16 +5412,15 @@ Module u256.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5531,16 +5527,15 @@ Module u256.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5628,16 +5623,15 @@ Module u256.
           (let n := M.alloc (| n |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5852,7 +5846,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::UniformU256" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::UniformU256" ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -6117,7 +6111,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -6213,7 +6207,7 @@ Module u256.
               |) in
             let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6398,7 +6392,7 @@ Module u256.
               |) in
             let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6518,7 +6512,7 @@ Module u256.
                 Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6685,7 +6679,7 @@ Module u256.
                     |)
                   |) in
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "move_core_types::u256::U256" ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -6797,7 +6791,7 @@ Module u256.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.tuple
@@ -6822,7 +6816,7 @@ Module u256.
                                           let hi := M.copy (| γ0_0 |) in
                                           let lo := M.copy (| γ0_1 |) in
                                           M.match_operator (|
-                                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -6972,7 +6966,7 @@ Module u256.
               |) in
             let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7177,7 +7171,7 @@ Module u256.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -7282,7 +7276,7 @@ Module u256.
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -7426,7 +7420,7 @@ Module u256.
                               |)
                             |) in
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -7451,7 +7445,7 @@ Module u256.
                                   let hi := M.copy (| γ0_0 |) in
                                   let lo := M.copy (| γ0_1 |) in
                                   M.match_operator (|
-                                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>

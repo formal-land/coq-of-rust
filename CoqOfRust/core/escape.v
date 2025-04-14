@@ -439,20 +439,19 @@ Module escape.
               |)
             |) in
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "array")
-                        [ N ]
-                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
-                    ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -460,20 +459,19 @@ Module escape.
                   (let γ := M.use lookup_escaped in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ N ]
-                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
-                            ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                          ]
+                      ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -481,7 +479,7 @@ Module escape.
                           (let γ :=
                             M.use
                               (M.match_operator (|
-                                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                 lookup_ascii,
                                 [
                                   fun γ =>
@@ -575,7 +573,7 @@ Module escape.
             Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             ltac:(M.monadic
               (M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -596,7 +594,7 @@ Module escape.
                             M.SubPointer.get_array_field (| arr, M.read (| idx |) |),
                             M.read (|
                               M.match_operator (|
-                                Some (Ty.apply (Ty.path "*") [] [ Ty.path "u8" ]),
+                                Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                                 M.alloc (| M.cast (Ty.path "u8") (M.read (| idx |)) |),
                                 [
                                   fun γ =>
@@ -1297,11 +1295,10 @@ Module escape.
           (let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -1354,11 +1351,10 @@ Module escape.
           (let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -1411,11 +1407,10 @@ Module escape.
           (let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -1736,7 +1731,7 @@ Module escape.
                 let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u8" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1928,7 +1923,7 @@ Module escape.
                 let~ i : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u8" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u8" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply

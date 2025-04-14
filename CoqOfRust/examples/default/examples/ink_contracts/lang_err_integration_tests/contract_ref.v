@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::AccountId" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "contract_ref::AccountId" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -264,16 +264,15 @@ Module Impl_contract_ref_FlipperRef.
         (let succeed := M.alloc (| succeed |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

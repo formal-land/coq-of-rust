@@ -447,7 +447,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T ] ],
               array,
               [
                 fun γ =>
@@ -490,11 +490,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -693,12 +692,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -837,7 +834,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1013,7 +1010,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1189,7 +1186,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1365,7 +1362,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1521,7 +1518,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -1675,7 +1672,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T ] ],
               array,
               [
                 fun γ =>
@@ -1720,11 +1717,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -1964,12 +1960,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -2010,16 +2004,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2173,7 +2166,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2303,7 +2296,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2482,7 +2475,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2612,7 +2605,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2791,7 +2784,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2921,7 +2914,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3100,7 +3093,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -3230,7 +3223,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3389,7 +3382,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -3416,7 +3409,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -3601,7 +3594,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -3651,11 +3644,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -3934,12 +3926,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -3980,16 +3970,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -4036,16 +4025,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4209,7 +4197,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -4339,7 +4327,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -4470,7 +4458,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -4658,7 +4646,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -4788,7 +4776,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -4919,7 +4907,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -5107,7 +5095,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5237,7 +5225,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -5368,7 +5356,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -5560,7 +5548,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -5690,7 +5678,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -5821,7 +5809,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -5993,7 +5981,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -6020,7 +6008,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -6050,7 +6038,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -6280,7 +6268,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -6337,11 +6325,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -6662,12 +6649,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -6708,16 +6693,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -6764,16 +6748,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -6824,16 +6807,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -7006,7 +6988,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7136,7 +7118,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -7267,7 +7249,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -7405,7 +7387,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -7599,7 +7581,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7729,7 +7711,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -7860,7 +7842,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -7998,7 +7980,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -8192,7 +8174,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -8322,7 +8304,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8453,7 +8435,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -8595,7 +8577,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -8789,7 +8771,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -8919,7 +8901,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -9050,7 +9032,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -9192,7 +9174,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -9366,7 +9348,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -9393,7 +9375,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -9423,7 +9405,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -9465,11 +9447,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -9732,7 +9710,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -9792,11 +9770,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -10156,12 +10133,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -10202,16 +10177,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10258,16 +10232,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10318,16 +10291,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -10381,16 +10353,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -10569,7 +10540,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -10699,7 +10670,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -10830,7 +10801,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -10968,7 +10939,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -11110,7 +11081,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -11306,7 +11277,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -11436,7 +11407,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -11567,7 +11538,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -11705,7 +11676,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -11847,7 +11818,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -12043,7 +12014,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -12173,7 +12144,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -12304,7 +12275,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -12446,7 +12417,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -12588,7 +12559,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -12784,7 +12755,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -12914,7 +12885,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -13045,7 +13016,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -13187,7 +13158,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -13329,7 +13300,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -13505,7 +13476,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -13532,7 +13503,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -13562,7 +13533,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -13604,11 +13575,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -13653,11 +13620,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -13945,7 +13911,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -14008,11 +13974,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -14435,12 +14400,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -14481,16 +14444,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -14537,16 +14499,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -14597,16 +14558,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -14660,16 +14620,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -14723,16 +14682,15 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.path "core::cmp::Ordering" ]
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -14928,7 +14886,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -15058,7 +15016,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -15189,7 +15147,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -15327,7 +15285,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -15469,7 +15427,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -15613,11 +15571,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -15843,7 +15797,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -15973,7 +15927,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -16104,7 +16058,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -16242,7 +16196,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -16384,7 +16338,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -16528,11 +16482,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -16758,7 +16708,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -16888,7 +16838,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -17019,7 +16969,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -17161,7 +17111,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -17303,7 +17253,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -17447,11 +17397,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -17677,7 +17623,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -17807,7 +17753,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -17938,7 +17884,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -18080,7 +18026,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -18222,7 +18168,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -18366,11 +18312,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -18576,7 +18518,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -18603,7 +18545,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -18633,7 +18575,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -18675,11 +18617,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -18724,11 +18662,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -18773,11 +18710,10 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -19096,7 +19032,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -19162,11 +19098,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -19670,12 +19605,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -19716,16 +19649,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -19772,16 +19704,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -19832,16 +19763,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -19895,16 +19825,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -19958,16 +19887,15 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.path "core::cmp::Ordering" ]
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -20023,20 +19951,16 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::cmp::Ordering"
-                                                                      ]
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -20248,7 +20172,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -20378,7 +20302,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -20509,7 +20433,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -20647,7 +20571,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -20789,7 +20713,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -20933,11 +20857,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -21107,11 +21027,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -21346,7 +21265,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -21476,7 +21395,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -21607,7 +21526,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -21745,7 +21664,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21887,7 +21806,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -22031,11 +21950,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -22205,11 +22120,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -22444,7 +22358,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -22574,7 +22488,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -22705,7 +22619,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -22847,7 +22761,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -22989,7 +22903,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -23133,11 +23047,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -23307,11 +23217,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -23546,7 +23455,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -23676,7 +23585,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -23807,7 +23716,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -23949,7 +23858,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -24091,7 +24000,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -24235,11 +24144,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -24409,11 +24314,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -24628,7 +24532,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -24655,7 +24559,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -24685,7 +24589,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -24727,11 +24631,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -24776,11 +24676,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -24825,11 +24724,10 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -24876,12 +24774,10 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "core::cmp::Ordering"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "core::cmp::Ordering",
@@ -25231,7 +25127,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -25300,11 +25196,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -25885,12 +25780,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -25931,16 +25824,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -25987,16 +25879,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -26047,16 +25938,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -26110,16 +26000,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -26173,16 +26062,15 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.path "core::cmp::Ordering" ]
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -26238,20 +26126,16 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::cmp::Ordering"
-                                                                      ]
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -26310,20 +26194,19 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::cmp::Ordering"
-                                                                              ]
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -26549,7 +26432,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -26679,7 +26562,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -26810,7 +26693,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -26948,7 +26831,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -27090,7 +26973,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -27234,11 +27117,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -27408,11 +27287,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -27592,11 +27470,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -27833,7 +27710,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -27963,7 +27840,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -28094,7 +27971,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -28232,7 +28109,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -28374,7 +28251,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -28518,11 +28395,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -28692,11 +28565,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -28876,11 +28748,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -29117,7 +28988,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -29247,7 +29118,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -29378,7 +29249,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -29520,7 +29391,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -29662,7 +29533,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -29806,11 +29677,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -29980,11 +29847,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -30164,11 +30030,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -30405,7 +30270,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -30535,7 +30400,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -30666,7 +30531,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -30808,7 +30673,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -30950,7 +30815,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -31094,11 +30959,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -31268,11 +31129,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -31452,11 +31312,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -31673,7 +31532,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -31700,7 +31559,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -31730,7 +31589,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -31772,11 +31631,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -31821,11 +31676,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -31870,11 +31724,10 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -31921,12 +31774,10 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "core::cmp::Ordering"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "core::cmp::Ordering",
@@ -31975,14 +31826,13 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::cmp::Ordering"
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -32363,7 +32213,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -32435,11 +32285,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -33091,12 +32940,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -33137,16 +32984,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -33193,16 +33039,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -33253,16 +33098,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -33316,16 +33160,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -33379,16 +33222,15 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.path "core::cmp::Ordering" ]
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -33444,20 +33286,16 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::cmp::Ordering"
-                                                                      ]
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -33516,20 +33354,19 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::cmp::Ordering"
-                                                                              ]
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -33593,20 +33430,19 @@ Module tuple.
                                                                                 "core::cmp::Ordering::Equal"
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::option::Option")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::cmp::Ordering"
-                                                                                      ]
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.apply
@@ -33843,7 +33679,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -33973,7 +33809,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -34104,7 +33940,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -34242,7 +34078,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -34384,7 +34220,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -34528,11 +34364,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -34702,11 +34534,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -34886,11 +34717,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -35070,12 +34900,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -35322,7 +35150,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -35452,7 +35280,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -35583,7 +35411,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -35721,7 +35549,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -35863,7 +35691,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -36007,11 +35835,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -36181,11 +36005,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -36365,11 +36188,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -36549,12 +36371,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -36801,7 +36621,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -36931,7 +36751,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -37062,7 +36882,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -37204,7 +37024,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -37346,7 +37166,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -37490,11 +37310,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -37664,11 +37480,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -37848,11 +37663,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -38032,12 +37846,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -38284,7 +38096,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -38414,7 +38226,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -38545,7 +38357,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -38687,7 +38499,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -38829,7 +38641,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -38973,11 +38785,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -39147,11 +38955,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -39331,11 +39138,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -39515,12 +39321,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -39748,7 +39552,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -39775,7 +39579,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -39805,7 +39609,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -39847,11 +39651,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -39896,11 +39696,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -39945,11 +39744,10 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -39996,12 +39794,10 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "core::cmp::Ordering"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "core::cmp::Ordering",
@@ -40050,14 +39846,13 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::cmp::Ordering"
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -40109,14 +39904,13 @@ Module tuple.
                                                                                 "core::cmp::Ordering::Equal"
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "core::cmp::Ordering"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -40528,7 +40322,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -40603,11 +40397,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -41324,12 +41117,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -41370,16 +41161,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -41426,16 +41216,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -41486,16 +41275,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -41549,16 +41337,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -41612,16 +41399,15 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.path "core::cmp::Ordering" ]
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -41677,20 +41463,16 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::cmp::Ordering"
-                                                                      ]
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -41749,20 +41531,19 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::cmp::Ordering"
-                                                                              ]
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -41826,20 +41607,19 @@ Module tuple.
                                                                                 "core::cmp::Ordering::Equal"
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::option::Option")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::cmp::Ordering"
-                                                                                      ]
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.apply
@@ -41905,21 +41685,20 @@ Module tuple.
                                                                                         "core::cmp::Ordering::Equal"
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "core::option::Option")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "core::cmp::Ordering"
-                                                                                              ]
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.apply
@@ -42169,7 +41948,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -42299,7 +42078,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -42430,7 +42209,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -42568,7 +42347,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -42710,7 +42489,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -42854,11 +42633,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -43028,11 +42803,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -43212,11 +42986,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -43396,12 +43169,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -43589,15 +43360,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -43850,7 +43620,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -43980,7 +43750,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -44111,7 +43881,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -44249,7 +44019,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -44391,7 +44161,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -44535,11 +44305,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -44709,11 +44475,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -44893,11 +44658,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -45077,12 +44841,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -45270,15 +45032,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -45531,7 +45292,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -45661,7 +45422,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -45792,7 +45553,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -45934,7 +45695,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -46076,7 +45837,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -46220,11 +45981,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -46394,11 +46151,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -46578,11 +46334,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -46762,12 +46517,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -46955,15 +46708,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -47216,7 +46968,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -47346,7 +47098,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -47477,7 +47229,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -47619,7 +47371,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -47761,7 +47513,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -47905,11 +47657,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -48079,11 +47827,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -48263,11 +48010,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -48447,12 +48193,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -48640,15 +48384,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -48882,7 +48625,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -48909,7 +48652,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -48939,7 +48682,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -48981,11 +48724,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -49030,11 +48769,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -49079,11 +48817,10 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -49130,12 +48867,10 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "core::cmp::Ordering"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "core::cmp::Ordering",
@@ -49184,14 +48919,13 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::cmp::Ordering"
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -49243,14 +48977,13 @@ Module tuple.
                                                                                 "core::cmp::Ordering::Equal"
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "core::cmp::Ordering"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -49304,15 +49037,14 @@ Module tuple.
                                                                                         "core::cmp::Ordering::Equal"
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "core::cmp::Ordering"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.path
@@ -49754,7 +49486,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -49832,11 +49564,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ] ],
               tuple,
               [
                 fun γ =>
@@ -50618,12 +50349,10 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -50664,16 +50393,15 @@ Module tuple.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]
+                        ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -50720,16 +50448,15 @@ Module tuple.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -50780,16 +50507,15 @@ Module tuple.
                                     let _ :=
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::cmp::Ordering" ]
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                        ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -50843,16 +50569,15 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "core::cmp::Ordering" ]
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
+                                                ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -50906,16 +50631,15 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.path "core::cmp::Ordering" ]
-                                                          ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
+                                                        ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -50971,20 +50695,16 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::cmp::Ordering"
-                                                                      ]
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
+                                                                ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -51043,20 +50763,19 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::cmp::Ordering"
-                                                                              ]
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -51120,20 +50839,19 @@ Module tuple.
                                                                                 "core::cmp::Ordering::Equal"
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::option::Option")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::cmp::Ordering"
-                                                                                      ]
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.apply
@@ -51199,21 +50917,20 @@ Module tuple.
                                                                                         "core::cmp::Ordering::Equal"
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "core::option::Option")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "core::cmp::Ordering"
-                                                                                              ]
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.apply
@@ -51280,21 +50997,20 @@ Module tuple.
                                                                                                 "core::cmp::Ordering::Equal"
                                                                                               |) in
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "core::option::Option")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "core::cmp::Ordering"
-                                                                                                      ]
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
                                                                                                   Ty.apply
@@ -51559,7 +51275,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -51689,7 +51405,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -51820,7 +51536,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -51958,7 +51674,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -52100,7 +51816,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -52244,11 +51960,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -52418,11 +52130,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -52602,11 +52313,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -52786,12 +52496,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -52979,15 +52687,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -53180,15 +52887,14 @@ Module tuple.
                                                                                                 |)
                                                                                               |) in
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "bool"
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "bool"
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 Value.Tuple
                                                                                                   []
@@ -53446,7 +53152,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -53576,7 +53282,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -53707,7 +53413,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -53845,7 +53551,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -53987,7 +53693,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -54131,11 +53837,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -54305,11 +54007,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -54489,11 +54190,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -54673,12 +54373,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -54866,15 +54564,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -55067,15 +54764,14 @@ Module tuple.
                                                                                                 |)
                                                                                               |) in
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "bool"
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "bool"
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 Value.Tuple
                                                                                                   []
@@ -55333,7 +55029,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -55463,7 +55159,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -55594,7 +55290,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -55736,7 +55432,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -55878,7 +55574,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -56022,11 +55718,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -56196,11 +55888,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -56380,11 +56071,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -56564,12 +56254,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -56757,15 +56445,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -56958,15 +56645,14 @@ Module tuple.
                                                                                                 |)
                                                                                               |) in
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "bool"
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "bool"
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 Value.Tuple
                                                                                                   []
@@ -57224,7 +56910,7 @@ Module tuple.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -57354,7 +57040,7 @@ Module tuple.
                         |)
                       |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -57485,7 +57171,7 @@ Module tuple.
                                 |)
                               |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -57627,7 +57313,7 @@ Module tuple.
                                         |)
                                       |) in
                                     M.match_operator (|
-                                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -57769,7 +57455,7 @@ Module tuple.
                                                 |)
                                               |) in
                                             M.match_operator (|
-                                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                              Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -57913,11 +57599,7 @@ Module tuple.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "bool" ]),
+                                                      Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -58087,11 +57769,10 @@ Module tuple.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "bool" ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "bool" ],
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -58271,11 +57952,10 @@ Module tuple.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [ Ty.path "bool" ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [ Ty.path "bool" ],
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -58455,12 +58135,10 @@ Module tuple.
                                                                                 |)
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [ Ty.path "bool"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [ Ty.path "bool" ],
                                                                               M.alloc (|
                                                                                 Value.Tuple []
                                                                               |),
@@ -58648,15 +58326,14 @@ Module tuple.
                                                                                         |)
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "bool"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "bool"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Value.Tuple
                                                                                           []
@@ -58849,15 +58526,14 @@ Module tuple.
                                                                                                 |)
                                                                                               |) in
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "bool"
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "bool"
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 Value.Tuple
                                                                                                   []
@@ -59096,7 +58772,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -59123,7 +58799,7 @@ Module tuple.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -59153,7 +58829,7 @@ Module tuple.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -59195,11 +58871,7 @@ Module tuple.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::cmp::Ordering" ]),
+                                      Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
@@ -59244,11 +58916,10 @@ Module tuple.
                                                 "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.path "core::cmp::Ordering" ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -59293,11 +58964,10 @@ Module tuple.
                                                         "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.match_operator (|
-                                                      Some
-                                                        (Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [ Ty.path "core::cmp::Ordering" ]),
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
@@ -59344,12 +59014,10 @@ Module tuple.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.match_operator (|
-                                                              Some
-                                                                (Ty.apply
-                                                                  (Ty.path "*")
-                                                                  []
-                                                                  [ Ty.path "core::cmp::Ordering"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "*")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.path "core::cmp::Ordering",
@@ -59398,14 +59066,13 @@ Module tuple.
                                                                         "core::cmp::Ordering::Equal"
                                                                       |) in
                                                                     M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path "*")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::cmp::Ordering"
-                                                                          ]),
+                                                                      Ty.apply
+                                                                        (Ty.path "*")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ],
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -59457,14 +59124,13 @@ Module tuple.
                                                                                 "core::cmp::Ordering::Equal"
                                                                               |) in
                                                                             M.match_operator (|
-                                                                              Some
-                                                                                (Ty.apply
-                                                                                  (Ty.path "*")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "core::cmp::Ordering"
-                                                                                  ]),
+                                                                              Ty.apply
+                                                                                (Ty.path "*")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ],
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -59518,15 +59184,14 @@ Module tuple.
                                                                                         "core::cmp::Ordering::Equal"
                                                                                       |) in
                                                                                     M.match_operator (|
-                                                                                      Some
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "core::cmp::Ordering"
-                                                                                          ]),
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           Ty.path
@@ -59581,15 +59246,14 @@ Module tuple.
                                                                                                 "core::cmp::Ordering::Equal"
                                                                                               |) in
                                                                                             M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "*")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "core::cmp::Ordering"
-                                                                                                  ]),
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ],
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
                                                                                                   Ty.path
@@ -60062,7 +59726,7 @@ Module tuple.
           (let array := M.alloc (| array |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ] ],
               array,
               [
                 fun γ =>
@@ -60143,11 +59807,10 @@ Module tuple.
           (let tuple := M.alloc (| tuple |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ] ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ] ],
               tuple,
               [
                 fun γ =>

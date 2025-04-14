@@ -38,7 +38,7 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

@@ -194,7 +194,7 @@ Module hardfork.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -775,16 +775,15 @@ Module hardfork.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "revm_specification::hardfork::SpecId" ]
+                ],
               value,
               [
                 fun γ =>
@@ -1331,7 +1330,7 @@ Module hardfork.
           (let name := M.alloc (| name |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "revm_specification::hardfork::SpecId" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
               name,
               [
                 fun γ =>
@@ -1550,7 +1549,7 @@ Module hardfork.
           (let spec_id := M.alloc (| spec_id |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               spec_id,
               [
                 fun γ =>

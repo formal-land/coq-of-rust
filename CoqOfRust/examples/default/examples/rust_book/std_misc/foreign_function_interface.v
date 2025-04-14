@@ -271,7 +271,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "foreign_function_interface::Complex" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -320,16 +320,15 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
         let f := M.alloc (| f |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

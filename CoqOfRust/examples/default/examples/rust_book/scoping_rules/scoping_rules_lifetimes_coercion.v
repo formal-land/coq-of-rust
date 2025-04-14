@@ -45,7 +45,7 @@ Definition choose_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       (let first := M.alloc (| first |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (|
-        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]),
+        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
         β1,
         [
           fun γ =>

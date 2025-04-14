@@ -65,13 +65,13 @@ Module alloc.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -267,13 +267,13 @@ Module alloc.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -399,19 +399,18 @@ Module alloc.
             let align := M.alloc (| align |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.path "core::alloc::layout::Layout";
-                          Ty.path "core::alloc::layout::LayoutError"
-                        ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "core::alloc::layout::Layout";
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -489,7 +488,7 @@ Module alloc.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -517,7 +516,7 @@ Module alloc.
                           let align := M.copy (| γ0_0 |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -658,7 +657,7 @@ Module alloc.
                 (M.read (|
                   let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -747,7 +746,7 @@ Module alloc.
             M.read (|
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -879,7 +878,7 @@ Module alloc.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
@@ -930,7 +929,7 @@ Module alloc.
             (let t := M.alloc (| t |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -991,7 +990,7 @@ Module alloc.
             (let t := M.alloc (| t |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -1100,19 +1099,18 @@ Module alloc.
             let align := M.alloc (| align |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.path "core::alloc::layout::Layout";
-                          Ty.path "core::alloc::layout::LayoutError"
-                        ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "core::alloc::layout::Layout";
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1220,7 +1218,7 @@ Module alloc.
             let align := M.alloc (| align |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -1496,19 +1494,18 @@ Module alloc.
                   |)
                 |) in
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
-                          Ty.path "core::alloc::layout::LayoutError"
-                        ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1670,19 +1667,18 @@ Module alloc.
                   |)
                 |) in
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
-                          Ty.path "core::alloc::layout::LayoutError"
-                        ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1753,19 +1749,18 @@ Module alloc.
             let n := M.alloc (| n |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.path "core::alloc::layout::Layout";
-                          Ty.path "core::alloc::layout::LayoutError"
-                        ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "core::alloc::layout::Layout";
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ]
+                  ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

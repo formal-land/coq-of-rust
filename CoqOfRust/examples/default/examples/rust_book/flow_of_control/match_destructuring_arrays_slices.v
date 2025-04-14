@@ -60,7 +60,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
           |) in
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           array,
           [
             fun γ =>

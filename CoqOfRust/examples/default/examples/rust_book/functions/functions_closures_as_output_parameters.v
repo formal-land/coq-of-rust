@@ -37,8 +37,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -162,8 +161,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -287,8 +285,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Some
-                        (Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                       M.alloc (| α0 |),
                       [
                         fun γ =>

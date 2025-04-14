@@ -269,11 +269,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.match_operator (|
-                                              Some
-                                                (Ty.apply
-                                                  (Ty.path "*")
-                                                  []
-                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                                              Ty.apply
+                                                (Ty.path "*")
+                                                []
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>

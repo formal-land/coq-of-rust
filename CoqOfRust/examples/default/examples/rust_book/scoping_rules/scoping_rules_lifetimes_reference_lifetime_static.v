@@ -20,7 +20,7 @@ Definition coerce_static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
-        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]),
+        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
         β0,
         [
           fun γ =>

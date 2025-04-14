@@ -92,19 +92,18 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
         (M.pointer_coercion
           (M.read (|
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                        Ty.path "alloc::alloc::Global"
-                      ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                      Ty.path "alloc::alloc::Global"
+                    ]
+                ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

@@ -31,11 +31,10 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -114,7 +113,7 @@ Module collections.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ R ]),
+                Ty.apply (Ty.path "*") [] [ R ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ T; R ],

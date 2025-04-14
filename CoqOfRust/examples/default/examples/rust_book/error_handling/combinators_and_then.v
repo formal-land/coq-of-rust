@@ -45,7 +45,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 self,
                 [
                   fun γ =>
@@ -131,7 +131,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 self,
                 [
                   fun γ =>
@@ -187,16 +187,11 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
       (let food := M.alloc (| food |) in
       M.read (|
         M.match_operator (|
-          Some
-            (Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "combinators_and_then::Food" ]
-              ]),
+          Ty.apply
+            (Ty.path "*")
+            []
+            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ]
+            ],
           food,
           [
             fun γ =>
@@ -234,16 +229,11 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let food := M.alloc (| food |) in
       M.read (|
         M.match_operator (|
-          Some
-            (Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "combinators_and_then::Food" ]
-              ]),
+          Ty.apply
+            (Ty.path "*")
+            []
+            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ]
+            ],
           food,
           [
             fun γ =>
@@ -284,16 +274,11 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let food := M.alloc (| food |) in
       M.read (|
         M.match_operator (|
-          Some
-            (Ty.apply
-              (Ty.path "*")
-              []
-              [
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "combinators_and_then::Food" ]
-              ]),
+          Ty.apply
+            (Ty.path "*")
+            []
+            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ]
+            ],
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
@@ -312,16 +297,15 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "*")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "combinators_and_then::Food" ]
-                      ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "combinators_and_then::Food" ]
+                    ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -421,7 +405,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let day := M.alloc (| day |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (|
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
@@ -611,7 +595,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (|
             Value.Tuple
               [

@@ -16,7 +16,7 @@ Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       (let pair_ := M.alloc (| pair_ |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "bool"; Ty.path "i32" ] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "bool"; Ty.path "i32" ] ],
           pair_,
           [
             fun γ =>
@@ -757,7 +757,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
           |) in
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           tuple,
           [
             fun γ =>

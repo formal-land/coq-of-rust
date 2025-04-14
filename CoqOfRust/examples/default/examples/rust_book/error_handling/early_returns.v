@@ -32,7 +32,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             let~ first_number : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -79,7 +79,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             let~ second_number : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -162,7 +162,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let result := M.alloc (| result |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           result,
           [
             fun γ =>

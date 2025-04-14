@@ -115,7 +115,7 @@ Module Impl_enums_testcase_linked_list_List.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -192,7 +192,7 @@ Module Impl_enums_testcase_linked_list_List.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "alloc::string::String" ],
             M.deref (| M.read (| self |) |),
             [
               fun γ =>

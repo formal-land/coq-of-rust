@@ -24,7 +24,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         M.never_to_any (|
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
               M.deref (| M.read (| self |) |),
               []
             |)
@@ -99,7 +99,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         M.never_to_any (|
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
               M.deref (| M.read (| self |) |),
               []
             |)

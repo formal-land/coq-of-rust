@@ -64,16 +64,15 @@ Module collections.
                 let f := M.alloc (| f |) in
                 M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      ],
                     M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
@@ -1104,7 +1103,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ],
                             self,
                             [
                               fun γ =>
@@ -1211,7 +1210,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ],
                             self,
                             [
                               fun γ =>
@@ -1336,7 +1335,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ],
                             self,
                             [
                               fun γ =>
@@ -1474,7 +1473,7 @@ Module collections.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ K ] ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ K ] ],
                         M.deref (| M.read (| self |) |),
                         [
                           fun γ =>
@@ -1589,16 +1588,15 @@ Module collections.
                 let f := M.alloc (| f |) in
                 M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::map::entry::Entry")
-                            []
-                            [ K; V; A ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::Entry")
+                          []
+                          [ K; V; A ]
+                      ],
                     self,
                     [
                       fun γ =>
@@ -1706,16 +1704,15 @@ Module collections.
                 let value := M.alloc (| value |) in
                 M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
-                            []
-                            [ K; V; A ]
-                        ]),
+                    Ty.apply
+                      (Ty.path "*")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
+                          []
+                          [ K; V; A ]
+                      ],
                     self,
                     [
                       fun γ =>
@@ -1809,7 +1806,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ],
                             self,
                             [
                               fun γ =>
@@ -2111,27 +2108,26 @@ Module collections.
                         ] :=
                     M.copy (|
                       M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::Handle")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::Mut";
-                                      K;
-                                      V;
-                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                    ];
-                                  Ty.path "alloc::collections::btree::node::marker::KV"
-                                ]
-                            ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::Handle")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ];
+                                Ty.path "alloc::collections::btree::node::marker::KV"
+                              ]
+                          ],
                         M.SubPointer.get_struct_record_field (|
                           self,
                           "alloc::collections::btree::map::entry::VacantEntry",
@@ -2583,29 +2579,28 @@ Module collections.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Some
-                                                  (Ty.apply
-                                                    (Ty.path "*")
-                                                    []
-                                                    [
-                                                      Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::collections::btree::node::SplitResult")
-                                                                []
-                                                                [
-                                                                  K;
-                                                                  V;
-                                                                  Ty.path
-                                                                    "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                        (Ty.tuple [])
-                                                    ]),
+                                                Ty.apply
+                                                  (Ty.path "*")
+                                                  []
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::btree::node::SplitResult")
+                                                              []
+                                                              [
+                                                                K;
+                                                                V;
+                                                                Ty.path
+                                                                  "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.tuple [])
+                                                  ],
                                                 M.alloc (| α0 |),
                                                 [
                                                   fun γ =>
@@ -3706,7 +3701,7 @@ Module collections.
                   let~ emptied_internal_root : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
                     M.alloc (| Value.Bool false |) in
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ K; V ] ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -3763,11 +3758,10 @@ Module collections.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -3883,7 +3877,7 @@ Module collections.
                             |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>

@@ -669,7 +669,7 @@ impl Expr {
                 scrutinee,
                 arms,
             } => coq::Expression::just_name("M.match_operator").monadic_apply_many(&[
-                coq::Expression::just_name("Some").apply(ty.to_coq()),
+                ty.to_coq(),
                 scrutinee.to_coq(),
                 Rc::new(coq::Expression::List {
                     exprs: arms.iter().map(|arm| arm.to_coq()).collect(),

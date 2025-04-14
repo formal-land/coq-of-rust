@@ -603,7 +603,7 @@ Module marker.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             β1,
             [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
           |)))

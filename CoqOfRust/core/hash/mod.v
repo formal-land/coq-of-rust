@@ -13,7 +13,7 @@ Module hash.
           M.read (|
             M.use
               (M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
@@ -38,7 +38,7 @@ Module hash.
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2767,7 +2767,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
               β1,
               [
                 fun γ =>
@@ -2828,7 +2828,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2889,7 +2889,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2971,7 +2971,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3074,7 +3074,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3203,7 +3203,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3353,7 +3353,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3524,7 +3524,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3716,7 +3716,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3929,7 +3929,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -4164,7 +4164,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -4420,7 +4420,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -4697,7 +4697,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -5149,7 +5149,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -5261,7 +5261,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple

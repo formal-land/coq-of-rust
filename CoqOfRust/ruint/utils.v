@@ -28,7 +28,7 @@ Module utils.
               |)
             |) in
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "usize" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -109,15 +109,14 @@ Module utils.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Some
-                              (Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                    (Ty.path "bool")
-                                ]),
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [
+                                Ty.function
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                  (Ty.path "bool")
+                              ],
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -153,11 +152,10 @@ Module utils.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Some
-                          (Ty.apply
-                            (Ty.path "*")
-                            []
-                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ]),
+                        Ty.apply
+                          (Ty.path "*")
+                          []
+                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ],
                         M.alloc (| α0 |),
                         [
                           fun γ =>

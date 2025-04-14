@@ -344,22 +344,21 @@ Module transaction.
                     M.deref (|
                       M.read (|
                         M.match_operator (|
-                          Some
-                            (Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.dyn
-                                      [
-                                        ("revm_context_interface::transaction::common::CommonTxFields::Trait",
-                                          [])
-                                      ]
-                                  ]
-                              ]),
+                          Ty.apply
+                            (Ty.path "*")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.dyn
+                                    [
+                                      ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                        [])
+                                    ]
+                                ]
+                            ],
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -717,7 +716,7 @@ Module transaction.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "u128" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
@@ -1182,10 +1181,9 @@ Module transaction.
                     |)
                   |) in
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "u128" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
                   M.match_operator (|
-                    Some
-                      (Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ],
                     tx_type,
                     [
                       fun γ =>
@@ -1835,7 +1833,7 @@ Module transaction.
                 |)
               |) in
             M.match_operator (|
-              Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::common::TxKind" ]),
+              Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::common::TxKind" ],
               tx_type,
               [
                 fun γ =>
@@ -2271,28 +2269,27 @@ Module transaction.
                 |)
               |) in
             M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.associated_in_trait
-                              "revm_context_interface::transaction::Transaction"
-                              []
-                              []
-                              Self
-                              "AccessList"
-                          ]
-                      ]
-                  ]),
+              Ty.apply
+                (Ty.path "*")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "AccessList"
+                        ]
+                    ]
+                ],
               tx_type,
               [
                 fun γ =>

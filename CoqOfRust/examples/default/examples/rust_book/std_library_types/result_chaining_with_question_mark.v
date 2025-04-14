@@ -54,7 +54,7 @@ Module checked.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   self,
                   [
                     fun γ =>
@@ -140,19 +140,16 @@ Module checked.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "f64";
-                      Ty.path "result_chaining_with_question_mark::checked::MathError"
-                    ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -216,19 +213,16 @@ Module checked.
         (let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "f64";
-                      Ty.path "result_chaining_with_question_mark::checked::MathError"
-                    ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -292,19 +286,16 @@ Module checked.
         (let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            Some
-              (Ty.apply
-                (Ty.path "*")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "f64";
-                      Ty.path "result_chaining_with_question_mark::checked::MathError"
-                    ]
-                ]),
+            Ty.apply
+              (Ty.path "*")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                  ]
+              ],
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -379,7 +370,7 @@ Module checked.
               let~ ratio : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -499,7 +490,7 @@ Module checked.
               let~ ln : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
                 M.copy (|
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.path "f64" ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -662,7 +653,7 @@ Module checked.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -696,11 +687,10 @@ Module checked.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.match_operator (|
-                                  Some
-                                    (Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                                  Ty.apply
+                                    (Ty.path "*")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   why,
                                   [
                                     fun γ =>

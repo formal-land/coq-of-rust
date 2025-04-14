@@ -153,7 +153,7 @@ Module main.
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.use
               (M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
@@ -182,7 +182,7 @@ Module main.
                         ltac:(M.monadic
                           (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
@@ -224,7 +224,7 @@ Module main.
                                     let~ addition : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                                       M.copy (|
                                         M.match_operator (|
-                                          Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
+                                          Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.path "bool",

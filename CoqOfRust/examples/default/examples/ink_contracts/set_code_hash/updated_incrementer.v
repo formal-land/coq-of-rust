@@ -57,7 +57,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Some (Ty.apply (Ty.path "*") [] [ Ty.path "updated_incrementer::AccountId" ]),
+            Ty.apply (Ty.path "*") [] [ Ty.path "updated_incrementer::AccountId" ],
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -457,15 +457,14 @@ Module Impl_updated_incrementer_Incrementer.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Some
-                                (Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
-                                      (Ty.tuple [])
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*")
+                                []
+                                [
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
+                                    (Ty.tuple [])
+                                ],
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

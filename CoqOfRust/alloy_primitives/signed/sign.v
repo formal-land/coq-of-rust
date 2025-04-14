@@ -81,8 +81,7 @@ Module signed.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Some
-                      (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     self,
                     [
                       fun γ =>
@@ -242,7 +241,7 @@ Module signed.
             let rhs := M.alloc (| rhs |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| rhs |) ] |),
                 [
                   fun γ =>
@@ -350,7 +349,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
                 self,
                 [
                   fun γ =>
@@ -410,7 +409,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
                 self,
                 [
                   fun γ =>
@@ -468,16 +467,15 @@ Module signed.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  ],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -599,7 +597,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                 self,
                 [
                   fun γ =>
@@ -635,7 +633,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                 self,
                 [
                   fun γ =>
@@ -674,7 +672,7 @@ Module signed.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.path "char" ]),
+                Ty.apply (Ty.path "*") [] [ Ty.path "char" ],
                 self,
                 [
                   fun γ =>

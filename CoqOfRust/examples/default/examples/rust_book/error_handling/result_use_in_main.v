@@ -29,7 +29,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let~ number : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
               M.copy (|
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

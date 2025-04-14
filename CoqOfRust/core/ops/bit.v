@@ -361,7 +361,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.match_operator (| Some (Ty.apply (Ty.path "*") [] [ Ty.path "never" ]), self, [] |)
+              M.match_operator (| Ty.apply (Ty.path "*") [] [ Ty.path "never" ], self, [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

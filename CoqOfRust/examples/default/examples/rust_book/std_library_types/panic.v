@@ -19,7 +19,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       let divisor := M.alloc (| divisor |) in
       M.read (|
         M.match_operator (|
-          Some (Ty.apply (Ty.path "*") [] [ Ty.path "i32" ]),
+          Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>

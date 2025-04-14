@@ -109,11 +109,10 @@ Module secp256k1.
                       [ Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some
-                        (Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature" ]),
+                      Ty.apply
+                        (Ty.path "*")
+                        []
+                        [ Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -283,7 +282,7 @@ Module secp256k1.
                 let~ public : Ty.apply (Ty.path "*") [] [ Ty.path "secp256k1::key::PublicKey" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "secp256k1::key::PublicKey" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "secp256k1::key::PublicKey" ],
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -645,7 +644,7 @@ Module secp256k1.
             (M.read (|
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -782,7 +781,7 @@ Module secp256k1.
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                 M.match_operator (|
-                  Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -924,23 +923,22 @@ Module secp256k1.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Some
-                                                    (Ty.apply
-                                                      (Ty.path "*")
-                                                      []
-                                                      [
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "u8" ]
-                                                              ]
-                                                          ]
-                                                          (Ty.path "bool")
-                                                      ]),
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ]
+                                                        ]
+                                                        (Ty.path "bool")
+                                                    ],
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -964,7 +962,7 @@ Module secp256k1.
                                   ltac:(M.monadic
                                     (M.read (|
                                       M.match_operator (|
-                                        Some (Ty.apply (Ty.path "*") [] [ Ty.path "bool" ]),
+                                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
                                         M.SubPointer.get_array_field (|
                                           M.deref (|
                                             M.call_closure (|
@@ -1526,24 +1524,23 @@ Module secp256k1.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Some
-                                        (Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloy_primitives::bits::fixed::FixedBytes")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      []
-                                                  ]
-                                              ]
-                                              (Ty.path "alloy_primitives::bytes_::Bytes")
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "*")
+                                        []
+                                        [
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::bits::fixed::FixedBytes")
+                                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                                    []
+                                                ]
+                                            ]
+                                            (Ty.path "alloy_primitives::bytes_::Bytes")
+                                        ],
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>

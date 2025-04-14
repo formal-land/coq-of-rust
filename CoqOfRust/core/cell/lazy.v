@@ -112,11 +112,7 @@ Module cell.
             (let this := M.alloc (| this |) in
             M.read (|
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ],
@@ -255,7 +251,7 @@ Module cell.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 state,
                 [
                   fun γ =>
@@ -423,7 +419,7 @@ Module cell.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
-                            Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
+                            Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                             state,
                             [
                               fun γ =>
@@ -602,7 +598,7 @@ Module cell.
                   |)
                 |) in
               M.match_operator (|
-                Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
+                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ],
@@ -731,7 +727,7 @@ Module cell.
                           |)
                         |) in
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
+                        Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                         state,
                         [
                           fun γ =>
@@ -814,16 +810,15 @@ Module cell.
                   |)
                 |) in
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                  ],
                 state,
                 [
                   fun γ =>
@@ -919,16 +914,11 @@ Module cell.
                   |)
                 |) in
               M.match_operator (|
-                Some
-                  (Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                    ]),
+                Ty.apply
+                  (Ty.path "*")
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                  ],
                 state,
                 [
                   fun γ =>
@@ -1097,12 +1087,10 @@ Module cell.
                     [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]
                     ] :=
                 M.match_operator (|
-                  Some
-                    (Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]
-                      ]),
+                  Ty.apply
+                    (Ty.path "*")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] ],
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

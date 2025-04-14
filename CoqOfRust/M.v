@@ -695,11 +695,8 @@ Definition get_trait_method
     trait self_ty trait_consts trait_tys method generic_consts generic_tys
   ).
 
-Definition catch (ty : option Ty.t) (body : M) (handler : Exception.t -> M) : M :=
-  (match ty with
-  | Some ty => LowM.Let ty
-  | None => LowM.let_
-  end) body (fun result =>
+Definition catch (ty : Ty.t) (body : M) (handler : Exception.t -> M) : M :=
+  LowM.Let ty body (fun result =>
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception
@@ -707,7 +704,7 @@ Definition catch (ty : option Ty.t) (body : M) (handler : Exception.t -> M) : M 
 
 Definition catch_return (ty : Ty.t) (body : M) : M :=
   catch
-    (Some ty)
+    ty
     body
     (fun exception =>
       match exception with
@@ -718,7 +715,7 @@ Definition catch_return (ty : Ty.t) (body : M) : M :=
 
 Definition catch_continue (ty : Ty.t) (body : M) : M :=
   catch
-    (Some ty)
+    ty
     body
     (fun exception =>
       match exception with
@@ -729,7 +726,7 @@ Definition catch_continue (ty : Ty.t) (body : M) : M :=
 
 Definition catch_break (ty : Ty.t) (body : M) : M :=
   catch
-    (Some ty)
+    ty
     body
     (fun exception =>
       match exception with
@@ -749,7 +746,7 @@ Definition loop (ty : Ty.t) (body : M) : M :=
     combinatorial explosion. Indeed, only when a [ty] is there we can use a hard monadic `let` tà
     cut the proof into two parts for each of the [arms]. *)
 Fixpoint match_operator
-    (ty : option Ty.t)
+    (ty : Ty.t)
     (scrutinee : Value.t)
     (arms : list (Value.t -> M)) :
     M :=
@@ -781,7 +778,7 @@ Fixpoint find_or_pattern_aux
   | nil => break_match
   | arm :: arms =>
     catch
-      (Some arm_ty)
+      arm_ty
       (arm scrutinee)
       (fun exception =>
         match exception with

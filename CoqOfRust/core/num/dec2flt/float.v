@@ -141,7 +141,7 @@ Module num.
               M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -151,7 +151,7 @@ Module num.
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -292,7 +292,7 @@ Module num.
                 let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "i8" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "i8" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -340,7 +340,7 @@ Module num.
                 let~ mantissa : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u32" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -606,7 +606,7 @@ Module num.
               M.read (|
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -616,7 +616,7 @@ Module num.
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                             M.match_operator (|
-                              Some (Ty.apply (Ty.path "*") [] [ Ty.tuple [] ]),
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -753,7 +753,7 @@ Module num.
                 let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "i8" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "i8" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "i8" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -801,7 +801,7 @@ Module num.
                 let~ mantissa : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
                   M.copy (|
                     M.match_operator (|
-                      Some (Ty.apply (Ty.path "*") [] [ Ty.path "u64" ]),
+                      Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
