@@ -9,11 +9,7 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.gas.links.constants.
-
-(* TODO:
-- find a proof with `Self` manually constructed and do research on
-how to fill it
-*)
+Require Import CoqOfRust.revm.revm_context_interface.links.journaled_state.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -34,19 +30,19 @@ Instance run_balance
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
   destruct Impl_IntoAddress_for_U256.run.
-  (* TODO: fill in correct link to link with
-  `revm_context_interface::host::Host::balance`
-  When `destruct revm_context_interface.links.host.Host.Run_balance`,
-  Coqtop reports that it's unable to find an instance for `Self`
+  (* 
+  {{LowM.CallClosure
+    (Ty.apply
+       (Ty.path
+          "core::option::Option") []
+       [Ty.apply
+          (Ty.path
+             "revm_context_interface::journaled_state::StateLoad")
+  Seems like LowM has some issue to make calls properly after the type annotation update?...
   *)
   run_symbolic.
 Admitted.
@@ -71,12 +67,6 @@ Instance run_selfbalance
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
@@ -105,12 +95,6 @@ Instance run_extcodesize
     aliases.U256.t.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   (* destruct run_Host_for_H. *)
@@ -118,6 +102,9 @@ Proof.
   destruct run_LoopControl_for_Control.
   (* TODO: "revm_interpreter::instructions::utility::IntoAddress::into_address" *)
   run_symbolic.
+  (* - apply aliases.U256.t. 
+  Coq seems to say the goal being a Type while U256.t being defined is a Set?...
+  *)
 Admitted.
 
 (*
@@ -138,12 +125,6 @@ Instance run_extcodehash
     aliases.U256.t.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   (* destruct run_Host_for_H. *)
@@ -174,12 +155,6 @@ Instance run_extcodecopy
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   (* destruct run_Host_for_H. *)
@@ -210,12 +185,6 @@ Instance run_blockhash
     aliases.U256.t.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   (* destruct run_Host_for_H. *)
@@ -246,12 +215,6 @@ Instance run_sload
     aliases.U256.t.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
@@ -283,12 +246,6 @@ Instance run_sstore
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
@@ -319,12 +276,6 @@ Instance run_tstore
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_Host_for_H.
@@ -353,12 +304,6 @@ Instance run_tload
     aliases.U256.t.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -388,12 +333,6 @@ Instance run_log
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE. *)
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -421,12 +360,6 @@ Instance run_selfdestruct
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
