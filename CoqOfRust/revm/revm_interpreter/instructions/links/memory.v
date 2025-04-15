@@ -156,5 +156,4 @@ Proof.
   (* NOTE: This command seems to be exploded? *)
   (* destruct core.links.cmp.run_max. *)
   run_symbolic.
-Defined.
-(* Admitted. *)
+Admitted.
