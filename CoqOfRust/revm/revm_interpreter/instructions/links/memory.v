@@ -153,7 +153,8 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  destruct core.links.cmp.run_max.
+  (* NOTE: This command seems to be exploded? *)
+  (* destruct core.links.cmp.run_max. *)
   run_symbolic.
 Defined.
 (* Admitted. *)
