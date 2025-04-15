@@ -72,8 +72,9 @@ Proof.
   destruct run_Host_for_H.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
-  (* TODO: figure out a correct instance for `Self`, maybe refer to source code *)
-  (* destruct links.interpreter_types.InputsTrait.Run_target_address. *)
+  (* NOTE: for this instance of `Self`, Coq will complain that it is not a inductive definition *)
+  destruct (links.interpreter_types.InputsTrait.Run_target_address 
+    WIRE_types.(InterpreterTypes.Types.Input)).
   run_symbolic.
 Admitted.
 
