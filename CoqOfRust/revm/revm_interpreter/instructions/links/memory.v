@@ -153,5 +153,10 @@ Instance run_mcopy
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_MemoryTrait_for_Memory.
   run_symbolic.
 Admitted.
