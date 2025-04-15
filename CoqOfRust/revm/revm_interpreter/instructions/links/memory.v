@@ -12,12 +12,8 @@ Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
 Require Import ruint.links.lib.
 Require Import ruint.links.bytes.
-
-Import num.links.mod.Impl_usize.
-(* Import convert.links.mod.Impl_AsRef_for_Slice. *)
-Import Impl_Gas.
-Import links.lib.Impl_Uint.
-Import links.bytes.Impl_Uint.
+Require Import ruint.bytes.
+Require Import ruint.links.from.
 
 (* pub fn mload<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,

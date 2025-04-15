@@ -9,7 +9,7 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.gas.links.constants.
-Require Import CoqOfRust.revm.revm_context_interface.links.journaled_state.
+Require Import revm.revm_context_interface.links.journaled_state.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
