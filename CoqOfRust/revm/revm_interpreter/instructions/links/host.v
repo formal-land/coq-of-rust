@@ -73,8 +73,8 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
   (* NOTE: for this instance of `Self`, Coq will complain that it is not a inductive definition *)
-  destruct (links.interpreter_types.InputsTrait.Run_target_address 
-    WIRE_types.(InterpreterTypes.Types.Input)).
+  (* destruct (links.interpreter_types.InputsTrait.Run_target_address 
+    WIRE_types.(InterpreterTypes.Types.Input)). *)
   run_symbolic.
 Admitted.
 

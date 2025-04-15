@@ -9,13 +9,15 @@ Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.gas.links.constants.
+Require Import revm.revm_interpreter.gas.links.calc.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
+Require Import revm.revm_specification.links.hardfork.
 Require Import ruint.links.lib.
 Require Import ruint.links.bytes.
 Require Import ruint.bytes.
 Require Import ruint.links.from.
 
-(* pub fn mload<WIRE: InterpreterTypes, H: Host + ?Sized>(
+(* (* pub fn mload<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
 ) *)
@@ -128,11 +130,8 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  (* NOTE:
-  - For `IsAssociatedFunction.C ruint::Uint::from`, seems to be the same issue above?
-  *)
   run_symbolic.
-Admitted.
+Defined. *)
 
 (* pub fn mcopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -154,5 +153,7 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
+  destruct core.links.cmp.run_max.
   run_symbolic.
-Admitted.
+Defined.
+(* Admitted. *)
