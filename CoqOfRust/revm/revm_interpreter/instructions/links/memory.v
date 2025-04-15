@@ -17,7 +17,7 @@ Require Import ruint.links.bytes.
 Require Import ruint.bytes.
 Require Import ruint.links.from.
 
-(* (* pub fn mload<WIRE: InterpreterTypes, H: Host + ?Sized>(
+(* pub fn mload<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
 ) *)
@@ -131,7 +131,7 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
   run_symbolic.
-Defined. *)
+Defined.
 
 (* pub fn mcopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
