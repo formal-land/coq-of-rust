@@ -21,6 +21,7 @@ Instance run_instruction_table
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
     {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types) 
+    (run_Host_for_H : Host.Run H H_types)
     :
   Run.Trait
     instructions.instruction_table [] [ Φ WIRE; Φ H ] []
@@ -46,7 +47,7 @@ Proof.
   { (* balance *)
     set (f := Function2.of_run 
     (* TODO: Update `run_balance`'s parameters wrt its new definitions *)
-    (run_balance run_InterpreterTypes_for_WIRE)).
+    (run_balance run_InterpreterTypes_for_WIRE run_Host_for_H)).
     change (Value.Closure _) with (φ f).
     run_symbolic.
   }
