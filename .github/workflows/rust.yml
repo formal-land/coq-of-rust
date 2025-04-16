@@ -215,7 +215,7 @@ jobs:
             cd ../../..
           endGroup
           startGroup "Translate Plonky3"
-            cd third-party/move-sui
+            cd third-party/plonky3
             cp ../../rust-toolchain ./
             cargo coq-of-rust
             touch src/lib.rs
