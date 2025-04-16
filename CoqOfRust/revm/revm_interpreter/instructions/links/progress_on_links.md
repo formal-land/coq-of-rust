@@ -14,7 +14,7 @@
 - [x] `addmod`
 - [x] `mulmod`
 - [x] `exp`
-- [ ] `signextend`
+- [x] `signextend`
 
 ## Block_info
 
@@ -148,6 +148,6 @@
 ## Summary
 
 - Total: 107
-- Admitted: 38
-- Defined: 69
-- Percentage: 64.49%
+- Admitted: 37
+- Defined: 70
+- Percentage: 65.42%
