@@ -217,6 +217,9 @@ jobs:
           startGroup "Translate Plonky3"
             cd third-party/plonky3
             cp ../../rust-toolchain ./
+            # Add a line at the beginning of the file to enable its translation
+            # should we make a general preprocessing python script?
+            sed -i '1i#![feature(const_swap)]' util/src/lib.rs
             cargo coq-of-rust
             touch src/lib.rs
             cargo coq-of-rust
