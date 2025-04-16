@@ -19,3 +19,6 @@
 [submodule "third-party/bytes"]
 	path = third-party/bytes
 	url = https://github.com/tokio-rs/bytes.git
+[submodule "third-party/plonky3"]
+	path = third-party/plonky3
+	url = https://github.com/Plonky3/Plonky3.git
