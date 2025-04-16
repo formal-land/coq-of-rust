@@ -215,7 +215,7 @@ jobs:
             cd ../../..
           endGroup
           startGroup "Translate Plonky3"
-            cd third-party/plonky3
+            cd third-party/Plonky3
             cp ../../rust-toolchain ./
             # Add a line at the beginning of the file to enable its translation
             # should we make a general preprocessing python script?
