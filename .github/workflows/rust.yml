@@ -214,6 +214,32 @@ jobs:
             cd ..
             cd ../../..
           endGroup
+          startGroup "Translate Plonky3"
+            cd third-party/Plonky3
+            git checkout -- .
+            cp ../../rust-toolchain ./
+            # Add a line at the beginning of the file to enable its translation
+            # should we make a general preprocessing python script?
+            sed -i '1i#![feature(const_swap)]' util/src/lib.rs
+            # We remove this dependency as it does not work on every platform, so it makes the build
+            # harder to reproduce
+            sed -i '/p3-goldilocks.workspace = true/d' Cargo.toml
+            cargo coq-of-rust
+            touch air/src/lib.rs
+            touch blake3-air/src/lib.rs
+            touch field/src/lib.rs
+            touch matrix/src/lib.rs
+            touch maybe-rayon/src/lib.rs
+            touch util/src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv ./air/src/ ../../CoqOfRust/plonky3/air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/blake3-air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./field/src/ ../../CoqOfRust/plonky3/field --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./matrix/src/ ../../CoqOfRust/plonky3/matrix --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            cd ../..
+          endGroup
           startGroup "Generate Rocq files from Python"
             cd CoqOfRust
             make generate
