@@ -221,7 +221,39 @@ jobs:
             # should we make a general preprocessing python script?
             sed -i '1i#![feature(const_swap)]' util/src/lib.rs
             cargo coq-of-rust
-            touch src/lib.rs
+            touch air/lib.rs
+            touch baby-bear/lib.rs
+            touch blake3/lib.rs
+            touch blake3-air/lib.rs
+            touch bn254-fr/lib.rs
+            touch challenger/lib.rs
+            touch circle/lib.rs
+            touch commit/lib.rs
+            touch dft/lib.rs
+            touch examples/lib.rs
+            touch field/lib.rs
+            touch field-testing/lib.rs
+            touch fri/lib.rs
+            touch goldilocks/lib.rs
+            touch interpolation/lib.rs
+            touch keccak/lib.rs
+            touch keccak-air/lib.rs
+            touch koala-bear/lib.rs
+            touch matrix/lib.rs
+            touch maybe-rayon/lib.rs
+            touch mds/lib.rs
+            touch merkle-tree/lib.rs
+            touch mersenne-31/lib.rs
+            touch monolith/lib.rs
+            touch monty-31/lib.rs
+            touch poseidon/lib.rs
+            touch poseidon2/lib.rs
+            touch poseidon2-air/lib.rs
+            touch rescue/lib.rs
+            touch sha256/lib.rs
+            touch symmetric/lib.rs
+            touch uni-stark/lib.rs
+            touch util/lib.rs
             cargo coq-of-rust
             rsync -rcv ./air/ ../coq-of-rust/CoqOfRust/plonky3/air --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
             rsync -rcv ./baby-bear/ ../coq-of-rust/CoqOfRust/plonky3/baby-bear --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
