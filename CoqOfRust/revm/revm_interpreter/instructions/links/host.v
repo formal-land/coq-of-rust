@@ -309,10 +309,6 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
-  (* TODO: 2 goals like this?!
-  - Value.Tuple [] = lib.Uint.IsLink.(φ) ?return_
-  - Value.Tuple [] = lib.Uint.IsLink.(φ) ?return_0
-  *)
   run_symbolic.
 Admitted.
 

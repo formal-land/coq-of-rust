@@ -46,7 +46,6 @@ Proof.
   }
   { (* balance *)
     set (f := Function2.of_run 
-    (* TODO: Update `run_balance`'s parameters wrt its new definitions *)
     (run_balance run_InterpreterTypes_for_WIRE run_Host_for_H)).
     change (Value.Closure _) with (φ f).
     run_symbolic.
