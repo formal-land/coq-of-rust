@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.ops.links.arith.
 Require Import ruint.links.lib.
 Require Import ruint.add.
 
@@ -36,3 +37,23 @@ Module Impl_Uint.
   Admitted.
 End Impl_Uint.
 Export Impl_Uint.
+
+Module Impl_Add_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    Add.Run (Self BITS LIMBS) (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_Add_for_Uint.
+Export Impl_Add_for_Uint.
+
+Module Impl_Sub_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    Sub.Run (Self BITS LIMBS) (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_Sub_for_Uint.
+Export Impl_Sub_for_Uint.

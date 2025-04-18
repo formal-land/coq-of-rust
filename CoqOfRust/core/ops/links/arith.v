@@ -3,6 +3,54 @@ Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.core.ops.arith.
 
 (*
+pub trait Add<Rhs = Self> {
+    type Output;
+
+    fn add(self, rhs: Rhs) -> Self::Output;
+}
+*)
+Module Add.
+  Definition trait (Self Rhs : Set) `{Link Self} `{Link Rhs} : TraitMethod.Header.t :=
+    ("core::ops::arith::Add", [], [ Φ Rhs ], Φ Self).
+
+  Definition Run_add (Self Rhs Output : Set) `{Link Self} `{Link Rhs} `{Link Output} : Set :=
+    TraitMethod.C (trait Self Rhs) "add" (fun method =>
+      forall
+        (self : Self)
+        (rhs : Rhs),
+      Run.Trait method [] [] [ φ self; φ rhs ] Output
+    ).
+
+  Class Run (Self Rhs Output : Set) `{Link Self} `{Link Rhs} `{Link Output} : Set := {
+    add : Run_add Self Rhs Output;
+  }.
+End Add.
+
+(*
+pub trait Sub<Rhs = Self> {
+    type Output;
+
+    fn sub(self, rhs: Rhs) -> Self::Output;
+}
+*)
+Module Sub.
+  Definition trait (Self Rhs : Set) `{Link Self} `{Link Rhs} : TraitMethod.Header.t :=
+    ("core::ops::arith::Sub", [], [ Φ Rhs ], Φ Self).
+
+  Definition Run_sub (Self Rhs Output : Set) `{Link Self} `{Link Rhs} `{Link Output} : Set :=
+    TraitMethod.C (trait Self Rhs) "sub" (fun method =>
+      forall
+        (self : Self)
+        (rhs : Rhs),
+      Run.Trait method [] [] [ φ self; φ rhs ] Output
+    ).
+
+  Class Run (Self Rhs Output : Set) `{Link Self} `{Link Rhs} `{Link Output} : Set := {
+    sub : Run_sub Self Rhs Output;
+  }.
+End Sub.
+
+(*
 pub trait Div<Rhs = Self> {
     type Output;
 

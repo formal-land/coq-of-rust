@@ -188,11 +188,14 @@ Module MemoryTrait.
       Run.Trait method [] [] [ φ self; φ new_size ] bool
     ).
 
-  Class Run (Self : Set) `{Link Self} : Set := {
+  Class Run (Self Impl : Set) `{Link Self} `{Link Impl} : Set := {
     set_data : Run_set_data Self;
     set : Run_set Self;
     size : Run_size Self;
     copy : Run_copy Self;
+    Impl_IsAssociated :
+      IsTraitAssociatedType "revm_interpreter::interpreter_types::MemoryTrait" [] [] (Φ Self)
+      "{{synthetic}}" (Φ Impl);
     slice : Run_slice Self;
     slice_len : Run_slice_len Self;
     resize : Run_resize Self;
@@ -680,6 +683,7 @@ Module InterpreterTypes.
     Record t : Type := {
       Stack : Set;
       Memory : Set;
+      Memory_impl : Set;
       Bytecode : Set;
       ReturnData : Set;
       Input : Set;
@@ -692,6 +696,7 @@ Module InterpreterTypes.
     Class AreLinks (types : t) : Set := {
       H_Stack : Link types.(Stack);
       H_Memory : Link types.(Memory);
+      H_Memory_impl : Link types.(Memory_impl);
       H_Bytecode : Link types.(Bytecode);
       H_ReturnData : Link types.(ReturnData);
       H_Input : Link types.(Input);
@@ -705,6 +710,8 @@ Module InterpreterTypes.
       H.(H_Stack _).
     Global Instance IsLinkMemory (types : t) (H : AreLinks types) : Link types.(Memory) :=
       H.(H_Memory _).
+    Global Instance IsLinkMemoryImpl (types : t) (H : AreLinks types) : Link types.(Memory_impl) :=
+      H.(H_Memory_impl _).
     Global Instance IsLinkBytecode (types : t) (H : AreLinks types) : Link types.(Bytecode) :=
       H.(H_Bytecode _).
     Global Instance IsLinkReturnData (types : t) (H : AreLinks types) : Link types.(ReturnData) :=
@@ -734,7 +741,7 @@ Module InterpreterTypes.
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
         "Memory" (Φ types.(Types.Memory));
-    run_MemoryTrait_for_Memory : MemoryTrait.Run types.(Types.Memory);
+    run_MemoryTrait_for_Memory : MemoryTrait.Run types.(Types.Memory) types.(Types.Memory_impl);
     Bytecode_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)

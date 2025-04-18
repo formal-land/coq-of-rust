@@ -1308,10 +1308,12 @@ Ltac run_main_rewrites :=
       Ref.rewrite_borrow_eq ||
       Ref.rewrite_cast_cast_eq ||
       rewrite_if_then_else_bool_eq ||
-      erewrite IsTraitAssociatedType_eq
-        by match goal with
-        | H : _ |- _ => apply H
+      (repeat (
+        erewrite IsTraitAssociatedType_eq ||
+        match goal with
+        | H : _ |- _ => exact H
         end
+      ))
     ));
     reflexivity
   |].

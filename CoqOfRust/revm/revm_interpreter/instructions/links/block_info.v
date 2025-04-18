@@ -74,6 +74,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
+  (* NOTE: used for resolving dependency issue for `core::convert::Into::into` *)
   destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   run_symbolic.
 Defined.
@@ -166,6 +167,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter_for_Self.
   destruct run_Block_for_Block.
+  (* NOTE: used for finding correct instance for `utility::IntoU256::into_u256` *)
   destruct Impl_IntoU256_for_B256.run.
   run_symbolic.
 Defined.

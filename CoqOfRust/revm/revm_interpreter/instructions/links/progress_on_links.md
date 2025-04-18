@@ -14,7 +14,7 @@
 - [x] `addmod`
 - [x] `mulmod`
 - [x] `exp`
-- [ ] `signextend`
+- [x] `signextend`
 
 ## Block_info
 
@@ -104,7 +104,7 @@
 - [ ] `mload`
 - [ ] `mstore`
 - [ ] `mstore8`
-- [ ] `msize`
+- [x] `msize`
 - [ ] `mcopy`
 
 ## Stack
@@ -148,6 +148,6 @@
 ## Summary
 
 - Total: 107
-- Admitted: 39
-- Defined: 68
-- Percentage: 63.55%
+- Admitted: 37
+- Defined: 70
+- Percentage: 65.42%
