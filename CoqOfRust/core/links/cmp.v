@@ -216,6 +216,72 @@ Module Impl_Ord_for_u64.
 End Impl_Ord_for_u64.
 Export Impl_Ord_for_u64.
 
+Module Impl_Ord_for_usize.
+  Definition Self : Set := Usize.t.
+
+  Definition run_cmp : Ord.Run_cmp Self.
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply cmp.impls.Impl_core_cmp_Ord_for_usize.Implements. }
+      { reflexivity. }
+    }
+    { constructor.
+      run_symbolic.
+    }
+  Defined.
+
+  Definition run_max : Ord.Run_max Self.
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Provided.
+      { apply cmp.impls.Impl_core_cmp_Ord_for_usize.Implements. }
+      { reflexivity. }
+      { apply cmp.Ord.ProvidedMethod_max. }
+    }
+    { constructor.
+      apply Ord.run_max.
+      apply run_cmp.
+    }
+  Defined.
+
+  Definition run_min : Ord.Run_min Self.
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Provided.
+      { apply cmp.impls.Impl_core_cmp_Ord_for_usize.Implements. }
+      { reflexivity. }
+      { apply cmp.Ord.ProvidedMethod_min. }
+    }
+    { constructor.
+      apply Ord.run_min.
+      apply run_cmp.
+    }
+  Defined.
+
+  Definition run_clamp : Ord.Run_clamp Self.
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Provided.
+      { apply cmp.impls.Impl_core_cmp_Ord_for_usize.Implements. }
+      { reflexivity. }
+      { apply cmp.Ord.ProvidedMethod_clamp. }
+    }
+    { constructor.
+      apply Ord.run_clamp.
+      apply run_cmp.
+    }
+  Defined.
+
+  Instance run : Ord.Run Self := {
+    Ord.cmp := run_cmp;
+    Ord.max := run_max;
+    Ord.min := run_min;
+    Ord.clamp := run_clamp;
+  }.
+End Impl_Ord_for_usize.
+Export Impl_Ord_for_usize.
+
 (*
   pub trait PartialOrd<Rhs: ?Sized = Self>: PartialEq<Rhs> {
     fn partial_cmp(&self, other: &Rhs) -> Option<Ordering>;

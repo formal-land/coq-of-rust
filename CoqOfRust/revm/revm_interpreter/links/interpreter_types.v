@@ -162,24 +162,20 @@ Module MemoryTrait.
       Run.Trait method [] [] [ φ self; φ destination; φ source; φ len ] unit
     ).
 
-  Definition Run_slice (Self : Set) `{Link Self} : Set :=
+  Definition Run_slice (Self Synthetic : Set) `{Link Self} `{Link Synthetic} : Set :=
     TraitMethod.C (trait Self) "slice" (fun method =>
       forall
-        (Output : Set) `(Link Output)
-        (run_Deref_for_Output : deref.Deref.Run Output (list U8.t))
         (self : Ref.t Pointer.Kind.Ref Self)
         (range : Ref.t Pointer.Kind.Ref (range.Range.t Usize.t)),
-      Run.Trait method [] [ Φ Output ] [ φ self; φ range ] Output
+      Run.Trait method [] [] [ φ self; φ range ] Synthetic
     ).
 
-  Definition Run_slice_len (Self : Set) `{Link Self} : Set :=
+  Definition Run_slice_len (Self Synthetic1 : Set) `{Link Self} `{Link Synthetic1} : Set :=
     TraitMethod.C (trait Self) "slice_len" (fun method =>
       forall
-        (Output : Set) `(Link Output)
-        (run_Deref_for_Output : deref.Deref.Run Output (list U8.t))
         (self : Ref.t Pointer.Kind.Ref Self)
         (offset len : Usize.t),
-      Run.Trait method [] [ Φ Output ] [ φ self; φ offset; φ len ] Output
+      Run.Trait method [] [] [ φ self; φ offset; φ len ] Synthetic1
     ).
 
   Definition Run_resize (Self : Set) `{Link Self} : Set :=
@@ -188,13 +184,23 @@ Module MemoryTrait.
       Run.Trait method [] [] [ φ self; φ new_size ] bool
     ).
 
-  Class Run (Self : Set) `{Link Self} : Set := {
+  Class Run (Self Synthetic Synthetic1 : Set)
+      `{Link Self} `{Link Synthetic} `{Link Synthetic1} :
+      Set := {
     set_data : Run_set_data Self;
     set : Run_set Self;
     size : Run_size Self;
     copy : Run_copy Self;
-    slice : Run_slice Self;
-    slice_len : Run_slice_len Self;
+    Synthetic_IsAssociated :
+      IsTraitAssociatedType "revm_interpreter::interpreter_types::MemoryTrait" [] [] (Φ Self)
+      "{{synthetic}}" (Φ Synthetic);
+    run_Deref_for_Synthetic : deref.Deref.Run Synthetic (list U8.t);
+    slice : Run_slice Self Synthetic;
+    Synthetic1_IsAssociated :
+      IsTraitAssociatedType "revm_interpreter::interpreter_types::MemoryTrait" [] [] (Φ Self)
+      "{{synthetic}}'1" (Φ Synthetic1);
+    run_Deref_for_Synthetic1 : deref.Deref.Run Synthetic1 (list U8.t);
+    slice_len : Run_slice_len Self Synthetic1;
     resize : Run_resize Self;
   }.
 End MemoryTrait.
@@ -680,6 +686,8 @@ Module InterpreterTypes.
     Record t : Type := {
       Stack : Set;
       Memory : Set;
+      Memory_Synthetic : Set;
+      Memory_Synthetic1 : Set;
       Bytecode : Set;
       ReturnData : Set;
       Input : Set;
@@ -692,6 +700,8 @@ Module InterpreterTypes.
     Class AreLinks (types : t) : Set := {
       H_Stack : Link types.(Stack);
       H_Memory : Link types.(Memory);
+      H_Memory_Synthetic : Link types.(Memory_Synthetic);
+      H_Memory_Synthetic1 : Link types.(Memory_Synthetic1);
       H_Bytecode : Link types.(Bytecode);
       H_ReturnData : Link types.(ReturnData);
       H_Input : Link types.(Input);
@@ -705,6 +715,10 @@ Module InterpreterTypes.
       H.(H_Stack _).
     Global Instance IsLinkMemory (types : t) (H : AreLinks types) : Link types.(Memory) :=
       H.(H_Memory _).
+    Global Instance IsLinkMemory_Synthetic (types : t) (H : AreLinks types) : Link types.(Memory_Synthetic) :=
+      H.(H_Memory_Synthetic _).
+    Global Instance IsLinkMemory_Synthetic1 (types : t) (H : AreLinks types) : Link types.(Memory_Synthetic1) :=
+      H.(H_Memory_Synthetic1 _).
     Global Instance IsLinkBytecode (types : t) (H : AreLinks types) : Link types.(Bytecode) :=
       H.(H_Bytecode _).
     Global Instance IsLinkReturnData (types : t) (H : AreLinks types) : Link types.(ReturnData) :=
@@ -734,7 +748,11 @@ Module InterpreterTypes.
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
         "Memory" (Φ types.(Types.Memory));
-    run_MemoryTrait_for_Memory : MemoryTrait.Run types.(Types.Memory);
+    run_MemoryTrait_for_Memory :
+      MemoryTrait.Run
+        types.(Types.Memory)
+        types.(Types.Memory_Synthetic)
+        types.(Types.Memory_Synthetic1);
     Bytecode_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)

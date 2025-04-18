@@ -1,8 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.links.aliases.
+Require Import bytes.links.bytes.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.journaled_state.
+Require Import revm.revm_interpreter.gas.links.calc.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.host.
 Require Import revm.revm_interpreter.instructions.links.utility.
@@ -10,6 +13,7 @@ Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
+Require Import ruint.links.from.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -32,20 +36,12 @@ Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_Host_for_H.
   destruct Impl_IntoAddress_for_U256.run.
-  (* 
-  {{LowM.CallClosure
-    (Ty.apply
-       (Ty.path
-          "core::option::Option") []
-       [Ty.apply
-          (Ty.path
-             "revm_context_interface::journaled_state::StateLoad")
-  Seems like LowM has some issue to make calls properly after the type annotation update?...
-  *)
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -53,7 +49,6 @@ pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
     _host: &mut H,
 )
 *)
-
 Instance run_selfbalance
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -72,11 +67,9 @@ Proof.
   destruct run_Host_for_H.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
-  (* NOTE: for this instance of `Self`, Coq will complain that it is not a inductive definition *)
-  (* destruct (links.interpreter_types.InputsTrait.Run_target_address 
-    WIRE_types.(InterpreterTypes.Types.Input)). *)
+  destruct run_InputsTrait_for_Input.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn extcodesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -89,6 +82,7 @@ Instance run_extcodesize
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -98,14 +92,13 @@ Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  (* destruct run_Host_for_H. *)
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
-  (* TODO: "revm_interpreter::instructions::utility::IntoAddress::into_address" *)
+  destruct run_Host_for_H.
+  destruct Impl_IntoAddress_for_U256.run.
+  destruct alloy_primitives.bytes.links.mod.Impl_Deref_for_Bytes.run.
   run_symbolic.
-  (* - apply aliases.U256.t. 
-  Coq seems to say the goal being a Type while U256.t being defined is a Set?...
-  *)
+  (* Errors in the type annotations *)
 Admitted.
 
 (*
