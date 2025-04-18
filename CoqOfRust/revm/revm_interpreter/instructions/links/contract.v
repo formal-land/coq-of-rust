@@ -57,6 +57,7 @@ Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE eqn:?.
   destruct run_StackTrait_for_Stack.
+  destruct run_MemoryTrait_for_Memory.
   destruct run_LoopControl_for_Control.
   destruct run_Immediates_for_Bytecode.
   destruct run_Jumps_for_Bytecode.
@@ -67,6 +68,37 @@ Proof.
   destruct Impl_Default_for_Bytes.run.
   destruct links.mod.Impl_Deref_for_Bytes.run.
   destruct (Impl_Into_for_From_T.run Impl_From_Vec_u8_for_Bytes.run).
+  Time run_symbolic.
+  Show.
+  idtac.
+
+
+  idtac.
+  (* destruct run_MemoryTrait_for_Memory. *)
+  repeat (
+    erewrite IsTraitAssociatedType_eq ||
+    match goal with
+    | H : _ |- _ => exact H
+    end
+  ).
+  run_symbolic.
+  erewrite IsTraitAssociatedType_eq. 2: {
+    erewrite IsTraitAssociatedType_eq. 2: {
+      match goal with
+      | H : _ |- _ => exact H
+      end.
+    }
+    match goal with
+    | H : _ |- _ => exact H
+    end.
+    Impl_IsAssociated: IsTraitAssociatedType "revm_interpreter::interpreter_types::MemoryTrait" [] [] (InterpreterTypes.Types.IsLinkMemory WIRE_types H2).(Φ _) "{{synthetic}}" (InterpreterTypes.Types.IsLinkMemoryImpl WIRE_types H2).(Φ _)
+
+    generalize Impl_IsAssociated; clear; intros.
+  }
+        by match goal with
+        | H : _ |- _ => apply H
+        end.
+  idtac.
   run_symbolic.
   (* "synthetic" values appearing in the translation *)
   admit.
