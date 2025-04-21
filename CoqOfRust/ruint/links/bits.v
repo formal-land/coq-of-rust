@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import core.ops.links.bit.
 Require Import ruint.links.lib.
 Require Import ruint.bits.
 
@@ -28,3 +29,63 @@ Module Impl_Uint.
   Admitted.
 End Impl_Uint.
 Export Impl_Uint.
+
+Module Impl_BitAnd_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    BitAnd.Run (Self BITS LIMBS) (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_BitAnd_for_Uint.
+Export Impl_BitAnd_for_Uint.
+
+Module Impl_BitOr_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    BitOr.Run (Self BITS LIMBS) (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_BitOr_for_Uint.
+Export Impl_BitOr_for_Uint.
+
+Module Impl_BitXor_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    BitXor.Run (Self BITS LIMBS) (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_BitXor_for_Uint.
+Export Impl_BitXor_for_Uint.
+
+Module Impl_Shl_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    Shl.Run (Self BITS LIMBS) Usize.t (Self BITS LIMBS).
+  Admitted.
+End Impl_Shl_for_Uint.
+Export Impl_Shl_for_Uint.
+
+Module Impl_Shr_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    Shr.Run (Self BITS LIMBS) Usize.t (Self BITS LIMBS).
+  Admitted.
+End Impl_Shr_for_Uint.
+Export Impl_Shr_for_Uint.
+
+Module Impl_Not_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    Not.Run (Self BITS LIMBS) (Self BITS LIMBS).
+  Admitted.
+End Impl_Not_for_Uint.
+Export Impl_Not_for_Uint.
