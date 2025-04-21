@@ -72,5 +72,5 @@ def check_warnings():
         print("Check complete, no warnings detected")
 
 
-while p.wait(timeout=3600):
+while p.wait(timeout=7200):
     exit(p.returncode)
