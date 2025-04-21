@@ -57,30 +57,39 @@ Module str.
                           LogicalOp.or (|
                             Value.Bool false,
                             ltac:(M.monadic
-                              (BinOp.lt (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
-                                |),
-                                BinOp.Wrap.mul (|
-                                  M.read (|
-                                    get_constant (|
-                                      "core::str::count::USIZE_SIZE",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "core::str::count::UNROLL_INNER",
-                                      Ty.path "usize"
-                                    |)
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.mul,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "core::str::count::USIZE_SIZE",
+                                          Ty.path "usize"
+                                        |)
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "core::str::count::UNROLL_INNER",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
+                                ]
                               |)))
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "usize",
@@ -288,7 +297,42 @@ Module str.
                                                   ]
                                                 |),
                                                 ltac:(M.monadic
-                                                  (BinOp.gt (|
+                                                  (M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.gt,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "len",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| head |) |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "core::str::count::USIZE_SIZE",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)))
+                                              |),
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.gt,
+                                                  [
                                                     M.call_closure (|
                                                       Ty.path "usize",
                                                       M.get_associated_function (|
@@ -303,51 +347,24 @@ Module str.
                                                       [
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| head |) |)
+                                                          M.deref (| M.read (| tail |) |)
                                                         |)
                                                       ]
-                                                    |),
+                                                    |);
                                                     M.read (|
                                                       get_constant (|
                                                         "core::str::count::USIZE_SIZE",
                                                         Ty.path "usize"
                                                       |)
                                                     |)
-                                                  |)))
-                                              |),
-                                              ltac:(M.monadic
-                                                (BinOp.gt (|
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u8" ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| tail |) |)
-                                                      |)
-                                                    ]
-                                                  |),
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "core::str::count::USIZE_SIZE",
-                                                      Ty.path "usize"
-                                                    |)
-                                                  |)
+                                                  ]
                                                 |)))
                                             |)
                                           ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -402,25 +419,31 @@ Module str.
                           |) in
                         let~ total : Ty.path "usize" :=
                           M.alloc (|
-                            BinOp.Wrap.add (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_function (|
-                                  "core::str::count::char_count_general_case",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| head |) |) |) ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_function (|
-                                  "core::str::count::char_count_general_case",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tail |) |) |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (|
+                                    "core::str::count::char_count_general_case",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| head |) |) |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (|
+                                    "core::str::count::char_count_general_case",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tail |) |) |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |) in
                         let~ _ : Ty.tuple [] :=
@@ -923,24 +946,29 @@ Module str.
                                                                                                                   counts in
                                                                                                                 M.write (|
                                                                                                                   β,
-                                                                                                                  BinOp.Wrap.add (|
-                                                                                                                    M.read (|
-                                                                                                                      β
-                                                                                                                    |),
-                                                                                                                    M.call_closure (|
-                                                                                                                      Ty.path
-                                                                                                                        "usize",
-                                                                                                                      M.get_function (|
-                                                                                                                        "core::str::count::contains_non_continuation_byte",
-                                                                                                                        [],
-                                                                                                                        []
-                                                                                                                      |),
-                                                                                                                      [
-                                                                                                                        M.read (|
-                                                                                                                          word
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                    |)
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "usize",
+                                                                                                                    BinOp.Wrap.add,
+                                                                                                                    [
+                                                                                                                      M.read (|
+                                                                                                                        β
+                                                                                                                      |);
+                                                                                                                      M.call_closure (|
+                                                                                                                        Ty.path
+                                                                                                                          "usize",
+                                                                                                                        M.get_function (|
+                                                                                                                          "core::str::count::contains_non_continuation_byte",
+                                                                                                                          [],
+                                                                                                                          []
+                                                                                                                        |),
+                                                                                                                        [
+                                                                                                                          M.read (|
+                                                                                                                            word
+                                                                                                                          |)
+                                                                                                                        ]
+                                                                                                                      |)
+                                                                                                                    ]
                                                                                                                   |)
                                                                                                                 |)
                                                                                                               |) in
@@ -970,17 +998,21 @@ Module str.
                                                               let β := total in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| β |),
-                                                                  M.call_closure (|
-                                                                    Ty.path "usize",
-                                                                    M.get_function (|
-                                                                      "core::str::count::sum_bytes_in_usize",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| counts |) ]
-                                                                  |)
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.add,
+                                                                  [
+                                                                    M.read (| β |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      M.get_function (|
+                                                                        "core::str::count::sum_bytes_in_usize",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| counts |) ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)
                                                             |) in
@@ -1019,7 +1051,7 @@ Module str.
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -1184,24 +1216,29 @@ Module str.
                                                                                                         counts in
                                                                                                       M.write (|
                                                                                                         β,
-                                                                                                        BinOp.Wrap.add (|
-                                                                                                          M.read (|
-                                                                                                            β
-                                                                                                          |),
-                                                                                                          M.call_closure (|
-                                                                                                            Ty.path
-                                                                                                              "usize",
-                                                                                                            M.get_function (|
-                                                                                                              "core::str::count::contains_non_continuation_byte",
-                                                                                                              [],
-                                                                                                              []
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                word
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |)
+                                                                                                        M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "usize",
+                                                                                                          BinOp.Wrap.add,
+                                                                                                          [
+                                                                                                            M.read (|
+                                                                                                              β
+                                                                                                            |);
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "usize",
+                                                                                                              M.get_function (|
+                                                                                                                "core::str::count::contains_non_continuation_byte",
+                                                                                                                [],
+                                                                                                                []
+                                                                                                              |),
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  word
+                                                                                                                |)
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          ]
                                                                                                         |)
                                                                                                       |)
                                                                                                     |) in
@@ -1223,21 +1260,25 @@ Module str.
                                                                             let β := total in
                                                                             M.write (|
                                                                               β,
-                                                                              BinOp.Wrap.add (|
-                                                                                M.read (| β |),
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_function (|
-                                                                                    "core::str::count::sum_bytes_in_usize",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      counts
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.read (| β |);
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "usize",
+                                                                                    M.get_function (|
+                                                                                      "core::str::count::sum_bytes_in_usize",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        counts
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
                                                                               |)
                                                                             |)
                                                                           |) in
@@ -1296,16 +1337,34 @@ Module str.
       | [], [], [ w ] =>
         ltac:(M.monadic
           (let w := M.alloc (| w |) in
-          BinOp.bit_and
-            (BinOp.bit_or
-              (BinOp.Wrap.shr (| UnOp.not (| M.read (| w |) |), Value.Integer IntegerKind.I32 7 |))
-              (BinOp.Wrap.shr (| M.read (| w |), Value.Integer IntegerKind.I32 6 |)))
-            (M.read (|
-              get_constant (|
-                "core::str::count::contains_non_continuation_byte::LSB",
-                Ty.path "usize"
+          M.call_closure (|
+            Ty.path "usize",
+            BinOp.Wrap.bit_and,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.bit_or,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.shr,
+                    [ UnOp.not (| M.read (| w |) |); Value.Integer IntegerKind.I32 7 ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.shr,
+                    [ M.read (| w |); Value.Integer IntegerKind.I32 6 ]
+                  |)
+                ]
+              |);
+              M.read (|
+                get_constant (|
+                  "core::str::count::contains_non_continuation_byte::LSB",
+                  Ty.path "usize"
+                |)
               |)
-            |))))
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1350,47 +1409,79 @@ Module str.
           M.read (|
             let~ pair_sum : Ty.path "usize" :=
               M.alloc (|
-                BinOp.Wrap.add (|
-                  BinOp.bit_and
-                    (M.read (| values |))
-                    (M.read (|
-                      get_constant (|
-                        "core::str::count::sum_bytes_in_usize::SKIP_BYTES",
-                        Ty.path "usize"
-                      |)
-                    |)),
-                  BinOp.bit_and
-                    (BinOp.Wrap.shr (| M.read (| values |), Value.Integer IntegerKind.I32 8 |))
-                    (M.read (|
-                      get_constant (|
-                        "core::str::count::sum_bytes_in_usize::SKIP_BYTES",
-                        Ty.path "usize"
-                      |)
-                    |))
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.read (| values |);
+                        M.read (|
+                          get_constant (|
+                            "core::str::count::sum_bytes_in_usize::SKIP_BYTES",
+                            Ty.path "usize"
+                          |)
+                        |)
+                      ]
+                    |);
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.shr,
+                          [ M.read (| values |); Value.Integer IntegerKind.I32 8 ]
+                        |);
+                        M.read (|
+                          get_constant (|
+                            "core::str::count::sum_bytes_in_usize::SKIP_BYTES",
+                            Ty.path "usize"
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
-              BinOp.Wrap.shr (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
-                  [
-                    M.read (| pair_sum |);
-                    M.read (|
-                      get_constant (|
-                        "core::str::count::sum_bytes_in_usize::LSB_SHORTS",
-                        Ty.path "usize"
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
+                    [
+                      M.read (| pair_sum |);
+                      M.read (|
+                        get_constant (|
+                          "core::str::count::sum_bytes_in_usize::LSB_SHORTS",
+                          Ty.path "usize"
+                        |)
                       |)
-                    |)
-                  ]
-                |),
-                BinOp.Wrap.mul (|
-                  BinOp.Wrap.sub (|
-                    M.read (| get_constant (| "core::str::count::USIZE_SIZE", Ty.path "usize" |) |),
-                    Value.Integer IntegerKind.Usize 2
-                  |),
-                  Value.Integer IntegerKind.Usize 8
-                |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.mul,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [
+                          M.read (|
+                            get_constant (| "core::str::count::USIZE_SIZE", Ty.path "usize" |)
+                          |);
+                          Value.Integer IntegerKind.Usize 2
+                        ]
+                      |);
+                      Value.Integer IntegerKind.Usize 8
+                    ]
+                  |)
+                ]
               |)
             |)
           |)))

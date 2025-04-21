@@ -444,9 +444,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.rem (|
-                                                Value.Integer IntegerKind.I32 1000,
-                                                Value.Integer IntegerKind.I32 256
+                                              M.call_closure (|
+                                                Ty.path "i32",
+                                                BinOp.Wrap.rem,
+                                                [
+                                                  Value.Integer IntegerKind.I32 1000;
+                                                  Value.Integer IntegerKind.I32 256
+                                                ]
                                               |)
                                             |)
                                           |)

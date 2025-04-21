@@ -27,8 +27,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let i := M.copy (| γ |) in
                 let γ :=
-                  M.alloc (| BinOp.eq (| M.read (| i |), Value.Integer IntegerKind.U8 0 |) |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [ M.read (| i |); Value.Integer IntegerKind.U8 0 ]
+                    |)
+                  |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -64,8 +70,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let i := M.copy (| γ |) in
                 let γ :=
-                  M.alloc (| BinOp.gt (| M.read (| i |), Value.Integer IntegerKind.U8 0 |) |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.gt,
+                      [ M.read (| i |); Value.Integer IntegerKind.U8 0 ]
+                    |)
+                  |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|

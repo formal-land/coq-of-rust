@@ -90,7 +90,7 @@ Module char.
                               []
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -527,24 +527,26 @@ Module char.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ParseCharError" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::char::convert::ParseCharError",
-                            "kind"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::char::convert::ParseCharError",
+                              "kind"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -829,7 +831,13 @@ Module char.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1167,24 +1175,39 @@ Module char.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.ge (|
-                            M.call_closure (|
-                              Ty.path "u32",
-                              M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
-                              [
-                                BinOp.bit_xor
-                                  (M.read (| i |))
-                                  (Value.Integer IntegerKind.U32 55296);
-                                Value.Integer IntegerKind.U32 2048
-                              ]
-                            |),
-                            BinOp.Wrap.sub (|
-                              Value.Integer IntegerKind.U32 1114112,
-                              Value.Integer IntegerKind.U32 2048
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.ge,
+                            [
+                              M.call_closure (|
+                                Ty.path "u32",
+                                M.get_associated_function (|
+                                  Ty.path "u32",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    BinOp.Wrap.bit_xor,
+                                    [ M.read (| i |); Value.Integer IntegerKind.U32 55296 ]
+                                  |);
+                                  Value.Integer IntegerKind.U32 2048
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.path "u32",
+                                BinOp.Wrap.sub,
+                                [
+                                  Value.Integer IntegerKind.U32 1114112;
+                                  Value.Integer IntegerKind.U32 2048
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
@@ -1331,24 +1354,26 @@ Module char.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharTryFromError" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::char::convert::CharTryFromError",
-                            0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::char::convert::CharTryFromError",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1530,9 +1555,13 @@ Module char.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (| M.read (| radix |), Value.Integer IntegerKind.U32 36 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ M.read (| radix |); Value.Integer IntegerKind.U32 36 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -1580,8 +1609,15 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.lt (| M.read (| num |), M.read (| radix |) |) |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.lt,
+                            [ M.read (| num |); M.read (| radix |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ num : Ty.path "u8" :=
                       M.alloc (| M.cast (Ty.path "u8") (M.read (| num |)) |) in
                     M.match_operator (|
@@ -1593,19 +1629,24 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (| M.read (| num |), Value.Integer IntegerKind.U8 10 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [ M.read (| num |); Value.Integer IntegerKind.U8 10 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
                                   M.cast
                                     (Ty.path "char")
-                                    (BinOp.Wrap.add (|
-                                      M.read (| UnsupportedLiteral |),
-                                      M.read (| num |)
+                                    (M.call_closure (|
+                                      Ty.path "u8",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| UnsupportedLiteral |); M.read (| num |) ]
                                     |))
                                 ]
                             |)));
@@ -1617,12 +1658,17 @@ Module char.
                                 [
                                   M.cast
                                     (Ty.path "char")
-                                    (BinOp.Wrap.sub (|
-                                      BinOp.Wrap.add (|
-                                        M.read (| UnsupportedLiteral |),
-                                        M.read (| num |)
-                                      |),
-                                      Value.Integer IntegerKind.U8 10
+                                    (M.call_closure (|
+                                      Ty.path "u8",
+                                      BinOp.Wrap.sub,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.add,
+                                          [ M.read (| UnsupportedLiteral |); M.read (| num |) ]
+                                        |);
+                                        Value.Integer IntegerKind.U8 10
+                                      ]
                                     |))
                                 ]
                             |)))

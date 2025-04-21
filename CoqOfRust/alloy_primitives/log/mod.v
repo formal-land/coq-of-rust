@@ -294,38 +294,42 @@ Module log.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LogData" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "topics" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::log::LogData",
-                      "topics"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::log::LogData",
+                        "topics"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::log::LogData",
-                          "data"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::log::LogData",
+                            "data"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -818,36 +822,40 @@ Module log.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.le (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.le,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [];
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  "len",
+                  [],
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      [];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                "len",
-                [],
-                []
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloy_primitives::log::LogData",
-                    "topics"
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloy_primitives::log::LogData",
+                      "topics"
+                    |)
                   |)
-                |)
-              ]
-            |),
-            Value.Integer IntegerKind.Usize 4
+                ]
+              |);
+              Value.Integer IntegerKind.Usize 4
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1337,38 +1345,42 @@ Module log.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Log" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::log::Log",
-                      "address"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::log::Log",
+                        "address"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::log::Log",
-                          "data"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::log::Log",
+                            "data"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

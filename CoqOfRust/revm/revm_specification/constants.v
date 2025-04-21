@@ -21,11 +21,15 @@ Module constants.
   Definition value_MAX_INITCODE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.mul (|
-          Value.Integer IntegerKind.Usize 2,
-          M.read (|
-            get_constant (| "revm_specification::constants::MAX_CODE_SIZE", Ty.path "usize" |)
-          |)
+        M.call_closure (|
+          Ty.path "usize",
+          BinOp.Wrap.mul,
+          [
+            Value.Integer IntegerKind.Usize 2;
+            M.read (|
+              get_constant (| "revm_specification::constants::MAX_CODE_SIZE", Ty.path "usize" |)
+            |)
+          ]
         |)
       |))).
   

@@ -322,35 +322,37 @@ Module stack_usage_verifier.
                                                         M.deref (| M.read (| config |) |)
                                                       |);
                                                       M.read (| block_id |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
+                                                      (* Unsize *)
+                                                      M.pointer_coercion
+                                                        (M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                                ],
+                                                              M.get_associated_function (|
                                                                 Ty.path
-                                                                  "move_binary_format::control_flow_graph::VMControlFlowGraph"
-                                                              ],
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_bytecode_verifier::absint::FunctionContext",
-                                                              "cfg",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| function_context |)
+                                                                  "move_bytecode_verifier::absint::FunctionContext",
+                                                                "cfg",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| function_context |)
+                                                                  |)
                                                                 |)
-                                                              |)
-                                                            ]
+                                                              ]
+                                                            |)
                                                           |)
-                                                        |)
-                                                      |)
+                                                        |))
                                                     ]
                                                   |)
                                                 ]
@@ -952,19 +954,23 @@ Module stack_usage_verifier.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          BinOp.gt (|
-                                                                            M.read (|
-                                                                              overall_push
-                                                                            |),
-                                                                            M.cast
-                                                                              (Ty.path "u64")
-                                                                              (M.read (|
-                                                                                max_push_size
-                                                                              |))
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.gt,
+                                                                            [
+                                                                              M.read (|
+                                                                                overall_push
+                                                                              |);
+                                                                              M.cast
+                                                                                (Ty.path "u64")
+                                                                                (M.read (|
+                                                                                  max_push_size
+                                                                                |))
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -1053,15 +1059,19 @@ Module stack_usage_verifier.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.lt (|
-                                                                    M.read (|
-                                                                      stack_size_increment
-                                                                    |),
-                                                                    M.read (| num_pops |)
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    BinOp.lt,
+                                                                    [
+                                                                      M.read (|
+                                                                        stack_size_increment
+                                                                      |);
+                                                                      M.read (| num_pops |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -1358,23 +1368,29 @@ Module stack_usage_verifier.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.gt (|
-                                                                  M.read (| stack_size_increment |),
-                                                                  M.cast
-                                                                    (Ty.path "u64")
-                                                                    (M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.deref (|
-                                                                          M.read (| config |)
-                                                                        |),
-                                                                        "move_vm_config::verifier::VerifierConfig",
-                                                                        "max_value_stack_size"
-                                                                      |)
-                                                                    |))
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.gt,
+                                                                  [
+                                                                    M.read (|
+                                                                      stack_size_increment
+                                                                    |);
+                                                                    M.cast
+                                                                      (Ty.path "u64")
+                                                                      (M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| config |)
+                                                                          |),
+                                                                          "move_vm_config::verifier::VerifierConfig",
+                                                                          "max_value_stack_size"
+                                                                        |)
+                                                                      |))
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -1465,13 +1481,14 @@ Module stack_usage_verifier.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (| stack_size_increment |),
-                                Value.Integer IntegerKind.U64 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| stack_size_increment |); Value.Integer IntegerKind.U64 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
                         |)));

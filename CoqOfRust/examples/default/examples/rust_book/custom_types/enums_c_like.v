@@ -224,95 +224,105 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ mk_str (| "roses are #" |); mk_str (| "
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ mk_str (| "roses are #" |); mk_str (| "
 " |) ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_lower_hex",
-                                      [],
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              M.cast
-                                                (Ty.path "i32")
-                                                (BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "enums_c_like::Color::Red_discriminant",
-                                                      Ty.path "isize"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.Isize 0
-                                                |))
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_lower_hex",
+                                        [],
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.cast
+                                                  (Ty.path "i32")
+                                                  (M.call_closure (|
+                                                    Ty.path "isize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "enums_c_like::Color::Red_discriminant",
+                                                          Ty.path "isize"
+                                                        |)
+                                                      |);
+                                                      Value.Integer IntegerKind.Isize 0
+                                                    ]
+                                                  |))
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 8;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple
-                                        "core::fmt::rt::Count::Is"
-                                        [ Value.Integer IntegerKind.Usize 6 ]
-                                    ]
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 8;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ Value.Integer IntegerKind.Usize 6 ]
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
+                        |));
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|
@@ -345,95 +355,105 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ mk_str (| "violets are #" |); mk_str (| "
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ mk_str (| "violets are #" |); mk_str (| "
 " |) ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Argument",
-                                      "new_lower_hex",
-                                      [],
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              M.cast
-                                                (Ty.path "i32")
-                                                (BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "enums_c_like::Color::Blue_discriminant",
-                                                      Ty.path "isize"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.Isize 0
-                                                |))
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_lower_hex",
+                                        [],
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.cast
+                                                  (Ty.path "i32")
+                                                  (M.call_closure (|
+                                                    Ty.path "isize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "enums_c_like::Color::Blue_discriminant",
+                                                          Ty.path "isize"
+                                                        |)
+                                                      |);
+                                                      Value.Integer IntegerKind.Isize 0
+                                                    ]
+                                                  |))
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
+                        |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
                                       Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 8;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple
-                                        "core::fmt::rt::Count::Is"
-                                        [ Value.Integer IntegerKind.Usize 6 ]
-                                    ]
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 8;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ Value.Integer IntegerKind.Usize 6 ]
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             |)
                           |)
-                        |)
-                      |);
+                        |));
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|

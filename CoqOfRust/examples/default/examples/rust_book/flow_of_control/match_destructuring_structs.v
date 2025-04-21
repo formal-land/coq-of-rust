@@ -64,7 +64,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                 let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ1_0 |),
                     Value.Integer IntegerKind.U32 1
                   |) in
@@ -167,7 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "x"
                   |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.U32 2
                   |) in

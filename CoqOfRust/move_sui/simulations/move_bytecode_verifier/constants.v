@@ -1,9 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require coqutil.Datatypes.List.
 Require Import CoqOfRust.simulations.M.
-
-Import simulations.M.Notations.
-
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Require Import CoqOfRust.move_sui.simulations.move_core_types.vm_status.

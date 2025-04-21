@@ -66,9 +66,15 @@ Module serializer.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.gt (| M.read (| x |), M.read (| max |) |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| x |); M.read (| max |) ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1542,7 +1548,7 @@ Module serializer.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.read (|
@@ -2107,33 +2113,38 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format_common::BinaryData",
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, temp |) ]
-                                  |),
-                                  M.cast
-                                    (Ty.path "usize")
-                                    (M.call_closure (|
-                                      Ty.path "u32",
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
-                                        Ty.path "u32",
-                                        "max_value",
+                                        Ty.path
+                                          "move_binary_format::file_format_common::BinaryData",
+                                        "len",
                                         [],
                                         []
                                       |),
-                                      []
-                                    |))
+                                      [ M.borrow (| Pointer.Kind.Ref, temp |) ]
+                                    |);
+                                    M.cast
+                                      (Ty.path "usize")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        M.get_associated_function (|
+                                          Ty.path "u32",
+                                          "max_value",
+                                          [],
+                                          []
+                                        |),
+                                        []
+                                      |))
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2904,167 +2915,191 @@ Module serializer.
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
               M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "major_version"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "table_count"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "module_handles"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "struct_handles"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "function_handles"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "function_instantiations"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "signatures"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "identifiers"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "address_identifiers"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::CommonSerializer",
-                                    "constant_pool"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
+                                  M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::CommonSerializer",
-                                        "metadata"
+                                        "major_version"
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)
-                            |)
-                          ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "table_count"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "module_handles"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "struct_handles"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "function_handles"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "function_instantiations"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "signatures"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "identifiers"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "address_identifiers"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "constant_pool"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::serializer::CommonSerializer",
+                                            "metadata"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |))
+                            ]
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -3081,7 +3116,9 @@ Module serializer.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CommonSerializer" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -3188,115 +3225,131 @@ Module serializer.
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
               M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::ModuleSerializer",
-                                    "common"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::ModuleSerializer",
-                                    "struct_defs"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::ModuleSerializer",
-                                    "struct_def_instantiations"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::ModuleSerializer",
-                                    "function_defs"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::ModuleSerializer",
-                                    "field_handles"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_binary_format::serializer::ModuleSerializer",
-                                    "field_instantiations"
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
+                                  M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| self |) |),
                                         "move_binary_format::serializer::ModuleSerializer",
-                                        "friend_decls"
+                                        "common"
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)
-                            |)
-                          ]
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::ModuleSerializer",
+                                        "struct_defs"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::ModuleSerializer",
+                                        "struct_def_instantiations"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::ModuleSerializer",
+                                        "function_defs"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::ModuleSerializer",
+                                        "field_handles"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::ModuleSerializer",
+                                        "field_instantiations"
+                                      |)
+                                    |)
+                                  |)
+                                |));
+                              (* Unsize *)
+                              M.pointer_coercion
+                                (M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::serializer::ModuleSerializer",
+                                            "friend_decls"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |))
+                            ]
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -3313,7 +3366,9 @@ Module serializer.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleSerializer" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -3361,24 +3416,27 @@ Module serializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| index |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.call_closure (|
-                                    Ty.path "u32",
-                                    M.get_associated_function (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| index |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.call_closure (|
                                       Ty.path "u32",
-                                      "max_value",
-                                      [],
+                                      M.get_associated_function (|
+                                        Ty.path "u32",
+                                        "max_value",
+                                        [],
+                                        []
+                                      |),
                                       []
-                                    |),
-                                    []
-                                  |))
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -3583,10 +3641,13 @@ Module serializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ne (| M.read (| count |), Value.Integer IntegerKind.U32 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [ M.read (| count |); Value.Integer IntegerKind.U32 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -8381,14 +8442,18 @@ Module serializer.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| binary |) |) |);
                             M.cast
                               (Ty.path "u8")
-                              (BinOp.Wrap.add (|
-                                M.read (|
-                                  get_constant (|
-                                    "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE_discriminant",
-                                    Ty.path "u8"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.U8 0
+                              (M.call_closure (|
+                                Ty.path "u8",
+                                BinOp.Wrap.add,
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE_discriminant",
+                                      Ty.path "u8"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.U8 0
+                                ]
                               |))
                           ]
                         |)
@@ -8450,14 +8515,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -10832,14 +10901,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::BOOL_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::BOOL_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -10957,14 +11030,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::U8_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::U8_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11082,14 +11159,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::U16_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::U16_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11207,14 +11288,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::U32_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::U32_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11332,14 +11417,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::U64_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::U64_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11457,14 +11546,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::U128_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::U128_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11582,14 +11675,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::U256_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::U256_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11707,14 +11804,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::ADDRESS_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::ADDRESS_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11832,14 +11933,18 @@ Module serializer.
                                     |);
                                     M.cast
                                       (Ty.path "u8")
-                                      (BinOp.Wrap.add (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::SerializedType::SIGNER_discriminant",
-                                            Ty.path "u8"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 0
+                                      (M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SerializedType::SIGNER_discriminant",
+                                              Ty.path "u8"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U8 0
+                                        ]
                                       |))
                                   ]
                                 |)
@@ -11959,14 +12064,18 @@ Module serializer.
                                       |);
                                       M.cast
                                         (Ty.path "u8")
-                                        (BinOp.Wrap.add (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::SerializedType::VECTOR_discriminant",
-                                              Ty.path "u8"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.U8 0
+                                        (M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::SerializedType::VECTOR_discriminant",
+                                                Ty.path "u8"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |))
                                     ]
                                   |)
@@ -12088,14 +12197,18 @@ Module serializer.
                                       |);
                                       M.cast
                                         (Ty.path "u8")
-                                        (BinOp.Wrap.add (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::SerializedType::STRUCT_discriminant",
-                                              Ty.path "u8"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.U8 0
+                                        (M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::SerializedType::STRUCT_discriminant",
+                                                Ty.path "u8"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |))
                                     ]
                                   |)
@@ -12346,14 +12459,18 @@ Module serializer.
                                               |);
                                               M.cast
                                                 (Ty.path "u8")
-                                                (BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "move_binary_format::file_format_common::SerializedType::STRUCT_INST_discriminant",
-                                                      Ty.path "u8"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.U8 0
+                                                (M.call_closure (|
+                                                  Ty.path "u8",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "move_binary_format::file_format_common::SerializedType::STRUCT_INST_discriminant",
+                                                        Ty.path "u8"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.U8 0
+                                                  ]
                                                 |))
                                             ]
                                           |)
@@ -12718,14 +12835,18 @@ Module serializer.
                                       |);
                                       M.cast
                                         (Ty.path "u8")
-                                        (BinOp.Wrap.add (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::SerializedType::REFERENCE_discriminant",
-                                              Ty.path "u8"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.U8 0
+                                        (M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::SerializedType::REFERENCE_discriminant",
+                                                Ty.path "u8"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |))
                                     ]
                                   |)
@@ -12846,14 +12967,18 @@ Module serializer.
                                       |);
                                       M.cast
                                         (Ty.path "u8")
-                                        (BinOp.Wrap.add (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE_discriminant",
-                                              Ty.path "u8"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.U8 0
+                                        (M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE_discriminant",
+                                                Ty.path "u8"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |))
                                     ]
                                   |)
@@ -12975,14 +13100,18 @@ Module serializer.
                                       |);
                                       M.cast
                                         (Ty.path "u8")
-                                        (BinOp.Wrap.add (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER_discriminant",
-                                              Ty.path "u8"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.U8 0
+                                        (M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER_discriminant",
+                                                Ty.path "u8"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |))
                                     ]
                                   |)
@@ -13302,18 +13431,22 @@ Module serializer.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.gt (|
-                                                          M.read (| depth |),
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX",
-                                                              Ty.path "usize"
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.gt,
+                                                          [
+                                                            M.read (| depth |);
+                                                            M.read (|
+                                                              get_constant (|
+                                                                "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |)
-                                                          |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -14556,18 +14689,22 @@ Module serializer.
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.alloc (|
-                                      BinOp.lt (|
-                                        M.read (| major_version |),
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_6",
-                                            Ty.path "u32"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [
+                                          M.read (| major_version |);
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_6",
+                                              Ty.path "u32"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |)
                                     |) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -14738,14 +14875,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::FREEZE_REF_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::FREEZE_REF_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -14777,14 +14918,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::POP_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::POP_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -14816,14 +14961,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::RET_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::RET_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -14888,14 +15037,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::BR_TRUE_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::BR_TRUE_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -15039,14 +15192,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::BR_FALSE_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::BR_FALSE_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -15190,14 +15347,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::BRANCH_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::BRANCH_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -15341,14 +15502,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_U8_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_U8_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -15493,14 +15658,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_U64_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_U64_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -15644,14 +15813,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_U128_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_U128_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -15764,14 +15937,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::CAST_U8_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::CAST_U8_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -15803,14 +15980,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::CAST_U64_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::CAST_U64_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -15842,14 +16023,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::CAST_U128_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::CAST_U128_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -15914,14 +16099,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_CONST_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_CONST_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -16035,14 +16224,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::LD_TRUE_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::LD_TRUE_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -16074,14 +16267,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::LD_FALSE_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::LD_FALSE_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -16146,14 +16343,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::COPY_LOC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::COPY_LOC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -16297,14 +16498,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MOVE_LOC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MOVE_LOC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -16448,14 +16653,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::ST_LOC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::ST_LOC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -16599,14 +16808,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -16750,14 +16963,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -16901,14 +17118,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17055,14 +17276,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17209,14 +17434,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17363,14 +17592,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17517,14 +17750,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::CALL_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::CALL_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17671,14 +17908,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::PACK_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::PACK_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17825,14 +18066,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::UNPACK_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::UNPACK_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -17979,14 +18224,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::CALL_GENERIC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::CALL_GENERIC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -18133,14 +18382,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::PACK_GENERIC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::PACK_GENERIC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -18287,14 +18540,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -18408,14 +18665,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::READ_REF_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::READ_REF_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18447,14 +18708,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::WRITE_REF_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::WRITE_REF_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18486,14 +18751,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::ADD_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::ADD_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18525,14 +18794,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::SUB_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::SUB_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18564,14 +18837,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::MUL_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::MUL_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18603,14 +18880,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::MOD_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::MOD_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18642,14 +18923,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::DIV_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::DIV_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18681,14 +18966,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::BIT_OR_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::BIT_OR_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18720,14 +19009,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::BIT_AND_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::BIT_AND_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18759,14 +19052,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::XOR_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::XOR_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18798,14 +19095,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::SHL_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::SHL_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18837,14 +19138,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::SHR_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::SHR_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18876,14 +19181,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::OR_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::OR_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18915,14 +19224,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::AND_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::AND_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18954,14 +19267,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::NOT_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::NOT_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -18993,14 +19310,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::EQ_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::EQ_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19032,14 +19353,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::NEQ_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::NEQ_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19071,14 +19396,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::LT_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::LT_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19110,14 +19439,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::GT_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::GT_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19149,14 +19482,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::LE_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::LE_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19188,14 +19525,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::GE_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::GE_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19227,14 +19568,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::ABORT_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::ABORT_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19266,14 +19611,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::NOP_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::NOP_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -19338,14 +19687,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -19492,14 +19845,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -19646,14 +20003,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -19800,14 +20161,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -19954,14 +20319,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -20108,14 +20477,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -20262,14 +20635,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -20416,14 +20793,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -20570,14 +20951,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -20724,14 +21109,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -20885,14 +21274,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_PACK_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_PACK_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -21148,14 +21541,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_LEN_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_LEN_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -21299,14 +21696,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -21450,14 +21851,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -21601,14 +22006,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -21752,14 +22161,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -21910,14 +22323,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_UNPACK_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_UNPACK_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -22173,14 +22590,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::VEC_SWAP_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::VEC_SWAP_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -22324,14 +22745,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_U16_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_U16_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -22475,14 +22900,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_U32_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_U32_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -22626,14 +23055,18 @@ Module serializer.
                                         |);
                                         M.cast
                                           (Ty.path "u8")
-                                          (BinOp.Wrap.add (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::Opcodes::LD_U256_discriminant",
-                                                Ty.path "u8"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U8 0
+                                          (M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::Opcodes::LD_U256_discriminant",
+                                                  Ty.path "u8"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.U8 0
+                                            ]
                                           |))
                                       ]
                                     |)
@@ -22746,14 +23179,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::CAST_U16_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::CAST_U16_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -22785,14 +23222,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::CAST_U32_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::CAST_U32_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -22824,14 +23265,18 @@ Module serializer.
                                 |);
                                 M.cast
                                   (Ty.path "u8")
-                                  (BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "move_binary_format::file_format_common::Opcodes::CAST_U256_discriminant",
-                                        Ty.path "u8"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  (M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_binary_format::file_format_common::Opcodes::CAST_U256_discriminant",
+                                          Ty.path "u8"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |))
                               ]
                             |)
@@ -23441,10 +23886,15 @@ Module serializer.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.not (| BinOp.ge (| M.read (| offset |), M.read (| start |) |) |)
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [ M.read (| offset |); M.read (| start |) ]
+                                |)
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -23484,7 +23934,13 @@ Module serializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
-                  [ BinOp.Wrap.sub (| M.read (| offset |), M.read (| start |) |) ]
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.sub,
+                      [ M.read (| offset |); M.read (| start |) ]
+                    |)
+                  ]
               |)
             |)))
         |)))
@@ -24983,24 +25439,28 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::serializer::CommonSerializer",
-                                      "major_version"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "major_version"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "move_binary_format::file_format_common::VERSION_5",
+                                        Ty.path "u32"
+                                      |)
                                     |)
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "move_binary_format::file_format_common::VERSION_5",
-                                      Ty.path "u32"
-                                    |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -25188,7 +25648,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -25200,20 +25660,24 @@ Module serializer.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.eq (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "move_binary_format::serializer::CommonSerializer",
-                                                  "table_count"
-                                                |)
-                                              |),
-                                              Value.Integer IntegerKind.U8 0
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::serializer::CommonSerializer",
+                                                    "table_count"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.U8 0
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -25652,7 +26116,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -25664,20 +26128,24 @@ Module serializer.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.lt (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "move_binary_format::serializer::CommonSerializer",
-                                                  "table_count"
-                                                |)
-                                              |),
-                                              Value.Integer IntegerKind.U8 6
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.lt,
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::serializer::CommonSerializer",
+                                                    "table_count"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.U8 6
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -26388,24 +26856,28 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::serializer::CommonSerializer",
-                                      "major_version"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "major_version"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "move_binary_format::file_format_common::VERSION_5",
+                                        Ty.path "u32"
+                                      |)
                                     |)
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "move_binary_format::file_format_common::VERSION_5",
-                                      Ty.path "u32"
-                                    |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -26625,7 +27097,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -26636,7 +27108,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -27224,7 +27700,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -27235,7 +27711,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -27829,7 +28309,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -27840,7 +28320,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -28436,7 +28920,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -28447,7 +28931,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -29045,7 +29533,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -29056,7 +29544,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -29695,7 +30187,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -29706,7 +30198,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -30295,7 +30791,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -30306,7 +30802,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -30887,7 +31387,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -30898,7 +31398,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -31481,7 +31985,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -31492,7 +31996,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -34061,7 +34569,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -34693,7 +35201,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -35324,7 +35832,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -35339,7 +35847,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -35933,7 +36445,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β :=
@@ -35948,7 +36460,11 @@ Module serializer.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U8 1 ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -36548,7 +37064,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -37299,28 +37815,32 @@ Module serializer.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_binary_format::serializer::ModuleSerializer",
-                                        "common"
-                                      |),
-                                      "move_binary_format::serializer::CommonSerializer",
-                                      "major_version"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::serializer::ModuleSerializer",
+                                          "common"
+                                        |),
+                                        "move_binary_format::serializer::CommonSerializer",
+                                        "major_version"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "move_binary_format::file_format_common::VERSION_5",
+                                        Ty.path "u32"
+                                      |)
                                     |)
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "move_binary_format::file_format_common::VERSION_5",
-                                      Ty.path "u32"
-                                    |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ visibility : Ty.path "u8" :=
                             M.copy (|
                               M.match_operator (|
@@ -37380,7 +37900,7 @@ Module serializer.
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -37652,7 +38172,7 @@ Module serializer.
                                         "is_entry"
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -37661,16 +38181,21 @@ Module serializer.
                                       let β := flags in
                                       M.write (|
                                         β,
-                                        BinOp.bit_or
-                                          (M.read (| β |))
-                                          (M.read (|
-                                            get_associated_constant (|
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinition",
-                                              "ENTRY",
-                                              Ty.path "u8"
+                                        M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.bit_or,
+                                          [
+                                            M.read (| β |);
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                "ENTRY",
+                                                Ty.path "u8"
+                                              |)
                                             |)
-                                          |))
+                                          ]
+                                        |)
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -37706,20 +38231,25 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             let β := flags in
                             M.write (|
                               β,
-                              BinOp.bit_or
-                                (M.read (| β |))
-                                (M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "move_binary_format::file_format::FunctionDefinition",
-                                    "NATIVE",
-                                    Ty.path "u8"
+                              M.call_closure (|
+                                Ty.path "u8",
+                                BinOp.Wrap.bit_or,
+                                [
+                                  M.read (| β |);
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "move_binary_format::file_format::FunctionDefinition",
+                                      "NATIVE",
+                                      Ty.path "u8"
+                                    |)
                                   |)
-                                |))
+                                ]
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -38217,7 +38747,7 @@ Module serializer.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|

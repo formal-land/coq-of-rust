@@ -335,8 +335,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use i_like_letters in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|

@@ -285,8 +285,6 @@ Module Primitive.
   | GetSubPointer
     (pointer : Value.t)
     (index : Pointer.Index.t)
-  | AreEqual
-    (value1 value2 : Value.t)
   | GetFunction
     (path : string)
     (generic_consts : list Value.t)
@@ -306,17 +304,25 @@ Module Primitive.
     (generic_tys : list Ty.t).
 End Primitive.
 
+Module LogicalOp.
+  Inductive t : Set :=
+  | And
+  | Or.
+End LogicalOp.
+
 Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
+  | CallLogicalOp (op : LogicalOp.t) (lhs : Value.t) (rhs : t A) (k : A -> t A)
   | Let (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
   Arguments CallClosure {_}.
+  Arguments CallLogicalOp {_}.
   Arguments Let {_}.
   Arguments Loop {_}.
   Arguments Impossible {_}.
@@ -328,6 +334,8 @@ Module LowM.
       CallPrimitive primitive (fun v => let_ (k v) e2)
     | CallClosure ty f args k =>
       CallClosure ty f args (fun v => let_ (k v) e2)
+    | CallLogicalOp op lhs rhs k =>
+      CallLogicalOp op lhs rhs (fun v => let_ (k v) e2)
     | Let ty e k =>
       Let ty e (fun v => let_ (k v) e2)
     | Loop ty body k =>
@@ -624,6 +632,10 @@ Definition call_closure (ty : Ty.t) (f : Value.t) (args : list Value.t) : M :=
   LowM.CallClosure ty f args LowM.Pure.
 Arguments call_closure /.
 
+Definition call_logical_op (op : LogicalOp.t) (lhs : Value.t) (rhs : M) : M :=
+  LowM.CallLogicalOp op lhs rhs LowM.Pure.
+Arguments call_logical_op /.
+
 Definition impossible (message : string) : M :=
   LowM.Impossible message.
 
@@ -653,9 +665,6 @@ Arguments copy /.
     access in an array, we do a [break_match]. *)
 Definition get_sub_pointer (pointer : Value.t) (index : Pointer.Index.t) : M :=
   call_primitive (Primitive.GetSubPointer pointer index).
-
-Definition are_equal (value1 value2 : Value.t) : M :=
-  call_primitive (Primitive.AreEqual value1 value2).
 
 Definition get_function (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t) :
     M :=
@@ -847,10 +856,6 @@ Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
   | Value.Bool false => else_
   | _ => impossible "if_then_else_bool: expected a boolean"
   end.
-
-Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
-  let* are_equal := are_equal value expected_value in
-  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
 
 Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   let* value := deref value in

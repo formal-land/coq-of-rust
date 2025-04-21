@@ -42,7 +42,7 @@ Module num.
                         []
                       |),
                       [
-                        M.borrow (| Pointer.Kind.MutRef, tmp |);
+                        (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, tmp |));
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -142,24 +142,26 @@ Module num.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 8 ]
-                              [ Ty.path "u8" ],
-                            M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
-                            [ M.read (| value |) ]
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u8" ],
+                              M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
+                              [ M.read (| value |) ]
+                            |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -176,31 +178,35 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Wrap.sub (|
-                M.cast
-                  (Ty.path "isize")
-                  (M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      "len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)),
-                M.cast
-                  (Ty.path "isize")
-                  (M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      "len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |))
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.sub,
+                [
+                  M.cast
+                    (Ty.path "isize")
+                    (M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "len",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                    |));
+                  M.cast
+                    (Ty.path "isize")
+                    (M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "len",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -303,13 +309,14 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.lt (|
-                                              M.read (| c |),
-                                              Value.Integer IntegerKind.U8 10
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.lt,
+                                              [ M.read (| c |); Value.Integer IntegerKind.U8 10 ]
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -416,11 +423,24 @@ Module num.
                   |)
                 |) in
               M.alloc (|
-                BinOp.eq (|
-                  BinOp.bit_and
-                    (BinOp.bit_or (M.read (| a |)) (M.read (| b |)))
-                    (Value.Integer IntegerKind.U64 9259542123273814144),
-                  Value.Integer IntegerKind.U64 0
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.bit_or,
+                          [ M.read (| a |); M.read (| b |) ]
+                        |);
+                        Value.Integer IntegerKind.U64 9259542123273814144
+                      ]
+                    |);
+                    Value.Integer IntegerKind.U64 0
+                  ]
                 |)
               |)
             |)))
@@ -465,38 +485,42 @@ Module num.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BiasedFp" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "f" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::num::dec2flt::common::BiasedFp",
-                          "f"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::dec2flt::common::BiasedFp",
+                            "f"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "e" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::dec2flt::common::BiasedFp",
-                              "e"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::num::dec2flt::common::BiasedFp",
+                                "e"
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -582,38 +606,46 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               LogicalOp.and (|
-                BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::num::dec2flt::common::BiasedFp",
-                      "f"
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "core::num::dec2flt::common::BiasedFp",
-                      "f"
-                    |)
-                  |)
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "core::num::dec2flt::common::BiasedFp",
-                        "e"
+                        "f"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "core::num::dec2flt::common::BiasedFp",
-                        "e"
+                        "f"
                       |)
                     |)
+                  ]
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::dec2flt::common::BiasedFp",
+                          "e"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "core::num::dec2flt::common::BiasedFp",
+                          "e"
+                        |)
+                      |)
+                    ]
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

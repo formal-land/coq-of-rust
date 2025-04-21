@@ -32,7 +32,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     let β := counter in
                     M.write (|
                       β,
-                      BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                      M.call_closure (|
+                        Ty.path "i32",
+                        BinOp.Wrap.add,
+                        [ M.read (| β |); Value.Integer IntegerKind.I32 1 ]
+                      |)
                     |)
                   |) in
                 M.match_operator (|
@@ -44,10 +48,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (| M.read (| counter |), Value.Integer IntegerKind.I32 10 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| counter |); Value.Integer IntegerKind.I32 10 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
@@ -81,14 +88,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.use
                               (M.alloc (|
                                 UnOp.not (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| M.deref (| M.read (| left_val |) |) |);
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    ]
                                   |)
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|

@@ -95,14 +95,15 @@ Module root.
                             M.use
                               (M.alloc (|
                                 UnOp.not (|
-                                  BinOp.gt (|
-                                    M.read (| degree |),
-                                    Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| degree |); Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -174,7 +175,7 @@ Module root.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -203,19 +204,23 @@ Module root.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| degree |),
-                                  M.read (|
-                                    get_associated_constant (|
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      "BITS",
-                                      Ty.path "usize"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (| degree |);
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -247,13 +252,14 @@ Module root.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| degree |),
-                                  Value.Integer IntegerKind.Usize 1
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ M.read (| degree |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| M.read (| self |) |) |) |)
                           |)));
@@ -286,18 +292,22 @@ Module root.
                             []
                           |),
                           [
-                            BinOp.Wrap.div (|
-                              M.call_closure (|
-                                Ty.path "f64",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                  "approx_log2",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |),
-                              M.cast (Ty.path "f64") (M.read (| degree |))
+                            M.call_closure (|
+                              Ty.path "f64",
+                              BinOp.Wrap.div,
+                              [
+                                M.call_closure (|
+                                  Ty.path "f64",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "approx_log2",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |);
+                                M.cast (Ty.path "f64") (M.read (| degree |))
+                              ]
                             |)
                           ]
                         |)
@@ -314,7 +324,12 @@ Module root.
                         [],
                         [ Ty.path "usize" ]
                       |),
-                      [ BinOp.Wrap.sub (| M.read (| degree |), Value.Integer IntegerKind.Usize 1 |)
+                      [
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ M.read (| degree |); Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       ]
                     |)
                   |) in
@@ -513,7 +528,7 @@ Module root.
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
                                         Value.Bool true
                                       |) in
@@ -540,7 +555,7 @@ Module root.
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Bool false
                               |) in

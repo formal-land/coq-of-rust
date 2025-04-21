@@ -107,38 +107,42 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cycle" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "orig" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::adapters::cycle::Cycle",
-                          "orig"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::cycle::Cycle",
+                            "orig"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::cycle::Cycle",
-                              "iter"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::cycle::Cycle",
+                                "iter"
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -402,7 +406,7 @@ Module iter.
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
+                          is_constant_or_break_match (|
                             M.read (| γ1_0 |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
@@ -413,7 +417,7 @@ Module iter.
                             0
                           |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
+                          is_constant_or_break_match (|
                             M.read (| γ2_0 |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
@@ -423,7 +427,7 @@ Module iter.
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
+                          is_constant_or_break_match (|
                             M.read (| γ0_0 |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
@@ -875,10 +879,7 @@ Module iter.
                             ltac:(M.monadic
                               (let γ := M.use is_empty in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -1194,13 +1195,14 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (| n |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [ M.read (| n |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1309,26 +1311,30 @@ Module iter.
                                                   let rem := M.copy (| γ1_0 |) in
                                                   let γ :=
                                                     M.alloc (|
-                                                      BinOp.eq (|
-                                                        M.call_closure (|
-                                                          Ty.path "usize",
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "core::num::nonzero::NonZero")
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::num::nonzero::NonZero")
+                                                                []
+                                                                [ Ty.path "usize" ],
+                                                              "get",
+                                                              [],
                                                               []
-                                                              [ Ty.path "usize" ],
-                                                            "get",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| rem |) ]
-                                                        |),
-                                                        M.read (| n |)
+                                                            |),
+                                                            [ M.read (| rem |) ]
+                                                          |);
+                                                          M.read (| n |)
+                                                        ]
                                                       |)
                                                     |) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in

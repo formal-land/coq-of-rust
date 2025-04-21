@@ -115,38 +115,42 @@ Module alloc.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Layout" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "size" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::alloc::layout::Layout",
-                        "size"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::alloc::layout::Layout",
+                          "size"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "align" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::alloc::layout::Layout",
-                            "align"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::alloc::layout::Layout",
+                              "align"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -184,21 +188,25 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::alloc::layout::Layout",
-                    "size"
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::alloc::layout::Layout",
+                      "size"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::alloc::layout::Layout",
+                      "size"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::alloc::layout::Layout",
-                    "size"
-                  |)
-                |)
+                ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -417,7 +425,7 @@ Module alloc.
                               [ M.read (| size |); M.read (| align |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -512,22 +520,26 @@ Module alloc.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.gt (|
-                                            M.read (| size |),
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.path "core::alloc::layout::Layout",
-                                                "max_size_for_align",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| align |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [
+                                              M.read (| size |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::alloc::layout::Layout",
+                                                  "max_size_for_align",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| align |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -583,13 +595,17 @@ Module alloc.
               Ty.path "usize",
               M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
-                BinOp.Wrap.add (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (|
-                      get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |)
-                    |)),
-                  Value.Integer IntegerKind.Usize 1
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (|
+                        get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |)
+                      |));
+                    Value.Integer IntegerKind.Usize 1
+                  ]
                 |);
                 M.call_closure (|
                   Ty.path "usize",
@@ -640,22 +656,26 @@ Module alloc.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.gt (|
-                                    M.read (| size |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.path "core::alloc::layout::Layout",
-                                        "max_size_for_align",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| align |) ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [
+                                      M.read (| size |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.path "core::alloc::layout::Layout",
+                                          "max_size_for_align",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| align |) ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -731,8 +751,7 @@ Module alloc.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1319,26 +1338,31 @@ Module alloc.
                 |) in
               let~ size_rounded_up : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.bit_and
-                    (M.call_closure (|
-                      Ty.path "usize",
-                      M.get_function (|
-                        "core::intrinsics::unchecked_add",
-                        [],
-                        [ Ty.path "usize" ]
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::alloc::layout::Layout",
-                            "size"
-                          |)
-                        |);
-                        M.read (| align_m1 |)
-                      ]
-                    |))
-                    (UnOp.not (| M.read (| align_m1 |) |))
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.bit_and,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_function (|
+                          "core::intrinsics::unchecked_add",
+                          [],
+                          [ Ty.path "usize" ]
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::alloc::layout::Layout",
+                              "size"
+                            |)
+                          |);
+                          M.read (| align_m1 |)
+                        ]
+                      |);
+                      UnOp.not (| M.read (| align_m1 |) |)
+                    ]
+                  |)
                 |) in
               size_rounded_up
             |)))

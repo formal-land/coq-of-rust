@@ -194,52 +194,58 @@ Module eip7702.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702Bytecode" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "delegated_address" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_bytecode::eip7702::Eip7702Bytecode",
-                      "delegated_address"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_bytecode::eip7702::Eip7702Bytecode",
+                        "delegated_address"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_bytecode::eip7702::Eip7702Bytecode",
-                      "version"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_bytecode::eip7702::Eip7702Bytecode",
+                        "version"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "raw" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::eip7702::Eip7702Bytecode",
-                          "raw"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::eip7702::Eip7702Bytecode",
+                            "raw"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -309,21 +315,25 @@ Module eip7702.
                 ]
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_bytecode::eip7702::Eip7702Bytecode",
-                      "version"
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_bytecode::eip7702::Eip7702Bytecode",
+                        "version"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_bytecode::eip7702::Eip7702Bytecode",
+                        "version"
+                      |)
                     |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_bytecode::eip7702::Eip7702Bytecode",
-                      "version"
-                    |)
-                  |)
+                  ]
                 |)))
             |),
             ltac:(M.monadic
@@ -947,44 +957,48 @@ Module eip7702.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "bytes::bytes::Bytes",
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "bytes::bytes::Bytes" ],
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloy_primitives::bytes_::Bytes",
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "bytes::bytes::Bytes",
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "bytes::bytes::Bytes" ],
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.path "alloy_primitives::bytes_::Bytes",
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 23
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 23
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1137,7 +1151,7 @@ Module eip7702.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1166,62 +1180,66 @@ Module eip7702.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.path "bytes::bytes::Bytes",
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "bytes::bytes::Bytes" ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloy_primitives::bytes_::Bytes",
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_array_field (|
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.path "bytes::bytes::Bytes",
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "bytes::bytes::Bytes" ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.path "alloy_primitives::bytes_::Bytes",
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 2
+                                            ]
+                                          |)
+                                        |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "revm_bytecode::eip7702::EIP7702_VERSION",
+                                        Ty.path "u8"
+                                      |)
                                     |)
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "revm_bytecode::eip7702::EIP7702_VERSION",
-                                      Ty.path "u8"
-                                    |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1836,7 +1854,13 @@ Module eip7702.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

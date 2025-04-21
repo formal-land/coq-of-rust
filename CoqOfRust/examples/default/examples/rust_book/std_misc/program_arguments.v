@@ -202,24 +202,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "alloc::string::String";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "len",
+                                                      [],
                                                       []
-                                                      [
-                                                        Ty.path "alloc::string::String";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, args |) ]
-                                                |),
-                                                Value.Integer IntegerKind.Usize 1
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, args |) ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             |)
                                           |)

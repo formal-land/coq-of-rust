@@ -106,7 +106,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 0
                   |) in
@@ -200,7 +200,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 1
                   |) in
@@ -244,7 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_2 |),
                     Value.Integer IntegerKind.I32 2
                   |) in
@@ -288,12 +288,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 3
                   |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_2 |),
                     Value.Integer IntegerKind.I32 4
                   |) in

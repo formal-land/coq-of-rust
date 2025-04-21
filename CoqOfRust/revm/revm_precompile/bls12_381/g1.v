@@ -596,32 +596,36 @@ Module bls12_381.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| input |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| input |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
+                                        Ty.path "usize"
                                       |)
-                                    ]
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
-                                      Ty.path "usize"
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1382,7 +1386,7 @@ Module bls12_381.
                         ltac:(M.monadic
                           (let γ := M.use subgroup_check in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|
                             Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
@@ -1410,7 +1414,7 @@ Module bls12_381.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1482,7 +1486,7 @@ Module bls12_381.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in

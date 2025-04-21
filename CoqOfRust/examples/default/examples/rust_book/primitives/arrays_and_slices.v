@@ -451,7 +451,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [],
                                                   []
                                                 |),
-                                                [ M.borrow (| Pointer.Kind.Ref, xs |) ]
+                                                [
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (| Pointer.Kind.Ref, xs |))
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -598,7 +602,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "arrays_and_slices::analyze_slice", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, xs |) |) |) ]
+              [
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, xs |) |)
+                  |))
+              ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -761,7 +772,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -927,7 +938,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1010,18 +1021,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_",
-                        BinOp.Wrap.add (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, xs |) ]
-                          |),
-                          Value.Integer IntegerKind.Usize 1
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.add,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [
+                                (* Unsize *)
+                                M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, xs |))
+                              ]
+                            |);
+                            Value.Integer IntegerKind.Usize 1
+                          ]
                         |))
                     ]
                 ]
@@ -1085,7 +1103,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [],
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.borrow (| Pointer.Kind.Ref, xs |); M.read (| i |) ]
+                                      [
+                                        (* Unsize *)
+                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, xs |));
+                                        M.read (| i |)
+                                      ]
                                     |)
                                   |),
                                   [

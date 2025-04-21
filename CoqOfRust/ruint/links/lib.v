@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import core.links.cmp.
 Require Import ruint.lib.
 
 Module Uint.
@@ -24,6 +25,25 @@ Module Uint.
   Smpl Add eapply of_ty : of_ty.
 End Uint.
 
+Module Impl_PartialEq_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) :
+    PartialEq.Run (Self BITS LIMBS) (Uint.t BITS LIMBS).
+  Admitted.
+End Impl_PartialEq_for_Uint.
+Export Impl_PartialEq_for_Uint.
+
+Module Impl_Ord_for_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+    Uint.t BITS LIMBS.
+
+  Instance run (BITS LIMBS : Usize.t) : Ord.Run (Self BITS LIMBS).
+  Admitted.
+End Impl_Ord_for_Uint.
+Export Impl_Ord_for_Uint.
+
 Module Impl_Uint.
   Definition Self (BITS LIMBS : Usize.t) : Set :=
     Uint.t BITS LIMBS.
@@ -37,6 +57,16 @@ Module Impl_Uint.
     constructor.
     run_symbolic.
   Admitted.
+
+  (* pub const BITS: usize *)
+  Instance run_BITS (BITS LIMBS : Usize.t) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.value_BITS (φ BITS) (φ LIMBS)) [] [] []
+      (Ref.t Pointer.Kind.Raw Usize.t).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
 
   (* pub const ZERO: Self *)
   Instance run_ZERO (BITS LIMBS : Usize.t) :
@@ -66,4 +96,27 @@ Module Impl_Uint.
     constructor.
     run_symbolic.
   Admitted.
+
+  Instance run_as_value_MAX
+    (BITS LIMBS : Usize.t):
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.value_MAX (φ BITS) (φ LIMBS)) [] [] []
+      (Ref.t Pointer.Kind.Raw (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |})).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+
+  (* pub unsafe fn as_limbs_mut(&mut self) -> &mut [u64; LIMBS] *)
+  Instance run_as_limbs_mut
+    (BITS LIMBS : Usize.t)
+    (self : Ref.t Pointer.Kind.MutRef (Uint.t BITS LIMBS)) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.as_limbs_mut (φ BITS) (φ LIMBS)) [] [] [ φ self ]
+      (Ref.t Pointer.Kind.MutRef (array.t U64.t LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_Uint.
+Export Impl_Uint.

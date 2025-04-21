@@ -61,9 +61,13 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.add (|
-                                                M.read (| number |),
-                                                Value.Integer IntegerKind.I32 1
+                                              M.call_closure (|
+                                                Ty.path "i32",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.read (| number |);
+                                                  Value.Integer IntegerKind.I32 1
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -152,9 +156,13 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.read (| number |),
-                                                Value.Integer IntegerKind.I32 1
+                                              M.call_closure (|
+                                                Ty.path "i32",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.read (| number |);
+                                                  Value.Integer IntegerKind.I32 1
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -358,7 +366,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.Usize 1
                       |) in
@@ -405,7 +413,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.Usize 2
                       |) in
@@ -486,7 +494,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 0
                               |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.I32 42
                               |) in
@@ -564,7 +572,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.Usize 3
                       |) in
@@ -780,7 +788,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ |),
                                 mk_str (| "increase" |)
                               |) in
@@ -794,7 +802,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ |),
                                 mk_str (| "decrease" |)
                               |) in

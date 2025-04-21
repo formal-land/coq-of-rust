@@ -146,12 +146,20 @@ Module gas_algebra.
                             [
                               M.read (| __serializer |);
                               mk_str (| "GasQuantity" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -693,15 +701,19 @@ Module gas_algebra.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.eq (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "move_core_types::gas_algebra::GasQuantity",
-                "val"
-              |)
-            |),
-            Value.Integer IntegerKind.U64 0
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::gas_algebra::GasQuantity",
+                  "val"
+                |)
+              |);
+              Value.Integer IntegerKind.U64 0
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -932,16 +944,17 @@ Module gas_algebra.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (| M.deref (| M.read (| left_val |) |) |);
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -1230,16 +1243,17 @@ Module gas_algebra.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (| M.deref (| M.read (| left_val |) |) |);
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -2329,13 +2343,17 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| M.deref (| M.read (| left_val |) |) |);
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2409,13 +2427,17 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| M.deref (| M.read (| left_val |) |) |);
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2465,12 +2487,20 @@ Module gas_algebra.
             |) in
           let~ res : Ty.path "u128" :=
             M.alloc (|
-              BinOp.Wrap.div (|
-                BinOp.Wrap.mul (|
-                  M.cast (Ty.path "u128") (M.read (| val |)),
-                  M.cast (Ty.path "u128") (M.read (| nominator |))
-                |),
-                M.cast (Ty.path "u128") (M.read (| denominator |))
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.div,
+                [
+                  M.call_closure (|
+                    Ty.path "u128",
+                    BinOp.Wrap.mul,
+                    [
+                      M.cast (Ty.path "u128") (M.read (| val |));
+                      M.cast (Ty.path "u128") (M.read (| nominator |))
+                    ]
+                  |);
+                  M.cast (Ty.path "u128") (M.read (| denominator |))
+                ]
               |)
             |) in
           M.match_operator (|
@@ -2482,16 +2512,20 @@ Module gas_algebra.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.gt (|
-                          M.read (| res |),
-                          M.cast
-                            (Ty.path "u128")
-                            (M.read (|
-                              get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
-                            |))
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [
+                            M.read (| res |);
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                              |))
+                          ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
               fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
@@ -2555,13 +2589,17 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| M.deref (| M.read (| left_val |) |) |);
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2635,13 +2673,17 @@ Module gas_algebra.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| M.deref (| M.read (| left_val |) |) |);
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2691,39 +2733,59 @@ Module gas_algebra.
             |) in
           let~ n : Ty.path "u128" :=
             M.alloc (|
-              BinOp.Wrap.mul (|
-                M.cast (Ty.path "u128") (M.read (| val |)),
-                M.cast (Ty.path "u128") (M.read (| nominator |))
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.mul,
+                [
+                  M.cast (Ty.path "u128") (M.read (| val |));
+                  M.cast (Ty.path "u128") (M.read (| nominator |))
+                ]
               |)
             |) in
           let~ d : Ty.path "u128" :=
             M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
           let~ res : Ty.path "u128" :=
             M.alloc (|
-              BinOp.Wrap.add (|
-                BinOp.Wrap.div (| M.read (| n |), M.read (| d |) |),
-                M.read (|
-                  M.match_operator (|
-                    Some (Ty.path "u128"),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.eq (|
-                                  BinOp.Wrap.rem (| M.read (| n |), M.read (| d |) |),
-                                  Value.Integer IntegerKind.U128 0
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer IntegerKind.U128 0 |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |)))
-                    ]
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.add,
+                [
+                  M.call_closure (|
+                    Ty.path "u128",
+                    BinOp.Wrap.div,
+                    [ M.read (| n |); M.read (| d |) ]
+                  |);
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.path "u128"),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u128",
+                                        BinOp.Wrap.rem,
+                                        [ M.read (| n |); M.read (| d |) ]
+                                      |);
+                                      Value.Integer IntegerKind.U128 0
+                                    ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (| Value.Integer IntegerKind.U128 0 |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |)))
+                      ]
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           M.match_operator (|
@@ -2735,16 +2797,20 @@ Module gas_algebra.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.gt (|
-                          M.read (| res |),
-                          M.cast
-                            (Ty.path "u128")
-                            (M.read (|
-                              get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
-                            |))
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [
+                            M.read (| res |);
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                              |))
+                          ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
               fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
@@ -2790,9 +2856,10 @@ Module gas_algebra.
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.mul (|
-            Value.Integer IntegerKind.U64 1024,
-            Value.Integer IntegerKind.U64 1024
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.mul,
+            [ Value.Integer IntegerKind.U64 1024; Value.Integer IntegerKind.U64 1024 ]
           |)
         |))).
     
@@ -2813,12 +2880,17 @@ Module gas_algebra.
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.mul (|
-            BinOp.Wrap.mul (|
-              Value.Integer IntegerKind.U64 1024,
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.mul,
+            [
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.mul,
+                [ Value.Integer IntegerKind.U64 1024; Value.Integer IntegerKind.U64 1024 ]
+              |);
               Value.Integer IntegerKind.U64 1024
-            |),
-            Value.Integer IntegerKind.U64 1024
+            ]
           |)
         |))).
     
@@ -2856,9 +2928,10 @@ Module gas_algebra.
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.mul (|
-            Value.Integer IntegerKind.U64 1024,
-            Value.Integer IntegerKind.U64 1024
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.mul,
+            [ Value.Integer IntegerKind.U64 1024; Value.Integer IntegerKind.U64 1024 ]
           |)
         |))).
     
@@ -2953,9 +3026,10 @@ Module gas_algebra.
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.mul (|
-            Value.Integer IntegerKind.U64 1024,
-            Value.Integer IntegerKind.U64 1024
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.mul,
+            [ Value.Integer IntegerKind.U64 1024; Value.Integer IntegerKind.U64 1024 ]
           |)
         |))).
     
@@ -3011,9 +3085,10 @@ Module gas_algebra.
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.mul (|
-            Value.Integer IntegerKind.U64 1024,
-            Value.Integer IntegerKind.U64 1024
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.mul,
+            [ Value.Integer IntegerKind.U64 1024; Value.Integer IntegerKind.U64 1024 ]
           |)
         |))).
     
@@ -3043,12 +3118,17 @@ Module gas_algebra.
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.mul (|
-            BinOp.Wrap.mul (|
-              Value.Integer IntegerKind.U64 1024,
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.mul,
+            [
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.mul,
+                [ Value.Integer IntegerKind.U64 1024; Value.Integer IntegerKind.U64 1024 ]
+              |);
               Value.Integer IntegerKind.U64 1024
-            |),
-            Value.Integer IntegerKind.U64 1024
+            ]
           |)
         |))).
     

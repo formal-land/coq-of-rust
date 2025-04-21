@@ -294,38 +294,42 @@ Module metadata.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Metadata" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "key" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::metadata::Metadata",
-                      "key"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::metadata::Metadata",
+                        "key"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::metadata::Metadata",
-                          "value"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::metadata::Metadata",
+                            "value"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -391,12 +395,20 @@ Module metadata.
                             [
                               M.read (| __serializer |);
                               mk_str (| "Metadata" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)

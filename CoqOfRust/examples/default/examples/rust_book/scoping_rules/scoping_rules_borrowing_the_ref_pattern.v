@@ -174,13 +174,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      BinOp.eq (|
-                                                        M.read (|
-                                                          M.deref (| M.read (| ref_c1 |) |)
-                                                        |),
-                                                        M.read (|
-                                                          M.deref (| M.read (| ref_c2 |) |)
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          M.read (|
+                                                            M.deref (| M.read (| ref_c1 |) |)
+                                                          |);
+                                                          M.read (|
+                                                            M.deref (| M.read (| ref_c2 |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)
                                                   |)

@@ -187,9 +187,13 @@ Module iter.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (BinOp.Wrap.add (|
-                                              M.read (| count |),
-                                              Value.Integer IntegerKind.Usize 1
+                                            (M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (| count |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -450,7 +454,7 @@ Module iter.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -478,9 +482,13 @@ Module iter.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      BinOp.Wrap.sub (|
-                                                                        M.read (| n |),
-                                                                        M.read (| i |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "usize",
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          M.read (| n |);
+                                                                          M.read (| i |)
+                                                                        ]
                                                                       |)
                                                                     ]
                                                                   |)
@@ -1854,9 +1862,13 @@ Module iter.
                                                   let β := true_count in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| β |),
-                                                      Value.Integer IntegerKind.Usize 1
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        M.read (| β |);
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      ]
                                                     |)
                                                   |)
                                                 |) in

@@ -224,37 +224,41 @@ Module iter.
                                     Pointer.Kind.Ref,
                                     M.deref (| mk_str (| "iter" |) |)
                                   |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::iter::adapters::take_while::TakeWhile",
-                                          "iter"
+                                  (* Unsize *)
+                                  M.pointer_coercion
+                                    (M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::take_while::TakeWhile",
+                                            "iter"
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  |)
+                                    |))
                                 ]
                               |)
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "flag" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::iter::adapters::take_while::TakeWhile",
-                                  "flag"
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::take_while::TakeWhile",
+                                    "flag"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)
@@ -331,7 +335,7 @@ Module iter.
                                   "flag"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -558,7 +562,7 @@ Module iter.
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -632,8 +636,7 @@ Module iter.
                               "core::iter::adapters::take_while::TakeWhile",
                               "flag"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.Tuple
                             [
@@ -751,8 +754,7 @@ Module iter.
                               "core::iter::adapters::take_while::TakeWhile",
                               "flag"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             R,

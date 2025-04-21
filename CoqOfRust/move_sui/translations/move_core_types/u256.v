@@ -21,11 +21,15 @@ Module u256.
   Definition value_U256_NUM_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
-        BinOp.Wrap.div (|
-          M.read (| get_constant (| "move_core_types::u256::U256_NUM_BITS", Ty.path "usize" |) |),
-          M.read (|
-            get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE", Ty.path "usize" |)
-          |)
+        M.call_closure (|
+          Ty.path "usize",
+          BinOp.Wrap.div,
+          [
+            M.read (| get_constant (| "move_core_types::u256::U256_NUM_BITS", Ty.path "usize" |) |);
+            M.read (|
+              get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE", Ty.path "usize" |)
+            |)
+          ]
         |)
       |))).
   
@@ -66,24 +70,26 @@ Module u256.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256FromStrError" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::u256::U256FromStrError",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::u256::U256FromStrError",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -297,7 +303,13 @@ Module u256.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -466,38 +478,42 @@ Module u256.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256CastError" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::u256::U256CastError",
-                      "kind"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::u256::U256CastError",
+                        "kind"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "val" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::u256::U256CastError",
-                          "val"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::u256::U256CastError",
+                            "val"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1034,24 +1050,26 @@ Module u256.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::u256::U256",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::u256::U256",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3073,7 +3091,11 @@ Module u256.
                   [],
                   []
                 |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                [
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |))
+                ]
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3124,10 +3146,12 @@ Module u256.
                         0
                       |)
                     |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                      |))
                   ]
                 |)
               |) in
@@ -3638,20 +3662,24 @@ Module u256.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| rhs |),
-                                  M.cast
-                                    (Ty.path "u32")
-                                    (M.read (|
-                                      get_constant (|
-                                        "move_core_types::u256::U256_NUM_BITS",
-                                        Ty.path "usize"
-                                      |)
-                                    |))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (| rhs |);
+                                    M.cast
+                                      (Ty.path "u32")
+                                      (M.read (|
+                                        get_constant (|
+                                          "move_core_types::u256::U256_NUM_BITS",
+                                          Ty.path "usize"
+                                        |)
+                                      |))
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -3731,20 +3759,24 @@ Module u256.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| rhs |),
-                                  M.cast
-                                    (Ty.path "u32")
-                                    (M.read (|
-                                      get_constant (|
-                                        "move_core_types::u256::U256_NUM_BITS",
-                                        Ty.path "usize"
-                                      |)
-                                    |))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (| rhs |);
+                                    M.cast
+                                      (Ty.path "u32")
+                                      (M.read (|
+                                        get_constant (|
+                                          "move_core_types::u256::U256_NUM_BITS",
+                                          Ty.path "usize"
+                                        |)
+                                      |))
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -3839,28 +3871,40 @@ Module u256.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (|
-                                M.read (| type_size |),
-                                Value.Integer IntegerKind.Usize 16
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| type_size |); Value.Integer IntegerKind.Usize 16 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          BinOp.Wrap.sub (|
-                            BinOp.Wrap.shl (|
-                              Value.Integer IntegerKind.U128 1,
-                              BinOp.Wrap.mul (|
-                                M.read (|
-                                  get_constant (|
-                                    "move_core_types::u256::NUM_BITS_PER_BYTE",
-                                    Ty.path "usize"
+                          M.call_closure (|
+                            Ty.path "u128",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "u128",
+                                BinOp.Wrap.shl,
+                                [
+                                  Value.Integer IntegerKind.U128 1;
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.mul,
+                                    [
+                                      M.read (|
+                                        get_constant (|
+                                          "move_core_types::u256::NUM_BITS_PER_BYTE",
+                                          Ty.path "usize"
+                                        |)
+                                      |);
+                                      M.read (| type_size |)
+                                    ]
                                   |)
-                                |),
-                                M.read (| type_size |)
-                              |)
-                            |),
-                            Value.Integer IntegerKind.U128 1
+                                ]
+                              |);
+                              Value.Integer IntegerKind.U128 1
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -3895,27 +3939,32 @@ Module u256.
                     []
                   |),
                   [
-                    BinOp.bit_and
-                      (M.call_closure (|
-                        Ty.path "u128",
-                        M.get_associated_function (|
-                          Ty.path "primitive_types::U256",
-                          "low_u128",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              self,
-                              "move_core_types::u256::U256",
-                              0
+                    M.call_closure (|
+                      Ty.path "u128",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.call_closure (|
+                          Ty.path "u128",
+                          M.get_associated_function (|
+                            Ty.path "primitive_types::U256",
+                            "low_u128",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "move_core_types::u256::U256",
+                                0
+                              |)
                             |)
-                          |)
-                        ]
-                      |))
-                      (M.read (| max_val |))
+                          ]
+                        |);
+                        M.read (| max_val |)
+                      ]
+                    |)
                   ]
                 |)
               |),
@@ -4850,29 +4899,31 @@ Module u256.
             |),
             [
               Value.StructTuple "num_bigint::bigint::Sign::Plus" [];
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::u256::U256",
-                          "to_le_bytes",
-                          [],
-                          []
-                        |),
-                        [ M.read (| M.deref (| M.read (| n |) |) |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.path "move_core_types::u256::U256",
+                            "to_le_bytes",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| n |) |) |) ]
+                        |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5116,16 +5167,20 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.gt (|
-                            M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (|
-                                get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
-                              |))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [
+                              M.read (| n |);
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (|
+                                  get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                                |))
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
@@ -5223,16 +5278,20 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.gt (|
-                            M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (|
-                                get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
-                              |))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [
+                              M.read (| n |);
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (|
+                                  get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
+                                |))
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
@@ -5330,16 +5389,20 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.gt (|
-                            M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (|
-                                get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
-                              |))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [
+                              M.read (| n |);
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (|
+                                  get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
+                                |))
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
@@ -5437,16 +5500,20 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.gt (|
-                            M.read (| n |),
-                            M.cast
-                              (Ty.path "u128")
-                              (M.read (|
-                                get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
-                              |))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [
+                              M.read (| n |);
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |))
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
@@ -5567,7 +5634,7 @@ Module u256.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
@@ -5664,10 +5731,12 @@ Module u256.
                   M.get_trait_method (| "rand_core::RngCore", R, [], [], "fill_bytes", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, dest |) |)
-                    |)
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, dest |) |)
+                      |))
                   ]
                 |)
               |) in
@@ -5779,52 +5848,58 @@ Module u256.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UniformU256" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "low" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::u256::UniformU256",
-                      "low"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::u256::UniformU256",
+                        "low"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "range" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::u256::UniformU256",
-                      "range"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::u256::UniformU256",
+                        "range"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "z" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::u256::UniformU256",
-                          "z"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::u256::UniformU256",
+                            "z"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6107,7 +6182,7 @@ Module u256.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -6292,7 +6367,7 @@ Module u256.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -6422,8 +6497,7 @@ Module u256.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
@@ -6584,8 +6658,7 @@ Module u256.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ unsigned_max : Ty.path "move_core_types::u256::U256" :=
                           M.alloc (|
                             M.call_closure (|
@@ -6704,7 +6777,7 @@ Module u256.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6854,7 +6927,7 @@ Module u256.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -7054,7 +7127,7 @@ Module u256.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -7171,7 +7244,7 @@ Module u256.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -7325,7 +7398,7 @@ Module u256.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in

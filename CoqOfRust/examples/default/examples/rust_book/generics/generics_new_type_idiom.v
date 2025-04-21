@@ -33,15 +33,19 @@ Module Impl_generics_new_type_idiom_Years.
         Value.StructTuple
           "generics_new_type_idiom::Days"
           [
-            BinOp.Wrap.mul (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.deref (| M.read (| self |) |),
-                  "generics_new_type_idiom::Years",
-                  0
-                |)
-              |),
-              Value.Integer IntegerKind.I64 365
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.mul,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "generics_new_type_idiom::Years",
+                    0
+                  |)
+                |);
+                Value.Integer IntegerKind.I64 365
+              ]
             |)
           ]))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -68,15 +72,19 @@ Module Impl_generics_new_type_idiom_Days.
         Value.StructTuple
           "generics_new_type_idiom::Years"
           [
-            BinOp.Wrap.div (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.deref (| M.read (| self |) |),
-                  "generics_new_type_idiom::Days",
-                  0
-                |)
-              |),
-              Value.Integer IntegerKind.I64 365
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.div,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "generics_new_type_idiom::Days",
+                    0
+                  |)
+                |);
+                Value.Integer IntegerKind.I64 365
+              ]
             |)
           ]))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -97,15 +105,19 @@ Definition old_enough (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [], [ age ] =>
     ltac:(M.monadic
       (let age := M.alloc (| age |) in
-      BinOp.ge (|
-        M.read (|
-          M.SubPointer.get_struct_tuple_field (|
-            M.deref (| M.read (| age |) |),
-            "generics_new_type_idiom::Years",
-            0
-          |)
-        |),
-        Value.Integer IntegerKind.I64 18
+      M.call_closure (|
+        Ty.path "bool",
+        BinOp.ge,
+        [
+          M.read (|
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| age |) |),
+              "generics_new_type_idiom::Years",
+              0
+            |)
+          |);
+          Value.Integer IntegerKind.I64 18
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -300,7 +300,7 @@ Module instructions.
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -354,7 +354,7 @@ Module instructions.
                                                                               |)
                                                                             |)) in
                                                                         let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.Bool true
                                                                           |) in
@@ -397,7 +397,7 @@ Module instructions.
                                                                                       |)
                                                                                     |)) in
                                                                                 let _ :=
-                                                                                  M.is_constant_or_break_match (|
+                                                                                  is_constant_or_break_match (|
                                                                                     M.read (| γ |),
                                                                                     Value.Bool true
                                                                                   |) in
@@ -425,7 +425,7 @@ Module instructions.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -580,7 +580,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -690,7 +690,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -854,7 +854,7 @@ Module instructions.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1176,7 +1176,7 @@ Module instructions.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -1257,7 +1257,7 @@ Module instructions.
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -1340,7 +1340,7 @@ Module instructions.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -1416,7 +1416,7 @@ Module instructions.
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -1546,7 +1546,7 @@ Module instructions.
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -1776,7 +1776,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2060,7 +2060,7 @@ Module instructions.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -2140,7 +2140,7 @@ Module instructions.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -2222,7 +2222,7 @@ Module instructions.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -2298,7 +2298,7 @@ Module instructions.
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -2428,7 +2428,7 @@ Module instructions.
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -2753,31 +2753,89 @@ Module instructions.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            BinOp.bit_or
-                                                              (BinOp.bit_or
-                                                                (BinOp.bit_or
-                                                                  (BinOp.gt (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_array_field (|
-                                                                        M.deref (|
-                                                                          M.read (| x |)
-                                                                        |),
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          0
-                                                                      |)
-                                                                    |),
-                                                                    M.cast
-                                                                      (Ty.path "u64")
-                                                                      (M.read (|
-                                                                        get_associated_constant (|
-                                                                          Ty.path "usize",
-                                                                          "MAX",
-                                                                          Ty.path "usize"
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.Wrap.bit_or,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.Wrap.bit_or,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.Wrap.bit_or,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_array_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| x |)
+                                                                                |),
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  0
+                                                                              |)
+                                                                            |);
+                                                                            M.cast
+                                                                              (Ty.path "u64")
+                                                                              (M.read (|
+                                                                                get_associated_constant (|
+                                                                                  Ty.path "usize",
+                                                                                  "MAX",
+                                                                                  Ty.path "usize"
+                                                                                |)
+                                                                              |))
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.ne,
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_array_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| x |)
+                                                                                |),
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  1
+                                                                              |)
+                                                                            |);
+                                                                            Value.Integer
+                                                                              IntegerKind.U64
+                                                                              0
+                                                                          ]
                                                                         |)
-                                                                      |))
-                                                                  |))
-                                                                  (BinOp.ne (|
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.ne,
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_array_field (|
+                                                                            M.deref (|
+                                                                              M.read (| x |)
+                                                                            |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          |)
+                                                                        |);
+                                                                        Value.Integer
+                                                                          IntegerKind.U64
+                                                                          0
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ne,
+                                                                  [
                                                                     M.read (|
                                                                       M.SubPointer.get_array_field (|
                                                                         M.deref (|
@@ -2785,36 +2843,17 @@ Module instructions.
                                                                         |),
                                                                         Value.Integer
                                                                           IntegerKind.Usize
-                                                                          1
+                                                                          3
                                                                       |)
-                                                                    |),
+                                                                    |);
                                                                     Value.Integer IntegerKind.U64 0
-                                                                  |)))
-                                                                (BinOp.ne (|
-                                                                  M.read (|
-                                                                    M.SubPointer.get_array_field (|
-                                                                      M.deref (| M.read (| x |) |),
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        2
-                                                                    |)
-                                                                  |),
-                                                                  Value.Integer IntegerKind.U64 0
-                                                                |)))
-                                                              (BinOp.ne (|
-                                                                M.read (|
-                                                                  M.SubPointer.get_array_field (|
-                                                                    M.deref (| M.read (| x |) |),
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      3
-                                                                  |)
-                                                                |),
-                                                                Value.Integer IntegerKind.U64 0
-                                                              |))
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3035,7 +3074,7 @@ Module instructions.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -3149,13 +3188,17 @@ Module instructions.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.eq (|
-                                                          M.read (| len |),
-                                                          Value.Integer IntegerKind.Usize 0
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.eq,
+                                                          [
+                                                            M.read (| len |);
+                                                            Value.Integer IntegerKind.Usize 0
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -3212,31 +3255,96 @@ Module instructions.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.bit_or
-                                                                      (BinOp.bit_or
-                                                                        (BinOp.bit_or
-                                                                          (BinOp.gt (|
-                                                                            M.read (|
-                                                                              M.SubPointer.get_array_field (|
-                                                                                M.deref (|
-                                                                                  M.read (| x |)
-                                                                                |),
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  0
-                                                                              |)
-                                                                            |),
-                                                                            M.cast
-                                                                              (Ty.path "u64")
-                                                                              (M.read (|
-                                                                                get_associated_constant (|
-                                                                                  Ty.path "usize",
-                                                                                  "MAX",
-                                                                                  Ty.path "usize"
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.Wrap.bit_or,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.Wrap.bit_or,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.Wrap.bit_or,
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.gt,
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      M.SubPointer.get_array_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            x
+                                                                                          |)
+                                                                                        |),
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          0
+                                                                                      |)
+                                                                                    |);
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "u64")
+                                                                                      (M.read (|
+                                                                                        get_associated_constant (|
+                                                                                          Ty.path
+                                                                                            "usize",
+                                                                                          "MAX",
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        |)
+                                                                                      |))
+                                                                                  ]
+                                                                                |);
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.ne,
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      M.SubPointer.get_array_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            x
+                                                                                          |)
+                                                                                        |),
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          1
+                                                                                      |)
+                                                                                    |);
+                                                                                    Value.Integer
+                                                                                      IntegerKind.U64
+                                                                                      0
+                                                                                  ]
                                                                                 |)
-                                                                              |))
-                                                                          |))
-                                                                          (BinOp.ne (|
+                                                                              ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.ne,
+                                                                              [
+                                                                                M.read (|
+                                                                                  M.SubPointer.get_array_field (|
+                                                                                    M.deref (|
+                                                                                      M.read (| x |)
+                                                                                    |),
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      2
+                                                                                  |)
+                                                                                |);
+                                                                                Value.Integer
+                                                                                  IntegerKind.U64
+                                                                                  0
+                                                                              ]
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.ne,
+                                                                          [
                                                                             M.read (|
                                                                               M.SubPointer.get_array_field (|
                                                                                 M.deref (|
@@ -3244,46 +3352,19 @@ Module instructions.
                                                                                 |),
                                                                                 Value.Integer
                                                                                   IntegerKind.Usize
-                                                                                  1
+                                                                                  3
                                                                               |)
-                                                                            |),
+                                                                            |);
                                                                             Value.Integer
                                                                               IntegerKind.U64
                                                                               0
-                                                                          |)))
-                                                                        (BinOp.ne (|
-                                                                          M.read (|
-                                                                            M.SubPointer.get_array_field (|
-                                                                              M.deref (|
-                                                                                M.read (| x |)
-                                                                              |),
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                2
-                                                                            |)
-                                                                          |),
-                                                                          Value.Integer
-                                                                            IntegerKind.U64
-                                                                            0
-                                                                        |)))
-                                                                      (BinOp.ne (|
-                                                                        M.read (|
-                                                                          M.SubPointer.get_array_field (|
-                                                                            M.deref (|
-                                                                              M.read (| x |)
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              3
-                                                                          |)
-                                                                        |),
-                                                                        Value.Integer
-                                                                          IntegerKind.U64
-                                                                          0
-                                                                      |))
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
-                                                                M.is_constant_or_break_match (|
+                                                                is_constant_or_break_match (|
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
@@ -3448,62 +3529,88 @@ Module instructions.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.bit_and
-                                                                                  (BinOp.bit_and
-                                                                                    (BinOp.eq (|
-                                                                                      M.read (|
-                                                                                        M.SubPointer.get_array_field (|
-                                                                                          M.deref (|
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.Wrap.bit_and,
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
+                                                                                      BinOp.Wrap.bit_and,
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          BinOp.eq,
+                                                                                          [
                                                                                             M.read (|
-                                                                                              x
-                                                                                            |)
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.Usize
-                                                                                            1
-                                                                                        |)
-                                                                                      |),
-                                                                                      Value.Integer
-                                                                                        IntegerKind.U64
-                                                                                        0
-                                                                                    |))
-                                                                                    (BinOp.eq (|
-                                                                                      M.read (|
-                                                                                        M.SubPointer.get_array_field (|
-                                                                                          M.deref (|
+                                                                                              M.SubPointer.get_array_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    x
+                                                                                                  |)
+                                                                                                |),
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  1
+                                                                                              |)
+                                                                                            |);
+                                                                                            Value.Integer
+                                                                                              IntegerKind.U64
+                                                                                              0
+                                                                                          ]
+                                                                                        |);
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          BinOp.eq,
+                                                                                          [
                                                                                             M.read (|
-                                                                                              x
-                                                                                            |)
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.Usize
-                                                                                            2
+                                                                                              M.SubPointer.get_array_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    x
+                                                                                                  |)
+                                                                                                |),
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  2
+                                                                                              |)
+                                                                                            |);
+                                                                                            Value.Integer
+                                                                                              IntegerKind.U64
+                                                                                              0
+                                                                                          ]
                                                                                         |)
-                                                                                      |),
-                                                                                      Value.Integer
-                                                                                        IntegerKind.U64
-                                                                                        0
-                                                                                    |)))
-                                                                                  (BinOp.eq (|
-                                                                                    M.read (|
-                                                                                      M.SubPointer.get_array_field (|
-                                                                                        M.deref (|
-                                                                                          M.read (|
-                                                                                            x
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
+                                                                                      BinOp.eq,
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          M.SubPointer.get_array_field (|
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                x
+                                                                                              |)
+                                                                                            |),
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              3
                                                                                           |)
-                                                                                        |),
+                                                                                        |);
                                                                                         Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          3
-                                                                                      |)
-                                                                                    |),
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U64
-                                                                                      0
-                                                                                  |))
+                                                                                          IntegerKind.U64
+                                                                                          0
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -3689,9 +3796,13 @@ Module instructions.
                                                               "memory"
                                                             |)
                                                           |);
-                                                          BinOp.Wrap.mul (|
-                                                            M.read (| words_num |),
-                                                            Value.Integer IntegerKind.Usize 32
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.mul,
+                                                            [
+                                                              M.read (| words_num |);
+                                                              Value.Integer IntegerKind.Usize 32
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -3958,7 +4069,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -4124,38 +4235,60 @@ Module instructions.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.bit_and
-                                                    (BinOp.bit_and
-                                                      (BinOp.eq (|
-                                                        M.read (|
-                                                          M.SubPointer.get_array_field (|
-                                                            M.deref (| M.read (| x |) |),
-                                                            Value.Integer IntegerKind.Usize 1
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.Wrap.bit_and,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.Wrap.bit_and,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.eq,
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_array_field (|
+                                                                  M.deref (| M.read (| x |) |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
+                                                              |);
+                                                              Value.Integer IntegerKind.U64 0
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.eq,
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_array_field (|
+                                                                  M.deref (| M.read (| x |) |),
+                                                                  Value.Integer IntegerKind.Usize 2
+                                                                |)
+                                                              |);
+                                                              Value.Integer IntegerKind.U64 0
+                                                            ]
                                                           |)
-                                                        |),
-                                                        Value.Integer IntegerKind.U64 0
-                                                      |))
-                                                      (BinOp.eq (|
-                                                        M.read (|
-                                                          M.SubPointer.get_array_field (|
-                                                            M.deref (| M.read (| x |) |),
-                                                            Value.Integer IntegerKind.Usize 2
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.U64 0
-                                                      |)))
-                                                    (BinOp.eq (|
-                                                      M.read (|
-                                                        M.SubPointer.get_array_field (|
-                                                          M.deref (| M.read (| x |) |),
-                                                          Value.Integer IntegerKind.Usize 3
-                                                        |)
-                                                      |),
-                                                      Value.Integer IntegerKind.U64 0
-                                                    |))
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_array_field (|
+                                                              M.deref (| M.read (| x |) |),
+                                                              Value.Integer IntegerKind.Usize 3
+                                                            |)
+                                                          |);
+                                                          Value.Integer IntegerKind.U64 0
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -4549,7 +4682,7 @@ Module instructions.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -4711,7 +4844,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -4938,69 +5071,73 @@ Module instructions.
                                                     ]
                                                   |),
                                                   ltac:(M.monadic
-                                                    (BinOp.le (|
-                                                      M.call_closure (|
-                                                        Ty.path "u64",
-                                                        M.get_associated_function (|
-                                                          Ty.path "revm_interpreter::gas::Gas",
-                                                          "remaining",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "&mut")
-                                                                  []
+                                                    (M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.le,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "u64",
+                                                          M.get_associated_function (|
+                                                            Ty.path "revm_interpreter::gas::Gas",
+                                                            "remaining",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&mut")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_interpreter::gas::Gas"
+                                                                    ],
+                                                                  M.get_trait_method (|
+                                                                    "revm_interpreter::interpreter_types::LoopControl",
+                                                                    Ty.associated_in_trait
+                                                                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                      []
+                                                                      []
+                                                                      WIRE
+                                                                      "Control",
+                                                                    [],
+                                                                    [],
+                                                                    "gas",
+                                                                    [],
+                                                                    []
+                                                                  |),
                                                                   [
-                                                                    Ty.path
-                                                                      "revm_interpreter::gas::Gas"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "revm_interpreter::interpreter_types::LoopControl",
-                                                                  Ty.associated_in_trait
-                                                                    "revm_interpreter::interpreter_types::InterpreterTypes"
-                                                                    []
-                                                                    []
-                                                                    WIRE
-                                                                    "Control",
-                                                                  [],
-                                                                  [],
-                                                                  "gas",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.deref (|
-                                                                        M.read (| interpreter |)
-                                                                      |),
-                                                                      "revm_interpreter::interpreter::Interpreter",
-                                                                      "control"
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| interpreter |)
+                                                                        |),
+                                                                        "revm_interpreter::interpreter::Interpreter",
+                                                                        "control"
+                                                                      |)
                                                                     |)
-                                                                  |)
-                                                                ]
+                                                                  ]
+                                                                |)
                                                               |)
                                                             |)
+                                                          ]
+                                                        |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "revm_interpreter::gas::constants::CALL_STIPEND",
+                                                            Ty.path "u64"
                                                           |)
-                                                        ]
-                                                      |),
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "revm_interpreter::gas::constants::CALL_STIPEND",
-                                                          Ty.path "u64"
                                                         |)
-                                                      |)
+                                                      ]
                                                     |)))
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -5170,7 +5307,7 @@ Module instructions.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -5409,7 +5546,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5492,7 +5629,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5602,7 +5739,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5843,7 +5980,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5953,7 +6090,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -6229,7 +6366,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -6377,56 +6514,97 @@ Module instructions.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.bit_or
-                                                      (BinOp.bit_or
-                                                        (BinOp.bit_or
-                                                          (BinOp.gt (|
-                                                            M.read (|
-                                                              M.SubPointer.get_array_field (|
-                                                                M.deref (| M.read (| x |) |),
-                                                                Value.Integer IntegerKind.Usize 0
-                                                              |)
-                                                            |),
-                                                            M.cast
-                                                              (Ty.path "u64")
-                                                              (M.read (|
-                                                                get_associated_constant (|
-                                                                  Ty.path "usize",
-                                                                  "MAX",
-                                                                  Ty.path "usize"
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.Wrap.bit_or,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.Wrap.bit_or,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.Wrap.bit_or,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.gt,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_array_field (|
+                                                                        M.deref (|
+                                                                          M.read (| x |)
+                                                                        |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      |)
+                                                                    |);
+                                                                    M.cast
+                                                                      (Ty.path "u64")
+                                                                      (M.read (|
+                                                                        get_associated_constant (|
+                                                                          Ty.path "usize",
+                                                                          "MAX",
+                                                                          Ty.path "usize"
+                                                                        |)
+                                                                      |))
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ne,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_array_field (|
+                                                                        M.deref (|
+                                                                          M.read (| x |)
+                                                                        |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      |)
+                                                                    |);
+                                                                    Value.Integer IntegerKind.U64 0
+                                                                  ]
                                                                 |)
-                                                              |))
-                                                          |))
-                                                          (BinOp.ne (|
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.ne,
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_array_field (|
+                                                                    M.deref (| M.read (| x |) |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      2
+                                                                  |)
+                                                                |);
+                                                                Value.Integer IntegerKind.U64 0
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ne,
+                                                          [
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                                Value.Integer IntegerKind.Usize 3
                                                               |)
-                                                            |),
+                                                            |);
                                                             Value.Integer IntegerKind.U64 0
-                                                          |)))
-                                                        (BinOp.ne (|
-                                                          M.read (|
-                                                            M.SubPointer.get_array_field (|
-                                                              M.deref (| M.read (| x |) |),
-                                                              Value.Integer IntegerKind.Usize 2
-                                                            |)
-                                                          |),
-                                                          Value.Integer IntegerKind.U64 0
-                                                        |)))
-                                                      (BinOp.ne (|
-                                                        M.read (|
-                                                          M.SubPointer.get_array_field (|
-                                                            M.deref (| M.read (| x |) |),
-                                                            Value.Integer IntegerKind.Usize 3
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.U64 0
-                                                      |))
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -6576,7 +6754,7 @@ Module instructions.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -6680,13 +6858,14 @@ Module instructions.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.eq (|
-                                            M.read (| len |),
-                                            Value.Integer IntegerKind.Usize 0
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -6748,31 +6927,91 @@ Module instructions.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.bit_or
-                                                                  (BinOp.bit_or
-                                                                    (BinOp.bit_or
-                                                                      (BinOp.gt (|
-                                                                        M.read (|
-                                                                          M.SubPointer.get_array_field (|
-                                                                            M.deref (|
-                                                                              M.read (| x |)
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0
-                                                                          |)
-                                                                        |),
-                                                                        M.cast
-                                                                          (Ty.path "u64")
-                                                                          (M.read (|
-                                                                            get_associated_constant (|
-                                                                              Ty.path "usize",
-                                                                              "MAX",
-                                                                              Ty.path "usize"
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.Wrap.bit_or,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.Wrap.bit_or,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.Wrap.bit_or,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.gt,
+                                                                              [
+                                                                                M.read (|
+                                                                                  M.SubPointer.get_array_field (|
+                                                                                    M.deref (|
+                                                                                      M.read (| x |)
+                                                                                    |),
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      0
+                                                                                  |)
+                                                                                |);
+                                                                                M.cast
+                                                                                  (Ty.path "u64")
+                                                                                  (M.read (|
+                                                                                    get_associated_constant (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      "MAX",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
+                                                                                  |))
+                                                                              ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.ne,
+                                                                              [
+                                                                                M.read (|
+                                                                                  M.SubPointer.get_array_field (|
+                                                                                    M.deref (|
+                                                                                      M.read (| x |)
+                                                                                    |),
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  |)
+                                                                                |);
+                                                                                Value.Integer
+                                                                                  IntegerKind.U64
+                                                                                  0
+                                                                              ]
                                                                             |)
-                                                                          |))
-                                                                      |))
-                                                                      (BinOp.ne (|
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.ne,
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_array_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| x |)
+                                                                                |),
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  2
+                                                                              |)
+                                                                            |);
+                                                                            Value.Integer
+                                                                              IntegerKind.U64
+                                                                              0
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.ne,
+                                                                      [
                                                                         M.read (|
                                                                           M.SubPointer.get_array_field (|
                                                                             M.deref (|
@@ -6780,44 +7019,19 @@ Module instructions.
                                                                             |),
                                                                             Value.Integer
                                                                               IntegerKind.Usize
-                                                                              1
+                                                                              3
                                                                           |)
-                                                                        |),
+                                                                        |);
                                                                         Value.Integer
                                                                           IntegerKind.U64
                                                                           0
-                                                                      |)))
-                                                                    (BinOp.ne (|
-                                                                      M.read (|
-                                                                        M.SubPointer.get_array_field (|
-                                                                          M.deref (|
-                                                                            M.read (| x |)
-                                                                          |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
-                                                                        |)
-                                                                      |),
-                                                                      Value.Integer
-                                                                        IntegerKind.U64
-                                                                        0
-                                                                    |)))
-                                                                  (BinOp.ne (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_array_field (|
-                                                                        M.deref (|
-                                                                          M.read (| x |)
-                                                                        |),
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          3
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 0
-                                                                  |))
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -6993,9 +7207,13 @@ Module instructions.
                                                           "memory"
                                                         |)
                                                       |);
-                                                      BinOp.Wrap.mul (|
-                                                        M.read (| words_num |),
-                                                        Value.Integer IntegerKind.Usize 32
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.mul,
+                                                        [
+                                                          M.read (| words_num |);
+                                                          Value.Integer IntegerKind.Usize 32
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -7193,39 +7411,43 @@ Module instructions.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.lt (|
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_trait_method (|
-                                              "revm_interpreter::interpreter_types::StackTrait",
-                                              Ty.associated_in_trait
-                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.lt,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::StackTrait",
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  impl_InterpreterTypes
+                                                  "Stack",
+                                                [],
+                                                [],
+                                                "len",
+                                                [],
                                                 []
-                                                []
-                                                impl_InterpreterTypes
-                                                "Stack",
-                                              [],
-                                              [],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| interpreter |) |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "stack"
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "stack"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |),
-                                          N
+                                              ]
+                                            |);
+                                            N
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -7750,7 +7972,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -8038,7 +8260,7 @@ Module instructions.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -8203,7 +8425,7 @@ Module instructions.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in

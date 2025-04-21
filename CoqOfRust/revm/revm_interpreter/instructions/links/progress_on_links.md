@@ -13,16 +13,16 @@
 - [x] `smod`
 - [x] `addmod`
 - [x] `mulmod`
-- [ ] `exp`
+- [x] `exp`
 - [ ] `signextend`
 
 ## Block_info
 
 - [x] `chainid`
-- [ ] `coinbase`
+- [x] `coinbase`
 - [x] `timestamp`
 - [x] `block_number`
-- [ ] `difficulty`
+- [x] `difficulty`
 - [x] `gaslimit`
 - [x] `basefee`
 - [x] `blob_basefee`
@@ -45,30 +45,30 @@
 
 ## Control
 
-- [ ] `rjump`
-- [ ] `rjumpi`
-- [ ] `rjumpv`
-- [ ] `jump`
-- [ ] `jumpi`
-- [ ] `jump_inner`
-- [ ] `jumpdest_or_nop`
-- [ ] `callf`
-- [ ] `retf`
-- [ ] `jumpf`
-- [ ] `pc`
+- [x] `rjump`
+- [x] `rjumpi`
+- [x] `rjumpv`
+- [x] `jump_inner`
+- [x] `jump`
+- [x] `jumpi`
+- [x] `jumpdest_or_nop`
+- [x] `callf`
+- [x] `retf`
+- [x] `jumpf`
+- [x] `pc`
 - [ ] `return_inner`
-- [ ] `ret`
-- [ ] `revert`
+- [x] `ret`
+- [x] `revert`
 - [x] `stop`
-- [ ] `invalid`
+- [x] `invalid`
 - [x] `unknown`
 
 ## Data
 
-- [ ] `data_load`
-- [ ] `data_loadn`
-- [ ] `data_size`
-- [ ] `data_copy`
+- [x] `data_load`
+- [x] `data_loadn`
+- [x] `data_size`
+- [x] `data_copy`
 
 ## Host
 
@@ -87,13 +87,17 @@
 
 ## I256
 
-- [ ] `i256_sign`
-- [ ] `i256_sign_compl`
-- [ ] `u256_remove_sign`
-- [ ] `two_compl_mut`
-- [ ] `i256_cmp`
-- [ ] `i256_div`
-- [ ] `i256_mod`
+- [x] `MAX_POSITIVE_VALUE`
+- [x] `MIN_NEGATIVE_VALUE`
+- [x] `FLIPH_BITMASK_U64`
+- [x] `i256_sign`
+- [x] `two_compl`
+- [x] `two_compl_mut`
+- [x] `i256_sign_compl`
+- [x] `u256_remove_sign`
+- [x] `i256_cmp`
+- [x] `i256_div`
+- [x] `i256_mod`
 
 ## Memory
 
@@ -107,33 +111,33 @@
 
 - [x] `pop`
 - [x] `push0`
-- [ ] `push`
-- [ ] `dup`
-- [ ] `swap`
+- [x] `push`
+- [x] `dup`
+- [x] `swap`
 - [x] `dupn`
 - [x] `swapn`
-- [ ] `exchange`
+- [x] `exchange`
 
 ## System
 
 - [ ] `keccak256`
-- [ ] `address`
-- [ ] `caller`
-- [ ] `codesize`
-- [ ] `codecopy`
+- [x] `address`
+- [x] `caller`
+- [x] `codesize`
+- [x] `memory_resize`
+- [x] `codecopy`
 - [ ] `calldataload`
 - [x] `calldatasize`
 - [x] `callvalue`
-- [ ] `memory_resize`
-- [ ] `calldatacopy`
-- [ ] `returndatasize`
+- [x] `calldatacopy`
+- [x] `returndatasize`
 - [ ] `returndatacopy`
 - [ ] `returndataload`
 - [x] `gas`
 
 ## Tx_info
 
-- [ ] `gasprice`
+- [x] `gasprice`
 - [ ] `origin`
 - [ ] `blob_hash`
 
@@ -143,7 +147,7 @@
 
 ## Summary
 
-- Total: 103
-- Admitted: 79
-- Defined: 24
-- Percentage: 23.30%
+- Total: 107
+- Admitted: 39
+- Defined: 68
+- Percentage: 63.55%

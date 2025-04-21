@@ -20,6 +20,12 @@ Definition of_ty (length' : Value.t) (length : Usize.t) (A' : Ty.t):
 Proof. intros ? [A]. eapply OfTy.Make with (A := t A length). now subst. Defined.
 Smpl Add eapply of_ty : of_ty.
 
+Lemma of_value_with_0 {A : Set} `{Link A} :
+  Value.Array [] =
+  φ ({| value := [] |} : t A {| Integer.value := 0 |}).
+Proof. now cbn. Qed.
+Smpl Add apply of_value_with_0 : of_value.
+
 Lemma of_value_with_1 {A : Set} `{Link A}
     (value1' : Value.t) (value1 : A) :
   value1' = φ value1 ->
@@ -37,6 +43,40 @@ Proof.
   apply of_value_with_1; eassumption.
 Defined.
 Smpl Add apply of_value_1 : of_value.
+
+Lemma of_value_with_4 {A : Set} `{Link A}
+  (value1' : Value.t) (value1 : A)
+  (value2' : Value.t) (value2 : A)
+  (value3' : Value.t) (value3 : A)
+  (value4' : Value.t) (value4 : A) :
+  value1' = φ value1 ->
+  value2' = φ value2 ->
+  value3' = φ value3 ->
+  value4' = φ value4 ->
+  Value.Array [value1'; value2'; value3'; value4'] =
+  φ ({| value := [value1; value2; value3; value4] |} : t A {| Integer.value := 4 |}).
+Proof.
+  now intros; subst.
+Qed.
+Smpl Add eapply of_value_with_4 : of_value.
+
+Definition of_value_4 
+  (value1' : Value.t)
+  (H_value1' : OfValue.t value1')
+  (value2' : Value.t) (value2 : OfValue.get_Set H_value1')
+  (value3' : Value.t) (value3 : OfValue.get_Set H_value1')
+  (value4' : Value.t) (value4 : OfValue.get_Set H_value1') :
+  value2' = φ value2 ->
+  value3' = φ value3 ->
+  value4' = φ value4 ->
+  OfValue.t (Value.Array [value1'; value2'; value3'; value4']).
+Proof.
+  intros.
+  destruct H_value1' as [A].
+  eapply OfValue.Make with (A := t A {| Integer.value := 4 |}).
+  apply of_value_with_4; eassumption.
+Defined.
+Smpl Add eapply of_value_4 : of_value.
 
 (** This lemma is useful when the [repeat_nat] construct (used to build array with repetition)
     appears and to switch it with the [φ] on its parameters. *)
@@ -82,19 +122,6 @@ Proof.
   apply repeat_nat_φ_eq.
 Defined.
 Smpl Add apply of_value_repeat : of_value.
-
-(* Definition of_value_repeat (times : nat) (value' : Value.t) :
-  OfValue.t value' ->
-  OfValue.t (Value.Array (repeat_nat times value')).
-Proof.
-  intros [A ? value].
-  eapply OfValue.Make with
-    (A := t A {| Integer.value := Z.of_nat times |})
-    (value := {| value := repeat_nat times value |}).
-  subst.
-  apply repeat_nat_φ_eq.
-Defined.
-Smpl Add apply of_value_repeat : of_value. *)
 
 Module SubPointer.
   Definition get_index (A : Set) `{Link A} (length : Usize.t) (index : Z) :

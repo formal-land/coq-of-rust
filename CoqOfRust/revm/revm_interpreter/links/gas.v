@@ -13,9 +13,7 @@ Require Import revm_interpreter.gas.
 
 (*
 pub struct MemoryGas {
-    /// Current memory length
     pub words_num: usize,
-    /// Current memory expansion cost
     pub expansion_cost: u64,
 }
 *)
@@ -600,3 +598,4 @@ Module Impl_Gas.
     run_symbolic.
   Defined.
 End Impl_Gas.
+Export Impl_Gas.

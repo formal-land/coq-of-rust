@@ -1,6 +1,5 @@
 Require Import Coq.Strings.String.
 Require Import CoqOfRust.simulations.M.
-Import simulations.M.Notations.
 Require Import CoqOfRust.core.simulations.eq.
 
 Module Bool.
@@ -42,6 +41,7 @@ Module Notations.
   Notation "'notS!' b" := (Bool.not b) (at level 60).
   Notation "'ifS!' b 'then' x 'else' y" := (Bool.if_then_else b x y) (at level 200, right associativity).
 End Notations.
+Export Notations.
 
 Module ImplEq.
   Global Instance I :

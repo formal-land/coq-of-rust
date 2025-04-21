@@ -1,26 +1,19 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.M.
-Require Import core.convert.num.
+Require Import links.M.
+Require Import core.num.error.
 
+(* pub struct TryFromIntError(/* private fields */); *)
 Module TryFromIntError.
+  Parameter t : Set.
 
-    Inductive t : Set := TryFromIntError_Make.
+  Parameter to_value : t -> Value.t.
 
-    Instance TryFromIntError_IsLink : Link t := {
-        Φ := Ty.path "core::num::error::TryFromIntError";
-        φ _ := Value.StructTuple "TryFromIntError" []
-    }.
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "core::num::error::TryFromIntError";
+    φ := to_value;
+  }.
 
-    Definition of_ty : OfTy.t (Ty.path "core::num::error::TryFromIntError").
-    Proof.
-        eapply OfTy.Make with (A := t).
-        reflexivity.
-    Defined.
-
-    Smpl Add apply of_ty : of_ty.   
-
+  Definition of_ty : OfTy.t (Ty.path "core::num::error::TryFromIntError").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
 End TryFromIntError.
-
-Module Impl_try_from_TryFromIntError.
-
-End Impl_try_from_TryFromIntError.

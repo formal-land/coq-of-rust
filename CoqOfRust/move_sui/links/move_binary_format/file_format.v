@@ -2,8 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import move_sui.translations.move_binary_format.file_format.
 
-Import Run.
-
 Module ModuleHandleIndex.
   Inductive t : Set :=
   | Make : Integer.t IntegerKind.U16 -> t.

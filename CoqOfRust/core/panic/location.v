@@ -89,52 +89,58 @@ Module panic.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Location" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "file" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::panic::location::Location",
-                        "file"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::panic::location::Location",
+                          "file"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "line" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::panic::location::Location",
-                        "line"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::panic::location::Location",
+                          "line"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "col" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::panic::location::Location",
-                            "col"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::panic::location::Location",
+                              "col"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -535,39 +541,47 @@ Module panic.
                   ]
                 |),
                 ltac:(M.monadic
-                  (BinOp.eq (|
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::panic::location::Location",
+                          "line"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "core::panic::location::Location",
+                          "line"
+                        |)
+                      |)
+                    ]
+                  |)))
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "core::panic::location::Location",
-                        "line"
+                        "col"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "core::panic::location::Location",
-                        "line"
+                        "col"
                       |)
                     |)
-                  |)))
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::panic::location::Location",
-                      "col"
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "core::panic::location::Location",
-                      "col"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import alloy_primitives.bits.links.fixed.
+Require Import alloy_primitives.bits.links.fixed_FixedBytes.
 Require Import alloy_primitives.signed.links.int.
 Require Import ruint.links.lib.
 

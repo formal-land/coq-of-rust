@@ -31,7 +31,14 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                   "scoping_rules_lifetimes_methods::Owner",
                   0
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); Value.Integer IntegerKind.I32 1 ]
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

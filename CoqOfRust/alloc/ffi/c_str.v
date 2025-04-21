@@ -502,21 +502,25 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloc::ffi::c_str::NulError",
-                    0
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::ffi::c_str::NulError",
+                      0
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "alloc::ffi::c_str::NulError",
+                      0
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "alloc::ffi::c_str::NulError",
-                    0
-                  |)
-                |)
+                ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -635,37 +639,41 @@ Module ffi.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NulError" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::ffi::c_str::NulError",
-                        0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::ffi::c_str::NulError",
+                          0
+                        |)
                       |)
                     |)
-                  |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::ffi::c_str::NulError",
-                            1
+                  |));
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::ffi::c_str::NulError",
+                              1
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -825,7 +833,11 @@ Module ffi.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -969,10 +981,12 @@ Module ffi.
                               Pointer.Kind.Ref,
                               M.deref (| mk_str (| "InteriorNul" |) |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |))
                           ]
                         |)
                       |)));
@@ -1294,38 +1308,42 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromVecWithNulError" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error_kind" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::ffi::c_str::FromVecWithNulError",
-                        "error_kind"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::ffi::c_str::FromVecWithNulError",
+                          "error_kind"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::ffi::c_str::FromVecWithNulError",
-                            "bytes"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::ffi::c_str::FromVecWithNulError",
+                              "bytes"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1679,38 +1697,42 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoStringError" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::ffi::c_str::IntoStringError",
-                        "inner"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::ffi::c_str::IntoStringError",
+                          "inner"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::ffi::c_str::IntoStringError",
-                            "error"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::ffi::c_str::IntoStringError",
+                              "error"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1835,8 +1857,7 @@ Module ffi.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -1923,7 +1944,7 @@ Module ffi.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -2074,13 +2095,17 @@ Module ffi.
             M.read (|
               let~ len : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [], [] |),
-                      [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
-                    |),
-                    Value.Integer IntegerKind.Usize 1
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [], [] |),
+                        [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
+                      |);
+                      Value.Integer IntegerKind.Usize 1
+                    ]
                   |)
                 |) in
               let~ slice :
@@ -2404,8 +2429,7 @@ Module ffi.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -2473,7 +2497,7 @@ Module ffi.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -2635,31 +2659,35 @@ Module ffi.
                       "core::ops::range::RangeTo"
                       [
                         ("end_",
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::ffi::c_str::CString",
-                                        "inner"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::ffi::c_str::CString",
+                                          "inner"
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            Value.Integer IntegerKind.Usize 1
+                                ]
+                              |);
+                              Value.Integer IntegerKind.Usize 1
+                            ]
                           |))
                       ]
                   ]
@@ -2946,8 +2974,7 @@ Module ffi.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -2959,95 +2986,107 @@ Module ffi.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.eq (|
-                                            BinOp.Wrap.add (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [
                                               M.call_closure (|
                                                 Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "usize" ],
-                                                  "unwrap",
-                                                  [],
-                                                  []
-                                                |),
+                                                BinOp.Wrap.add,
                                                 [
                                                   M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "usize" ],
-                                                    M.get_function (|
-                                                      "core::slice::memchr::memchr",
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "usize" ],
+                                                      "unwrap",
                                                       [],
                                                       []
                                                     |),
                                                     [
-                                                      Value.Integer IntegerKind.U8 0;
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "usize" ],
+                                                        M.get_function (|
+                                                          "core::slice::memchr::memchr",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          Value.Integer IntegerKind.U8 0;
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
                                                                 Ty.apply
-                                                                  (Ty.path "slice")
+                                                                  (Ty.path "&")
                                                                   []
-                                                                  [ Ty.path "u8" ]
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
-                                                              Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
-                                                                []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ Ty.path "u8" ]
+                                                                  ],
+                                                                M.get_trait_method (|
+                                                                  "core::ops::deref::Deref",
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "u8";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ],
+                                                                  [],
+                                                                  [],
+                                                                  "deref",
+                                                                  [],
+                                                                  []
+                                                                |),
                                                                 [
-                                                                  Ty.path "u8";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ],
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.borrow (| Pointer.Kind.Ref, v |)
-                                                                |)
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        v
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            ]
+                                                            |)
                                                           |)
-                                                        |)
+                                                        ]
                                                       |)
                                                     ]
-                                                  |)
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
                                                 ]
-                                              |),
-                                              Value.Integer IntegerKind.Usize 1
-                                            |),
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  "len",
+                                                  [],
                                                   []
-                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, v |) ]
-                                            |)
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, v |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -3225,27 +3264,32 @@ Module ffi.
                       let nul_pos := M.copy (| γ0_0 |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.eq (|
-                            BinOp.Wrap.add (|
-                              M.read (| nul_pos |),
-                              Value.Integer IntegerKind.Usize 1
-                            |),
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [ M.read (| nul_pos |); Value.Integer IntegerKind.Usize 1 ]
+                              |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, v |) ]
-                            |)
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, v |) ]
+                              |)
+                            ]
                           |)
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6217,19 +6261,21 @@ Module ffi.
             Value.StructTuple
               "core::option::Option::Some"
               [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::ffi::c_str::IntoStringError",
-                        "error"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::ffi::c_str::IntoStringError",
+                          "error"
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

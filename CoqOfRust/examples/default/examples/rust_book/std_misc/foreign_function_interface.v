@@ -332,18 +332,22 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.lt (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "foreign_function_interface::Complex",
-                              "im"
-                            |)
-                          |),
-                          M.read (| UnsupportedLiteral |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.lt,
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "foreign_function_interface::Complex",
+                                "im"
+                              |)
+                            |);
+                            M.read (| UnsupportedLiteral |)
+                          ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

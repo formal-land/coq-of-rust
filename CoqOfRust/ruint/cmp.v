@@ -81,42 +81,46 @@ Module cmp.
             Ty.path "core::cmp::Ordering",
             M.get_function (| "ruint::algorithms::cmp", [], [] |),
             [
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "as_limbs",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                        "as_limbs",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
-                |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "as_limbs",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |) ]
+                |));
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                        "as_limbs",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |) ]
+                    |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

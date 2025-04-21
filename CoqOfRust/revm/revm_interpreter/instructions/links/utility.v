@@ -4,10 +4,15 @@ Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.links.aliases.
 Require Import core.convert.links.mod.
+Require Import core.fmt.links.mod.
+Require Import core.iter.traits.links.collect.
+Require Import core.links.panicking.
+Require Import core.num.links.mod.
+Require Import core.ptr.links.mut_ptr.
+Require Import core.slice.links.iter.
+Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.instructions.utility.
 Require Import ruint.links.bytes.
-
-Import bytes.Impl_Uint.
 
 (* pub fn cast_slice_to_u256(slice: &[u8], dest: &mut U256) *)
 Instance run_cast_slice_to_u256
@@ -16,6 +21,10 @@ Instance run_cast_slice_to_u256
   Run.Trait instructions.utility.cast_slice_to_u256 [] [] [ φ slice; φ dest ] unit.
 Proof.
   constructor.
+  destruct (Impl_IntoIterator_for_Iterator_I.run (ChunksExact.t U8.t) U8.t).
+  destruct (Impl_Iterator_for_ChunksExact.run U8.t).
+  destruct (Impl_IntoIterator_for_Iterator_I.run (RChunksExact.t U8.t) U8.t).
+  destruct (Impl_Iterator_for_RChunksExact.run U8.t).
   run_symbolic.
 Admitted.
 

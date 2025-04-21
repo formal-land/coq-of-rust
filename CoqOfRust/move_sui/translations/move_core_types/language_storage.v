@@ -798,18 +798,34 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               mk_str (| "StructTag" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  BinOp.Wrap.add (|
-                                    BinOp.Wrap.add (|
-                                      M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.cast (Ty.path "usize") (Value.Bool false);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |);
+                                          Value.Integer IntegerKind.Usize 1
+                                        ]
+                                      |);
                                       Value.Integer IntegerKind.Usize 1
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |),
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -1326,12 +1342,20 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               mk_str (| "ResourceKey" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -1678,12 +1702,20 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               mk_str (| "ModuleId" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -2180,10 +2212,12 @@ Module language_storage.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -2212,10 +2246,12 @@ Module language_storage.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -2361,7 +2397,11 @@ Module language_storage.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -3784,66 +3824,74 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructTag" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::language_storage::StructTag",
-                      "address"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::language_storage::StructTag",
+                        "address"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::language_storage::StructTag",
-                      "module"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::language_storage::StructTag",
+                        "module"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::language_storage::StructTag",
-                      "name"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::language_storage::StructTag",
+                        "name"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_params" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::language_storage::StructTag",
-                          "type_params"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::language_storage::StructTag",
+                            "type_params"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4934,19 +4982,10 @@ Module language_storage.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -4957,25 +4996,36 @@ Module language_storage.
                                 [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
-                            Value.Array
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                M.read (|
-                                  get_constant (|
-                                    "move_core_types::language_storage::RESOURCE_TAG",
-                                    Ty.path "u8"
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "move_core_types::language_storage::RESOURCE_TAG",
+                                      Ty.path "u8"
+                                    |)
                                   |)
-                                |)
-                              ]
-                          |)
-                        ]
-                      |)
-                    |)
+                                ]
+                            |)
+                          ]
+                        |)
+                      |))
                   ]
                 |)
               |) in
@@ -6116,38 +6166,42 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ResourceKey" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::language_storage::ResourceKey",
-                      "address"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::language_storage::ResourceKey",
+                        "address"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::language_storage::ResourceKey",
-                          "type_"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::language_storage::ResourceKey",
+                            "type_"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6833,38 +6887,42 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleId" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_core_types::language_storage::ModuleId",
-                      "address"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::language_storage::ModuleId",
+                        "address"
+                      |)
                     |)
                   |)
-                |)
-              |);
+                |));
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_core_types::language_storage::ModuleId",
-                          "name"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::language_storage::ModuleId",
+                            "name"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7613,19 +7671,10 @@ Module language_storage.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -7636,25 +7685,36 @@ Module language_storage.
                                 [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
-                            Value.Array
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                M.read (|
-                                  get_constant (|
-                                    "move_core_types::language_storage::CODE_TAG",
-                                    Ty.path "u8"
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "move_core_types::language_storage::CODE_TAG",
+                                      Ty.path "u8"
+                                    |)
                                   |)
-                                |)
-                              ]
-                          |)
-                        ]
-                      |)
-                    |)
+                                ]
+                            |)
+                          ]
+                        |)
+                      |))
                   ]
                 |)
               |) in

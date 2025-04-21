@@ -421,7 +421,7 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
+                          is_constant_or_break_match (|
                             M.read (| γ |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
@@ -475,7 +475,7 @@ Module alloc.
                                   ltac:(M.monadic
                                     (let γ := M.use zeroed in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -774,7 +774,7 @@ Module alloc.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -786,32 +786,36 @@ Module alloc.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.ge (|
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::alloc::layout::Layout",
-                                                  "size",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                                              |),
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::alloc::layout::Layout",
-                                                  "size",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::alloc::layout::Layout",
+                                                    "size",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::alloc::layout::Layout",
+                                                    "size",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -887,7 +891,7 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
+                          is_constant_or_break_match (|
                             M.read (| γ |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
@@ -921,31 +925,34 @@ Module alloc.
                         (let old_size := M.copy (| γ |) in
                         let γ :=
                           M.alloc (|
-                            BinOp.eq (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::alloc::layout::Layout",
-                                  "align",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::alloc::layout::Layout",
-                                  "align",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::alloc::layout::Layout",
+                                    "align",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::alloc::layout::Layout",
+                                    "align",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                                |)
+                              ]
                             |)
                           |) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ new_size : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
@@ -965,18 +972,22 @@ Module alloc.
                               Ty.tuple [],
                               M.get_function (| "core::hint::assert_unchecked", [], [] |),
                               [
-                                BinOp.ge (|
-                                  M.read (| new_size |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "size",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (| new_size |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "size",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -1189,7 +1200,7 @@ Module alloc.
                                 ltac:(M.monadic
                                   (let γ := M.use zeroed in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1215,9 +1226,10 @@ Module alloc.
                                             [ M.read (| raw_ptr |); M.read (| old_size |) ]
                                           |);
                                           Value.Integer IntegerKind.U8 0;
-                                          BinOp.Wrap.sub (|
-                                            M.read (| new_size |),
-                                            M.read (| old_size |)
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.sub,
+                                            [ M.read (| new_size |); M.read (| old_size |) ]
                                           |)
                                         ]
                                       |)
@@ -1576,21 +1588,25 @@ Module alloc.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.ne (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.path "core::alloc::layout::Layout",
-                                "size",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
-                            |),
-                            Value.Integer IntegerKind.Usize 0
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.ne,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.path "core::alloc::layout::Layout",
+                                  "size",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
+                              |);
+                              Value.Integer IntegerKind.Usize 0
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple [],
@@ -1764,7 +1780,7 @@ Module alloc.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -1776,32 +1792,36 @@ Module alloc.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.le (|
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::alloc::layout::Layout",
-                                                  "size",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                                              |),
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::alloc::layout::Layout",
-                                                  "size",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.le,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::alloc::layout::Layout",
+                                                    "size",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::alloc::layout::Layout",
+                                                    "size",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -1877,7 +1897,7 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
+                          is_constant_or_break_match (|
                             M.read (| γ |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
@@ -1943,49 +1963,56 @@ Module alloc.
                         (let new_size := M.copy (| γ |) in
                         let γ :=
                           M.alloc (|
-                            BinOp.eq (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::alloc::layout::Layout",
-                                  "align",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::alloc::layout::Layout",
-                                  "align",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::alloc::layout::Layout",
+                                    "align",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::alloc::layout::Layout",
+                                    "align",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                                |)
+                              ]
                             |)
                           |) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_function (| "core::hint::assert_unchecked", [], [] |),
                               [
-                                BinOp.le (|
-                                  M.read (| new_size |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "size",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.read (| new_size |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "size",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -2759,21 +2786,25 @@ Module alloc.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.ne (|
-                            M.read (|
-                              M.deref (|
-                                M.read (|
-                                  get_constant (|
-                                    "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic",
-                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.ne,
+                            [
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    get_constant (|
+                                      "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic",
+                                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |),
-                            Value.Integer IntegerKind.U8 0
+                              |);
+                              Value.Integer IntegerKind.U8 0
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.path "never",

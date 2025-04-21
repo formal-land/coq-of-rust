@@ -4423,25 +4423,29 @@ Module instruction_consistency.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          BinOp.gt (|
-                                                                            M.read (|
-                                                                              M.deref (|
-                                                                                M.read (| num |)
-                                                                              |)
-                                                                            |),
-                                                                            M.cast
-                                                                              (Ty.path "u64")
-                                                                              (M.read (|
-                                                                                get_associated_constant (|
-                                                                                  Ty.path "u16",
-                                                                                  "MAX",
-                                                                                  Ty.path "u16"
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.gt,
+                                                                            [
+                                                                              M.read (|
+                                                                                M.deref (|
+                                                                                  M.read (| num |)
                                                                                 |)
-                                                                              |))
+                                                                              |);
+                                                                              M.cast
+                                                                                (Ty.path "u64")
+                                                                                (M.read (|
+                                                                                  get_associated_constant (|
+                                                                                    Ty.path "u16",
+                                                                                    "MAX",
+                                                                                    Ty.path "u16"
+                                                                                  |)
+                                                                                |))
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -5354,38 +5358,42 @@ Module instruction_consistency.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructTypeParameter";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::StructTypeParameter";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| struct_handle |) |),
-                                          "move_binary_format::file_format::StructHandle",
-                                          "type_parameters"
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| struct_handle |) |),
+                                            "move_binary_format::file_format::StructHandle",
+                                            "type_parameters"
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.read (| generic |)
+                                      ]
+                                    |);
+                                    M.read (| generic |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5527,37 +5535,41 @@ Module instruction_consistency.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "move_binary_format::file_format::AbilitySet";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path "move_binary_format::file_format::AbilitySet";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| function_handle |) |),
-                                          "move_binary_format::file_format::FunctionHandle",
-                                          "type_parameters"
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| function_handle |) |),
+                                            "move_binary_format::file_format::FunctionHandle",
+                                            "type_parameters"
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.read (| generic |)
+                                      ]
+                                    |);
+                                    M.read (| generic |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|

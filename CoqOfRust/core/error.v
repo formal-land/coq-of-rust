@@ -249,7 +249,7 @@ Module error.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -265,10 +265,12 @@ Module error.
                                     (M.read (|
                                       M.use
                                         (M.alloc (|
-                                          M.borrow (|
-                                            Pointer.Kind.ConstPointer,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.ConstPointer,
+                                              M.deref (| M.read (| self |) |)
+                                            |))
                                         |))
                                     |))
                                 |)
@@ -330,7 +332,7 @@ Module error.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -346,10 +348,12 @@ Module error.
                                     (M.read (|
                                       M.use
                                         (M.alloc (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutPointer,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.borrow (|
+                                              Pointer.Kind.MutPointer,
+                                              M.deref (| M.read (| self |) |)
+                                            |))
                                         |))
                                     |))
                                 |)
@@ -398,7 +402,11 @@ Module error.
               ("current",
                 Value.StructTuple
                   "core::option::Option::Some"
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ])
+                  [
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                  ])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -430,7 +438,10 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -457,7 +468,10 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -485,7 +499,11 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -523,7 +541,10 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -550,7 +571,10 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -578,7 +602,11 @@ Module error.
               [],
               [ T ]
             |),
-            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+            [
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1448,24 +1476,26 @@ Module error.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Value" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::error::tags::Value",
-                            0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::error::tags::Value",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1531,24 +1561,26 @@ Module error.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MaybeSizedValue" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::error::tags::MaybeSizedValue",
-                            0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::error::tags::MaybeSizedValue",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1614,24 +1646,26 @@ Module error.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::error::tags::Ref",
-                            0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::error::tags::Ref",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1720,7 +1754,9 @@ Module error.
                   M.copy (|
                     M.use
                       (M.alloc (|
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
                       |))
                   |) in
                 M.alloc (|
@@ -1738,10 +1774,12 @@ Module error.
                                 (M.read (|
                                   M.use
                                     (M.alloc (|
-                                      M.borrow (|
-                                        Pointer.Kind.MutPointer,
-                                        M.deref (| M.read (| erased |) |)
-                                      |)
+                                      (* Unsize *)
+                                      M.pointer_coercion
+                                        (M.borrow (|
+                                          Pointer.Kind.MutPointer,
+                                          M.deref (| M.read (| erased |) |)
+                                        |))
                                     |))
                                 |))
                             |)
@@ -1867,7 +1905,7 @@ Module error.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -1925,10 +1963,12 @@ Module error.
                                             M.read (|
                                               M.use
                                                 (M.alloc (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.ConstPointer,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.ConstPointer,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |))
                                                 |))
                                             |)
                                           ]
@@ -2034,7 +2074,7 @@ Module error.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -2092,10 +2132,12 @@ Module error.
                                             M.read (|
                                               M.use
                                                 (M.alloc (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutPointer,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
+                                                  (* Unsize *)
+                                                  M.pointer_coercion
+                                                    (M.borrow (|
+                                                      Pointer.Kind.MutPointer,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |))
                                                 |))
                                             |)
                                           ]
@@ -2225,24 +2267,26 @@ Module error.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Source" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::error::Source",
-                          "current"
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::error::Source",
+                            "current"
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2410,7 +2454,7 @@ Module error.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.Tuple
                         [

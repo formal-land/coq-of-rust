@@ -196,14 +196,18 @@ Module bls12_381.
                                         |)
                                       |));
                                     ("end_",
-                                      BinOp.Wrap.mul (|
-                                        Value.Integer IntegerKind.Usize 2,
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |))
                                   ]
                               ]
@@ -275,24 +279,32 @@ Module bls12_381.
                                   "core::ops::range::Range"
                                   [
                                     ("start",
-                                      BinOp.Wrap.mul (|
-                                        Value.Integer IntegerKind.Usize 2,
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |));
                                     ("end_",
-                                      BinOp.Wrap.mul (|
-                                        Value.Integer IntegerKind.Usize 3,
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          Value.Integer IntegerKind.Usize 3;
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |))
                                   ]
                               ]
@@ -364,24 +376,32 @@ Module bls12_381.
                                   "core::ops::range::Range"
                                   [
                                     ("start",
-                                      BinOp.Wrap.mul (|
-                                        Value.Integer IntegerKind.Usize 3,
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          Value.Integer IntegerKind.Usize 3;
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |));
                                     ("end_",
-                                      BinOp.Wrap.mul (|
-                                        Value.Integer IntegerKind.Usize 4,
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          Value.Integer IntegerKind.Usize 4;
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |))
                                   ]
                               ]
@@ -1084,32 +1104,36 @@ Module bls12_381.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| input |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| input |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                        Ty.path "usize"
                                       |)
-                                    ]
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
-                                      Ty.path "usize"
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1580,35 +1604,50 @@ Module bls12_381.
                                                                                 "core::ops::range::Range"
                                                                                 [
                                                                                   ("start",
-                                                                                    BinOp.Wrap.mul (|
-                                                                                      M.read (|
-                                                                                        i
-                                                                                      |),
-                                                                                      M.read (|
-                                                                                        get_constant (|
-                                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                                                                          Ty.path
-                                                                                            "usize"
-                                                                                        |)
-                                                                                      |)
-                                                                                    |));
-                                                                                  ("end_",
-                                                                                    BinOp.Wrap.mul (|
-                                                                                      BinOp.Wrap.add (|
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      BinOp.Wrap.mul,
+                                                                                      [
                                                                                         M.read (|
                                                                                           i
-                                                                                        |),
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      |),
-                                                                                      M.read (|
-                                                                                        get_constant (|
-                                                                                          "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
-                                                                                          Ty.path
-                                                                                            "usize"
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          get_constant (|
+                                                                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)
                                                                                         |)
-                                                                                      |)
+                                                                                      ]
+                                                                                    |));
+                                                                                  ("end_",
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      BinOp.Wrap.mul,
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "usize",
+                                                                                          BinOp.Wrap.add,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              i
+                                                                                            |);
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              1
+                                                                                          ]
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          get_constant (|
+                                                                                            "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH",
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          |)
+                                                                                        |)
+                                                                                      ]
                                                                                     |))
                                                                                 ]
                                                                             ]
@@ -1882,7 +1921,7 @@ Module bls12_381.
                         ltac:(M.monadic
                           (let γ := M.use subgroup_check in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|
                             Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
@@ -1910,7 +1949,7 @@ Module bls12_381.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1982,7 +2021,7 @@ Module bls12_381.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in

@@ -770,32 +770,35 @@ Module dependencies.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (|
-                                M.call_closure (|
-                                  Ty.path "u32",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "version",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| module |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "version",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::VERSION_5",
+                                      Ty.path "u32"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  get_constant (|
-                                    "move_binary_format::file_format_common::VERSION_5",
-                                    Ty.path "u32"
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
@@ -2049,7 +2052,7 @@ Module dependencies.
                                                                       (let γ :=
                                                                         M.use may_be_called in
                                                                       let _ :=
-                                                                        M.is_constant_or_break_match (|
+                                                                        is_constant_or_break_match (|
                                                                           M.read (| γ |),
                                                                           Value.Bool true
                                                                         |) in
@@ -2354,7 +2357,7 @@ Module dependencies.
                                                     "is_entry"
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -2796,7 +2799,7 @@ Module dependencies.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -3233,23 +3236,27 @@ Module dependencies.
                                                         M.use
                                                           (M.alloc (|
                                                             LogicalOp.and (|
-                                                              BinOp.lt (|
-                                                                M.read (|
-                                                                  dep_file_format_version
-                                                                |),
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "move_binary_format::file_format_common::VERSION_5",
-                                                                    Ty.path "u32"
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.lt,
+                                                                [
+                                                                  M.read (|
+                                                                    dep_file_format_version
+                                                                  |);
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "move_binary_format::file_format_common::VERSION_5",
+                                                                      Ty.path "u32"
+                                                                    |)
                                                                   |)
-                                                                |)
+                                                                ]
                                                               |),
                                                               ltac:(M.monadic
                                                                 (M.read (| is_entry |)))
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -4350,7 +4357,7 @@ Module dependencies.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -4723,7 +4730,7 @@ Module dependencies.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -5071,7 +5078,7 @@ Module dependencies.
                                                               M.use
                                                                 (M.alloc (| Value.Bool true |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -5535,7 +5542,7 @@ Module dependencies.
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -5990,7 +5997,7 @@ Module dependencies.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6379,7 +6386,7 @@ Module dependencies.
                                                               M.use
                                                                 (M.alloc (| Value.Bool true |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -6785,7 +6792,7 @@ Module dependencies.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -8095,39 +8102,47 @@ Module dependencies.
         (let local_type_parameters_declaration := M.alloc (| local_type_parameters_declaration |) in
         let defined_type_parameters := M.alloc (| defined_type_parameters |) in
         LogicalOp.and (|
-          BinOp.eq (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "slice")
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ],
+                  "len",
+                  [],
                   []
-                  [ Ty.path "move_binary_format::file_format::AbilitySet" ],
-                "len",
-                [],
-                []
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| local_type_parameters_declaration |) |)
-                |)
-              ]
-            |),
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "slice")
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| local_type_parameters_declaration |) |)
+                  |)
+                ]
+              |);
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ],
+                  "len",
+                  [],
                   []
-                  [ Ty.path "move_binary_format::file_format::AbilitySet" ],
-                "len",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| defined_type_parameters |) |) |)
-              ]
-            |)
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| defined_type_parameters |) |)
+                  |)
+                ]
+              |)
+            ]
           |),
           ltac:(M.monadic
             (M.call_closure (|
@@ -8346,39 +8361,47 @@ Module dependencies.
         (let local_type_parameters_declaration := M.alloc (| local_type_parameters_declaration |) in
         let defined_type_parameters := M.alloc (| defined_type_parameters |) in
         LogicalOp.and (|
-          BinOp.eq (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "slice")
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
+                  "len",
+                  [],
                   []
-                  [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
-                "len",
-                [],
-                []
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| local_type_parameters_declaration |) |)
-                |)
-              ]
-            |),
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "slice")
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| local_type_parameters_declaration |) |)
+                  |)
+                ]
+              |);
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
+                  "len",
+                  [],
                   []
-                  [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
-                "len",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| defined_type_parameters |) |) |)
-              ]
-            |)
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| defined_type_parameters |) |)
+                  |)
+                ]
+              |)
+            ]
           |),
           ltac:(M.monadic
             (M.call_closure (|
@@ -8730,47 +8753,52 @@ Module dependencies.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ne (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
+                                      "len",
+                                      [],
                                       []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| handle_sig |) |)
-                                    |)
-                                  ]
-                                |),
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| handle_sig |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
+                                      "len",
+                                      [],
                                       []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| def_sig |) |)
-                                    |)
-                                  ]
-                                |)
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| def_sig |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -9927,10 +9955,7 @@ Module dependencies.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
@@ -10493,7 +10518,7 @@ Module dependencies.
                             |)))
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -10643,8 +10668,7 @@ Module dependencies.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -10656,42 +10680,46 @@ Module dependencies.
                                     M.use
                                       (M.alloc (|
                                         UnOp.not (|
-                                          BinOp.lt (|
-                                            M.call_closure (|
-                                              Ty.path "u32",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::CompiledModule",
-                                                "version",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| context |) |),
-                                                        "move_bytecode_verifier::dependencies::Context",
-                                                        "module"
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.lt,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "version",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| context |) |),
+                                                          "move_bytecode_verifier::dependencies::Context",
+                                                          "module"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
+                                                ]
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_binary_format::file_format_common::VERSION_5",
+                                                  Ty.path "u32"
                                                 |)
-                                              ]
-                                            |),
-                                            M.read (|
-                                              get_constant (|
-                                                "move_binary_format::file_format_common::VERSION_5",
-                                                Ty.path "u32"
                                               |)
-                                            |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -11545,12 +11573,12 @@ Module dependencies.
                                                 let γ0_1 :=
                                                   M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ0_0 |),
                                                     Value.Bool true
                                                   |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ0_1 |),
                                                     Value.Bool true
                                                   |) in
@@ -11562,7 +11590,7 @@ Module dependencies.
                                                 let γ0_1 :=
                                                   M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ0_1 |),
                                                     Value.Bool true
                                                   |) in

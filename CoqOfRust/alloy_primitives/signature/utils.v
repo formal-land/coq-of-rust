@@ -14,12 +14,21 @@ Module signature.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           let chain_id := M.alloc (| chain_id |) in
-          BinOp.Wrap.add (|
-            BinOp.Wrap.add (|
-              M.cast (Ty.path "u64") (M.read (| v |)),
-              Value.Integer IntegerKind.U64 35
-            |),
-            BinOp.Wrap.mul (| M.read (| chain_id |), Value.Integer IntegerKind.U64 2 |)
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.add,
+            [
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.add,
+                [ M.cast (Ty.path "u64") (M.read (| v |)); Value.Integer IntegerKind.U64 35 ]
+              |);
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.mul,
+                [ M.read (| chain_id |); Value.Integer IntegerKind.U64 2 ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -81,7 +90,7 @@ Module signature.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -96,15 +105,27 @@ Module signature.
                   M.alloc (|
                     M.cast
                       (Ty.path "u64")
-                      (BinOp.le (| M.read (| v |), Value.Integer IntegerKind.U64 1 |))
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.le,
+                        [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                      |))
                   |) in
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
                     [
-                      BinOp.eq (|
-                        BinOp.Wrap.rem (| M.read (| v |), Value.Integer IntegerKind.U64 2 |),
-                        M.read (| cmp |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.rem,
+                            [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                          |);
+                          M.read (| cmp |)
+                        ]
                       |)
                     ]
                 |)
@@ -149,7 +170,7 @@ Module signature.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 0
                               |) in
@@ -157,7 +178,7 @@ Module signature.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 1
                               |) in
@@ -165,7 +186,7 @@ Module signature.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 27
                               |) in
@@ -173,7 +194,7 @@ Module signature.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 28
                               |) in
@@ -226,16 +247,10 @@ Module signature.
                     (M.alloc (|
                       M.cast
                         (Ty.path "u8")
-                        (BinOp.Wrap.rem (| M.read (| v |), Value.Integer IntegerKind.U64 4 |))
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      M.cast
-                        (Ty.path "u8")
-                        (BinOp.Wrap.rem (|
-                          BinOp.Wrap.sub (| M.read (| v |), Value.Integer IntegerKind.U64 27 |),
-                          Value.Integer IntegerKind.U64 4
+                        (M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [ M.read (| v |); Value.Integer IntegerKind.U64 4 ]
                         |))
                     |)));
                 fun γ =>
@@ -243,9 +258,35 @@ Module signature.
                     (M.alloc (|
                       M.cast
                         (Ty.path "u8")
-                        (BinOp.Wrap.rem (|
-                          BinOp.Wrap.sub (| M.read (| v |), Value.Integer IntegerKind.U64 1 |),
-                          Value.Integer IntegerKind.U64 2
+                        (M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.sub,
+                              [ M.read (| v |); Value.Integer IntegerKind.U64 27 ]
+                            |);
+                            Value.Integer IntegerKind.U64 4
+                          ]
+                        |))
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.cast
+                        (Ty.path "u8")
+                        (M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.sub,
+                              [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                            |);
+                            Value.Integer IntegerKind.U64 2
+                          ]
                         |))
                     |)))
               ]

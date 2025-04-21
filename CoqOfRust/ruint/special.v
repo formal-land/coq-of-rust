@@ -22,18 +22,22 @@ Module special.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.eq (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                "count_ones",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, self |) ]
-            |),
-            Value.Integer IntegerKind.Usize 1
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  "count_ones",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, self |) ]
+              |);
+              Value.Integer IntegerKind.Usize 1
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -144,7 +148,7 @@ Module special.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -179,9 +183,17 @@ Module special.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| BinOp.ge (| M.read (| exp |), BITS |) |)) in
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [ M.read (| exp |); BITS ]
+                                |)
+                              |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -367,7 +379,7 @@ Module special.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -438,7 +450,7 @@ Module special.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in

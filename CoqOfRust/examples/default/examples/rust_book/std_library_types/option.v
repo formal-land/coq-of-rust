@@ -28,16 +28,26 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
                 (let γ :=
                   M.use
                     (M.alloc (|
-                      BinOp.eq (| M.read (| divisor |), Value.Integer IntegerKind.I32 0 |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [ M.read (| divisor |); Value.Integer IntegerKind.I32 0 ]
+                      |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ BinOp.Wrap.div (| M.read (| dividend |), M.read (| divisor |) |) ]
+                    [
+                      M.call_closure (|
+                        Ty.path "i32",
+                        BinOp.Wrap.div,
+                        [ M.read (| dividend |); M.read (| divisor |) ]
+                      |)
+                    ]
                 |)))
           ]
         |)

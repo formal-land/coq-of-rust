@@ -115,24 +115,26 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Peeled" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "combinators_map::Peeled",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "combinators_map::Peeled",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -176,24 +178,26 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Chopped" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "combinators_map::Chopped",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "combinators_map::Chopped",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -237,24 +241,26 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cooked" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "combinators_map::Cooked",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "combinators_map::Cooked",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

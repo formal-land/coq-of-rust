@@ -5,9 +5,6 @@ Require Import CoqOfRust.simulations.M.
 Require core.simulations.assert.
 Require core.simulations.slice.
 
-Import simulations.M.Notations.
-Import simulations.assert.Notations.
-
 Require Import CoqOfRust.core.simulations.eq.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format_common.

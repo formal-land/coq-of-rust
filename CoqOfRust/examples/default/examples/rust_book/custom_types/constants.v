@@ -28,9 +28,10 @@ Definition is_big (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
-      BinOp.gt (|
-        M.read (| n |),
-        M.read (| get_constant (| "constants::THRESHOLD", Ty.path "i32" |) |)
+      M.call_closure (|
+        Ty.path "bool",
+        BinOp.gt,
+        [ M.read (| n |); M.read (| get_constant (| "constants::THRESHOLD", Ty.path "i32" |) |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -286,7 +287,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in

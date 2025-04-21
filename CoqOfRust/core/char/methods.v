@@ -236,20 +236,21 @@ Module char.
                             (M.alloc (|
                               UnOp.not (|
                                 LogicalOp.and (|
-                                  BinOp.ge (|
-                                    M.read (| radix |),
-                                    Value.Integer IntegerKind.U32 2
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [ M.read (| radix |); Value.Integer IntegerKind.U32 2 ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.le (|
-                                      M.read (| radix |),
-                                      Value.Integer IntegerKind.U32 36
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [ M.read (| radix |); Value.Integer IntegerKind.U32 36 ]
                                     |)))
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -302,40 +303,54 @@ Module char.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.gt (| M.read (| self |), Value.UnicodeChar 57 |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| self |); Value.UnicodeChar 57 ]
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.gt (|
-                                      M.read (| radix |),
-                                      Value.Integer IntegerKind.U32 10
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [ M.read (| radix |); Value.Integer IntegerKind.U32 10 ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ lower : Ty.path "u32" :=
                             M.alloc (|
-                              BinOp.bit_or
-                                (M.cast (Ty.path "u32") (M.read (| self |)))
-                                (Value.Integer IntegerKind.U32 32)
+                              M.call_closure (|
+                                Ty.path "u32",
+                                BinOp.Wrap.bit_or,
+                                [
+                                  M.cast (Ty.path "u32") (M.read (| self |));
+                                  Value.Integer IntegerKind.U32 32
+                                ]
+                              |)
                             |) in
                           M.alloc (|
-                            BinOp.Wrap.add (|
-                              M.cast
-                                (Ty.path "u64")
-                                (M.call_closure (|
-                                  Ty.path "u32",
-                                  M.get_associated_function (|
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.add,
+                              [
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.call_closure (|
                                     Ty.path "u32",
-                                    "wrapping_sub",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (| lower |);
-                                    M.cast (Ty.path "u32") (Value.UnicodeChar 97)
-                                  ]
-                                |)),
-                              Value.Integer IntegerKind.U64 10
+                                    M.get_associated_function (|
+                                      Ty.path "u32",
+                                      "wrapping_sub",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (| lower |);
+                                      M.cast (Ty.path "u32") (Value.UnicodeChar 97)
+                                    ]
+                                  |));
+                                Value.Integer IntegerKind.U64 10
+                              ]
                             |)
                           |)));
                       fun γ =>
@@ -369,12 +384,13 @@ Module char.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.read (| value |),
-                              M.cast (Ty.path "u64") (M.read (| radix |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [ M.read (| value |); M.cast (Ty.path "u64") (M.read (| radix |)) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -450,7 +466,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 0 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 0 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -466,7 +482,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 9 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 9 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -482,7 +498,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 13 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 13 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -498,7 +514,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 10 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 10 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -514,7 +530,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 92 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 92 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -534,14 +550,14 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 34 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 34 |) in
                       let γ :=
                         M.SubPointer.get_struct_record_field (|
                           args,
                           "core::char::methods::EscapeDebugExtArgs",
                           "escape_double_quote"
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -558,14 +574,14 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 39 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 39 |) in
                       let γ :=
                         M.SubPointer.get_struct_record_field (|
                           args,
                           "core::char::methods::EscapeDebugExtArgs",
                           "escape_single_quote"
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -586,7 +602,7 @@ Module char.
                           "core::char::methods::EscapeDebugExtArgs",
                           "escape_grapheme_extended"
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let γ :=
                         M.alloc (|
                           M.call_closure (|
@@ -600,7 +616,7 @@ Module char.
                             [ M.read (| self |) ]
                           |)
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -623,7 +639,7 @@ Module char.
                             [ M.read (| self |) ]
                           |)
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDebug",
@@ -719,7 +735,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 9 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 9 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDefault",
@@ -735,7 +751,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 13 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 13 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDefault",
@@ -751,7 +767,7 @@ Module char.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 10 |) in
+                        is_constant_or_break_match (| M.read (| γ |), Value.UnicodeChar 10 |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::char::EscapeDefault",
@@ -772,7 +788,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 92
                                 |) in
@@ -780,7 +796,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 39
                                 |) in
@@ -788,7 +804,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 34
                                 |) in
@@ -1101,7 +1117,11 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [ M.read (| c |); Value.UnicodeChar 127 ]
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               Ty.path "bool",
@@ -1149,7 +1169,11 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [ M.read (| c |); Value.UnicodeChar 127 ]
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               Ty.path "bool",
@@ -1197,7 +1221,11 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [ M.read (| c |); Value.UnicodeChar 127 ]
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               Ty.path "bool",
@@ -1247,7 +1275,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 32
                                 |) in
@@ -1266,7 +1294,11 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [ M.read (| c |); Value.UnicodeChar 127 ]
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               Ty.path "bool",
@@ -1391,7 +1423,11 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [ M.read (| c |); Value.UnicodeChar 127 ]
+                          |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               Ty.path "bool",
@@ -1511,9 +1547,13 @@ Module char.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.le (|
-              M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |)),
-              Value.Integer IntegerKind.U32 127
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |));
+                Value.Integer IntegerKind.U32 127
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1558,7 +1598,7 @@ Module char.
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -1625,7 +1665,7 @@ Module char.
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.cast
                           (Ty.path "char")
@@ -1696,7 +1736,7 @@ Module char.
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.cast
                           (Ty.path "char")
@@ -1743,17 +1783,21 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "char",
-                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-              |),
-              M.call_closure (|
-                Ty.path "char",
-                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-              |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "char",
+                  M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |);
+                M.call_closure (|
+                  Ty.path "char",
+                  M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1935,38 +1979,48 @@ Module char.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.bit_or
-              (BinOp.bit_or
-                (M.read (|
-                  M.match_operator (|
-                    Some (Ty.path "bool"),
-                    M.deref (| M.read (| self |) |),
-                    [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
-                    ]
-                  |)
-                |))
-                (M.read (|
-                  M.match_operator (|
-                    Some (Ty.path "bool"),
-                    M.deref (| M.read (| self |) |),
-                    [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
-                    ]
-                  |)
-                |)))
-              (M.read (|
-                M.match_operator (|
-                  Some (Ty.path "bool"),
-                  M.deref (| M.read (| self |) |),
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_or,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.Wrap.bit_or,
                   [
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "bool"),
+                        M.deref (| M.read (| self |) |),
+                        [
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        ]
+                      |)
+                    |);
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "bool"),
+                        M.deref (| M.read (| self |) |),
+                        [
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        ]
+                      |)
+                    |)
                   ]
+                |);
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.path "bool"),
+                    M.deref (| M.read (| self |) |),
+                    [
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    ]
+                  |)
                 |)
-              |))))
+              ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2041,38 +2095,48 @@ Module char.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.bit_or
-              (BinOp.bit_or
-                (M.read (|
-                  M.match_operator (|
-                    Some (Ty.path "bool"),
-                    M.deref (| M.read (| self |) |),
-                    [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
-                    ]
-                  |)
-                |))
-                (M.read (|
-                  M.match_operator (|
-                    Some (Ty.path "bool"),
-                    M.deref (| M.read (| self |) |),
-                    [
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
-                    ]
-                  |)
-                |)))
-              (M.read (|
-                M.match_operator (|
-                  Some (Ty.path "bool"),
-                  M.deref (| M.read (| self |) |),
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_or,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.Wrap.bit_or,
                   [
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "bool"),
+                        M.deref (| M.read (| self |) |),
+                        [
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        ]
+                      |)
+                    |);
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "bool"),
+                        M.deref (| M.read (| self |) |),
+                        [
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        ]
+                      |)
+                    |)
                   ]
+                |);
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.path "bool"),
+                    M.deref (| M.read (| self |) |),
+                    [
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    ]
+                  |)
                 |)
-              |))))
+              ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2094,30 +2158,53 @@ Module char.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.bit_or
-              (BinOp.bit_or
-                (BinOp.bit_or
-                  (M.read (|
-                    M.match_operator (|
-                      Some (Ty.path "bool"),
-                      M.deref (| M.read (| self |) |),
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_or,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.Wrap.bit_or,
                       [
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        M.read (|
+                          M.match_operator (|
+                            Some (Ty.path "bool"),
+                            M.deref (| M.read (| self |) |),
+                            [
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                            ]
+                          |)
+                        |);
+                        M.read (|
+                          M.match_operator (|
+                            Some (Ty.path "bool"),
+                            M.deref (| M.read (| self |) |),
+                            [
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                            ]
+                          |)
+                        |)
                       ]
+                    |);
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "bool"),
+                        M.deref (| M.read (| self |) |),
+                        [
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        ]
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.match_operator (|
-                      Some (Ty.path "bool"),
-                      M.deref (| M.read (| self |) |),
-                      [
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
-                      ]
-                    |)
-                  |)))
-                (M.read (|
+                  ]
+                |);
+                M.read (|
                   M.match_operator (|
                     Some (Ty.path "bool"),
                     M.deref (| M.read (| self |) |),
@@ -2126,17 +2213,9 @@ Module char.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                     ]
                   |)
-                |)))
-              (M.read (|
-                M.match_operator (|
-                  Some (Ty.path "bool"),
-                  M.deref (| M.read (| self |) |),
-                  [
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
-                  ]
                 |)
-              |))))
+              ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2196,7 +2275,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 9
                                 |) in
@@ -2204,7 +2283,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 10
                                 |) in
@@ -2212,7 +2291,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 12
                                 |) in
@@ -2220,7 +2299,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 13
                                 |) in
@@ -2228,7 +2307,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 32
                                 |) in
@@ -2277,7 +2356,7 @@ Module char.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.UnicodeChar 127
                                 |) in
@@ -2400,12 +2479,20 @@ Module char.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.eq (|
-                            BinOp.bit_and (M.read (| code |)) (Value.Integer IntegerKind.U32 65535),
-                            M.read (| code |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "u32",
+                                BinOp.Wrap.bit_and,
+                                [ M.read (| code |); Value.Integer IntegerKind.U32 65535 ]
+                              |);
+                              M.read (| code |)
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 2 |)))
               ]
@@ -2489,7 +2576,7 @@ Module char.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
+                            is_constant_or_break_match (|
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 1
                             |) in
@@ -2510,7 +2597,7 @@ Module char.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
+                            is_constant_or_break_match (|
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 2
                             |) in
@@ -2524,33 +2611,51 @@ Module char.
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| a |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (BinOp.Wrap.shr (|
-                                        M.read (| code |),
-                                        Value.Integer IntegerKind.I32 6
-                                      |))
-                                      (Value.Integer IntegerKind.U32 31)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_TWO_B", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| code |); Value.Integer IntegerKind.I32 6 ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 31
+                                        ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_TWO_B", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| b |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (M.read (| code |))
-                                      (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [ M.read (| code |); Value.Integer IntegerKind.U32 63 ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2559,7 +2664,7 @@ Module char.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
+                            is_constant_or_break_match (|
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 3
                             |) in
@@ -2575,51 +2680,80 @@ Module char.
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| a |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (BinOp.Wrap.shr (|
-                                        M.read (| code |),
-                                        Value.Integer IntegerKind.I32 12
-                                      |))
-                                      (Value.Integer IntegerKind.U32 15)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_THREE_B", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| code |); Value.Integer IntegerKind.I32 12 ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 15
+                                        ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_THREE_B", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| b |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (BinOp.Wrap.shr (|
-                                        M.read (| code |),
-                                        Value.Integer IntegerKind.I32 6
-                                      |))
-                                      (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| code |); Value.Integer IntegerKind.I32 6 ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 63
+                                        ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| c |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (M.read (| code |))
-                                      (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [ M.read (| code |); Value.Integer IntegerKind.U32 63 ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2628,7 +2762,7 @@ Module char.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
+                            is_constant_or_break_match (|
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 4
                             |) in
@@ -2646,69 +2780,109 @@ Module char.
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| a |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (BinOp.Wrap.shr (|
-                                        M.read (| code |),
-                                        Value.Integer IntegerKind.I32 18
-                                      |))
-                                      (Value.Integer IntegerKind.U32 7)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_FOUR_B", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| code |); Value.Integer IntegerKind.I32 18 ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 7
+                                        ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_FOUR_B", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| b |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (BinOp.Wrap.shr (|
-                                        M.read (| code |),
-                                        Value.Integer IntegerKind.I32 12
-                                      |))
-                                      (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| code |); Value.Integer IntegerKind.I32 12 ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 63
+                                        ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| c |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (BinOp.Wrap.shr (|
-                                        M.read (| code |),
-                                        Value.Integer IntegerKind.I32 6
-                                      |))
-                                      (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| code |); Value.Integer IntegerKind.I32 6 ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 63
+                                        ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| d |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u8")
-                                    (BinOp.bit_and
-                                      (M.read (| code |))
-                                      (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (|
-                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u8")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [ M.read (| code |); Value.Integer IntegerKind.U32 63 ]
+                                      |));
+                                    M.read (|
+                                      get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2855,7 +3029,7 @@ Module char.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
+                            is_constant_or_break_match (|
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 1
                             |) in
@@ -2876,7 +3050,7 @@ Module char.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
+                            is_constant_or_break_match (|
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 2
                             |) in
@@ -2891,9 +3065,10 @@ Module char.
                               let β := code in
                               M.write (|
                                 β,
-                                BinOp.Wrap.sub (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.U32 65536
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  BinOp.Wrap.sub,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U32 65536 ]
                                 |)
                               |)
                             |) in
@@ -2901,27 +3076,40 @@ Module char.
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| a |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u16")
-                                    (BinOp.Wrap.shr (|
-                                      M.read (| code |),
-                                      Value.Integer IntegerKind.I32 10
-                                    |)))
-                                  (Value.Integer IntegerKind.U16 55296)
+                                M.call_closure (|
+                                  Ty.path "u16",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u16")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.shr,
+                                        [ M.read (| code |); Value.Integer IntegerKind.I32 10 ]
+                                      |));
+                                    Value.Integer IntegerKind.U16 55296
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
                                 M.deref (| M.read (| b |) |),
-                                BinOp.bit_or
-                                  (M.cast
-                                    (Ty.path "u16")
-                                    (BinOp.bit_and
-                                      (M.read (| code |))
-                                      (Value.Integer IntegerKind.U32 1023)))
-                                  (Value.Integer IntegerKind.U16 56320)
+                                M.call_closure (|
+                                  Ty.path "u16",
+                                  BinOp.Wrap.bit_or,
+                                  [
+                                    M.cast
+                                      (Ty.path "u16")
+                                      (M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.bit_and,
+                                        [ M.read (| code |); Value.Integer IntegerKind.U32 1023 ]
+                                      |));
+                                    Value.Integer IntegerKind.U16 56320
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));

@@ -170,7 +170,13 @@ Module signed.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -494,7 +500,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
                       |)));
@@ -559,9 +565,13 @@ Module signed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.cast (Ty.path "i8") (M.read (| self |)),
-              M.cast (Ty.path "i8") (M.read (| other |))
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.cast (Ty.path "i8") (M.read (| self |));
+                M.cast (Ty.path "i8") (M.read (| other |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

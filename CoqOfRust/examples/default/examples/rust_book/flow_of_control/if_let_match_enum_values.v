@@ -264,7 +264,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let value := M.copy (| γ0_0 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.U32 100
                   |) in

@@ -162,95 +162,139 @@ Module BinOp.
 
   Parameter bit_or : Value.t -> Value.t -> Value.t.
   
-  Definition eq : Value.t -> Value.t -> M :=
-    M.are_equal.
+  Definition eq : Value.t :=
+    M.closure (fun args =>
+      match args with
+      | [value1; value2] =>
+        match value1, value2 with
+        | Value.Bool b1, Value.Bool b2 =>
+          M.pure (Value.Bool (Bool.eqb b1 b2))
+        | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+          if negb (IntegerKind.eqb kind1 kind2) then
+            M.impossible "expected the same kind of integers"
+          else
+            M.pure (Value.Bool (Z.eqb i1 i2))
+        | _, _ => M.impossible "expected two values for eq"
+        end
+      | _ => M.impossible "expected two values for eq"
+      end
+    ).
 
-  Definition make_comparison (cmp : Z -> Z -> bool) (v1 v2 : Value.t) : M :=
-    match v1, v2 with
-    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
-      if negb (IntegerKind.eqb kind1 kind2) then
-        M.impossible "expected the same kind of integers"
-      else
-        M.pure (Value.Bool (cmp i1 i2))
-    | _, _ => M.impossible "expected integers"
-    end.
+  Definition ne : Value.t :=
+    M.closure (fun args =>
+      match args with
+      | [value1; value2] =>
+        match args with
+        | [value1; value2] =>
+          match value1, value2 with
+          | Value.Bool b1, Value.Bool b2 =>
+            M.pure (Value.Bool (negb (Bool.eqb b1 b2)))
+          | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+            if negb (IntegerKind.eqb kind1 kind2) then
+              M.impossible "expected the same kind of integers"
+            else
+              M.pure (Value.Bool (negb (Z.eqb i1 i2)))
+          | _, _ => M.impossible "expected two values for ne"
+          end
+        | _ => M.impossible "expected two values for ne"
+        end
+      | _ => M.impossible "expected two values for ne"
+      end
+    ).
+  Definition make_Z_comparison (cmp : Z -> Z -> bool) : Value.t :=
+    M.closure (fun args =>
+      match args with
+      | [Value.Integer kind1 i1; Value.Integer kind2 i2] =>
+        if negb (IntegerKind.eqb kind1 kind2) then
+          M.impossible "expected the same kind of integers"
+        else
+          M.pure (Value.Bool (cmp i1 i2))
+      | _ => M.impossible "expected two integers for comparison"
+      end
+    ).
 
-  Definition ne (v1 v2 : Value.t) : M :=
-    make_comparison (fun i1 i2 => negb (Z.eqb i1 i2)) v1 v2.
+  Definition lt : Value.t :=
+    make_Z_comparison Z.ltb.
 
-  Definition lt (v1 v2 : Value.t) : M :=
-    make_comparison Z.ltb v1 v2.
+  Definition le : Value.t :=
+    make_Z_comparison Z.leb.
 
-  Definition le (v1 v2 : Value.t) : M :=
-    make_comparison Z.leb v1 v2.
+  Definition gt : Value.t :=
+    make_Z_comparison Z.gtb.
 
-  Definition gt (v1 v2 : Value.t) : M :=
-    make_comparison Z.gtb v1 v2.
-
-  Definition ge (v1 v2 : Value.t) : M :=
-    make_comparison Z.geb v1 v2.
+  Definition ge : Value.t :=
+    make_Z_comparison Z.geb.
 
   Module Wrap.
     Definition make_arithmetic
         (bin_op : Z -> Z -> Z)
-        (v1 v2 : Value.t) :
-        M :=
-      match v1, v2 with
-      | Value.Integer kind1 v1, Value.Integer kind2 v2 =>
-        if negb (IntegerKind.eqb kind1 kind2) then
-          M.impossible "expected the same kind of integers"
-        else
+        : Value.t :=
+      M.closure (fun args =>
+        match args with
+        | [Value.Integer kind1 v1; Value.Integer _ v2] =>
+          (* The [kind2] might be different, for example for right/left *)
           let z := Integer.normalize_wrap kind1 (bin_op v1 v2) in
           M.pure (Value.Integer kind1 z)
-      | _, _ => M.impossible "expected integers"
-      end.
+        | _ => M.impossible "expected two integers for arithmetic"
+        end
+      ).
 
-    Definition add (v1 v2 : Value.t) : M :=
-      make_arithmetic Z.add v1 v2.
-    Arguments add /.
+    Definition add : Value.t :=
+      make_arithmetic Z.add.
 
-    Definition sub (v1 v2 : Value.t) : M :=
-      make_arithmetic Z.sub v1 v2.
-    Arguments sub /.
+    Definition sub : Value.t :=
+      make_arithmetic Z.sub.
 
-    Definition mul (v1 v2 : Value.t) : M :=
-      make_arithmetic Z.mul v1 v2.
-    Arguments mul /.
+    Definition mul : Value.t :=
+      make_arithmetic Z.mul.
 
-    Definition div (v1 v2 : Value.t) : M :=
-      make_arithmetic Z.div v1 v2.
-    Arguments div /.
+    Definition div : Value.t :=
+      make_arithmetic Z.div.
 
-    Definition rem (v1 v2 : Value.t) : M :=
-      make_arithmetic Z.modulo v1 v2.
-    Arguments rem /.
+    Definition rem : Value.t :=
+      make_arithmetic Z.modulo.
 
-    Parameter shl : Value.t -> Value.t -> M.
-    Parameter shr : Value.t -> Value.t -> M.
+    Definition shl : Value.t :=
+      make_arithmetic Z.shiftl.
+
+    Definition shr : Value.t :=
+      make_arithmetic Z.shiftr.
+
+    Definition make_bool_or_arithmetic
+      (bin_op_bool : bool -> bool -> bool)
+      (bin_op_Z : Z -> Z -> Z)
+      : Value.t :=
+      M.closure (fun args =>
+        match args with
+        | [Value.Bool b1; Value.Bool b2] => M.pure (Value.Bool (bin_op_bool b1 b2))
+        | [Value.Integer kind1 v1; Value.Integer kind2 v2] =>
+          if negb (IntegerKind.eqb kind1 kind2) then
+            M.impossible "expected the same kind of integers"
+          else
+            let z := bin_op_Z v1 v2 in
+            M.pure (Value.Integer kind1 (Integer.normalize_wrap kind1 z))
+        | _ => M.impossible "expected two values for bool or arithmetic"
+        end
+      ).
+
+    Definition bit_xor : Value.t :=
+      make_bool_or_arithmetic xorb Z.lxor.
+
+    Definition bit_and : Value.t :=
+      make_bool_or_arithmetic andb Z.land.
+
+    Definition bit_or : Value.t :=
+      make_bool_or_arithmetic orb Z.lor.
   End Wrap.
 End BinOp.
 
 (** The evaluation of logical operators is lazy on the second parameter. *)
 Module LogicalOp.
   Definition and (lhs : Value.t) (rhs : M) : M :=
-    match lhs with
-    | Value.Bool b =>
-      if b then
-        rhs
-      else
-        M.pure (Value.Bool false)
-    | _ => M.impossible "expected a boolean"
-    end.
+    M.call_logical_op LogicalOp.And lhs rhs.
 
   Definition or (lhs : Value.t) (rhs : M) : M :=
-    match lhs with
-    | Value.Bool b =>
-      if b then
-        M.pure (Value.Bool true)
-      else
-        rhs
-    | _ => M.impossible "expected a boolean"
-    end.
+    M.call_logical_op LogicalOp.Or lhs rhs.
 End LogicalOp.
 
 Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=
@@ -267,6 +311,10 @@ Definition repeat (v times : Value.t) : M :=
   end.
 
 Global Opaque repeat.
+
+Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
+  let* are_equal := M.call_closure (Ty.path "bool") BinOp.eq [value; expected_value] in
+  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
 
 (** There is an automatic instanciation of the function traits for closures and functions. *)
 Module FunctionTraitAutomaticImpl.

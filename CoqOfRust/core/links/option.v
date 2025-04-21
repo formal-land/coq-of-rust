@@ -1,8 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
+Require Import core.convert.links.mod.
 Require Import core.links.result.
 Require Import core.option.
-Require core.ops.links.function.
+Require Import core.ops.links.function.
+Require Import core.ops.links.try_trait.
 
 Module Option.
   Global Instance IsLink (A : Set) `{Link A} : Link (option A) := {
@@ -93,6 +95,14 @@ Module Impl_Option.
       (Result.t T E).
   Admitted.
 
+  (* pub const fn unwrap(self) -> T *)
+  Instance run_unwrap {T : Set} `{Link T}
+      (self : Self T) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.unwrap (Φ T)) [] [] [ φ self ]
+      T.
+  Admitted.
+
   (* pub const unsafe fn unwrap_unchecked(self) -> T *)
   Instance run_unwrap_unchecked {T : Set} `{Link T}
       (self : Self T) :
@@ -108,4 +118,45 @@ Module Impl_Option.
       (option.Impl_core_option_Option_T.unwrap_or_default (Φ T)) [] [] [ φ self ]
       T.
   Admitted.
+
+  (* pub fn unwrap_or(self, default: T) -> T *)
+  Instance run_unwrap_or {T : Set} `{Link T}
+      (self : Self T) (default : T) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.unwrap_or (Φ T)) [] [] [ φ self; φ default ]
+      T.
+  Admitted.
+
+  (* pub const fn expect(self, msg: &str) -> T *)
+  Instance run_expect {T : Set} `{Link T}
+      (self : Self T) (msg : Ref.t Pointer.Kind.Ref string) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.expect (Φ T)) [] [] [ φ self; φ msg ]
+      T.
+  Admitted.
 End Impl_Option.
+Export Impl_Option.
+
+(* impl<T> ops::Try for Option<T> *)
+Module Impl_Try_for_Option.
+  Definition Self (T : Set) : Set :=
+    option T.
+
+  (*
+  type Output = T;
+  type Residual = Option<convert::Infallible>;
+  *)
+  Definition Types (T : Set) : Try.Types.t := {|
+    Try.Types.Output := T;
+    Try.Types.Residual := option Infallible.t;
+  |}.
+
+  Instance AreLinks (T : Set) `{Link T} : Try.Types.AreLinks (Types T).
+  Proof.
+    constructor; typeclasses eauto.
+  Defined.
+
+  Instance run (T : Set) `{Link T} : Try.Run (Self T) (Types T).
+  Admitted.
+End Impl_Try_for_Option.
+Export Impl_Try_for_Option.

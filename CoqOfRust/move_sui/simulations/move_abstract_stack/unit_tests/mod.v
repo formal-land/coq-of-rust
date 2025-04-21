@@ -4,8 +4,6 @@ Require Import CoqOfRust.core.simulations.unit.
 Require Import CoqOfRust.core.simulations.result.
 Require Import CoqOfRust.core.simulations.assert.
 Require Import CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
-Import simulations.M.Notations.
-Import simulations.assert.Notations.
 
 (*
   #[test]

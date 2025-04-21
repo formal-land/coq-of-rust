@@ -1571,7 +1571,7 @@ Module borrow.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.write (|
                         M.deref (| M.read (| self |) |),
@@ -1610,7 +1610,7 @@ Module borrow.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -1637,37 +1637,41 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Wrap.add (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "str",
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| lhs |) |)
-                                                    |)
-                                                  ]
-                                                |),
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "str",
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| rhs |) |)
-                                                    |)
-                                                  ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| lhs |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| rhs |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -1827,7 +1831,7 @@ Module borrow.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| M.write (| M.deref (| M.read (| self |) |), M.read (| rhs |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1876,7 +1880,7 @@ Module borrow.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -1903,57 +1907,61 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Wrap.add (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "str",
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| lhs |) |)
-                                                    |)
-                                                  ]
-                                                |),
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "str",
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "str" ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| lhs |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path "alloc::borrow::Cow")
+                                                              (Ty.path "&")
                                                               []
                                                               [ Ty.path "str" ],
-                                                            [],
-                                                            [],
-                                                            "deref",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::borrow::Cow")
+                                                                []
+                                                                [ Ty.path "str" ],
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
+                                                          |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |)

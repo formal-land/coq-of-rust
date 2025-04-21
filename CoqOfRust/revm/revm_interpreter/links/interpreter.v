@@ -12,8 +12,6 @@ Require Import revm_interpreter.interpreter.
 
 Require Export revm.revm_interpreter.links.interpreter_Interpreter.
 
-Import Impl_Bytes.
-
 (* impl<IW: InterpreterTypes> Interpreter<IW> { *)
 Module Impl_Interpreter.
   Import Impl_InstructionResult.

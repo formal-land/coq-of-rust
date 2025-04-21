@@ -87,24 +87,26 @@ Module legacy.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LegacyRawBytecode" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::legacy::raw::LegacyRawBytecode",
-                            0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_bytecode::legacy::raw::LegacyRawBytecode",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -553,7 +555,13 @@ Module legacy.
                       [],
                       []
                     |),
-                    [ BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |) ]
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 33 ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -643,7 +651,11 @@ Module legacy.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, padded_bytecode |);
-                      BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 33 ]
+                      |);
                       Value.Integer IntegerKind.U8 0
                     ]
                   |)
@@ -838,7 +850,11 @@ Module legacy.
                     []
                   |),
                   [
-                    BinOp.ne (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.I32 0 |);
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.ne,
+                      [ Value.Integer IntegerKind.I32 0; Value.Integer IntegerKind.I32 0 ]
+                    |);
                     M.call_closure (|
                       Ty.path "usize",
                       M.get_associated_function (|

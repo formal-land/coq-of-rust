@@ -70,49 +70,53 @@ Module eof.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "bytes::bytes::Bytes",
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "bytes::bytes::Bytes" ],
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloy_primitives::bytes_::Bytes",
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "bytes::bytes::Bytes",
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "bytes::bytes::Bytes" ],
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.path "alloy_primitives::bytes_::Bytes",
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, raw |) ]
+                                            |)
                                           |)
                                         |)
+                                      ]
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "revm_specification::constants::MAX_INITCODE_SIZE",
+                                        Ty.path "usize"
                                       |)
-                                    ]
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "revm_specification::constants::MAX_INITCODE_SIZE",
-                                      Ty.path "usize"
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -478,7 +482,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -542,7 +546,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1736,66 +1740,71 @@ Module eof.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+                                        "len",
+                                        [],
                                         []
-                                        [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
                                           M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| eof |) |),
-                                            "revm_bytecode::eof::Eof",
-                                            "body"
-                                          |),
-                                          "revm_bytecode::eof::body::EofBody",
-                                          "code_section"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| eof |) |),
+                                              "revm_bytecode::eof::Eof",
+                                              "body"
+                                            |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "code_section"
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_bytecode::eof::types_section::TypesSection";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "len",
+                                        [],
                                         []
-                                        [
-                                          Ty.path "revm_bytecode::eof::types_section::TypesSection";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
                                           M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| eof |) |),
-                                            "revm_bytecode::eof::Eof",
-                                            "body"
-                                          |),
-                                          "revm_bytecode::eof::body::EofBody",
-                                          "types_section"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| eof |) |),
+                                              "revm_bytecode::eof::Eof",
+                                              "body"
+                                            |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "types_section"
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1852,7 +1861,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1930,15 +1939,19 @@ Module eof.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.ne (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| first_types |) |),
-                                        "revm_bytecode::eof::types_section::TypesSection",
-                                        "inputs"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| first_types |) |),
+                                          "revm_bytecode::eof::types_section::TypesSection",
+                                          "inputs"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
                                   |),
                                   ltac:(M.monadic
                                     (UnOp.not (|
@@ -1961,7 +1974,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2514,7 +2527,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2739,7 +2752,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2828,7 +2841,7 @@ Module eof.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -3133,10 +3146,12 @@ Module eof.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Decode" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |))
                           ]
                         |)
                       |)));
@@ -3168,10 +3183,12 @@ Module eof.
                               Pointer.Kind.Ref,
                               M.deref (| mk_str (| "Validation" |) |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |)
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |))
                           ]
                         |)
                       |)))
@@ -3359,7 +3376,11 @@ Module eof.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -5100,7 +5121,13 @@ Module eof.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5550,66 +5577,74 @@ Module eof.
                   Pointer.Kind.Ref,
                   M.deref (| mk_str (| "this_container_code_type" |) |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::verification::AccessTracker",
-                        "this_container_code_type"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::verification::AccessTracker",
+                          "this_container_code_type"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "codes" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::verification::AccessTracker",
-                        "codes"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::verification::AccessTracker",
+                          "codes"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "processing_stack" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::verification::AccessTracker",
-                        "processing_stack"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::verification::AccessTracker",
+                          "processing_stack"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "subcontainers" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::eof::verification::AccessTracker",
-                            "subcontainers"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_bytecode::eof::verification::AccessTracker",
+                              "subcontainers"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5930,13 +5965,13 @@ Module eof.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (| codes_size |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [ M.read (| codes_size |); Value.Integer IntegerKind.Usize 0 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -6175,7 +6210,7 @@ Module eof.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| UnOp.not (| M.read (| was_accessed |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -6391,7 +6426,7 @@ Module eof.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -6604,7 +6639,13 @@ Module eof.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7593,30 +7634,31 @@ Module eof.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| i |),
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| code |) |)
-                                          |)
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [
+                                        M.read (| i |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| code |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ op : Ty.path "u8" :=
                                 M.copy (|
                                   M.SubPointer.get_array_field (|
@@ -7696,7 +7738,7 @@ Module eof.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -7777,7 +7819,7 @@ Module eof.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -7874,7 +7916,7 @@ Module eof.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -7927,28 +7969,32 @@ Module eof.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.ne (|
-                                                        M.call_closure (|
-                                                          Ty.path "u8",
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "revm_bytecode::opcode::OpCodeInfo",
-                                                            "immediate_size",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| opcode |) |)
-                                                            |)
-                                                          ]
-                                                        |),
-                                                        Value.Integer IntegerKind.U8 0
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.ne,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "u8",
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "revm_bytecode::opcode::OpCodeInfo",
+                                                              "immediate_size",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| opcode |) |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.U8 0
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -7962,54 +8008,64 @@ Module eof.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.ge (|
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| i |),
-                                                                    M.cast
-                                                                      (Ty.path "usize")
-                                                                      (M.call_closure (|
-                                                                        Ty.path "u8",
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "revm_bytecode::opcode::OpCodeInfo",
-                                                                          "immediate_size",
-                                                                          [],
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ge,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.add,
+                                                                      [
+                                                                        M.read (| i |);
+                                                                        M.cast
+                                                                          (Ty.path "usize")
+                                                                          (M.call_closure (|
+                                                                            Ty.path "u8",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "revm_bytecode::opcode::OpCodeInfo",
+                                                                              "immediate_size",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    opcode
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |))
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
                                                                           []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.deref (|
-                                                                              M.read (| opcode |)
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |))
-                                                                  |),
-                                                                  M.call_closure (|
-                                                                    Ty.path "usize",
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
+                                                                          [ Ty.path "u8" ],
+                                                                        "len",
+                                                                        [],
                                                                         []
-                                                                        [ Ty.path "u8" ],
-                                                                      "len",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.read (| code |)
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| code |)
+                                                                          |)
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -8061,28 +8117,34 @@ Module eof.
                                                               ("start",
                                                                 Value.Integer IntegerKind.Usize 1);
                                                               ("end_",
-                                                                BinOp.Wrap.add (|
-                                                                  M.cast
-                                                                    (Ty.path "usize")
-                                                                    (M.call_closure (|
-                                                                      Ty.path "u8",
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "revm_bytecode::opcode::OpCodeInfo",
-                                                                        "immediate_size",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.deref (|
-                                                                            M.read (| opcode |)
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.add,
+                                                                  [
+                                                                    M.cast
+                                                                      (Ty.path "usize")
+                                                                      (M.call_closure (|
+                                                                        Ty.path "u8",
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "revm_bytecode::opcode::OpCodeInfo",
+                                                                          "immediate_size",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| opcode |)
+                                                                            |)
                                                                           |)
-                                                                        |)
-                                                                      ]
-                                                                    |)),
-                                                                  Value.Integer IntegerKind.Usize 1
+                                                                        ]
+                                                                      |));
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  ]
                                                                 |))
                                                             ]
                                                         ]
@@ -8252,13 +8314,18 @@ Module eof.
                                                                                                 Pointer.Kind.MutRef,
                                                                                                 jumps
                                                                                               |);
-                                                                                              BinOp.Wrap.add (|
-                                                                                                M.read (|
-                                                                                                  i
-                                                                                                |),
-                                                                                                M.read (|
-                                                                                                  imm
-                                                                                                |)
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                BinOp.Wrap.add,
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    i
+                                                                                                  |);
+                                                                                                  M.read (|
+                                                                                                    imm
+                                                                                                  |)
+                                                                                                ]
                                                                                               |)
                                                                                             ]
                                                                                           |)
@@ -8438,19 +8505,23 @@ Module eof.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.gt (|
-                                                        M.read (| stack_requirement |),
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            this_instruction,
-                                                            "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                                                            "smallest"
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.gt,
+                                                        [
+                                                          M.read (| stack_requirement |);
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              this_instruction,
+                                                              "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                                              "smallest"
+                                                            |)
                                                           |)
-                                                        |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -8476,15 +8547,19 @@ Module eof.
                                         M.alloc (|
                                           M.write (|
                                             next_smallest,
-                                            BinOp.Wrap.add (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  this_instruction,
-                                                  "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                                                  "smallest"
-                                                |)
-                                              |),
-                                              M.read (| stack_io_diff |)
+                                            M.call_closure (|
+                                              Ty.path "i32",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    this_instruction,
+                                                    "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                                    "smallest"
+                                                  |)
+                                                |);
+                                                M.read (| stack_io_diff |)
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -8492,15 +8567,19 @@ Module eof.
                                         M.alloc (|
                                           M.write (|
                                             next_biggest,
-                                            BinOp.Wrap.add (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  this_instruction,
-                                                  "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                                                  "biggest"
-                                                |)
-                                              |),
-                                              M.read (| stack_io_diff |)
+                                            M.call_closure (|
+                                              Ty.path "i32",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    this_instruction,
+                                                    "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                                    "biggest"
+                                                  |)
+                                                |);
+                                                M.read (| stack_io_diff |)
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -8611,17 +8690,21 @@ Module eof.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.lt (|
-                                                                                  M.read (|
-                                                                                    absolute_jump
-                                                                                  |),
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Isize
-                                                                                    0
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.lt,
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      absolute_jump
+                                                                                    |);
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Isize
+                                                                                      0
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -8657,44 +8740,48 @@ Module eof.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.ge (|
-                                                                                  M.read (|
-                                                                                    absolute_jump
-                                                                                  |),
-                                                                                  M.cast
-                                                                                    (Ty.path
-                                                                                      "isize")
-                                                                                    (M.call_closure (|
-                                                                                      Ty.path
-                                                                                        "usize",
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "slice")
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.ge,
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      absolute_jump
+                                                                                    |);
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "isize")
+                                                                                      (M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "usize",
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ],
+                                                                                          "len",
+                                                                                          [],
                                                                                           []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u8"
-                                                                                          ],
-                                                                                        "len",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.deref (|
-                                                                                            M.read (|
-                                                                                              code
+                                                                                        |),
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                code
+                                                                                              |)
                                                                                             |)
                                                                                           |)
-                                                                                        |)
-                                                                                      ]
-                                                                                    |))
+                                                                                        ]
+                                                                                      |))
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -8797,7 +8884,7 @@ Module eof.
                                                                                 "is_immediate"
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -8845,15 +8932,19 @@ Module eof.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              BinOp.le (|
-                                                                                M.read (|
-                                                                                  absolute_jump
-                                                                                |),
-                                                                                M.read (| i |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                BinOp.le,
+                                                                                [
+                                                                                  M.read (|
+                                                                                    absolute_jump
+                                                                                  |);
+                                                                                  M.read (| i |)
+                                                                                ]
                                                                               |)
                                                                             |)) in
                                                                         let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.Bool true
                                                                           |) in
@@ -8869,25 +8960,30 @@ Module eof.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        BinOp.ne (|
-                                                                                          M.read (|
-                                                                                            M.SubPointer.get_struct_record_field (|
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  target_jump
-                                                                                                |)
-                                                                                              |),
-                                                                                              "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                                                                                              "biggest"
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          BinOp.ne,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    target_jump
+                                                                                                  |)
+                                                                                                |),
+                                                                                                "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                                                                                "biggest"
+                                                                                              |)
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              next_biggest
                                                                                             |)
-                                                                                          |),
-                                                                                          M.read (|
-                                                                                            next_biggest
-                                                                                          |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
-                                                                                    M.is_constant_or_break_match (|
+                                                                                    is_constant_or_break_match (|
                                                                                       M.read (|
                                                                                         γ
                                                                                       |),
@@ -8927,25 +9023,30 @@ Module eof.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
-                                                                                      BinOp.ne (|
-                                                                                        M.read (|
-                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                            M.deref (|
-                                                                                              M.read (|
-                                                                                                target_jump
-                                                                                              |)
-                                                                                            |),
-                                                                                            "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                                                                                            "smallest"
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
+                                                                                        BinOp.ne,
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  target_jump
+                                                                                                |)
+                                                                                              |),
+                                                                                              "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                                                                              "smallest"
+                                                                                            |)
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            next_smallest
                                                                                           |)
-                                                                                        |),
-                                                                                        M.read (|
-                                                                                          next_smallest
-                                                                                        |)
+                                                                                        ]
                                                                                       |)
                                                                                     |)) in
                                                                                 let _ :=
-                                                                                  M.is_constant_or_break_match (|
+                                                                                  is_constant_or_break_match (|
                                                                                     M.read (| γ |),
                                                                                     Value.Bool true
                                                                                   |) in
@@ -9065,31 +9166,44 @@ Module eof.
                                           let β := i in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add (|
-                                              M.read (| β |),
-                                              BinOp.Wrap.add (|
-                                                BinOp.Wrap.add (|
-                                                  Value.Integer IntegerKind.Usize 1,
-                                                  M.cast
-                                                    (Ty.path "usize")
-                                                    (M.call_closure (|
-                                                      Ty.path "u8",
-                                                      M.get_associated_function (|
-                                                        Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                                        "immediate_size",
-                                                        [],
-                                                        []
-                                                      |),
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (| β |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.add,
                                                       [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| opcode |) |)
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 1;
+                                                        M.cast
+                                                          (Ty.path "usize")
+                                                          (M.call_closure (|
+                                                            Ty.path "u8",
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "revm_bytecode::opcode::OpCodeInfo",
+                                                              "immediate_size",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| opcode |) |)
+                                                              |)
+                                                            ]
+                                                          |))
                                                       ]
-                                                    |))
-                                                |),
-                                                M.read (| rjumpv_additional_immediates |)
-                                              |)
+                                                    |);
+                                                    M.read (| rjumpv_additional_immediates |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -9122,27 +9236,31 @@ Module eof.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (| is_returning |),
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_bytecode::eof::types_section::TypesSection",
-                                      "is_non_returning",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| this_types |) |)
-                                      |)
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.read (| is_returning |);
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "revm_bytecode::eof::types_section::TypesSection",
+                                        "is_non_returning",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| this_types |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -9172,7 +9290,7 @@ Module eof.
                             M.use
                               (M.alloc (| UnOp.not (| M.read (| is_after_termination |) |) |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -9330,24 +9448,28 @@ Module eof.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.read (| max_stack_requirement |),
-                                  M.cast
-                                    (Ty.path "i32")
-                                    (M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_array_field (|
-                                          M.deref (| M.read (| types |) |),
-                                          M.read (| this_types_index |)
-                                        |),
-                                        "revm_bytecode::eof::types_section::TypesSection",
-                                        "max_stack_size"
-                                      |)
-                                    |))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.read (| max_stack_requirement |);
+                                    M.cast
+                                      (Ty.path "i32")
+                                      (M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.SubPointer.get_array_field (|
+                                            M.deref (| M.read (| types |) |),
+                                            M.read (| this_types_index |)
+                                          |),
+                                          "revm_bytecode::eof::types_section::TypesSection",
+                                          "max_stack_size"
+                                        |)
+                                      |))
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -9418,66 +9540,74 @@ Module eof.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InstructionInfo" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_immediate" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                          "is_immediate"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                            "is_immediate"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_jumpdest" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                          "is_jumpdest"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                            "is_jumpdest"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "smallest" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                          "smallest"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                            "smallest"
+                          |)
                         |)
                       |)
-                    |)
-                  |);
+                    |));
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "biggest" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                              "biggest"
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                "biggest"
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |)
-                  |)
+                    |))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -9579,10 +9709,7 @@ Module eof.
                                     "is_jumpdest"
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|

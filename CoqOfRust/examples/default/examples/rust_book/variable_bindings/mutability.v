@@ -92,7 +92,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ : Ty.tuple [] :=
           M.alloc (|
             let β := mutable_binding in
-            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |)
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.add,
+                [ M.read (| β |); Value.Integer IntegerKind.I32 1 ]
+              |)
+            |)
           |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=

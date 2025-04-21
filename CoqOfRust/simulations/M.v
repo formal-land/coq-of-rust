@@ -457,6 +457,7 @@ Module Notations.
       cbn
     ).
 End Notations.
+Export Notations.
 
 Module Run.
   Reserved Notation "{{ e 🌲 v }}".
@@ -473,3 +474,4 @@ Module Run.
 
   where "{{ e 🌲 output }}" := (t output e).
 End Run.
+Export Run.

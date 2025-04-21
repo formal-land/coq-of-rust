@@ -84,22 +84,30 @@ Module control_flow.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.call_closure (|
-                                Ty.path "u32",
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "version",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
-                                ]
-                              |),
-                              Value.Integer IntegerKind.U32 5
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::file_format::CompiledModule",
+                                    "version",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| module |) |)
+                                    |)
+                                  ]
+                                |);
+                                Value.Integer IntegerKind.U32 5
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -704,7 +712,7 @@ Module control_flow.
                         |)
                       |)
                     |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
@@ -735,33 +743,37 @@ Module control_flow.
                             M.read (| current_function |);
                             M.cast
                               (Ty.path "u16")
-                              (BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                              (M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::file_format::Bytecode";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "len",
+                                      [],
                                       []
-                                      [
-                                        Ty.path "move_binary_format::file_format::Bytecode";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| code |) |),
-                                        "move_binary_format::file_format::CodeUnit",
-                                        "code"
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| code |) |),
+                                          "move_binary_format::file_format::CodeUnit",
+                                          "code"
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
                               |))
                           ]
                         |)
@@ -1235,7 +1247,7 @@ Module control_flow.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -1460,7 +1472,7 @@ Module control_flow.
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -1887,7 +1899,7 @@ Module control_flow.
                                                                                               |)
                                                                                             |)) in
                                                                                         let _ :=
-                                                                                          M.is_constant_or_break_match (|
+                                                                                          is_constant_or_break_match (|
                                                                                             M.read (|
                                                                                               γ
                                                                                             |),
@@ -2064,7 +2076,7 @@ Module control_flow.
                                                                                         M.use
                                                                                           body_extended in
                                                                                       let _ :=
-                                                                                        M.is_constant_or_break_match (|
+                                                                                        is_constant_or_break_match (|
                                                                                           M.read (|
                                                                                             γ
                                                                                           |),
@@ -2191,15 +2203,19 @@ Module control_flow.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.gt (|
-                                                                M.cast
-                                                                  (Ty.path "usize")
-                                                                  (M.read (| depth |)),
-                                                                M.read (| max_depth |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.gt,
+                                                                [
+                                                                  M.cast
+                                                                    (Ty.path "usize")
+                                                                    (M.read (| depth |));
+                                                                  M.read (| max_depth |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in

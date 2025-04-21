@@ -164,7 +164,13 @@ Module cmp.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -901,24 +907,26 @@ Module cmp.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reverse" |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::cmp::Reverse",
-                          0
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::cmp::Reverse",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1473,7 +1481,7 @@ Module cmp.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -1512,7 +1520,7 @@ Module cmp.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     min));
                 fun γ =>
                   ltac:(M.monadic
@@ -1543,7 +1551,7 @@ Module cmp.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             max));
                         fun γ => ltac:(M.monadic self)
                       ]
@@ -2340,7 +2348,7 @@ Module cmp.
                           ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| Value.Array [ M.read (| v1 |); M.read (| v2 |) ] |)));
               fun γ =>
                 ltac:(M.monadic (M.alloc (| Value.Array [ M.read (| v2 |); M.read (| v1 |) ] |)))
@@ -2423,7 +2431,7 @@ Module cmp.
                           ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| Value.Array [ M.read (| v1 |); M.read (| v2 |) ] |)));
               fun γ =>
                 ltac:(M.monadic (M.alloc (| Value.Array [ M.read (| v2 |); M.read (| v1 |) ] |)))
@@ -2646,9 +2654,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2660,9 +2672,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2686,9 +2702,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2700,9 +2720,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2726,9 +2750,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2740,9 +2768,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2766,9 +2798,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2780,9 +2816,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2806,9 +2846,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2820,9 +2864,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2846,9 +2894,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2860,9 +2912,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2886,9 +2942,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2900,9 +2960,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2926,9 +2990,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2940,9 +3008,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2966,9 +3038,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2980,9 +3056,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3006,9 +3086,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3020,9 +3104,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3046,9 +3134,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3060,9 +3152,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3086,9 +3182,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3100,9 +3200,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3126,9 +3230,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3140,9 +3248,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3166,9 +3278,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3180,9 +3296,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3206,9 +3326,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3220,9 +3344,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3246,9 +3374,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3260,9 +3392,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3286,9 +3422,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3300,9 +3440,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3326,9 +3470,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3340,9 +3488,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ne (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3637,13 +3789,21 @@ Module cmp.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.le (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.le,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |);
-                      BinOp.ge (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.ge,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |)
                     ]
                 |),
@@ -3653,18 +3813,18 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -3675,9 +3835,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -3688,9 +3848,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -3709,9 +3869,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3723,9 +3887,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3737,9 +3905,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3751,9 +3923,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3800,13 +3976,21 @@ Module cmp.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.le (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.le,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |);
-                      BinOp.ge (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.ge,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |)
                     ]
                 |),
@@ -3816,18 +4000,18 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -3838,9 +4022,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -3851,9 +4035,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -3872,9 +4056,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3886,9 +4074,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3900,9 +4092,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3914,9 +4110,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3963,13 +4163,21 @@ Module cmp.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.le (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.le,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |);
-                      BinOp.ge (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.ge,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |)
                     ]
                 |),
@@ -3979,18 +4187,18 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -4001,9 +4209,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -4014,9 +4222,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -4035,9 +4243,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4049,9 +4261,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4063,9 +4279,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4077,9 +4297,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4126,13 +4350,21 @@ Module cmp.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.le (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.le,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |);
-                      BinOp.ge (|
-                        M.read (| M.deref (| M.read (| self |) |) |),
-                        M.read (| M.deref (| M.read (| other |) |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.ge,
+                        [
+                          M.read (| M.deref (| M.read (| self |) |) |);
+                          M.read (| M.deref (| M.read (| other |) |) |)
+                        ]
                       |)
                     ]
                 |),
@@ -4142,18 +4374,18 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -4164,9 +4396,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -4177,9 +4409,9 @@ Module cmp.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                        is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -4198,9 +4430,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4212,9 +4448,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4226,9 +4466,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4240,9 +4484,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4317,16 +4565,20 @@ Module cmp.
               M.match_operator (|
                 Some (Ty.path "core::cmp::Ordering"),
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.cast (Ty.path "i8") (M.read (| M.deref (| M.read (| self |) |) |)),
-                    M.cast (Ty.path "i8") (M.read (| M.deref (| M.read (| other |) |) |))
+                  M.call_closure (|
+                    Ty.path "i8",
+                    BinOp.Wrap.sub,
+                    [
+                      M.cast (Ty.path "i8") (M.read (| M.deref (| M.read (| self |) |) |));
+                      M.cast (Ty.path "i8") (M.read (| M.deref (| M.read (| other |) |) |))
+                    ]
                   |)
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 (-1)
                         |) in
@@ -4334,7 +4586,7 @@ Module cmp.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 0
                         |) in
@@ -4342,7 +4594,7 @@ Module cmp.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 1
                         |) in
@@ -4375,7 +4627,11 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4390,7 +4646,11 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4418,10 +4678,15 @@ Module cmp.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.not (| BinOp.le (| M.read (| min |), M.read (| max |) |) |)
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [ M.read (| min |); M.read (| max |) ]
+                                |)
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -4515,9 +4780,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4529,9 +4798,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4543,9 +4816,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4557,9 +4834,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4654,9 +4935,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4668,9 +4953,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4682,9 +4971,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4696,9 +4989,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4789,9 +5086,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4803,9 +5104,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4817,9 +5122,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4831,9 +5140,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4924,9 +5237,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4938,9 +5255,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4952,9 +5273,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4966,9 +5291,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5059,9 +5388,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5073,9 +5406,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5087,9 +5424,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5101,9 +5442,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5194,9 +5539,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5208,9 +5557,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5222,9 +5575,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5236,9 +5593,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5333,9 +5694,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5347,9 +5712,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5361,9 +5730,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5375,9 +5748,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5472,9 +5849,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5486,9 +5867,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5500,9 +5885,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5514,9 +5903,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5607,9 +6000,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5621,9 +6018,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5635,9 +6036,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5649,9 +6054,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5742,9 +6151,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5756,9 +6169,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5770,9 +6187,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5784,9 +6205,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5877,9 +6302,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5891,9 +6320,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5905,9 +6338,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5919,9 +6356,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6012,9 +6453,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6026,9 +6471,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6040,9 +6489,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6054,9 +6507,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6151,9 +6608,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.lt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6165,9 +6626,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.le (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.le,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6179,9 +6644,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.ge (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ge,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6193,9 +6662,13 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.gt (|
-              M.read (| M.deref (| M.read (| self |) |) |),
-              M.read (| M.deref (| M.read (| other |) |) |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.gt,
+              [
+                M.read (| M.deref (| M.read (| self |) |) |);
+                M.read (| M.deref (| M.read (| other |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

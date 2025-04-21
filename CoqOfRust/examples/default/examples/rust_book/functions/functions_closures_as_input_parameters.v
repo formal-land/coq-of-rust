@@ -403,7 +403,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (let x := M.copy (| γ |) in
-                              BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 2, M.read (| x |) |)))
+                              M.call_closure (|
+                                Ty.path "i32",
+                                BinOp.Wrap.mul,
+                                [ Value.Integer IntegerKind.I32 2; M.read (| x |) ]
+                              |)))
                         ]
                       |)))
                   | _ => M.impossible "wrong number of arguments"

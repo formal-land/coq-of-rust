@@ -4,8 +4,6 @@ Require CoqOfRust.core.simulations.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
 Require Import CoqOfRust.simulations.M.
 
-Import simulations.M.Notations.
-
 (** ** Primitives *)
 
 Module Balance.

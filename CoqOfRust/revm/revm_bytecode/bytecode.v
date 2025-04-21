@@ -208,10 +208,12 @@ Module bytecode.
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "LegacyAnalyzed" |) |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -240,10 +242,12 @@ Module bytecode.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eof" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)));
@@ -272,10 +276,12 @@ Module bytecode.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)))
@@ -343,7 +349,11 @@ Module bytecode.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1373,7 +1383,7 @@ Module bytecode.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     get_constant (|
                       "revm_primitives::KECCAK_EMPTY",
                       Ty.apply
@@ -1840,8 +1850,7 @@ Module bytecode.
                               ]
                             |)
                           |) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ eof : Ty.path "revm_bytecode::eof::Eof" :=
                           M.copy (|
                             M.match_operator (|
@@ -2048,8 +2057,7 @@ Module bytecode.
                               ]
                             |)
                           |) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ eip7702 : Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" :=
                           M.copy (|
                             M.match_operator (|
@@ -3115,18 +3123,22 @@ Module bytecode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.eq (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.path "revm_bytecode::bytecode::Bytecode",
-                "len",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-            |),
-            Value.Integer IntegerKind.Usize 0
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.path "revm_bytecode::bytecode::Bytecode",
+                  "len",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |);
+              Value.Integer IntegerKind.Usize 0
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

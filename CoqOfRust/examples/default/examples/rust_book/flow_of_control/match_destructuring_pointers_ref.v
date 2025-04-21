@@ -318,7 +318,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let β := M.deref (| M.read (| m |) |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 10 |)
+                              M.call_closure (|
+                                Ty.path "i32",
+                                BinOp.Wrap.add,
+                                [ M.read (| β |); Value.Integer IntegerKind.I32 10 ]
+                              |)
                             |)
                           |) in
                         let~ _ : Ty.tuple [] :=

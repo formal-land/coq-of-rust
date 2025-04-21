@@ -86,7 +86,14 @@ Module Impl_incrementer_Incrementer.
                   "incrementer::Incrementer",
                   "value"
                 |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| by_ |) |) |)
+              M.write (|
+                β,
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.add,
+                  [ M.read (| β |); M.read (| by_ |) ]
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

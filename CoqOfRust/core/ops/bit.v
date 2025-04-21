@@ -390,7 +390,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -417,7 +421,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -444,7 +452,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -471,7 +483,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -498,7 +514,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -525,7 +545,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -552,7 +576,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -579,7 +607,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -606,7 +638,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -633,7 +669,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -660,7 +700,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -687,7 +731,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -714,7 +762,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.bit_and,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -744,7 +796,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -771,7 +827,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -798,7 +858,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -825,7 +889,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -852,7 +920,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -879,7 +951,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -906,7 +982,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -933,7 +1013,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -960,7 +1044,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -987,7 +1075,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1014,7 +1106,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1041,7 +1137,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1068,7 +1168,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.bit_or,
+              [ M.read (| self |); M.read (| rhs |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1098,7 +1202,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1125,7 +1233,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1152,7 +1264,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1179,7 +1295,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1206,7 +1326,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1233,7 +1357,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1260,7 +1388,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1287,7 +1419,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1314,7 +1450,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1341,7 +1481,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1368,7 +1512,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1395,7 +1543,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1422,7 +1574,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.bit_xor (M.read (| self |)) (M.read (| other |))))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.bit_xor,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1456,7 +1612,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1487,7 +1647,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1518,7 +1682,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1549,7 +1717,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1580,7 +1752,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1611,7 +1787,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1642,7 +1822,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1673,7 +1857,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1704,7 +1892,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1735,7 +1927,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1766,7 +1962,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1797,7 +1997,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1828,7 +2032,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1859,7 +2067,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1890,7 +2102,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1921,7 +2137,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1952,7 +2172,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1983,7 +2207,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2014,7 +2242,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2045,7 +2277,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2076,7 +2312,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2107,7 +2347,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2138,7 +2382,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2169,7 +2417,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2200,7 +2452,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2231,7 +2487,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2262,7 +2522,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2293,7 +2557,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2324,7 +2592,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2355,7 +2627,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2386,7 +2662,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2417,7 +2697,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2448,7 +2732,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2479,7 +2767,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2510,7 +2802,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2541,7 +2837,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2572,7 +2872,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2603,7 +2907,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2634,7 +2942,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2665,7 +2977,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2696,7 +3012,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2727,7 +3047,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2758,7 +3082,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2789,7 +3117,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2820,7 +3152,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2851,7 +3187,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2882,7 +3222,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2913,7 +3257,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2944,7 +3292,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2975,7 +3327,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3006,7 +3362,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3037,7 +3397,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3068,7 +3432,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3099,7 +3467,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3130,7 +3502,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3161,7 +3537,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3192,7 +3572,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3223,7 +3607,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3254,7 +3642,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3285,7 +3677,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3316,7 +3712,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3347,7 +3747,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3378,7 +3782,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3409,7 +3817,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3440,7 +3852,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3471,7 +3887,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3502,7 +3922,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3533,7 +3957,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3564,7 +3992,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3595,7 +4027,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3626,7 +4062,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3657,7 +4097,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3688,7 +4132,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3719,7 +4167,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3750,7 +4202,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3781,7 +4237,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3812,7 +4272,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3843,7 +4307,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3874,7 +4342,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3905,7 +4377,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3936,7 +4412,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3967,7 +4447,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3998,7 +4482,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4029,7 +4517,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4060,7 +4552,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4091,7 +4587,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4122,7 +4622,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4153,7 +4657,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4184,7 +4692,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4215,7 +4727,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4246,7 +4762,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4277,7 +4797,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4308,7 +4832,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4339,7 +4867,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4370,7 +4902,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4401,7 +4937,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4432,7 +4972,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4463,7 +5007,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4494,7 +5042,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4525,7 +5077,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4556,7 +5112,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4587,7 +5147,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4618,7 +5182,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4649,7 +5217,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4680,7 +5252,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4711,7 +5287,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4742,7 +5322,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4773,7 +5357,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4804,7 +5392,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4835,7 +5427,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4866,7 +5462,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4897,7 +5497,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4928,7 +5532,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4959,7 +5567,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4990,7 +5602,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5021,7 +5637,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5052,7 +5672,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5083,7 +5707,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5114,7 +5742,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5145,7 +5777,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5176,7 +5812,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5207,7 +5847,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5238,7 +5882,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5269,7 +5917,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5300,7 +5952,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5331,7 +5987,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5362,7 +6022,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5393,7 +6057,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5424,7 +6092,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5455,7 +6127,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5486,7 +6162,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5517,7 +6197,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5548,7 +6232,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5579,7 +6267,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5610,7 +6302,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5641,7 +6337,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5672,7 +6372,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5703,7 +6407,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5734,7 +6442,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5765,7 +6477,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5796,7 +6512,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5827,7 +6547,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5858,7 +6582,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5889,7 +6617,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shl (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shl,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5923,7 +6655,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5954,7 +6690,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5985,7 +6725,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6016,7 +6760,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6047,7 +6795,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6078,7 +6830,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6109,7 +6865,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6140,7 +6900,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6171,7 +6935,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6202,7 +6970,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6233,7 +7005,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6264,7 +7040,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6295,7 +7075,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6326,7 +7110,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6357,7 +7145,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6388,7 +7180,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6419,7 +7215,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6450,7 +7250,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6481,7 +7285,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6512,7 +7320,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6543,7 +7355,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6574,7 +7390,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6605,7 +7425,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6636,7 +7460,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6667,7 +7495,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6698,7 +7530,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6729,7 +7565,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6760,7 +7600,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6791,7 +7635,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6822,7 +7670,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6853,7 +7705,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6884,7 +7740,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6915,7 +7775,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6946,7 +7810,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6977,7 +7845,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7008,7 +7880,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7039,7 +7915,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7070,7 +7950,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7101,7 +7985,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7132,7 +8020,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7163,7 +8055,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7194,7 +8090,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7225,7 +8125,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7256,7 +8160,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7287,7 +8195,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7318,7 +8230,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7349,7 +8265,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7380,7 +8300,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7411,7 +8335,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7442,7 +8370,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7473,7 +8405,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7504,7 +8440,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7535,7 +8475,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7566,7 +8510,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7597,7 +8545,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7628,7 +8580,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7659,7 +8615,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7690,7 +8650,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7721,7 +8685,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7752,7 +8720,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7783,7 +8755,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7814,7 +8790,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7845,7 +8825,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7876,7 +8860,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7907,7 +8895,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7938,7 +8930,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -7969,7 +8965,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8000,7 +9000,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8031,7 +9035,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8062,7 +9070,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8093,7 +9105,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8124,7 +9140,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8155,7 +9175,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8186,7 +9210,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8217,7 +9245,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8248,7 +9280,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8279,7 +9315,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8310,7 +9350,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8341,7 +9385,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8372,7 +9420,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8403,7 +9455,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8434,7 +9490,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8465,7 +9525,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8496,7 +9560,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i8",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8527,7 +9595,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8558,7 +9630,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8589,7 +9665,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8620,7 +9700,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8651,7 +9735,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8682,7 +9770,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8713,7 +9805,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8744,7 +9840,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8775,7 +9875,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8806,7 +9910,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8837,7 +9945,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8868,7 +9980,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i16",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8899,7 +10015,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8930,7 +10050,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8961,7 +10085,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -8992,7 +10120,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9023,7 +10155,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9054,7 +10190,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9085,7 +10225,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9116,7 +10260,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9147,7 +10295,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9178,7 +10330,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9209,7 +10365,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9240,7 +10400,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9271,7 +10435,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9302,7 +10470,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9333,7 +10505,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9364,7 +10540,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9395,7 +10575,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9426,7 +10610,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9457,7 +10645,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9488,7 +10680,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9519,7 +10715,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9550,7 +10750,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9581,7 +10785,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9612,7 +10820,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i64",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9643,7 +10855,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9674,7 +10890,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9705,7 +10925,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9736,7 +10960,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9767,7 +10995,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9798,7 +11030,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9829,7 +11065,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9860,7 +11100,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9891,7 +11135,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9922,7 +11170,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9953,7 +11205,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -9984,7 +11240,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "i128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10015,7 +11275,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10046,7 +11310,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10077,7 +11345,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10108,7 +11380,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10139,7 +11415,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10170,7 +11450,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10201,7 +11485,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10232,7 +11520,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10263,7 +11555,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10294,7 +11590,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10325,7 +11625,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10356,7 +11660,11 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.shr (| M.read (| self |), M.read (| other |) |)))
+            M.call_closure (|
+              Ty.path "isize",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); M.read (| other |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10384,7 +11692,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10408,7 +11723,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10432,7 +11754,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10456,7 +11785,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10480,7 +11816,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10504,7 +11847,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10528,7 +11878,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10552,7 +11909,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10576,7 +11940,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10600,7 +11971,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10624,7 +12002,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10648,7 +12033,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10672,7 +12064,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_and (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.bit_and,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10699,7 +12098,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10723,7 +12129,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10747,7 +12160,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10771,7 +12191,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10795,7 +12222,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10819,7 +12253,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10843,7 +12284,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10867,7 +12315,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10891,7 +12346,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10915,7 +12377,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10939,7 +12408,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10963,7 +12439,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -10987,7 +12470,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_or (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.bit_or,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11014,7 +12504,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11038,7 +12535,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11062,7 +12566,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11086,7 +12597,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11110,7 +12628,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11134,7 +12659,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11158,7 +12690,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11182,7 +12721,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11206,7 +12752,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11230,7 +12783,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11254,7 +12814,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11278,7 +12845,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11302,7 +12876,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| other |)) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.bit_xor,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11333,7 +12914,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11361,7 +12949,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11389,7 +12984,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11417,7 +13019,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11445,7 +13054,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11473,7 +13089,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11501,7 +13124,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11529,7 +13159,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11557,7 +13194,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11585,7 +13229,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11613,7 +13264,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11641,7 +13299,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11669,7 +13334,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11697,7 +13369,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11725,7 +13404,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11753,7 +13439,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11781,7 +13474,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11809,7 +13509,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11837,7 +13544,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11865,7 +13579,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11893,7 +13614,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11921,7 +13649,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11949,7 +13684,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -11977,7 +13719,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12005,7 +13754,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12033,7 +13789,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12061,7 +13824,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12089,7 +13859,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12117,7 +13894,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12145,7 +13929,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12173,7 +13964,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12201,7 +13999,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12229,7 +14034,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12257,7 +14069,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12285,7 +14104,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12313,7 +14139,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12341,7 +14174,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12369,7 +14209,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12397,7 +14244,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12425,7 +14279,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12453,7 +14314,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12481,7 +14349,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12509,7 +14384,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12537,7 +14419,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12565,7 +14454,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12593,7 +14489,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12621,7 +14524,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12649,7 +14559,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12677,7 +14594,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12705,7 +14629,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12733,7 +14664,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12761,7 +14699,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12789,7 +14734,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12817,7 +14769,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12845,7 +14804,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12873,7 +14839,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12901,7 +14874,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12929,7 +14909,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12957,7 +14944,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -12985,7 +14979,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13013,7 +15014,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13041,7 +15049,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13069,7 +15084,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13097,7 +15119,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13125,7 +15154,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13153,7 +15189,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13181,7 +15224,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13209,7 +15259,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13237,7 +15294,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13265,7 +15329,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13293,7 +15364,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13321,7 +15399,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13349,7 +15434,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13377,7 +15469,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13405,7 +15504,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13433,7 +15539,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13461,7 +15574,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13489,7 +15609,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13517,7 +15644,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13545,7 +15679,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13573,7 +15714,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13601,7 +15749,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13629,7 +15784,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13657,7 +15819,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13685,7 +15854,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13713,7 +15889,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13741,7 +15924,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13769,7 +15959,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13797,7 +15994,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13825,7 +16029,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13853,7 +16064,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13881,7 +16099,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13909,7 +16134,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13937,7 +16169,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13965,7 +16204,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -13993,7 +16239,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14021,7 +16274,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14049,7 +16309,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14077,7 +16344,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14105,7 +16379,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14133,7 +16414,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14161,7 +16449,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14189,7 +16484,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14217,7 +16519,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14245,7 +16554,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14273,7 +16589,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14301,7 +16624,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14329,7 +16659,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14357,7 +16694,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14385,7 +16729,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14413,7 +16764,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14441,7 +16799,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14469,7 +16834,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14497,7 +16869,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14525,7 +16904,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14553,7 +16939,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14581,7 +16974,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14609,7 +17009,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14637,7 +17044,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14665,7 +17079,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14693,7 +17114,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14721,7 +17149,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14749,7 +17184,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14777,7 +17219,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14805,7 +17254,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14833,7 +17289,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14861,7 +17324,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14889,7 +17359,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14917,7 +17394,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14945,7 +17429,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -14973,7 +17464,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15001,7 +17499,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15029,7 +17534,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15057,7 +17569,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15085,7 +17604,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15113,7 +17639,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15141,7 +17674,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15169,7 +17709,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15197,7 +17744,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15225,7 +17779,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15253,7 +17814,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15281,7 +17849,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15309,7 +17884,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15337,7 +17919,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shl,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15368,7 +17957,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15396,7 +17992,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15424,7 +18027,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15452,7 +18062,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15480,7 +18097,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15508,7 +18132,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15536,7 +18167,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15564,7 +18202,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15592,7 +18237,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15620,7 +18272,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15648,7 +18307,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15676,7 +18342,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15704,7 +18377,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15732,7 +18412,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15760,7 +18447,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15788,7 +18482,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15816,7 +18517,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15844,7 +18552,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15872,7 +18587,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15900,7 +18622,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15928,7 +18657,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15956,7 +18692,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -15984,7 +18727,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16012,7 +18762,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16040,7 +18797,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16068,7 +18832,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16096,7 +18867,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16124,7 +18902,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16152,7 +18937,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16180,7 +18972,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16208,7 +19007,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16236,7 +19042,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16264,7 +19077,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16292,7 +19112,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16320,7 +19147,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16348,7 +19182,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16376,7 +19217,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16404,7 +19252,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16432,7 +19287,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16460,7 +19322,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16488,7 +19357,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16516,7 +19392,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16544,7 +19427,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16572,7 +19462,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16600,7 +19497,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16628,7 +19532,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16656,7 +19567,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16684,7 +19602,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16712,7 +19637,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16740,7 +19672,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16768,7 +19707,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16796,7 +19742,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16824,7 +19777,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16852,7 +19812,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16880,7 +19847,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16908,7 +19882,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16936,7 +19917,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16964,7 +19952,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -16992,7 +19987,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17020,7 +20022,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17048,7 +20057,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17076,7 +20092,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17104,7 +20127,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17132,7 +20162,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17160,7 +20197,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17188,7 +20232,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17216,7 +20267,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17244,7 +20302,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17272,7 +20337,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17300,7 +20372,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17328,7 +20407,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17356,7 +20442,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17384,7 +20477,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17412,7 +20512,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17440,7 +20547,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17468,7 +20582,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17496,7 +20617,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17524,7 +20652,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17552,7 +20687,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17580,7 +20722,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17608,7 +20757,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17636,7 +20792,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17664,7 +20827,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17692,7 +20862,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i8",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17720,7 +20897,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17748,7 +20932,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17776,7 +20967,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17804,7 +21002,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17832,7 +21037,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17860,7 +21072,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17888,7 +21107,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17916,7 +21142,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17944,7 +21177,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -17972,7 +21212,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18000,7 +21247,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18028,7 +21282,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i16",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18056,7 +21317,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18084,7 +21352,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18112,7 +21387,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18140,7 +21422,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18168,7 +21457,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18196,7 +21492,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18224,7 +21527,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18252,7 +21562,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18280,7 +21597,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18308,7 +21632,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18336,7 +21667,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18364,7 +21702,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18392,7 +21737,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18420,7 +21772,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18448,7 +21807,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18476,7 +21842,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18504,7 +21877,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18532,7 +21912,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18560,7 +21947,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18588,7 +21982,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18616,7 +22017,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18644,7 +22052,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18672,7 +22087,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18700,7 +22122,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i64",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18728,7 +22157,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18756,7 +22192,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18784,7 +22227,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18812,7 +22262,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18840,7 +22297,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18868,7 +22332,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18896,7 +22367,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18924,7 +22402,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18952,7 +22437,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -18980,7 +22472,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19008,7 +22507,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19036,7 +22542,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "i128",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19064,7 +22577,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19092,7 +22612,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19120,7 +22647,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19148,7 +22682,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19176,7 +22717,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19204,7 +22752,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19232,7 +22787,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19260,7 +22822,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19288,7 +22857,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19316,7 +22892,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19344,7 +22927,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19372,7 +22962,14 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             let β := M.deref (| M.read (| self |) |) in
-            M.write (| β, BinOp.Wrap.shr (| M.read (| β |), M.read (| other |) |) |)))
+            M.write (|
+              β,
+              M.call_closure (|
+                Ty.path "isize",
+                BinOp.Wrap.shr,
+                [ M.read (| β |); M.read (| other |) ]
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

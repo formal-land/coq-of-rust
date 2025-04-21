@@ -30,24 +30,26 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Borrowed" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "scoping_rules_lifetimes_structs::Borrowed",
-                        0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "scoping_rules_lifetimes_structs::Borrowed",
+                          0
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -96,38 +98,42 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NamedBorrowed" |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "scoping_rules_lifetimes_structs::NamedBorrowed",
-                    "x"
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "scoping_rules_lifetimes_structs::NamedBorrowed",
+                      "x"
+                    |)
                   |)
                 |)
-              |)
-            |);
+              |));
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "y" |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "scoping_rules_lifetimes_structs::NamedBorrowed",
-                        "y"
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "scoping_rules_lifetimes_structs::NamedBorrowed",
+                          "y"
+                        |)
                       |)
                     |)
                   |)
                 |)
-              |)
-            |)
+              |))
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -208,10 +214,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Num" |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
                       ]
                     |)
                   |)));
@@ -240,10 +248,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |)
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
                       ]
                     |)
                   |)))

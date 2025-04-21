@@ -4282,19 +4282,21 @@ Module bits.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloy_primitives::bits::fixed::FixedBytes",
-                    0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloy_primitives::bits::fixed::FixedBytes",
+                      0
+                    |)
                   |)
                 |)
-              |)
-            |)))
+              |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4326,19 +4328,21 @@ Module bits.
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloy_primitives::bits::fixed::FixedBytes",
-                        0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloy_primitives::bits::fixed::FixedBytes",
+                          0
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4445,7 +4449,11 @@ Module bits.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.le (| N, Value.Integer IntegerKind.Usize 4 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [ N; Value.Integer IntegerKind.Usize 4 ]
+                                    |),
                                     ltac:(M.monadic
                                       (UnOp.not (|
                                         M.call_closure (|
@@ -4467,7 +4475,7 @@ Module bits.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -4762,9 +4770,10 @@ Module bits.
                                         "core::ops::range::Range"
                                         [
                                           ("start",
-                                            BinOp.Wrap.sub (|
-                                              N,
-                                              Value.Integer IntegerKind.Usize 2
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [ N; Value.Integer IntegerKind.Usize 2 ]
                                             |));
                                           ("end_", N)
                                         ]
@@ -4806,14 +4815,18 @@ Module bits.
                                             "core::ops::range::RangeFrom"
                                             [
                                               ("start",
-                                                BinOp.Wrap.add (|
-                                                  Value.Integer IntegerKind.Usize 6,
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "alloy_primitives::bits::fixed::fmt::SEP_LEN",
-                                                      Ty.path "usize"
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 6;
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "alloy_primitives::bits::fixed::fmt::SEP_LEN",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |))
                                             ]
                                         ]
@@ -4852,10 +4865,12 @@ Module bits.
                                 []
                               |),
                               [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, buf |) |)
-                                |)
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, buf |) |)
+                                  |))
                               ]
                             |)
                           |)
@@ -5164,9 +5179,14 @@ Module bits.
                                         let β := M.deref (| M.read (| a |) |) in
                                         M.write (|
                                           β,
-                                          BinOp.bit_and
-                                            (M.read (| β |))
-                                            (M.read (| M.deref (| M.read (| b |) |) |))
+                                          M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.bit_and,
+                                            [
+                                              M.read (| β |);
+                                              M.read (| M.deref (| M.read (| b |) |) |)
+                                            ]
+                                          |)
                                         |)))
                                   ]
                                 |)))
@@ -5367,9 +5387,14 @@ Module bits.
                                         let β := M.deref (| M.read (| a |) |) in
                                         M.write (|
                                           β,
-                                          BinOp.bit_or
-                                            (M.read (| β |))
-                                            (M.read (| M.deref (| M.read (| b |) |) |))
+                                          M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.bit_or,
+                                            [
+                                              M.read (| β |);
+                                              M.read (| M.deref (| M.read (| b |) |) |)
+                                            ]
+                                          |)
                                         |)))
                                   ]
                                 |)))
@@ -5570,9 +5595,14 @@ Module bits.
                                         let β := M.deref (| M.read (| a |) |) in
                                         M.write (|
                                           β,
-                                          BinOp.bit_xor
-                                            (M.read (| β |))
-                                            (M.read (| M.deref (| M.read (| b |) |) |))
+                                          M.call_closure (|
+                                            Ty.path "u8",
+                                            BinOp.Wrap.bit_xor,
+                                            [
+                                              M.read (| β |);
+                                              M.read (| M.deref (| M.read (| b |) |) |)
+                                            ]
+                                          |)
                                         |)))
                                   ]
                                 |)))
@@ -5645,30 +5675,32 @@ Module bits.
                           []
                         |),
                         [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
-                                M.get_trait_method (|
-                                  "core::ops::deref::DerefMut",
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ N ]
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ N ]
+                                      [],
                                     [],
-                                  [],
-                                  [],
-                                  "deref_mut",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                                    [],
+                                    "deref_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                                |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |);
                       M.closure
@@ -5846,15 +5878,24 @@ Module bits.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.gt (| N, Value.Integer IntegerKind.Usize 0 |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ N; Value.Integer IntegerKind.Usize 0 ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 bytes,
-                                BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [ N; Value.Integer IntegerKind.Usize 1 ]
+                                |)
                               |),
                               M.read (| x |)
                             |)
@@ -5966,10 +6007,18 @@ Module bits.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.not (| BinOp.eq (| BinOp.Wrap.add (| N, M_ |), Z |) |)
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (| Ty.path "usize", BinOp.Wrap.add, [ N; M_ ] |);
+                                    Z
+                                  ]
+                                |)
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -6023,9 +6072,17 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), Z |) |)) in
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [ M.read (| i |); Z ]
+                                  |)
+                                |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -6039,9 +6096,15 @@ Module bits.
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
-                                                (M.alloc (| BinOp.ge (| M.read (| i |), N |) |)) in
+                                                (M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ge,
+                                                    [ M.read (| i |); N ]
+                                                  |)
+                                                |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -6051,7 +6114,11 @@ Module bits.
                                                 "alloy_primitives::bits::fixed::FixedBytes",
                                                 0
                                               |),
-                                              BinOp.Wrap.sub (| M.read (| i |), N |)
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [ M.read (| i |); N ]
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -6073,9 +6140,10 @@ Module bits.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)
                               |) in
@@ -6338,9 +6406,17 @@ Module bits.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| UnOp.not (| BinOp.le (| M.read (| len |), N |) |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.use
+                            (M.alloc (|
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [ M.read (| len |); N ]
+                                |)
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -6482,7 +6558,14 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
-                                [ ("start", BinOp.Wrap.sub (| N, M.read (| len |) |)) ]
+                                [
+                                  ("start",
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.sub,
+                                      [ N; M.read (| len |) ]
+                                    |))
+                                ]
                             ]
                           |)
                         |)
@@ -6544,9 +6627,17 @@ Module bits.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| UnOp.not (| BinOp.le (| M.read (| len |), N |) |) |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.use
+                            (M.alloc (|
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [ M.read (| len |); N ]
+                                |)
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -6719,19 +6810,21 @@ Module bits.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloy_primitives::bits::fixed::FixedBytes",
-                    0
+            (* Unsize *)
+            M.pointer_coercion
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloy_primitives::bits::fixed::FixedBytes",
+                      0
+                    |)
                   |)
                 |)
-              |)
-            |)))
+              |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6760,19 +6853,21 @@ Module bits.
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloy_primitives::bits::fixed::FixedBytes",
-                        0
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloy_primitives::bits::fixed::FixedBytes",
+                          0
+                        |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6933,9 +7028,17 @@ Module bits.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [ M.read (| i |); N ]
+                                      |)
+                                    |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -6949,31 +7052,35 @@ Module bits.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.ne (|
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "alloy_primitives::bits::fixed::FixedBytes",
-                                                        0
-                                                      |),
-                                                      M.read (| i |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ne,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_array_field (|
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "alloy_primitives::bits::fixed::FixedBytes",
+                                                          0
+                                                        |),
+                                                        M.read (| i |)
+                                                      |)
+                                                    |);
+                                                    M.read (|
+                                                      M.SubPointer.get_array_field (|
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          M.deref (| M.read (| other |) |),
+                                                          "alloy_primitives::bits::fixed::FixedBytes",
+                                                          0
+                                                        |),
+                                                        M.read (| i |)
+                                                      |)
                                                     |)
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        M.deref (| M.read (| other |) |),
-                                                        "alloy_primitives::bits::fixed::FixedBytes",
-                                                        0
-                                                      |),
-                                                      M.read (| i |)
-                                                    |)
-                                                  |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -6990,9 +7097,10 @@ Module bits.
                                     let β := i in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.Usize 1
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                       |)
                                     |)
                                   |) in
@@ -7156,9 +7264,17 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [ M.read (| i |); N ]
+                                  |)
+                                |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -7170,27 +7286,32 @@ Module bits.
                                     |),
                                     M.read (| i |)
                                   |),
-                                  BinOp.bit_and
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          self,
-                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                          0
-                                        |),
-                                        M.read (| i |)
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.bit_and,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            self,
+                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                            0
+                                          |),
+                                          M.read (| i |)
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            rhs,
+                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                            0
+                                          |),
+                                          M.read (| i |)
+                                        |)
                                       |)
-                                    |))
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          rhs,
-                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                          0
-                                        |),
-                                        M.read (| i |)
-                                      |)
-                                    |))
+                                    ]
+                                  |)
                                 |)
                               |) in
                             let~ _ : Ty.tuple [] :=
@@ -7198,9 +7319,10 @@ Module bits.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)
                               |) in
@@ -7268,9 +7390,17 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [ M.read (| i |); N ]
+                                  |)
+                                |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -7282,27 +7412,32 @@ Module bits.
                                     |),
                                     M.read (| i |)
                                   |),
-                                  BinOp.bit_or
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          self,
-                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                          0
-                                        |),
-                                        M.read (| i |)
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.bit_or,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            self,
+                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                            0
+                                          |),
+                                          M.read (| i |)
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            rhs,
+                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                            0
+                                          |),
+                                          M.read (| i |)
+                                        |)
                                       |)
-                                    |))
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          rhs,
-                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                          0
-                                        |),
-                                        M.read (| i |)
-                                      |)
-                                    |))
+                                    ]
+                                  |)
                                 |)
                               |) in
                             let~ _ : Ty.tuple [] :=
@@ -7310,9 +7445,10 @@ Module bits.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)
                               |) in
@@ -7380,9 +7516,17 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [ M.read (| i |); N ]
+                                  |)
+                                |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -7394,27 +7538,32 @@ Module bits.
                                     |),
                                     M.read (| i |)
                                   |),
-                                  BinOp.bit_xor
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          self,
-                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                          0
-                                        |),
-                                        M.read (| i |)
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.bit_xor,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            self,
+                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                            0
+                                          |),
+                                          M.read (| i |)
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            rhs,
+                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                            0
+                                          |),
+                                          M.read (| i |)
+                                        |)
                                       |)
-                                    |))
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          rhs,
-                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                          0
-                                        |),
-                                        M.read (| i |)
-                                      |)
-                                    |))
+                                    ]
+                                  |)
                                 |)
                               |) in
                             let~ _ : Ty.tuple [] :=
@@ -7422,9 +7571,10 @@ Module bits.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)
                               |) in
@@ -7494,7 +7644,7 @@ Module bits.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| UPPER |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
@@ -7633,9 +7783,13 @@ Module bits.
                               "core::ops::range::RangeFrom"
                               [
                                 ("start",
-                                  BinOp.Wrap.mul (|
-                                    M.cast (Ty.path "usize") (UnOp.not (| M.read (| prefix |) |)),
-                                    Value.Integer IntegerKind.Usize 2
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.mul,
+                                    [
+                                      M.cast (Ty.path "usize") (UnOp.not (| M.read (| prefix |) |));
+                                      Value.Integer IntegerKind.Usize 2
+                                    ]
                                   |))
                               ]
                           ]

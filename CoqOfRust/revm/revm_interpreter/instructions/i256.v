@@ -187,7 +187,13 @@ Module instructions.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -544,26 +550,30 @@ Module instructions.
                             |),
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |);
-                              BinOp.Wrap.sub (|
-                                M.read (|
-                                  get_associated_constant (|
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      [],
-                                    "BITS",
-                                    Ty.path "usize"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [],
+                                      "BITS",
+                                      Ty.path "usize"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" []
                     |)));
@@ -667,7 +677,7 @@ Module instructions.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -740,14 +750,19 @@ Module instructions.
                   |) in
                 M.write (|
                   β,
-                  BinOp.bit_and
-                    (M.read (| β |))
-                    (M.read (|
-                      get_constant (|
-                        "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64",
-                        Ty.path "u64"
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.bit_and,
+                    [
+                      M.read (| β |);
+                      M.read (|
+                        get_constant (|
+                          "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64",
+                          Ty.path "u64"
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1018,7 +1033,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1179,7 +1194,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1383,8 +1398,7 @@ Module instructions.
                                   |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1500,7 +1514,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1583,7 +1597,7 @@ Module instructions.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1700,8 +1714,7 @@ Module instructions.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply

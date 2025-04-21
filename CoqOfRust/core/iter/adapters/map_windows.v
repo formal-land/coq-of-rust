@@ -109,10 +109,16 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
+                                UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [ N; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -163,28 +169,32 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_function (|
-                                      "core::mem::size_of",
-                                      [],
-                                      [
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::iterator::Iterator"
-                                          []
-                                          []
-                                          I
-                                          "Item"
-                                      ]
-                                    |),
-                                    []
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_function (|
+                                        "core::mem::size_of",
+                                        [],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ]
+                                      |),
+                                      []
+                                    |);
+                                    Value.Integer IntegerKind.Usize 0
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -231,7 +241,7 @@ Module iter.
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -1086,7 +1096,7 @@ Module iter.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -1108,9 +1118,10 @@ Module iter.
                                                 |),
                                                 [
                                                   M.read (| lo |);
-                                                  BinOp.Wrap.sub (|
-                                                    N,
-                                                    Value.Integer IntegerKind.Usize 1
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.sub,
+                                                    [ N; Value.Integer IntegerKind.Usize 1 ]
                                                   |)
                                                 ]
                                               |);
@@ -1161,11 +1172,15 @@ Module iter.
                                                                       |),
                                                                       [
                                                                         M.read (| hi |);
-                                                                        BinOp.Wrap.sub (|
-                                                                          N,
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.sub,
+                                                                          [
+                                                                            N;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          ]
                                                                         |)
                                                                       ]
                                                                     |)))
@@ -1507,14 +1522,16 @@ Module iter.
                       []
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::adapters::map_windows::Buffer",
-                          "buffer"
-                        |)
-                      |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::map_windows::Buffer",
+                            "buffer"
+                          |)
+                        |))
                     ]
                   |)
                 ]
@@ -1590,14 +1607,16 @@ Module iter.
                       []
                     |),
                     [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::adapters::map_windows::Buffer",
-                          "buffer"
-                        |)
-                      |)
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::map_windows::Buffer",
+                            "buffer"
+                          |)
+                        |))
                     ]
                   |)
                 ]
@@ -1641,7 +1660,7 @@ Module iter.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -1653,26 +1672,35 @@ Module iter.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.le (|
-                                              BinOp.Wrap.add (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::iter::adapters::map_windows::Buffer",
-                                                    "start"
-                                                  |)
-                                                |),
-                                                N
-                                              |),
-                                              BinOp.Wrap.mul (|
-                                                Value.Integer IntegerKind.Usize 2,
-                                                N
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.le,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::iter::adapters::map_windows::Buffer",
+                                                        "start"
+                                                      |)
+                                                    |);
+                                                    N
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.mul,
+                                                  [ Value.Integer IntegerKind.Usize 2; N ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -1826,10 +1854,7 @@ Module iter.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -1841,26 +1866,35 @@ Module iter.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.le (|
-                                                  BinOp.Wrap.add (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "core::iter::adapters::map_windows::Buffer",
-                                                        "start"
-                                                      |)
-                                                    |),
-                                                    N
-                                                  |),
-                                                  BinOp.Wrap.mul (|
-                                                    Value.Integer IntegerKind.Usize 2,
-                                                    N
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "core::iter::adapters::map_windows::Buffer",
+                                                            "start"
+                                                          |)
+                                                        |);
+                                                        N
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.mul,
+                                                      [ Value.Integer IntegerKind.Usize 2; N ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -2106,7 +2140,7 @@ Module iter.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -2118,26 +2152,35 @@ Module iter.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.le (|
-                                              BinOp.Wrap.add (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::iter::adapters::map_windows::Buffer",
-                                                    "start"
-                                                  |)
-                                                |),
-                                                N
-                                              |),
-                                              BinOp.Wrap.mul (|
-                                                Value.Integer IntegerKind.Usize 2,
-                                                N
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.le,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::iter::adapters::map_windows::Buffer",
+                                                        "start"
+                                                      |)
+                                                    |);
+                                                    N
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.mul,
+                                                  [ Value.Integer IntegerKind.Usize 2; N ]
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -2177,19 +2220,23 @@ Module iter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::iter::adapters::map_windows::Buffer",
-                                        "start"
-                                      |)
-                                    |),
-                                    N
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::map_windows::Buffer",
+                                          "start"
+                                        |)
+                                      |);
+                                      N
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ to_drop :
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -2244,20 +2291,28 @@ Module iter.
                                             |),
                                             [
                                               M.read (| buffer_mut_ptr |);
-                                              BinOp.Wrap.add (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::iter::adapters::map_windows::Buffer",
-                                                    "start"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.Usize 1
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::iter::adapters::map_windows::Buffer",
+                                                      "start"
+                                                    |)
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             ]
                                           |));
                                         M.read (| buffer_mut_ptr |);
-                                        BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [ N; Value.Integer IntegerKind.Usize 1 ]
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -2305,9 +2360,10 @@ Module iter.
                                               |),
                                               [
                                                 M.read (| buffer_mut_ptr |);
-                                                BinOp.Wrap.sub (|
-                                                  N,
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [ N; Value.Integer IntegerKind.Usize 1 ]
                                                 |)
                                               ]
                                             |)
@@ -2424,15 +2480,19 @@ Module iter.
                                               |),
                                               [
                                                 M.read (| buffer_mut_ptr |);
-                                                BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "core::iter::adapters::map_windows::Buffer",
-                                                      "start"
-                                                    |)
-                                                  |),
-                                                  N
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::iter::adapters::map_windows::Buffer",
+                                                        "start"
+                                                      |)
+                                                    |);
+                                                    N
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -2490,9 +2550,10 @@ Module iter.
                                   |) in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)
                               |) in
@@ -3381,23 +3442,25 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
                                   M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::map_windows::MapWindows",
-                                    "inner"
-                                  |),
-                                  "core::iter::adapters::map_windows::MapWindowsInner",
-                                  "iter"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::map_windows::MapWindows",
+                                      "inner"
+                                    |),
+                                    "core::iter::adapters::map_windows::MapWindowsInner",
+                                    "iter"
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
+                            |))
                         ]
                       |)
                     |)

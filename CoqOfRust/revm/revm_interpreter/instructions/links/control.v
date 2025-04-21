@@ -1,9 +1,22 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import alloy_primitives.links.aliases.
+Require Import core.convert.links.num.
+Require Import core.links.option.
+Require Import core.links.result.
+Require Import core.num.links.mod.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.control.
+Require Import revm.revm_interpreter.interpreter.links.shared_memory.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.links.instruction_result.
+Require Import revm.revm_specification.links.hardfork.
+Require Import ruint.links.cmp.
+Require Import ruint.links.from.
+Require Import ruint.links.lib.
 
 (*
 pub fn rjump<WIRE: InterpreterTypes, H: ?Sized>(
@@ -22,8 +35,13 @@ Instance run_rjump
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  destruct run_Immediates_for_Bytecode.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn rjumpi<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -42,8 +60,14 @@ Instance run_rjumpi
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack. 
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  destruct run_Immediates_for_Bytecode.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn rjumpv<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -62,8 +86,33 @@ Instance run_rjumpv
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack. 
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  destruct run_Immediates_for_Bytecode.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct Impl_TryFrom_u64_for_isize.run.
   run_symbolic.
-Admitted.
+Defined.
+
+(* fn jump_inner<WIRE: InterpreterTypes>(interpreter: &mut Interpreter<WIRE>, target: U256) *)
+Instance run_jump_inner
+    {WIRE : Set} `{Link WIRE}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (target : aliases.U256.t) :
+  Run.Trait
+    instructions.control.jump_inner [] [ Φ WIRE ] [ φ interpreter; φ target ]
+    unit.
+Proof.
+  constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  run_symbolic.
+Defined.
 
 (*
 pub fn jump<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -82,8 +131,11 @@ Instance run_jump
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
+  destruct run_StackTrait_for_Stack. 
+  destruct run_LoopControl_for_Control.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn jumpi<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -102,21 +154,11 @@ Instance run_jumpi
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
+  destruct run_StackTrait_for_Stack. 
+  destruct run_LoopControl_for_Control.
   run_symbolic.
-Admitted.
-
-(* fn jump_inner<WIRE: InterpreterTypes>(interpreter: &mut Interpreter<WIRE>, target: U256) *)
-Instance run_jump_inner
-    {WIRE : Set} `{Link WIRE}
-    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types)) :
-  Run.Trait
-    instructions.control.jump_inner [] [ Φ WIRE ] [ φ interpreter ]
-    unit.
-Proof.
-  constructor.
-  run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn jumpdest_or_nop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -135,8 +177,10 @@ Instance run_jumpdest_or_nop
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn callf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -155,8 +199,16 @@ Instance run_callf
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  destruct run_Immediates_for_Bytecode.
+  destruct run_EofCodeInfo_for_Bytecode.
+  destruct run_SubRoutineStack_for_SubRoutineStack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn retf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -175,8 +227,13 @@ Instance run_retf
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  destruct run_SubRoutineStack_for_SubRoutineStack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn jumpf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -195,8 +252,16 @@ Instance run_jumpf
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
+  destruct run_Immediates_for_Bytecode.
+  destruct run_EofCodeInfo_for_Bytecode.
+  destruct run_SubRoutineStack_for_SubRoutineStack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn pc<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -215,8 +280,12 @@ Instance run_pc
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_Jumps_for_Bytecode.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 fn return_inner(
@@ -227,13 +296,19 @@ fn return_inner(
 Instance run_return_inner
     {WIRE : Set} `{Link WIRE}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
-    (instruction_result : Ref.t Pointer.Kind.MutRef InstructionResult.t) :
+    (instruction_result : InstructionResult.t) :
   Run.Trait
     instructions.control.return_inner [] [ Φ WIRE ] [ φ interpreter; φ instruction_result ]
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_MemoryTrait_for_Memory.
+  destruct Impl_Default_for_Bytes.run.
   run_symbolic.
 Admitted.
 
@@ -255,7 +330,7 @@ Instance run_ret
 Proof.
   constructor.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn revert<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -274,8 +349,11 @@ Instance run_revert
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn stop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -294,11 +372,6 @@ Instance run_stop
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   run_symbolic.
@@ -321,8 +394,10 @@ Instance run_invalid
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn unknown<WIRE: InterpreterTypes, H: Host + ?Sized>(

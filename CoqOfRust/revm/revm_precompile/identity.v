@@ -116,10 +116,13 @@ Module identity.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| gas_used |); M.read (| gas_limit |) ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|

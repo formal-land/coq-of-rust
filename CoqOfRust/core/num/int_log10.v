@@ -31,17 +31,38 @@ Module num.
           M.read (|
             let~ val : Ty.path "u32" := M.alloc (| M.cast (Ty.path "u32") (M.read (| val |)) |) in
             M.alloc (|
-              BinOp.Wrap.shr (|
-                BinOp.bit_and
-                  (BinOp.Wrap.add (|
-                    M.read (| val |),
-                    M.read (| get_constant (| "core::num::int_log10::u8::C1", Ty.path "u32" |) |)
-                  |))
-                  (BinOp.Wrap.add (|
-                    M.read (| val |),
-                    M.read (| get_constant (| "core::num::int_log10::u8::C2", Ty.path "u32" |) |)
-                  |)),
-                Value.Integer IntegerKind.I32 8
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.shr,
+                [
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.bit_and,
+                    [
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| val |);
+                          M.read (|
+                            get_constant (| "core::num::int_log10::u8::C1", Ty.path "u32" |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| val |);
+                          M.read (|
+                            get_constant (| "core::num::int_log10::u8::C2", Ty.path "u32" |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |);
+                  Value.Integer IntegerKind.I32 8
+                ]
               |)
             |)
           |)))
@@ -56,7 +77,11 @@ Module num.
       Definition value_C1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 768, Value.Integer IntegerKind.U32 10 |)
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [ Value.Integer IntegerKind.U32 768; Value.Integer IntegerKind.U32 10 ]
+            |)
           |))).
       
       Global Instance Instance_IsConstant_value_C1 :
@@ -67,9 +92,10 @@ Module num.
       Definition value_C2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              Value.Integer IntegerKind.U32 512,
-              Value.Integer IntegerKind.U32 100
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [ Value.Integer IntegerKind.U32 512; Value.Integer IntegerKind.U32 100 ]
             |)
           |))).
       
@@ -104,35 +130,82 @@ Module num.
       | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
-          BinOp.Wrap.shr (|
-            BinOp.bit_xor
-              (BinOp.bit_and
-                (BinOp.Wrap.add (|
-                  M.read (| val |),
-                  M.read (|
-                    get_constant (| "core::num::int_log10::less_than_5::C1", Ty.path "u32" |)
+          M.call_closure (|
+            Ty.path "u32",
+            BinOp.Wrap.shr,
+            [
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.bit_xor,
+                [
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.bit_and,
+                    [
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| val |);
+                          M.read (|
+                            get_constant (|
+                              "core::num::int_log10::less_than_5::C1",
+                              Ty.path "u32"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| val |);
+                          M.read (|
+                            get_constant (|
+                              "core::num::int_log10::less_than_5::C2",
+                              Ty.path "u32"
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.bit_and,
+                    [
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| val |);
+                          M.read (|
+                            get_constant (|
+                              "core::num::int_log10::less_than_5::C3",
+                              Ty.path "u32"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| val |);
+                          M.read (|
+                            get_constant (|
+                              "core::num::int_log10::less_than_5::C4",
+                              Ty.path "u32"
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |)
-                |))
-                (BinOp.Wrap.add (|
-                  M.read (| val |),
-                  M.read (|
-                    get_constant (| "core::num::int_log10::less_than_5::C2", Ty.path "u32" |)
-                  |)
-                |)))
-              (BinOp.bit_and
-                (BinOp.Wrap.add (|
-                  M.read (| val |),
-                  M.read (|
-                    get_constant (| "core::num::int_log10::less_than_5::C3", Ty.path "u32" |)
-                  |)
-                |))
-                (BinOp.Wrap.add (|
-                  M.read (| val |),
-                  M.read (|
-                    get_constant (| "core::num::int_log10::less_than_5::C4", Ty.path "u32" |)
-                  |)
-                |))),
-            Value.Integer IntegerKind.I32 17
+                ]
+              |);
+              Value.Integer IntegerKind.I32 17
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -146,9 +219,10 @@ Module num.
       Definition value_C1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              Value.Integer IntegerKind.U32 393216,
-              Value.Integer IntegerKind.U32 10
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [ Value.Integer IntegerKind.U32 393216; Value.Integer IntegerKind.U32 10 ]
             |)
           |))).
       
@@ -160,9 +234,10 @@ Module num.
       Definition value_C2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              Value.Integer IntegerKind.U32 524288,
-              Value.Integer IntegerKind.U32 100
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [ Value.Integer IntegerKind.U32 524288; Value.Integer IntegerKind.U32 100 ]
             |)
           |))).
       
@@ -174,9 +249,10 @@ Module num.
       Definition value_C3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              Value.Integer IntegerKind.U32 917504,
-              Value.Integer IntegerKind.U32 1000
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [ Value.Integer IntegerKind.U32 917504; Value.Integer IntegerKind.U32 1000 ]
             |)
           |))).
       
@@ -188,9 +264,10 @@ Module num.
       Definition value_C4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub (|
-              Value.Integer IntegerKind.U32 524288,
-              Value.Integer IntegerKind.U32 10000
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [ Value.Integer IntegerKind.U32 524288; Value.Integer IntegerKind.U32 10000 ]
             |)
           |))).
       
@@ -249,17 +326,22 @@ Module num.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| val |), Value.Integer IntegerKind.U32 100000 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| val |); Value.Integer IntegerKind.U32 100000 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           let β := val in
                           M.write (|
                             β,
-                            BinOp.Wrap.div (|
-                              M.read (| β |),
-                              Value.Integer IntegerKind.U32 100000
+                            M.call_closure (|
+                              Ty.path "u32",
+                              BinOp.Wrap.div,
+                              [ M.read (| β |); Value.Integer IntegerKind.U32 100000 ]
                             |)
                           |)
                         |) in
@@ -268,7 +350,11 @@ Module num.
                           let β := log in
                           M.write (|
                             β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 5 |)
+                            M.call_closure (|
+                              Ty.path "u32",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.U32 5 ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -276,13 +362,17 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              BinOp.Wrap.add (|
-                M.read (| log |),
-                M.call_closure (|
-                  Ty.path "u32",
-                  M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
-                  [ M.read (| val |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.add,
+                [
+                  M.read (| log |);
+                  M.call_closure (|
+                    Ty.path "u32",
+                    M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
+                    [ M.read (| val |) ]
+                  |)
+                ]
               |)
             |)
           |)))
@@ -324,20 +414,22 @@ Module num.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (|
-                              M.read (| val |),
-                              Value.Integer IntegerKind.U64 10000000000
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| val |); Value.Integer IntegerKind.U64 10000000000 ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           let β := val in
                           M.write (|
                             β,
-                            BinOp.Wrap.div (|
-                              M.read (| β |),
-                              Value.Integer IntegerKind.U64 10000000000
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.div,
+                              [ M.read (| β |); Value.Integer IntegerKind.U64 10000000000 ]
                             |)
                           |)
                         |) in
@@ -346,7 +438,11 @@ Module num.
                           let β := log in
                           M.write (|
                             β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 10 |)
+                            M.call_closure (|
+                              Ty.path "u32",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.U32 10 ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -363,17 +459,22 @@ Module num.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| val |), Value.Integer IntegerKind.U64 100000 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| val |); Value.Integer IntegerKind.U64 100000 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           let β := val in
                           M.write (|
                             β,
-                            BinOp.Wrap.div (|
-                              M.read (| β |),
-                              Value.Integer IntegerKind.U64 100000
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.div,
+                              [ M.read (| β |); Value.Integer IntegerKind.U64 100000 ]
                             |)
                           |)
                         |) in
@@ -382,7 +483,11 @@ Module num.
                           let β := log in
                           M.write (|
                             β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 5 |)
+                            M.call_closure (|
+                              Ty.path "u32",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.U32 5 ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -390,13 +495,17 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              BinOp.Wrap.add (|
-                M.read (| log |),
-                M.call_closure (|
-                  Ty.path "u32",
-                  M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
-                  [ M.cast (Ty.path "u32") (M.read (| val |)) ]
-                |)
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.add,
+                [
+                  M.read (| log |);
+                  M.call_closure (|
+                    Ty.path "u32",
+                    M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
+                    [ M.cast (Ty.path "u32") (M.read (| val |)) ]
+                  |)
+                ]
               |)
             |)
           |)))
@@ -441,13 +550,17 @@ Module num.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| val |),
-                                  Value.Integer IntegerKind.U128 100000000000000000000000000000000
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (| val |);
+                                    Value.Integer IntegerKind.U128 100000000000000000000000000000000
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -456,11 +569,15 @@ Module num.
                                     let β := val in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.div (|
-                                        M.read (| β |),
-                                        Value.Integer
-                                          IntegerKind.U128
-                                          100000000000000000000000000000000
+                                      M.call_closure (|
+                                        Ty.path "u128",
+                                        BinOp.Wrap.div,
+                                        [
+                                          M.read (| β |);
+                                          Value.Integer
+                                            IntegerKind.U128
+                                            100000000000000000000000000000000
+                                        ]
                                       |)
                                     |)
                                   |) in
@@ -469,20 +586,25 @@ Module num.
                                     let β := log in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.U32 32
+                                      M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| β |); Value.Integer IntegerKind.U32 32 ]
                                       |)
                                     |)
                                   |) in
                                 M.return_ (|
-                                  BinOp.Wrap.add (|
-                                    M.read (| log |),
-                                    M.call_closure (|
-                                      Ty.path "u32",
-                                      M.get_function (| "core::num::int_log10::u32", [], [] |),
-                                      [ M.cast (Ty.path "u32") (M.read (| val |)) ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (| log |);
+                                      M.call_closure (|
+                                        Ty.path "u32",
+                                        M.get_function (| "core::num::int_log10::u32", [], [] |),
+                                        [ M.cast (Ty.path "u32") (M.read (| val |)) ]
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)
@@ -501,21 +623,27 @@ Module num.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| val |),
-                                  Value.Integer IntegerKind.U128 10000000000000000
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (| val |);
+                                    Value.Integer IntegerKind.U128 10000000000000000
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               let β := val in
                               M.write (|
                                 β,
-                                BinOp.Wrap.div (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.U128 10000000000000000
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  BinOp.Wrap.div,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U128 10000000000000000
+                                  ]
                                 |)
                               |)
                             |) in
@@ -524,9 +652,10 @@ Module num.
                               let β := log in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.U32 16
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U32 16 ]
                                 |)
                               |)
                             |) in
@@ -535,13 +664,17 @@ Module num.
                     ]
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| log |),
-                    M.call_closure (|
-                      Ty.path "u32",
-                      M.get_function (| "core::num::int_log10::u64", [], [] |),
-                      [ M.cast (Ty.path "u64") (M.read (| val |)) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| log |);
+                      M.call_closure (|
+                        Ty.path "u32",
+                        M.get_function (| "core::num::int_log10::u64", [], [] |),
+                        [ M.cast (Ty.path "u64") (M.read (| val |)) ]
+                      |)
+                    ]
                   |)
                 |)
               |)))

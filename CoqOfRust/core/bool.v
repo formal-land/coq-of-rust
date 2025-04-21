@@ -24,7 +24,7 @@ Module bool.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use self in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ]
                     |)));
@@ -60,7 +60,7 @@ Module bool.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use self in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"

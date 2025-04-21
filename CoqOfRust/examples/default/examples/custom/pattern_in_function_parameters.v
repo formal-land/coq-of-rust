@@ -21,7 +21,11 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
               let x := M.copy (| γ0_0 |) in
               let y := M.copy (| γ0_1 |) in
-              BinOp.Wrap.add (| M.read (| x |), M.read (| y |) |)))
+              M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.add,
+                [ M.read (| x |); M.read (| y |) ]
+              |)))
         ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -83,16 +87,24 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.le (| M.read (| start |), M.read (| end_ |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [ M.read (| start |); M.read (| end_ |) ]
+                                      |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
                                 let~ count : Ty.path "u32" :=
                                   M.alloc (|
-                                    BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
+                                    M.call_closure (|
+                                      Ty.path "u32",
+                                      BinOp.Wrap.sub,
+                                      [ M.read (| end_ |); M.read (| start |) ]
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   Some
@@ -108,19 +120,27 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.lt (|
-                                                  M.read (| start |),
-                                                  Value.Integer IntegerKind.U32 55296
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [
+                                                    M.read (| start |);
+                                                    Value.Integer IntegerKind.U32 55296
+                                                  ]
                                                 |),
                                                 ltac:(M.monadic
-                                                  (BinOp.le (|
-                                                    Value.Integer IntegerKind.U32 57344,
-                                                    M.read (| end_ |)
+                                                  (M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.le,
+                                                    [
+                                                      Value.Integer IntegerKind.U32 57344;
+                                                      M.read (| end_ |)
+                                                    ]
                                                   |)))
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -161,9 +181,13 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| count |),
-                                                    Value.Integer IntegerKind.U32 2048
+                                                  M.call_closure (|
+                                                    Ty.path "u32",
+                                                    BinOp.Wrap.sub,
+                                                    [
+                                                      M.read (| count |);
+                                                      Value.Integer IntegerKind.U32 2048
+                                                    ]
                                                   |)
                                                 ]
                                               |)

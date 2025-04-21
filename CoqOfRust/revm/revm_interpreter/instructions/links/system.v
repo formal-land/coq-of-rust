@@ -1,9 +1,13 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.links.aliases.
+Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.utils.links.mod.
+Require Import core.convert.links.mod.
+Require Import core.convert.links.num.
 Require Import core.links.cmp.
+Require Import core.links.result.
 Require Import core.num.links.mod.
 Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.gas.links.calc.
@@ -14,13 +18,9 @@ Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_primitives.links.lib.
+Require Import revm.revm_specification.links.hardfork.
 Require Import ruint.links.from.
-
-Import Impl_Slice.
-Import Impl_Gas.
-Import from.Impl_Uint.
-Import lib.Impl_Uint.
-Import Impl_usize.
+Require Import ruint.links.lib.
 
 (*
 pub fn keccak256<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -42,6 +42,9 @@ Proof.
   InterpreterTypes.destruct_run.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
+  destruct run_MemoryTrait_for_Memory.
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
+  destruct (Impl_AsRef_for_Slice.run U8.t).
   run_symbolic.
 Admitted.
 
@@ -63,8 +66,12 @@ Instance run_address
 Proof.
   constructor.
   InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn caller<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -83,8 +90,13 @@ Instance run_caller
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn codesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -103,8 +115,37 @@ Instance run_codesize
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_LegacyBytecode_for_Bytecode.
   run_symbolic.
-Admitted.
+Defined.
+
+(*
+pub fn memory_resize(
+    interpreter: &mut Interpreter<impl InterpreterTypes>,
+    memory_offset: U256,
+    len: usize,
+) -> Option<usize>
+*)
+Instance run_memory_resize
+  {WIRE : Set} `{Link WIRE}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (memory_offset : aliases.U256.t)
+  (len : Usize.t) :
+  Run.Trait
+    instructions.system.memory_resize [] [ Φ WIRE ] [ φ interpreter; φ memory_offset; φ len ]
+    (option Usize.t).
+Proof.
+  constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_LoopControl_for_Control.
+  destruct run_MemoryTrait_for_Memory.
+  run_symbolic.
+Defined.
 
 (*
 pub fn codecopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -123,8 +164,14 @@ Instance run_codecopy
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_MemoryTrait_for_Memory.
+  destruct run_LegacyBytecode_for_Bytecode.
+  destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn calldataload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -143,6 +190,11 @@ Instance run_calldataload
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
+  destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
 Admitted.
 
@@ -195,30 +247,6 @@ Proof.
 Defined.
 
 (*
-pub fn memory_resize(
-    interpreter: &mut Interpreter<impl InterpreterTypes>,
-    memory_offset: U256,
-    len: usize,
-) -> Option<usize>
-*)
-Instance run_memory_resize
-  {WIRE : Set} `{Link WIRE}
-  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
-  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
-  (memory_offset : aliases.U256.t)
-  (len : Usize.t) :
-  Run.Trait
-    instructions.system.memory_resize [] [ Φ WIRE ] [ φ interpreter; φ memory_offset; φ len ]
-    (option Usize.t).
-Proof.
-  constructor.
-  destruct run_InterpreterTypes_for_WIRE.
-  destruct run_LoopControl_for_Control.
-  run_symbolic.
-Admitted.
-
-(*
 pub fn calldatacopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     _host: &mut H,
@@ -236,8 +264,13 @@ Instance run_calldatacopy
 Proof.
   constructor.
   InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_MemoryTrait_for_Memory.
+  destruct run_InputsTrait_for_Input.
+  destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn returndatasize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -256,8 +289,13 @@ Instance run_returndatasize
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_ReturnData_for_ReturnData.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn returndatacopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -276,6 +314,13 @@ Instance run_returndatacopy
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_ReturnData_for_ReturnData.
+  destruct run_MemoryTrait_for_Memory.
+  destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
 Admitted.
 
@@ -301,6 +346,7 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_ReturnData_for_ReturnData.
+  destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
 Admitted.
 

@@ -51,7 +51,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (let i := M.copy (| γ |) in
-                              BinOp.Wrap.add (| M.read (| i |), M.read (| outer_var |) |)))
+                              M.call_closure (|
+                                Ty.path "i32",
+                                BinOp.Wrap.add,
+                                [ M.read (| i |); M.read (| outer_var |) ]
+                              |)))
                         ]
                       |)))
                   | _ => M.impossible "wrong number of arguments"
@@ -72,7 +76,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (let i := M.copy (| γ |) in
-                              BinOp.Wrap.add (| M.read (| i |), M.read (| outer_var |) |)))
+                              M.call_closure (|
+                                Ty.path "i32",
+                                BinOp.Wrap.add,
+                                [ M.read (| i |); M.read (| outer_var |) ]
+                              |)))
                         ]
                       |)))
                   | _ => M.impossible "wrong number of arguments"

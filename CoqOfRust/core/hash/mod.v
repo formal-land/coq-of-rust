@@ -127,12 +127,14 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ M.read (| i |) ] |) |)
-                |)
-              |)
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ M.read (| i |) ] |) |)
+                  |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -150,24 +152,26 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 2 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
-                        [ M.read (| i |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 2 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
+                          [ M.read (| i |) ]
+                        |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -185,24 +189,26 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 4 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
-                        [ M.read (| i |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
+                          [ M.read (| i |) ]
+                        |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -220,24 +226,26 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
-                        [ M.read (| i |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 8 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
+                          [ M.read (| i |) ]
+                        |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -255,24 +263,26 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 16 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
-                        [ M.read (| i |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 16 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
+                          [ M.read (| i |) ]
+                        |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -296,24 +306,26 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
-                        [ M.read (| i |) ]
+              (* Unsize *)
+              M.pointer_coercion
+                (M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 8 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
+                          [ M.read (| i |) ]
+                        |)
                       |)
                     |)
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import core.fmt.links.rt.
 Require Import core.fmt.mod.
 Require Import core.links.array.
+
 (*
 pub struct Arguments<'a> {
     pieces: &'a [&'static str],
@@ -28,6 +29,16 @@ End Arguments.
 Module Impl_Arguments.
   Definition Self : Set := Arguments.t.
 
+  (* pub const fn new_const<const N: usize>(pieces: &'a [&'static str; N]) -> Self *)
+  Instance run_new_const
+      (N : Usize.t)
+      (pieces : Ref.t Pointer.Kind.Ref (array.t (Ref.t Pointer.Kind.Ref string) N)) :
+    Run.Trait fmt.Impl_core_fmt_Arguments.new_const [φ N] [] [φ pieces] Self.
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+
   (*
     pub fn new_v1<const P: usize, const A: usize>(
         pieces: &'a [&'static str; P],
@@ -37,10 +48,11 @@ Module Impl_Arguments.
   Instance run_new_v1
       (P A : Usize.t)
       (pieces : Ref.t Pointer.Kind.Ref (array.t (Ref.t Pointer.Kind.Ref string) P))
-      (args : Ref.t Pointer.Kind.Ref (array.t (Ref.t Pointer.Kind.Ref Argument.t) A)) :
+      (args : Ref.t Pointer.Kind.Ref (array.t Argument.t A)) :
     Run.Trait fmt.Impl_core_fmt_Arguments.new_v1 [φ P; φ A] [] [φ pieces; φ args] Self.
   Proof.
     constructor.
     run_symbolic.
   Admitted.
 End Impl_Arguments.
+Export Impl_Arguments.

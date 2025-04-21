@@ -1889,7 +1889,13 @@ Module cfg.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2107,10 +2113,12 @@ Module cfg.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create2" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "salt" |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |)
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
                         ]
                       |)
                     |)))
@@ -2211,7 +2219,11 @@ Module cfg.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|

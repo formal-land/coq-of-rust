@@ -134,23 +134,27 @@ Module Impl_enums_testcase_linked_list_List.
                     |) in
                   let tail := M.alloc (| γ0_1 |) in
                   M.alloc (|
-                    BinOp.Wrap.add (|
-                      Value.Integer IntegerKind.U32 1,
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (|
-                          Ty.path "enums_testcase_linked_list::List",
-                          "len",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| M.deref (| M.read (| tail |) |) |) |)
-                          |)
-                        ]
-                      |)
+                    M.call_closure (|
+                      Ty.path "u32",
+                      BinOp.Wrap.add,
+                      [
+                        Value.Integer IntegerKind.U32 1;
+                        M.call_closure (|
+                          Ty.path "u32",
+                          M.get_associated_function (|
+                            Ty.path "enums_testcase_linked_list::List",
+                            "len",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| tail |) |) |) |)
+                            |)
+                          ]
+                        |)
+                      ]
                     |)
                   |)));
               fun γ =>

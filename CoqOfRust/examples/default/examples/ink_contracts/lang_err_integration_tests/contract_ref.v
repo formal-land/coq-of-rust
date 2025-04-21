@@ -274,7 +274,7 @@ Module Impl_contract_ref_FlipperRef.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use succeed in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"

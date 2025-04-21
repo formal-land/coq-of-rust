@@ -16,3 +16,6 @@
 [submodule "third-party/alloy-rs-core"]
 	path = third-party/alloy-rs-core
 	url = https://github.com/alloy-rs/core.git
+[submodule "third-party/bytes"]
+	path = third-party/bytes
+	url = https://github.com/tokio-rs/bytes.git

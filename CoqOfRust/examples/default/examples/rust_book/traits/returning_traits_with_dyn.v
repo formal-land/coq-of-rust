@@ -86,70 +86,93 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | [], [], [ random_number ] =>
     ltac:(M.monadic
       (let random_number := M.alloc (| random_number |) in
-      M.read (|
-        M.match_operator (|
-          Some
-            (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              []
+      (* Unsize *)
+      M.pointer_coercion
+        (* Unsize *)
+        (M.pointer_coercion
+          (M.read (|
+            M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                    Ty.path "alloc::alloc::Global"
+                  ]),
+              M.alloc (| Value.Tuple [] |),
               [
-                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                Ty.path "alloc::alloc::Global"
-              ]),
-          M.alloc (| Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.lt,
+                            [ M.read (| random_number |); M.read (| UnsupportedLiteral |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (* Unsize *)
+                        (M.pointer_coercion
+                          (M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "returning_traits_with_dyn::Sheep";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "returning_traits_with_dyn::Sheep";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              [],
+                              []
+                            |),
+                            [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ]
+                          |)))
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
                     (M.alloc (|
-                      BinOp.lt (| M.read (| random_number |), M.read (| UnsupportedLiteral |) |)
-                    |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "returning_traits_with_dyn::Sheep"; Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "returning_traits_with_dyn::Sheep"; Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ]
-                  |)
-                |)));
-            fun γ =>
-              ltac:(M.monadic
-                (M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ]
-                  |)
-                |)))
-          ]
-        |)
-      |)))
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.path "returning_traits_with_dyn::Cow";
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "returning_traits_with_dyn::Cow";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ]
+                        |))
+                    |)))
+              ]
+            |)
+          |)))))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 

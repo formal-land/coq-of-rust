@@ -20,9 +20,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ : Ty.tuple [] :=
           let~ val : Ty.path "usize" :=
             M.alloc (|
-              BinOp.Wrap.add (|
-                Value.Integer IntegerKind.Usize 1,
-                Value.Integer IntegerKind.Usize 2
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.add,
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 2 ]
               |)
             |) in
           let~ _ : Ty.tuple [] :=
@@ -90,15 +91,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ val : Ty.path "usize" :=
           M.alloc (|
-            BinOp.Wrap.mul (|
-              BinOp.Wrap.add (|
-                Value.Integer IntegerKind.Usize 1,
-                Value.Integer IntegerKind.Usize 2
-              |),
-              BinOp.Wrap.div (|
-                Value.Integer IntegerKind.Usize 3,
-                Value.Integer IntegerKind.Usize 4
-              |)
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.mul,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.add,
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 2 ]
+                |);
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.div,
+                  [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 4 ]
+                |)
+              ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=

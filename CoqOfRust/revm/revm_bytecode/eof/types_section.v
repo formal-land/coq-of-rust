@@ -52,52 +52,58 @@ Module eof.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypesSection" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inputs" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::types_section::TypesSection",
-                        "inputs"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::types_section::TypesSection",
+                          "inputs"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "outputs" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::types_section::TypesSection",
-                        "outputs"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::types_section::TypesSection",
+                          "outputs"
+                        |)
                       |)
                     |)
-                  |)
-                |);
+                  |));
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "max_stack_size" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::eof::types_section::TypesSection",
-                            "max_stack_size"
+                (* Unsize *)
+                M.pointer_coercion
+                  (M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_bytecode::eof::types_section::TypesSection",
+                              "max_stack_size"
+                            |)
                           |)
                         |)
                       |)
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -354,56 +360,68 @@ Module eof.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_bytecode::eof::types_section::TypesSection",
-                      "inputs"
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_bytecode::eof::types_section::TypesSection",
-                      "inputs"
-                    |)
-                  |)
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "revm_bytecode::eof::types_section::TypesSection",
-                        "outputs"
+                        "inputs"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "revm_bytecode::eof::types_section::TypesSection",
-                        "outputs"
+                        "inputs"
                       |)
                     |)
+                  ]
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::types_section::TypesSection",
+                          "outputs"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_bytecode::eof::types_section::TypesSection",
+                          "outputs"
+                        |)
+                      |)
+                    ]
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_bytecode::eof::types_section::TypesSection",
-                      "max_stack_size"
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_bytecode::eof::types_section::TypesSection",
+                        "max_stack_size"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_bytecode::eof::types_section::TypesSection",
+                        "max_stack_size"
+                      |)
                     |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_bytecode::eof::types_section::TypesSection",
-                      "max_stack_size"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -879,20 +897,24 @@ Module eof.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_bytecode::eof::types_section::TypesSection",
-                  "outputs"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_bytecode::eof::types_section::TypesSection",
+                    "outputs"
+                  |)
+                |);
+                M.read (|
+                  get_constant (|
+                    "revm_bytecode::eof::types_section::EOF_NON_RETURNING_FUNCTION",
+                    Ty.path "u8"
+                  |)
                 |)
-              |),
-              M.read (|
-                get_constant (|
-                  "revm_bytecode::eof::types_section::EOF_NON_RETURNING_FUNCTION",
-                  Ty.path "u8"
-                |)
-              |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -912,25 +934,29 @@ Module eof.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              M.cast
-                (Ty.path "i32")
-                (M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_bytecode::eof::types_section::TypesSection",
-                    "outputs"
-                  |)
-                |)),
-              M.cast
-                (Ty.path "i32")
-                (M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_bytecode::eof::types_section::TypesSection",
-                    "inputs"
-                  |)
-                |))
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.sub,
+              [
+                M.cast
+                  (Ty.path "i32")
+                  (M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_bytecode::eof::types_section::TypesSection",
+                      "outputs"
+                    |)
+                  |));
+                M.cast
+                  (Ty.path "i32")
+                  (M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_bytecode::eof::types_section::TypesSection",
+                      "inputs"
+                    |)
+                  |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1018,37 +1044,39 @@ Module eof.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.path "u16",
-                                  "to_be_bytes",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_bytecode::eof::types_section::TypesSection",
-                                      "max_stack_size"
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u16",
+                                    "to_be_bytes",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_bytecode::eof::types_section::TypesSection",
+                                        "max_stack_size"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |) in
@@ -1852,43 +1880,55 @@ Module eof.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     LogicalOp.or (|
-                                      BinOp.gt (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_bytecode::eof::types_section::TypesSection",
-                                            "inputs"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U8 127
-                                      |),
-                                      ltac:(M.monadic
-                                        (BinOp.gt (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.deref (| M.read (| self |) |),
                                               "revm_bytecode::eof::types_section::TypesSection",
-                                              "outputs"
+                                              "inputs"
                                             |)
-                                          |),
-                                          Value.Integer IntegerKind.U8 128
+                                          |);
+                                          Value.Integer IntegerKind.U8 127
+                                        ]
+                                      |),
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "revm_bytecode::eof::types_section::TypesSection",
+                                                "outputs"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U8 128
+                                          ]
                                         |)))
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.gt (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_bytecode::eof::types_section::TypesSection",
-                                            "max_stack_size"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.U16 1023
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_bytecode::eof::types_section::TypesSection",
+                                              "max_stack_size"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.U16 1023
+                                        ]
                                       |)))
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1917,27 +1957,31 @@ Module eof.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.gt (|
-                                    M.cast
-                                      (Ty.path "u16")
-                                      (M.read (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [
+                                      M.cast
+                                        (Ty.path "u16")
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::types_section::TypesSection",
+                                            "inputs"
+                                          |)
+                                        |));
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| self |) |),
                                           "revm_bytecode::eof::types_section::TypesSection",
-                                          "inputs"
+                                          "max_stack_size"
                                         |)
-                                      |)),
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::types_section::TypesSection",
-                                        "max_stack_size"
                                       |)
-                                    |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|

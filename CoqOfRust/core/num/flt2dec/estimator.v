@@ -26,29 +26,48 @@ Module num.
             M.read (|
               let~ nbits : Ty.path "i64" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    Value.Integer IntegerKind.I64 64,
-                    M.cast
-                      (Ty.path "i64")
-                      (M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
-                        [ BinOp.Wrap.sub (| M.read (| mant |), Value.Integer IntegerKind.U64 1 |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i64",
+                    BinOp.Wrap.sub,
+                    [
+                      Value.Integer IntegerKind.I64 64;
+                      M.cast
+                        (Ty.path "i64")
+                        (M.call_closure (|
+                          Ty.path "u32",
+                          M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.sub,
+                              [ M.read (| mant |); Value.Integer IntegerKind.U64 1 ]
+                            |)
+                          ]
+                        |))
+                    ]
                   |)
                 |) in
               M.alloc (|
                 M.cast
                   (Ty.path "i16")
-                  (BinOp.Wrap.shr (|
-                    BinOp.Wrap.mul (|
-                      BinOp.Wrap.add (|
-                        M.read (| nbits |),
-                        M.cast (Ty.path "i64") (M.read (| exp |))
-                      |),
-                      Value.Integer IntegerKind.I64 1292913986
-                    |),
-                    Value.Integer IntegerKind.I32 32
+                  (M.call_closure (|
+                    Ty.path "i64",
+                    BinOp.Wrap.shr,
+                    [
+                      M.call_closure (|
+                        Ty.path "i64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.call_closure (|
+                            Ty.path "i64",
+                            BinOp.Wrap.add,
+                            [ M.read (| nbits |); M.cast (Ty.path "i64") (M.read (| exp |)) ]
+                          |);
+                          Value.Integer IntegerKind.I64 1292913986
+                        ]
+                      |);
+                      Value.Integer IntegerKind.I32 32
+                    ]
                   |))
               |)
             |)))

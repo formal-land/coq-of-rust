@@ -709,22 +709,30 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.read (| self |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.read (| self |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -796,22 +804,30 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.read (| self |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.read (| self |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -900,8 +916,7 @@ Module slice.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -940,18 +955,25 @@ Module slice.
                     Ty.tuple [],
                     M.get_function (| "core::intrinsics::assume", [], [] |),
                     [
-                      BinOp.lt (|
-                        M.read (| self |),
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.lt,
+                        [
+                          M.read (| self |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |)
+                        ]
                       |)
                     ]
                   |)
@@ -1007,8 +1029,7 @@ Module slice.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1169,31 +1190,39 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::ops::index_range::IndexRange",
-                                  "end",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "end",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -1287,31 +1316,39 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::ops::index_range::IndexRange",
-                                  "end",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "end",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -1417,8 +1454,7 @@ Module slice.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1534,8 +1570,7 @@ Module slice.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -1641,31 +1676,39 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::ops::index_range::IndexRange",
-                                  "end",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "end",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1791,39 +1834,40 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.le (|
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.path "core::ops::index_range::IndexRange",
-                                          "end",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                                      |),
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ T ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| slice |) |)
-                                          |)
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.path "core::ops::index_range::IndexRange",
+                                            "end",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ T ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| slice |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.MutRef,
@@ -2026,28 +2070,36 @@ Module slice.
                       let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::Range",
-                                  "end"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
                                 |)
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -2161,28 +2213,36 @@ Module slice.
                       let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::ops::range::Range",
-                                  "end"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
                                 |)
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |)
-                                ]
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -2286,8 +2346,7 @@ Module slice.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -2424,8 +2483,7 @@ Module slice.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -2584,33 +2642,37 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.gt (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            self,
-                                            "core::ops::range::Range",
-                                            "end"
-                                          |)
-                                        |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| slice |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::ops::range::Range",
+                                              "end"
                                             |)
-                                          ]
-                                        |)
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| slice |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2763,33 +2825,37 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.gt (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "end"
-                                              |)
-                                            |),
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ T ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| slice |) |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::ops::range::Range",
+                                                  "end"
                                                 |)
-                                              ]
-                                            |)
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| slice |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -3799,33 +3865,36 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::RangeFrom",
-                                    "start"
-                                  |)
-                                |),
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| slice |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::ops::range::RangeFrom",
+                                      "start"
                                     |)
-                                  ]
-                                |)
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| slice |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -3930,33 +3999,37 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.gt (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::ops::range::RangeFrom",
-                                        "start"
-                                      |)
-                                    |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| slice |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::ops::range::RangeFrom",
+                                          "start"
                                         |)
-                                      ]
-                                    |)
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| slice |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
@@ -4551,34 +4624,38 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeInclusive")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeInclusive")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        "end",
+                                        [],
                                         []
-                                        [ Ty.path "usize" ],
-                                      "end",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                    |)
+                                  |)
+                                |);
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
                                   |)
                                 |)
-                              |),
-                              M.read (|
-                                get_associated_constant (|
-                                  Ty.path "usize",
-                                  "MAX",
-                                  Ty.path "usize"
-                                |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4647,34 +4724,38 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeInclusive")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeInclusive")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        "end",
+                                        [],
                                         []
-                                        [ Ty.path "usize" ],
-                                      "end",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                    |)
+                                  |)
+                                |);
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
                                   |)
                                 |)
-                              |),
-                              M.read (|
-                                get_associated_constant (|
-                                  Ty.path "usize",
-                                  "MAX",
-                                  Ty.path "usize"
-                                |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4836,35 +4917,38 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (|
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeInclusive")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeInclusive")
+                                            []
+                                            [ Ty.path "usize" ],
+                                          "end",
+                                          [],
                                           []
-                                          [ Ty.path "usize" ],
-                                        "end",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "usize",
+                                      "MAX",
+                                      Ty.path "usize"
                                     |)
                                   |)
-                                |),
-                                M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "usize",
-                                    "MAX",
-                                    Ty.path "usize"
-                                  |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -4949,35 +5033,39 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeInclusive")
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::RangeInclusive")
+                                                []
+                                                [ Ty.path "usize" ],
+                                              "end",
+                                              [],
                                               []
-                                              [ Ty.path "usize" ],
-                                            "end",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "usize",
+                                          "MAX",
+                                          Ty.path "usize"
                                         |)
                                       |)
-                                    |),
-                                    M.read (|
-                                      get_associated_constant (|
-                                        Ty.path "usize",
-                                        "MAX",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
@@ -6016,8 +6104,14 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.gt (| M.read (| start |), M.read (| end_ |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ M.read (| start |); M.read (| end_ |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -6042,8 +6136,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.gt (| M.read (| end_ |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ M.read (| end_ |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -6448,13 +6549,20 @@ Module slice.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.gt (| M.read (| start |), M.read (| end_ |) |),
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| start |); M.read (| end_ |) ]
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.gt (| M.read (| end_ |), M.read (| len |) |)))
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| end_ |); M.read (| len |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -6541,9 +6649,10 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.add (|
-                                    M.read (| i |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| i |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)));
                             fun γ =>
@@ -6570,9 +6679,10 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.add (|
-                                    M.read (| i |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| i |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |)));
                             fun γ =>

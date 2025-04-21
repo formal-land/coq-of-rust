@@ -37,22 +37,30 @@ Module num.
           (M.alloc (|
             M.cast
               (Ty.path "usize")
-              (BinOp.Wrap.add (|
-                BinOp.Wrap.sub (|
-                  M.read (|
-                    get_constant (|
-                      "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE",
-                      Ty.path "i32"
-                    |)
-                  |),
-                  M.read (|
-                    get_constant (|
-                      "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE",
-                      Ty.path "i32"
-                    |)
-                  |)
-                |),
-                Value.Integer IntegerKind.I32 1
+              (M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.add,
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (|
+                        get_constant (|
+                          "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE",
+                          Ty.path "i32"
+                        |)
+                      |);
+                      M.read (|
+                        get_constant (|
+                          "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE",
+                          Ty.path "i32"
+                        |)
+                      |)
+                    ]
+                  |);
+                  Value.Integer IntegerKind.I32 1
+                ]
               |))
           |))).
       

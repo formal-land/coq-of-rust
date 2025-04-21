@@ -6,9 +6,6 @@ Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.core.simulations.assert.
 Require Import CoqOfRust.lib.simulations.lib.
-Import simulations.M.Notations.
-Import simulations.eq.Notations.
-Import simulations.assert.Notations.
 
 (*
   #[derive(Eq, PartialEq, PartialOrd, Ord, Clone, Copy, Debug)]

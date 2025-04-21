@@ -837,7 +837,7 @@ Module acquires_list_verifier.
                                                                           Value.Bool true
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -1333,7 +1333,7 @@ Module acquires_list_verifier.
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -1625,7 +1625,7 @@ Module acquires_list_verifier.
                                                                 M.use
                                                                   (M.alloc (| Value.Bool true |)) in
                                                               let _ :=
-                                                                M.is_constant_or_break_match (|
+                                                                is_constant_or_break_match (|
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
@@ -1808,7 +1808,7 @@ Module acquires_list_verifier.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -3187,7 +3187,7 @@ Module acquires_list_verifier.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -3344,7 +3344,7 @@ Module acquires_list_verifier.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.path "bool" :=
                       M.alloc (|
                         M.call_closure (|
@@ -3505,7 +3505,7 @@ Module acquires_list_verifier.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|

@@ -44,7 +44,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
