@@ -27,7 +27,44 @@ impl Blake3Air {
         &self,
         num_hashes: usize,
         extra_capacity_bits: usize,
-    ) -> RowMajorMatrix<F> {
+    ) -> RowMajorMatrix<F>
+*)
+
+(* 
+fn quarter_round_function<AB: AirBuilder>(
+        &self,
+        builder: &mut AB,
+        trace: &QuarterRound<<AB as AirBuilder>::Var, <AB as AirBuilder>::Expr>,
+    )
+*)
+
+(* 
+    const fn full_round_to_column_quarter_round<'a, T: Copy, U>(
+        &self,
+        input: &'a Blake3State<T>,
+        round_data: &'a FullRound<T>,
+        m_vector: &'a [[U; 2]; 16],
+        index: usize,
+    ) -> QuarterRound<'a, T, U>
+*)
+
+(* 
+    const fn full_round_to_diagonal_quarter_round<'a, T: Copy, U>(
+        &self,
+        round_data: &'a FullRound<T>,
+        m_vector: &'a [[U; 2]; 16],
+        index: usize,
+    ) -> QuarterRound<'a, T, U> 
+*)
+
+(* 
+fn verify_round<AB: AirBuilder>(
+        &self,
+        builder: &mut AB,
+        input: &Blake3State<AB::Var>,
+        round_data: &FullRound<AB::Var>,
+        m_vector: &[[AB::Expr; 2]; 16],
+    )
 *)
 
 (* 
@@ -41,3 +78,17 @@ impl Blake3Air {
   Defined.
 *)
 End Impl_Blake3Air.
+
+(* 
+impl<F> BaseAir<F> for Blake3Air {
+    fn width(&self) -> usize {
+        NUM_BLAKE3_COLS
+    }
+}
+*)
+
+(* 
+impl<AB: AirBuilder> Air<AB> for Blake3Air {
+
+    fn eval(&self, builder: &mut AB)
+*)
