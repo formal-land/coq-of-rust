@@ -20,6 +20,7 @@ Module Blake3Air.
 End Blake3Air.
 
 Module Impl_Blake3Air.
+(* TODO: figure out what is this `PrimeField64` *)
 (* 
 impl Blake3Air {
     pub fn generate_trace_rows<F: PrimeField64>(
@@ -30,14 +31,13 @@ impl Blake3Air {
 *)
 
 (* 
-Module Impl_Transaction_for_Ref_Transaction.
-  Instance run
-    (Self : Set) `{Link Self}
-    (types : Transaction.Types.t) `{Transaction.Types.AreLinks types}
-    (run_Transaction_for_Self : Transaction.Run Self types) :
-    Transaction.Run (Ref.t Pointer.Kind.Ref Self) types.
-  Admitted.
-End Impl_Transaction_for_Ref_Transaction.
-
+  Instance run_STOP :
+    Run.Trait
+      opcode.Impl_revm_bytecode_opcode_OpCode.value_STOP [] [] []
+      (Ref.t Pointer.Kind.Raw OpCode.t).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
 *)
 End Impl_Blake3Air.
