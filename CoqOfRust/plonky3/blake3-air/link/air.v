@@ -6,8 +6,13 @@ Require Import plonky3.blake3-airsrc.air.
 
 (* TODO: refer to `opcode` in revm *)
 (* TODO: check if the name of the module fits in the style with other translated links *)
-Module Impl_Blake3Air.
-  Inductive t : Set := .
+Module Blake3Air.
+  Record t : Set := {}.
+
+  Definition of_ty : OfTy.t (Ty.path "plonky3::blake3-air::Blake3Air").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
 
 (* 
   Global Instance IsLink : Link t := {
@@ -22,14 +27,10 @@ Module Impl_Blake3Air.
       end;
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "revm_context_interface::cfg::CreateScheme").
-  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add apply of_ty : of_ty.
-
 *)
+End Blake3Air.
 
-
-End Impl_Blake3Air.
+Module Impl_Blake3Air.
 (* 
 impl Blake3Air {
     pub fn generate_trace_rows<F: PrimeField64>(
@@ -50,3 +51,4 @@ Module Impl_Transaction_for_Ref_Transaction.
 End Impl_Transaction_for_Ref_Transaction.
 
 *)
+End Impl_Blake3Air.
