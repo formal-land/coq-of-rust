@@ -1,9 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import plonky3.blake3-airsrc.air.
+Require Import plonky3.blake3-air.air.
 
 (* pub struct Blake3Air {} *)
-
 Module Blake3Air.
   Record t : Set := {}.
 
