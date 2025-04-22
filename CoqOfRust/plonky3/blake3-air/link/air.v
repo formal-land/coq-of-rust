@@ -4,30 +4,20 @@ Require Import plonky3.blake3-airsrc.air.
 
 (* pub struct Blake3Air {} *)
 
-(* TODO: refer to `opcode` in revm *)
-(* TODO: check if the name of the module fits in the style with other translated links *)
 Module Blake3Air.
   Record t : Set := {}.
+
+  (* TODO: figure out if we need to add more stuffs here *)
+  Parameter to_value : t -> Value.t.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "alloc::alloc::Global";
+    φ := to_value;
+  }.
 
   Definition of_ty : OfTy.t (Ty.path "plonky3::blake3-air::Blake3Air").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
-
-
-(* 
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_context_interface::cfg::CreateScheme";
-    φ x :=
-      match x with
-      | Create => Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" []
-      | Create2 x =>
-        Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
-          ("salt", φ x)
-        ]
-      end;
-  }.
-
-*)
 End Blake3Air.
 
 Module Impl_Blake3Air.
