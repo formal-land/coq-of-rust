@@ -771,20 +771,4 @@ Module InterpreterTypes.
         "RuntimeFlag" (Φ types.(Types.RuntimeFlag));
     run_RuntimeFlag_for_RuntimeFlag : RuntimeFlag.Run types.(Types.RuntimeFlag);
   }.
-
-  Ltac destruct_run :=
-    cbn;
-    eapply Run.Rewrite; [
-      progress repeat erewrite IsTraitAssociatedType_eq
-        by match goal with
-        | H : Run _ _ |- _ => apply H
-        end;
-      reflexivity
-    |];
-    match goal with
-    | H : Run _ _ |- _ =>
-      (* We make a duplicate for future calls *)
-      pose H;
-      destruct H
-    end.
 End InterpreterTypes.

@@ -27,6 +27,16 @@ Module Impl_Uint.
       (bits.Impl_ruint_Uint_BITS_LIMBS.byte (φ BITS) (φ LIMBS)) [] [] [ φ x; φ index ]
       U8.t.
   Admitted.
+
+  (* pub fn arithmetic_shr(self, rhs: usize) -> Self *)
+  Instance run_arithmetic_shr
+    (BITS LIMBS : Usize.t)
+    (self : Self BITS LIMBS)
+    (rhs : Usize.t) :
+    Run.Trait
+      (bits.Impl_ruint_Uint_BITS_LIMBS.arithmetic_shr (φ BITS) (φ LIMBS)) [] [] [ φ self; φ rhs ]
+      (Self BITS LIMBS).
+  Admitted.
 End Impl_Uint.
 Export Impl_Uint.
 
