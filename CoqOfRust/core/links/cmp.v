@@ -267,3 +267,11 @@ Module PartialOrd.
     ge : Run_ge Self Rhs;
   }.
 End PartialOrd.
+
+Module Impl_PartialEq_for_Ordering.
+  Definition Self : Set := Ordering.t.
+
+  Instance run : PartialEq.Run Self Self.
+  Admitted.
+End Impl_PartialEq_for_Ordering.
+Export Impl_PartialEq_for_Ordering.

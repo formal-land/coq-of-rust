@@ -85,6 +85,26 @@ Module Impl_Uint.
     apply Run.run_f.
   Defined.
 
+  (* pub const MIN: Self *)
+  Instance run_MIN (BITS LIMBS : Usize.t) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.value_MIN (φ BITS) (φ LIMBS)) [] [] []
+      (Ref.t Pointer.Kind.Raw (Self BITS LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  (* pub const MAX: Self *)
+  Instance run_MAX (BITS LIMBS : Usize.t) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.value_MAX (φ BITS) (φ LIMBS)) [] [] []
+      (Ref.t Pointer.Kind.Raw (Self BITS LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
+
   (* pub const fn as_limbs(&self) -> &[u64; LIMBS] *)
   Instance run_as_limbs
     (BITS LIMBS : Usize.t)

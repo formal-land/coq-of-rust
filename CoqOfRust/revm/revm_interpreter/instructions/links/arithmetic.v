@@ -276,5 +276,10 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct (Impl_PartialOrd_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  destruct (Impl_Sub_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  destruct (Impl_BitAnd_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  destruct (Impl_BitOr_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  destruct (Impl_Shl_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
+  destruct (Impl_Not_for_Uint.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
   run_symbolic.
-Admitted.
+Defined.

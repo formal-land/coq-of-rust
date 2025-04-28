@@ -14,7 +14,23 @@
 - [x] `addmod`
 - [x] `mulmod`
 - [x] `exp`
-- [ ] `signextend`
+- [x] `signextend`
+
+## Bitwise
+
+- [x] `lt`
+- [x] `gt`
+- [x] `slt`
+- [x] `sgt`
+- [x] `bitwise_eq`
+- [x] `bitwise_is_zero`
+- [x] `bitwise_bitand`
+- [x] `bitwise_bitor`
+- [x] `bitwise_bitxor`
+- [x] `bitwise_not`
+- [x] `bitwise_sar`
+- [x] `bitwise_shl`
+- [x] `bitwise_shr`
 
 ## Block_info
 
@@ -104,7 +120,7 @@
 - [ ] `mload`
 - [ ] `mstore`
 - [ ] `mstore8`
-- [ ] `msize`
+- [x] `msize`
 - [ ] `mcopy`
 
 ## Stack
@@ -147,7 +163,7 @@
 
 ## Summary
 
-- Total: 107
-- Admitted: 39
-- Defined: 68
-- Percentage: 63.55%
+- Total: 120
+- Admitted: 37
+- Defined: 83
+- Percentage: 69.17%

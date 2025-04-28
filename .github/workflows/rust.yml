@@ -216,79 +216,27 @@ jobs:
           endGroup
           startGroup "Translate Plonky3"
             cd third-party/Plonky3
+            git checkout -- .
             cp ../../rust-toolchain ./
             # Add a line at the beginning of the file to enable its translation
-            # should we make a general preprocessing python script?
             sed -i '1i#![feature(const_swap)]' util/src/lib.rs
             cargo coq-of-rust
-            touch air/lib.rs
-            touch baby-bear/lib.rs
-            touch blake3/lib.rs
-            touch blake3-air/lib.rs
-            touch bn254-fr/lib.rs
-            touch challenger/lib.rs
-            touch circle/lib.rs
-            touch commit/lib.rs
-            touch dft/lib.rs
-            touch examples/lib.rs
-            touch field/lib.rs
-            touch field-testing/lib.rs
-            touch fri/lib.rs
-            touch goldilocks/lib.rs
-            touch interpolation/lib.rs
-            touch keccak/lib.rs
-            touch keccak-air/lib.rs
-            touch koala-bear/lib.rs
-            touch matrix/lib.rs
-            touch maybe-rayon/lib.rs
-            touch mds/lib.rs
-            touch merkle-tree/lib.rs
-            touch mersenne-31/lib.rs
-            touch monolith/lib.rs
-            touch monty-31/lib.rs
-            touch poseidon/lib.rs
-            touch poseidon2/lib.rs
-            touch poseidon2-air/lib.rs
-            touch rescue/lib.rs
-            touch sha256/lib.rs
-            touch symmetric/lib.rs
-            touch uni-stark/lib.rs
-            touch util/lib.rs
+            touch air/src/lib.rs
+            touch blake3-air/src/lib.rs
+            touch field/src/lib.rs
+            touch matrix/src/lib.rs
+            touch maybe-rayon/src/lib.rs
+            touch util/src/lib.rs
             cargo coq-of-rust
-            rsync -rcv ./air/ ../../CoqOfRust/plonky3/air --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./baby-bear/ ../../CoqOfRust/plonky3/baby-bear --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./blake3/ ../../CoqOfRust/plonky3/blake3 --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./blake3-air/ ../../CoqOfRust/plonky3/blake3-air --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./bn254-fr/ ../../CoqOfRust/plonky3/bn254-fr --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./challenger/ ../../CoqOfRust/plonky3/challenger --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./circle/ ../../CoqOfRust/plonky3/circle --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./commit/ ../../CoqOfRust/plonky3/commit --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./dft/ ../../CoqOfRust/plonky3/dft --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./examples/ ../../CoqOfRust/plonky3/examples --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./field/ ../../CoqOfRust/plonky3/field --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./field-testing/ ../../CoqOfRust/plonky3/field-testing --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./fri/ ../../CoqOfRust/plonky3/fri --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./goldilocks/ ../../CoqOfRust/plonky3/goldilocks --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./interpolation/ ../../CoqOfRust/plonky3/interpolation --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./keccak/ ../../CoqOfRust/plonky3/keccak --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./keccak-air/ ../../CoqOfRust/plonky3/keccak-air --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./koala-bear/ ../../CoqOfRust/plonky3/koala-bear --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./matrix/ ../../CoqOfRust/plonky3/matrix --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./maybe-rayon/ ../../CoqOfRust/plonky3/maybe-rayon --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./mds/ ../../CoqOfRust/plonky3/mds --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./merkle-tree/ ../../CoqOfRust/plonky3/merkle-tree --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./mersenne-31/ ../../CoqOfRust/plonky3/mersenne-31 --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./monolith/ ../../CoqOfRust/plonky3/monolith --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./monty-31/ ../../CoqOfRust/plonky3/monty-31 --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./poseidon/ ../../CoqOfRust/plonky3/poseidon --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./poseidon2/ ../../CoqOfRust/plonky3/poseidon2 --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./poseidon2-air/ ../../CoqOfRust/plonky3/poseidon2-air --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./rescue/ ../../CoqOfRust/plonky3/rescue --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./sha256/ ../../CoqOfRust/plonky3/sha256 --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./symmetric/ ../../CoqOfRust/plonky3/symmetric --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./uni-stark/ ../../CoqOfRust/plonky3/uni-stark --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./util/ ../../CoqOfRust/plonky3/util --include='src/*' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./air/src/ ../../CoqOfRust/plonky3/air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/blake3-air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./field/src/ ../../CoqOfRust/plonky3/field --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./matrix/src/ ../../CoqOfRust/plonky3/matrix --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
+            # As there are differences on this file depending on the CPU features that are available
+            rm CoqOfRust/plonky3/field/integers.v
           endGroup
           startGroup "Generate Rocq files from Python"
             cd CoqOfRust

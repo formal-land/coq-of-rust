@@ -39,7 +39,7 @@ Instance run_keccak256
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
@@ -65,7 +65,7 @@ Instance run_address
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_InputsTrait_for_Input.
@@ -90,7 +90,7 @@ Instance run_caller
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_InputsTrait_for_Input.
@@ -107,7 +107,7 @@ pub fn codesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_codesize
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  {run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types}
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -115,7 +115,7 @@ Instance run_codesize
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_LegacyBytecode_for_Bytecode.
@@ -132,7 +132,7 @@ pub fn memory_resize(
 Instance run_memory_resize
   {WIRE : Set} `{Link WIRE}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  {run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types}
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (memory_offset : aliases.U256.t)
   (len : Usize.t) :
@@ -141,7 +141,7 @@ Instance run_memory_resize
     (option Usize.t).
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
   run_symbolic.
@@ -164,7 +164,7 @@ Instance run_codecopy
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
@@ -190,7 +190,7 @@ Instance run_calldataload
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_InputsTrait_for_Input.
@@ -215,7 +215,7 @@ Instance run_calldatasize
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_InputsTrait_for_Input.
@@ -239,7 +239,7 @@ Instance run_callvalue
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_InputsTrait_for_Input.
@@ -263,7 +263,7 @@ Instance run_calldatacopy
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
@@ -289,7 +289,7 @@ Instance run_returndatasize
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -314,7 +314,7 @@ Instance run_returndatacopy
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -341,7 +341,7 @@ Instance run_returndataload
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -367,7 +367,7 @@ Instance run_gas
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   run_symbolic.

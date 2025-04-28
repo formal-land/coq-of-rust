@@ -68,6 +68,7 @@ Module Sign.
     apply of_value_with_Zero.
   Defined.
   Smpl Add apply of_value_Zero : of_value.
+
   Definition of_value_Plus :
     OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" []).
   Proof.

@@ -241,20 +241,4 @@ Module Host.
     log : Run_log Self;
     selfdestruct : Run_selfdestruct Self;
   }.
-
-  Ltac destruct_run :=
-    cbn;
-    eapply Run.Rewrite; [
-      progress repeat erewrite IsTraitAssociatedType_eq
-        by match goal with
-        | H : Run _ _ |- _ => apply H
-        end;
-      reflexivity
-    |];
-    match goal with
-    | H : Run _ _ |- _ =>
-      (* We make a duplicate for future calls *)
-      pose H;
-      destruct H
-    end.
 End Host.
