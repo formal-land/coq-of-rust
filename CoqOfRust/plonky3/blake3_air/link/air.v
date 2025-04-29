@@ -10,13 +10,13 @@ Module Blake3Air.
   Parameter to_value : t -> Value.t.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "alloc::alloc::Global";
+    Φ := Ty.path "plonky3::blake3_air::Blake3Air";
     φ := to_value;
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "plonky3::blake3-air::Blake3Air").
+  Definition of_ty : OfTy.t (Ty.path "plonky3::blake3_air::Blake3Air").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add apply of_ty : of_ty.
+  Smpl Add apply of_ty : of_ty. 
 End Blake3Air.
 
 Module Impl_Blake3Air.
