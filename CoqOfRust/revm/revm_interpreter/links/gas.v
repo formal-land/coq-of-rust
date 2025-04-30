@@ -3,7 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import core.links.clone.
 Require core.links.cmp.
 Require Import core.links.default.
-Require core.links.option.
+Require Import core.links.option.
 Require Import core.mem.links.mod.
 Require core.mem.mod.
 Require Import core.num.links.mod.
@@ -26,7 +26,7 @@ Module MemoryGas.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::gas::MemoryGas";
     φ x :=
-      Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+      Value.StructRecord "revm_interpreter::gas::MemoryGas" [] [] [
         ("words_num", φ x.(words_num));
         ("expansion_cost", φ x.(expansion_cost))
       ];
@@ -39,7 +39,7 @@ Module MemoryGas.
   Lemma of_value_with words_num words_num' expansion_cost expansion_cost' :
     words_num' = φ words_num ->
     expansion_cost' = φ expansion_cost ->
-    Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+    Value.StructRecord "revm_interpreter::gas::MemoryGas" [] [] [
       ("words_num", words_num');
       ("expansion_cost", expansion_cost')
     ] = φ (Build_t words_num expansion_cost).
@@ -50,7 +50,7 @@ Module MemoryGas.
     words_num' = φ words_num ->
     expansion_cost' = φ expansion_cost ->
     OfValue.t (
-      Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+      Value.StructRecord "revm_interpreter::gas::MemoryGas" [] [] [
         ("words_num", words_num');
         ("expansion_cost", expansion_cost')
       ]
@@ -172,9 +172,9 @@ Module MemoryExtensionResult.
     Φ := Ty.path "revm_interpreter::gas::MemoryExtensionResult";
     φ x :=
       match x with
-      | Extended => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []
-      | Same => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []
-      | OutOfGas => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
+      | Extended => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] [] []
+      | Same => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] [] []
+      | OutOfGas => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] [] []
       end;
   }.
 
@@ -183,32 +183,32 @@ Module MemoryExtensionResult.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with_Extended :
-    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] = φ Extended.
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] [] [] = φ Extended.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Extended : of_value.
 
   Lemma of_value_with_Same :
-    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] = φ Same.
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] [] [] = φ Same.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Same : of_value.
 
   Lemma of_value_with_OutOfGas :
-    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] = φ OutOfGas.
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] [] [] = φ OutOfGas.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_OutOfGas : of_value.
 
   Definition of_value_Extended :
-    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] [] []).
   Proof. econstructor; apply of_value_with_Extended. Defined.
   Smpl Add apply of_value_Extended : of_value.
 
   Definition of_value_Same :
-    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] [] []).
   Proof. econstructor; apply of_value_with_Same. Defined.
   Smpl Add apply of_value_Same : of_value.
 
   Definition of_value_OutOfGas :
-    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] [] []).
   Proof. econstructor; apply of_value_with_OutOfGas. Defined.
   Smpl Add apply of_value_OutOfGas : of_value.
 End MemoryExtensionResult.
@@ -239,7 +239,7 @@ Module Gas.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::gas::Gas";
     φ x :=
-      Value.StructRecord "revm_interpreter::gas::Gas" [
+      Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
         ("limit", φ x.(limit));
         ("remaining", φ x.(remaining));
         ("refunded", φ x.(refunded));
@@ -256,7 +256,7 @@ Module Gas.
     remaining' = φ remaining ->
     refunded' = φ refunded ->
     memory' = φ memory ->
-    Value.StructRecord "revm_interpreter::gas::Gas" [
+    Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
       ("limit", limit');
       ("remaining", remaining');
       ("refunded", refunded');
@@ -275,7 +275,7 @@ Module Gas.
     refunded' = φ refunded ->
     memory' = φ memory ->
     OfValue.t (
-      Value.StructRecord "revm_interpreter::gas::Gas" [
+      Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
         ("limit", limit');
         ("remaining", remaining');
         ("refunded", refunded');

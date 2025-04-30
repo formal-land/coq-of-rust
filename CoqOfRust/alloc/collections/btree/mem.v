@@ -102,7 +102,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ] :=
                 M.alloc (|
-                  Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" []
+                  Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" [] [] []
                 |) in
               let~ value : Ty.apply (Ty.path "*") [] [ T ] :=
                 M.alloc (|

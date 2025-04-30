@@ -167,9 +167,16 @@ Module checked.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "f64";
+                        Ty.path "result_chaining_with_question_mark::checked::MathError"
+                      ]
                       [
                         Value.StructTuple
                           "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
+                          []
+                          []
                           []
                       ]
                   |)));
@@ -178,6 +185,11 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "f64";
+                        Ty.path "result_chaining_with_question_mark::checked::MathError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "f64",
@@ -240,9 +252,16 @@ Module checked.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "f64";
+                        Ty.path "result_chaining_with_question_mark::checked::MathError"
+                      ]
                       [
                         Value.StructTuple
                           "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
+                          []
+                          []
                           []
                       ]
                   |)));
@@ -251,6 +270,11 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "f64";
+                        Ty.path "result_chaining_with_question_mark::checked::MathError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "f64",
@@ -313,9 +337,16 @@ Module checked.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "f64";
+                        Ty.path "result_chaining_with_question_mark::checked::MathError"
+                      ]
                       [
                         Value.StructTuple
                           "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+                          []
+                          []
                           []
                       ]
                   |)));
@@ -324,6 +355,11 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "f64";
+                        Ty.path "result_chaining_with_question_mark::checked::MathError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "f64",

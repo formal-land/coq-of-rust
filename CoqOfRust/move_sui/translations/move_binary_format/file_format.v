@@ -65,6 +65,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::ModuleHandleIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -354,6 +356,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::ModuleHandleIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -555,7 +559,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -653,6 +657,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::StructHandleIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -942,6 +948,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::StructHandleIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1143,7 +1151,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructHandle" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructHandle" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -1241,6 +1249,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::FunctionHandleIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -1530,6 +1540,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::FunctionHandleIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1731,7 +1743,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -1829,6 +1841,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::FieldHandleIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -2118,6 +2132,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::FieldHandleIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2319,7 +2335,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -2420,6 +2436,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::StructDefInstantiationIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -2716,6 +2734,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::StructDefInstantiationIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2922,7 +2942,7 @@ Module file_format.
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" []
+          Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [] [] []
         |))).
     
     (*
@@ -3021,6 +3041,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::FunctionInstantiationIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -3310,6 +3332,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::FunctionInstantiationIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3513,7 +3537,7 @@ Module file_format.
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" []
+          Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [] [] []
         |))).
     
     (*
@@ -3612,6 +3636,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::FieldInstantiationIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -3901,6 +3927,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::FieldInstantiationIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4102,7 +4130,9 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [] |))).
+        (M.alloc (|
+          Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [] [] []
+        |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -4200,6 +4230,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::IdentifierIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -4487,6 +4519,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::IdentifierIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4688,7 +4722,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Identifier" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Identifier" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -4786,6 +4820,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::AddressIdentifierIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -5075,6 +5111,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::AddressIdentifierIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5276,7 +5314,9 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::AddressIdentifier" [] |))).
+        (M.alloc (|
+          Value.StructTuple "move_binary_format::IndexKind::AddressIdentifier" [] [] []
+        |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -5374,6 +5414,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::ConstantPoolIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -5663,6 +5705,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::ConstantPoolIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5864,7 +5908,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -5962,6 +6006,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::SignatureIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -6247,7 +6293,11 @@ Module file_format.
       | [], [], [ idx ] =>
         ltac:(M.monadic
           (let idx := M.alloc (| idx |) in
-          Value.StructTuple "move_binary_format::file_format::SignatureIndex" [ M.read (| idx |) ]))
+          Value.StructTuple
+            "move_binary_format::file_format::SignatureIndex"
+            []
+            []
+            [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6448,7 +6498,7 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Signature" [] |))).
+        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::Signature" [] [] [] |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -6546,6 +6596,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::StructDefinitionIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -6835,6 +6887,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::StructDefinitionIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7036,7 +7090,9 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [] |))).
+        (M.alloc (|
+          Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [] [] []
+        |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -7134,6 +7190,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::FunctionDefinitionIndex"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u16",
@@ -7423,6 +7481,8 @@ Module file_format.
           (let idx := M.alloc (| idx |) in
           Value.StructTuple
             "move_binary_format::file_format::FunctionDefinitionIndex"
+            []
+            []
             [ M.read (| idx |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7624,7 +7684,9 @@ Module file_format.
     (* Ty.path "move_binary_format::IndexKind" *)
     Definition value_KIND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
-        (M.alloc (| Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [] |))).
+        (M.alloc (|
+          Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [] [] []
+        |))).
     
     (*
                 fn into_index(self) -> usize {
@@ -7744,6 +7806,8 @@ Module file_format.
       (M.alloc (|
         Value.StructTuple
           "move_binary_format::file_format::SignatureIndex"
+          []
+          []
           [ Value.Integer IntegerKind.U16 0 ]
       |))).
   
@@ -7775,6 +7839,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::ModuleHandle"
+            []
+            []
             [
               ("address",
                 M.call_closure (|
@@ -8427,6 +8493,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::StructHandle"
+            []
+            []
             [
               ("module",
                 M.call_closure (|
@@ -10481,6 +10549,21 @@ Module file_format.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -10563,6 +10646,21 @@ Module file_format.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10644,6 +10742,21 @@ Module file_format.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -10730,9 +10843,21 @@ Module file_format.
                 |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -10931,9 +11056,21 @@ Module file_format.
                 |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::file_format::Visibility" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -11035,9 +11172,21 @@ Module file_format.
                 mk_str (| "AbilitySet" |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'5::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -11088,6 +11237,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FunctionHandle"
+            []
+            []
             [
               ("module",
                 M.call_closure (|
@@ -11851,6 +12002,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FieldHandle"
+            []
+            []
             [
               ("owner",
                 M.call_closure (|
@@ -12272,6 +12425,8 @@ Module file_format.
                       Value.StructTuple
                         "move_binary_format::file_format::StructFieldInformation::Native"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -12286,6 +12441,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::StructFieldInformation::Declared"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -12627,6 +12784,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::StructDefInstantiation"
+            []
+            []
             [
               ("def",
                 M.call_closure (|
@@ -13019,6 +13178,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FunctionInstantiation"
+            []
+            []
             [
               ("handle",
                 M.call_closure (|
@@ -13411,6 +13572,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FieldInstantiation"
+            []
+            []
             [
               ("handle",
                 M.call_closure (|
@@ -13803,6 +13966,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::StructDefinition"
+            []
+            []
             [
               ("struct_handle",
                 M.call_closure (|
@@ -14138,6 +14303,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "u16"; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -14159,6 +14326,8 @@ Module file_format.
                                 [
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusCode::LINKER_ERROR"
+                                    []
+                                    []
                                     []
                                 ]
                               |);
@@ -14199,6 +14368,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "u16"; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.cast
                             (Ty.path "u16")
@@ -14280,7 +14451,18 @@ Module file_format.
                         γ,
                         "move_binary_format::file_format::StructFieldInformation::Native"
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
@@ -14412,7 +14594,23 @@ Module file_format.
                         γ,
                         "move_binary_format::file_format::StructFieldInformation::Native"
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                            ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
@@ -14426,6 +14624,18 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                            ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -14496,6 +14706,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FieldDefinition"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -14817,7 +15029,7 @@ Module file_format.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple "move_binary_format::file_format::Visibility::Private" []))
+          (Value.StructTuple "move_binary_format::file_format::Visibility::Private" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -15249,9 +15461,13 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "move_binary_format::file_format::Visibility"; Ty.tuple [] ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format::Visibility::Private"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -15287,7 +15503,14 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format::Visibility::Public" []
+                        []
+                        [ Ty.path "move_binary_format::file_format::Visibility"; Ty.tuple [] ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format::Visibility::Public"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -15322,13 +15545,24 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format::Visibility::Friend" []
+                        []
+                        [ Ty.path "move_binary_format::file_format::Visibility"; Ty.tuple [] ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format::Visibility::Friend"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ Ty.path "move_binary_format::file_format::Visibility"; Ty.tuple [] ]
+                        [ Value.Tuple [] ]
                     |)))
               ]
             |)
@@ -15383,6 +15617,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FunctionDefinition"
+            []
+            []
             [
               ("function",
                 M.call_closure (|
@@ -15691,6 +15927,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::file_format::FunctionDefinition"
+            []
+            []
             [
               ("function",
                 M.call_closure (|
@@ -16167,6 +16405,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_binary_format::file_format::TypeSignature"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "move_binary_format::file_format::SignatureToken",
@@ -16458,6 +16698,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::FunctionSignature"
+            []
+            []
             [
               ("return_",
                 M.call_closure (|
@@ -17067,6 +17309,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_binary_format::file_format::Signature"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -17188,6 +17432,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructTuple
             "move_binary_format::file_format::Signature"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -18112,7 +18358,15 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "move_binary_format::file_format::Ability::Copy" [] ]
+                        []
+                        [ Ty.path "move_binary_format::file_format::Ability" ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format::Ability::Copy"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -18124,7 +18378,15 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "move_binary_format::file_format::Ability::Drop" [] ]
+                        []
+                        [ Ty.path "move_binary_format::file_format::Ability" ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format::Ability::Drop"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -18136,7 +18398,15 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "move_binary_format::file_format::Ability::Store" [] ]
+                        []
+                        [ Ty.path "move_binary_format::file_format::Ability" ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format::Ability::Store"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -18148,10 +18418,20 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "move_binary_format::file_format::Ability::Key" [] ]
+                        []
+                        [ Ty.path "move_binary_format::file_format::Ability" ]
+                        [ Value.StructTuple "move_binary_format::file_format::Ability::Key" [] [] []
+                        ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "move_binary_format::file_format::Ability" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -18187,14 +18467,14 @@ Module file_format.
                     (let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Ability::Copy" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Ability::Copy" []
+                      Value.StructTuple "move_binary_format::file_format::Ability::Copy" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Ability::Drop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Ability::Drop" []
+                      Value.StructTuple "move_binary_format::file_format::Ability::Drop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -18204,14 +18484,14 @@ Module file_format.
                         "move_binary_format::file_format::Ability::Store"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Ability::Store" []
+                      Value.StructTuple "move_binary_format::file_format::Ability::Store" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Ability::Key" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Ability::Store" []
+                      Value.StructTuple "move_binary_format::file_format::Ability::Store" [] [] []
                     |)))
               ]
             |)
@@ -18267,7 +18547,11 @@ Module file_format.
                               Ty.path "move_binary_format::file_format::AbilitySet"
                             |)
                           |);
-                          Value.StructTuple "move_binary_format::file_format::Ability::Copy" []
+                          Value.StructTuple
+                            "move_binary_format::file_format::Ability::Copy"
+                            []
+                            []
+                            []
                         ]
                       |)
                     |)));
@@ -18295,7 +18579,11 @@ Module file_format.
                               Ty.path "move_binary_format::file_format::AbilitySet"
                             |)
                           |);
-                          Value.StructTuple "move_binary_format::file_format::Ability::Drop" []
+                          Value.StructTuple
+                            "move_binary_format::file_format::Ability::Drop"
+                            []
+                            []
+                            []
                         ]
                       |)
                     |)));
@@ -18338,10 +18626,14 @@ Module file_format.
                                   Ty.path "move_binary_format::file_format::AbilitySet"
                                 |)
                               |);
-                              Value.StructTuple "move_binary_format::file_format::Ability::Store" []
+                              Value.StructTuple
+                                "move_binary_format::file_format::Ability::Store"
+                                []
+                                []
+                                []
                             ]
                           |);
-                          Value.StructTuple "move_binary_format::file_format::Ability::Key" []
+                          Value.StructTuple "move_binary_format::file_format::Ability::Key" [] [] []
                         ]
                       |)
                     |)));
@@ -18671,6 +18963,8 @@ Module file_format.
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [ Value.Integer IntegerKind.U8 0 ]
         |))).
     
@@ -18689,6 +18983,8 @@ Module file_format.
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -18762,6 +19058,8 @@ Module file_format.
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -18814,6 +19112,8 @@ Module file_format.
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.cast
                 (Ty.path "u8")
@@ -18848,6 +19148,8 @@ Module file_format.
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -18929,6 +19231,8 @@ Module file_format.
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -19027,6 +19331,8 @@ Module file_format.
           (let ability := M.alloc (| ability |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [ M.cast (Ty.path "u8") (M.read (| ability |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -19103,7 +19409,7 @@ Module file_format.
             |),
             [
               M.read (| self |);
-              Value.StructTuple "move_binary_format::file_format::Ability::Copy" []
+              Value.StructTuple "move_binary_format::file_format::Ability::Copy" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -19133,7 +19439,7 @@ Module file_format.
             |),
             [
               M.read (| self |);
-              Value.StructTuple "move_binary_format::file_format::Ability::Drop" []
+              Value.StructTuple "move_binary_format::file_format::Ability::Drop" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -19163,7 +19469,7 @@ Module file_format.
             |),
             [
               M.read (| self |);
-              Value.StructTuple "move_binary_format::file_format::Ability::Store" []
+              Value.StructTuple "move_binary_format::file_format::Ability::Store" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -19194,7 +19500,7 @@ Module file_format.
             |),
             [
               M.read (| self |);
-              Value.StructTuple "move_binary_format::file_format::Ability::Key" []
+              Value.StructTuple "move_binary_format::file_format::Ability::Key" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -19217,6 +19523,8 @@ Module file_format.
           let ability := M.alloc (| ability |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -19253,6 +19561,8 @@ Module file_format.
           let other := M.alloc (| other |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -19296,6 +19606,8 @@ Module file_format.
           let other := M.alloc (| other |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -19589,6 +19901,11 @@ Module file_format.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::AbilitySet";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -19610,6 +19927,8 @@ Module file_format.
                                             [
                                               Value.StructTuple
                                                 "move_core_types::vm_status::StatusCode::VERIFIER_INVARIANT_VIOLATION"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |);
@@ -20319,7 +20638,16 @@ Module file_format.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| abs |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::AbilitySet";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                    [ M.read (| abs |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -20394,14 +20722,25 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format::AbilitySet"
+                            []
+                            []
                             [ M.read (| byte |) ]
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -20456,6 +20795,8 @@ Module file_format.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -20504,6 +20845,8 @@ Module file_format.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_binary_format::file_format::AbilitySet"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -20737,7 +21080,13 @@ Module file_format.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "move_binary_format::file_format::Ability" ]
+                    []
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -20776,6 +21125,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::AbilitySetIterator"
+            []
+            []
             [ ("idx", Value.Integer IntegerKind.U8 1); ("set", M.read (| self |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -21434,7 +21785,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::Bool" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::Bool"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21445,7 +21800,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::U8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::U8" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::U8"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21456,7 +21815,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::U64" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::U64"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21467,7 +21830,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::U128" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::U128"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21481,6 +21848,8 @@ Module file_format.
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::Address"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21491,7 +21860,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::Signer"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::Signer" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::Signer"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21506,6 +21879,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -21547,6 +21922,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructHandleIndex",
@@ -21576,6 +21953,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::StructInstantiation"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -21637,6 +22016,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::Reference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -21678,6 +22059,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::MutableReference"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -21719,6 +22102,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::SignatureToken::TypeParameter"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -21744,7 +22129,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::U16" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::U16"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21755,7 +22144,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::U32" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::U32"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -21766,7 +22159,11 @@ Module file_format.
                         "move_binary_format::file_format::SignatureToken::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::SignatureToken::U256" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::SignatureToken::U256"
+                        []
+                        []
+                        []
                     |)))
               ]
             |)
@@ -22490,7 +22887,7 @@ Module file_format.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)));
                 fun γ =>
@@ -23890,12 +24287,30 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                        ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tok |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -24730,6 +25145,17 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                              Ty.path "usize"
+                            ]
+                        ]
                         [
                           Value.Tuple
                             [
@@ -24741,7 +25167,22 @@ Module file_format.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                              Ty.path "usize"
+                            ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -25867,7 +26308,7 @@ Module file_format.
                         0
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::SignatureTokenKind::Reference" []
+                      Value.StructTuple "move_binary_format::SignatureTokenKind::Reference" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -25881,6 +26322,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::SignatureTokenKind::MutableReference"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -26006,7 +26449,11 @@ Module file_format.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "move_binary_format::SignatureTokenKind::Value" []
+                                Value.StructTuple
+                                  "move_binary_format::SignatureTokenKind::Value"
+                                  []
+                                  []
+                                  []
                               |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
@@ -26021,7 +26468,7 @@ Module file_format.
                         0
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::SignatureTokenKind::Value" []
+                      Value.StructTuple "move_binary_format::SignatureTokenKind::Value" [] [] []
                     |)))
               ]
             |)
@@ -26914,6 +27361,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::SignatureTokenPreorderTraversalIter"
+            []
+            []
             [
               ("stack",
                 M.call_closure (|
@@ -27020,6 +27469,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::SignatureTokenPreorderTraversalIterWithDepth"
+            []
+            []
             [
               ("stack",
                 M.call_closure (|
@@ -27163,6 +27614,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::Constant"
+            []
+            []
             [
               ("type_",
                 M.call_closure (|
@@ -27576,6 +28029,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::CodeUnit"
+            []
+            []
             [
               ("locals",
                 M.call_closure (|
@@ -27743,6 +28198,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::file_format::CodeUnit"
+            []
+            []
             [
               ("locals",
                 M.call_closure (|
@@ -28475,7 +28932,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Pop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Pop" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Pop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28483,7 +28940,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Ret" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Ret" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Ret" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28498,6 +28955,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::BrTrue"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -28527,6 +28986,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::BrFalse"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -28556,6 +29017,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::Branch"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -28585,6 +29048,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdU8"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -28614,6 +29079,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdU64"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u64",
@@ -28643,6 +29110,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdU128"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -28674,7 +29143,7 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::CastU8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU8" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU8" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28685,7 +29154,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::CastU64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU64" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::CastU64"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28696,7 +29169,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::CastU128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU128" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::CastU128"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28711,6 +29188,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdConst"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::ConstantPoolIndex",
@@ -28736,7 +29215,7 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::LdTrue"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::LdTrue" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::LdTrue" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28747,7 +29226,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::LdFalse"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::LdFalse" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::LdFalse"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -28762,6 +29245,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::CopyLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -28791,6 +29276,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MoveLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -28820,6 +29307,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::StLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -28849,6 +29338,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::FunctionHandleIndex",
@@ -28878,6 +29369,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::CallGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::FunctionInstantiationIndex",
@@ -28907,6 +29400,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::Pack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -28936,6 +29431,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::PackGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -28966,6 +29463,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::Unpack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -28995,6 +29494,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::UnpackGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -29021,7 +29522,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::ReadRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::ReadRef" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::ReadRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29032,7 +29537,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::WriteRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::WriteRef" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::WriteRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29043,7 +29552,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::FreezeRef"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::FreezeRef" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::FreezeRef"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29058,6 +29571,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MutBorrowLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -29087,6 +29602,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ImmBorrowLoc"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -29116,6 +29633,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MutBorrowField"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::FieldHandleIndex",
@@ -29145,6 +29664,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MutBorrowFieldGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::FieldInstantiationIndex",
@@ -29174,6 +29695,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ImmBorrowField"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::FieldHandleIndex",
@@ -29203,6 +29726,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ImmBorrowFieldGeneric"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::FieldInstantiationIndex",
@@ -29225,7 +29750,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Add" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Add" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Add" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29233,7 +29758,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Sub" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Sub" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Sub" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29241,7 +29766,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Mul" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Mul" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Mul" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29249,7 +29774,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Mod" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Mod" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Mod" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29257,7 +29782,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Div" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Div" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Div" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29268,7 +29793,7 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::BitOr"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::BitOr" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::BitOr" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29279,7 +29804,7 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::BitAnd"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::BitAnd" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::BitAnd" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29287,7 +29812,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Xor" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Xor" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Xor" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29295,7 +29820,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Or" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Or" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Or" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29303,7 +29828,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::And" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::And" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::And" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29311,7 +29836,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Not" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Not" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Not" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29319,7 +29844,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Eq" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Eq" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Eq" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29327,7 +29852,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Neq" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Neq" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Neq" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29335,7 +29860,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Lt" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Lt" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Lt" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29343,7 +29868,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Gt" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Gt" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Gt" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29351,7 +29876,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Le" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Le" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Le" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29359,7 +29884,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Ge" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Ge" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Ge" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29370,7 +29895,7 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::Abort"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Abort" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Abort" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29378,7 +29903,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Nop" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Nop" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Nop" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29386,7 +29911,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Shl" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Shl" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Shl" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29394,7 +29919,7 @@ Module file_format.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Shr" |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::Shr" []
+                      Value.StructTuple "move_binary_format::file_format::Bytecode::Shr" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29416,6 +29941,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecPack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29458,6 +29985,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecLen"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29487,6 +30016,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecImmBorrow"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29516,6 +30047,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecMutBorrow"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29545,6 +30078,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecPushBack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29574,6 +30109,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecPopBack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29610,6 +30147,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecUnpack"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29652,6 +30191,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::VecSwap"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -29681,6 +30222,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdU16"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -29710,6 +30253,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdU32"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u32",
@@ -29739,6 +30284,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::LdU256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -29776,7 +30323,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::CastU16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU16" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::CastU16"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29787,7 +30338,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::CastU32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU32" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::CastU32"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29798,7 +30353,11 @@ Module file_format.
                         "move_binary_format::file_format::Bytecode::CastU256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::file_format::Bytecode::CastU256" []
+                      Value.StructTuple
+                        "move_binary_format::file_format::Bytecode::CastU256"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -29813,6 +30372,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ExistsDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -29842,6 +30403,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ExistsGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -29872,6 +30435,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MoveFromDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -29901,6 +30466,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MoveFromGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -29931,6 +30498,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MoveToDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -29960,6 +30529,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MoveToGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -29990,6 +30561,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MutBorrowGlobalDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -30019,6 +30592,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::MutBorrowGlobalGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -30049,6 +30624,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ImmBorrowGlobalDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -30078,6 +30655,8 @@ Module file_format.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::file_format::Bytecode::ImmBorrowGlobalGenericDeprecated"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::file_format::StructDefInstantiationIndex",
@@ -31918,6 +32497,8 @@ Module file_format.
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -31929,7 +32510,14 @@ Module file_format.
                           end)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -40060,6 +40648,8 @@ Module file_format.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::file_format::CompiledModule"
+            []
+            []
             [
               ("version",
                 M.call_closure (|
@@ -41169,6 +41759,8 @@ Module file_format.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::file_format::CompiledModule"
+            []
+            []
             [
               ("version",
                 M.call_closure (|
@@ -48013,6 +48605,11 @@ Module file_format.
                                   (M.alloc (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::AbilitySet";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.read (|
                                           get_associated_constant (|
@@ -48060,6 +48657,11 @@ Module file_format.
                                   (M.alloc (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::AbilitySet";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.read (|
                                           get_associated_constant (|
@@ -48084,6 +48686,11 @@ Module file_format.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::AbilitySet";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ]
                             [
                               M.read (|
                                 get_associated_constant (|
@@ -48107,6 +48714,11 @@ Module file_format.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::AbilitySet";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ]
                             [
                               M.read (|
                                 M.SubPointer.get_array_field (|
@@ -48476,6 +49088,11 @@ Module file_format.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::AbilitySet";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ]
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -49446,6 +50063,8 @@ Module file_format.
       ltac:(M.monadic
         (Value.StructRecord
           "move_binary_format::file_format::CompiledModule"
+          []
+          []
           [
             ("version",
               M.read (|
@@ -49508,14 +50127,20 @@ Module file_format.
                               [
                                 Value.StructRecord
                                   "move_binary_format::file_format::ModuleHandle"
+                                  []
+                                  []
                                   [
                                     ("address",
                                       Value.StructTuple
                                         "move_binary_format::file_format::AddressIdentifierIndex"
+                                        []
+                                        []
                                         [ Value.Integer IntegerKind.U16 0 ]);
                                     ("name",
                                       Value.StructTuple
                                         "move_binary_format::file_format::IdentifierIndex"
+                                        []
+                                        []
                                         [ Value.Integer IntegerKind.U16 0 ])
                                   ]
                               ]
@@ -49528,6 +50153,8 @@ Module file_format.
             ("self_module_handle_idx",
               Value.StructTuple
                 "move_binary_format::file_format::ModuleHandleIndex"
+                []
+                []
                 [ Value.Integer IntegerKind.U16 0 ]);
             ("identifiers",
               M.call_closure (|
@@ -49987,6 +50614,8 @@ Module file_format.
                               [
                                 Value.StructTuple
                                   "move_binary_format::file_format::Signature"
+                                  []
+                                  []
                                   [
                                     M.call_closure (|
                                       Ty.apply
@@ -50119,14 +50748,20 @@ Module file_format.
                   |);
                   Value.StructRecord
                     "move_binary_format::file_format::FunctionHandle"
+                    []
+                    []
                     [
                       ("module",
                         Value.StructTuple
                           "move_binary_format::file_format::ModuleHandleIndex"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U16 0 ]);
                       ("name",
                         Value.StructTuple
                           "move_binary_format::file_format::IdentifierIndex"
+                          []
+                          []
                           [
                             M.cast
                               (Ty.path "u16")
@@ -50159,10 +50794,14 @@ Module file_format.
                       ("parameters",
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureIndex"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U16 0 ]);
                       ("return_",
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureIndex"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U16 0 ]);
                       ("type_parameters",
                         M.call_closure (|
@@ -50291,14 +50930,20 @@ Module file_format.
                   |);
                   Value.StructRecord
                     "move_binary_format::file_format::FunctionDefinition"
+                    []
+                    []
                     [
                       ("function",
                         Value.StructTuple
                           "move_binary_format::file_format::FunctionHandleIndex"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U16 0 ]);
                       ("visibility",
                         Value.StructTuple
                           "move_binary_format::file_format::Visibility::Private"
+                          []
+                          []
                           []);
                       ("is_entry", Value.Bool false);
                       ("acquires_global_resources",
@@ -50327,13 +50972,19 @@ Module file_format.
                       ("code",
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                           [
                             Value.StructRecord
                               "move_binary_format::file_format::CodeUnit"
+                              []
+                              []
                               [
                                 ("locals",
                                   Value.StructTuple
                                     "move_binary_format::file_format::SignatureIndex"
+                                    []
+                                    []
                                     [ Value.Integer IntegerKind.U16 0 ]);
                                 ("code",
                                   M.call_closure (|
@@ -50396,6 +51047,8 @@ Module file_format.
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::Bytecode::Ret"
                                                       []
+                                                      []
+                                                      []
                                                   ]
                                               |)
                                             ]
@@ -50436,14 +51089,20 @@ Module file_format.
                   |);
                   Value.StructRecord
                     "move_binary_format::file_format::StructHandle"
+                    []
+                    []
                     [
                       ("module",
                         Value.StructTuple
                           "move_binary_format::file_format::ModuleHandleIndex"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U16 0 ]);
                       ("name",
                         Value.StructTuple
                           "move_binary_format::file_format::IdentifierIndex"
+                          []
+                          []
                           [
                             M.cast
                               (Ty.path "u16")
@@ -50608,14 +51267,20 @@ Module file_format.
                   |);
                   Value.StructRecord
                     "move_binary_format::file_format::StructDefinition"
+                    []
+                    []
                     [
                       ("struct_handle",
                         Value.StructTuple
                           "move_binary_format::file_format::StructHandleIndex"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U16 0 ]);
                       ("field_information",
                         Value.StructTuple
                           "move_binary_format::file_format::StructFieldInformation::Declared"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -50676,10 +51341,14 @@ Module file_format.
                                             [
                                               Value.StructRecord
                                                 "move_binary_format::file_format::FieldDefinition"
+                                                []
+                                                []
                                                 [
                                                   ("name",
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::IdentifierIndex"
+                                                      []
+                                                      []
                                                       [
                                                         M.cast
                                                           (Ty.path "u16")
@@ -50713,9 +51382,13 @@ Module file_format.
                                                   ("signature",
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::TypeSignature"
+                                                      []
+                                                      []
                                                       [
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::SignatureToken::U64"
+                                                          []
+                                                          []
                                                           []
                                                       ])
                                                 ]

@@ -154,7 +154,7 @@ Module collections.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| other |) |)
                                           |);
-                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                         ]
                                       |)
                                     |)
@@ -407,7 +407,7 @@ Module collections.
                                               M.read (| M.deref (| M.read (| other |) |) |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                         ]
                                       |)
                                     |)
@@ -661,7 +661,7 @@ Module collections.
                                               M.read (| M.deref (| M.read (| other |) |) |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                         ]
                                       |)
                                     |)
@@ -919,7 +919,7 @@ Module collections.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| other |) |)
                                           |);
-                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                         ]
                                       |)
                                     |)
@@ -1180,7 +1180,7 @@ Module collections.
                                               M.read (| M.deref (| M.read (| other |) |) |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                         ]
                                       |)
                                     |)
@@ -1442,7 +1442,7 @@ Module collections.
                                               M.read (| M.deref (| M.read (| other |) |) |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                         ]
                                       |)
                                     |)

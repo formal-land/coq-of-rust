@@ -33,6 +33,8 @@ Module metadata.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::metadata::Metadata"
+            []
+            []
             [
               ("key",
                 M.call_closure (|
@@ -460,6 +462,21 @@ Module metadata.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -547,6 +564,21 @@ Module metadata.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -633,6 +665,21 @@ Module metadata.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -719,9 +766,21 @@ Module metadata.
                 |);
                 Value.StructRecord
                   "move_core_types::metadata::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::metadata::Metadata" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))

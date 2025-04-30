@@ -94,6 +94,8 @@ Module struct_defs.
                                     M.read (| e |);
                                     Value.StructTuple
                                       "move_binary_format::errors::Location::Module"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -166,6 +168,8 @@ Module struct_defs.
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker"
+                      []
+                      []
                       [ ("module", M.read (| module |)) ]
                   |) in
                 let~ graph :
@@ -410,7 +414,32 @@ Module struct_defs.
                       |),
                       [
                         M.borrow (| Pointer.Kind.Ref, graph |);
-                        Value.StructTuple "core::option::Option::None" []
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "petgraph::algo::DfsSpace")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::StructDefinitionIndex";
+                                    Ty.apply
+                                      (Ty.path "std::collections::hash::set::HashSet")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex";
+                                        Ty.path "std::hash::random::RandomState"
+                                      ]
+                                  ]
+                              ]
+                          ]
+                          []
                       ]
                     |)
                   |),
@@ -424,7 +453,11 @@ Module struct_defs.
                             0
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -438,6 +471,8 @@ Module struct_defs.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                             [
                               M.call_closure (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
@@ -449,9 +484,13 @@ Module struct_defs.
                                 [
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusCode::RECURSIVE_STRUCT_DEFINITION"
+                                    []
+                                    []
                                     [];
                                   Value.StructTuple
                                     "move_binary_format::IndexKind::StructDefinition"
+                                    []
+                                    []
                                     [];
                                   M.cast
                                     (Ty.path "u16")
@@ -835,6 +874,8 @@ Module struct_defs.
                                               M.read (| sh_idx |);
                                               Value.StructTuple
                                                 "move_binary_format::file_format::StructDefinitionIndex"
+                                                []
+                                                []
                                                 [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                             ]
                                           |)
@@ -849,6 +890,8 @@ Module struct_defs.
             M.alloc (|
               Value.StructRecord
                 "move_bytecode_verifier::struct_defs::StructDefGraphBuilder"
+                []
+                []
                 [ ("module", M.read (| module |)); ("handle_to_def", M.read (| handle_to_def |)) ]
             |)
           |)))
@@ -972,6 +1015,8 @@ Module struct_defs.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
@@ -1825,6 +1870,18 @@ Module struct_defs.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "petgraph::graphmap::GraphMap")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                          Ty.tuple [];
+                          Ty.path "petgraph::Directed"
+                        ];
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -2452,7 +2509,13 @@ Module struct_defs.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2674,6 +2737,11 @@ Module struct_defs.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ]
                                               [
                                                 M.call_closure (|
                                                   Ty.path
@@ -2699,6 +2767,8 @@ Module struct_defs.
                                                       [
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |);
@@ -3562,7 +3632,13 @@ Module struct_defs.
                           |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

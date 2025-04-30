@@ -169,6 +169,8 @@ Module main.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "u32" ]
                         [ ("start", Value.Integer IntegerKind.U32 0); ("end_", M.read (| up_to |)) ]
                     ]
                   |)

@@ -44,19 +44,17 @@ Module Interpreter.
       Link (t WIRE WIRE_types) := {
     Φ := Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ Φ WIRE ];
     φ x :=
-      Value.StructRecord
-        "revm_interpreter::interpreter::Interpreter"
-        [
-          ("bytecode", φ x.(bytecode));
-          ("stack", φ x.(stack));
-          ("return_data", φ x.(return_data));
-          ("memory", φ x.(memory));
-          ("input", φ x.(input));
-          ("sub_routine", φ x.(sub_routine));
-          ("control", φ x.(control));
-          ("runtime_flag", φ x.(runtime_flag));
-          ("extend", φ x.(extend))
-        ];
+      Value.StructRecord "revm_interpreter::interpreter::Interpreter" [] [] [
+        ("bytecode", φ x.(bytecode));
+        ("stack", φ x.(stack));
+        ("return_data", φ x.(return_data));
+        ("memory", φ x.(memory));
+        ("input", φ x.(input));
+        ("sub_routine", φ x.(sub_routine));
+        ("control", φ x.(control));
+        ("runtime_flag", φ x.(runtime_flag));
+        ("extend", φ x.(extend))
+      ];
   }.
 
   (** This requires to have an instance of the trait [InterpreterTypes] in context *)

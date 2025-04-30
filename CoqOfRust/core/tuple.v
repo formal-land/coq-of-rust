@@ -868,7 +868,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -902,7 +904,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -1044,7 +1048,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -1078,7 +1084,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -1220,7 +1228,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -1254,7 +1264,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -1396,7 +1408,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -1430,7 +1444,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -2200,7 +2216,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -2234,7 +2252,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -2330,7 +2350,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -2365,7 +2393,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -2509,7 +2539,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -2543,7 +2575,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -2639,7 +2673,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -2674,7 +2716,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -2818,7 +2862,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -2852,7 +2898,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -2948,7 +2996,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -2983,7 +3039,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -3127,7 +3186,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -3161,7 +3222,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -3257,7 +3320,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -3292,7 +3363,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -4231,7 +4305,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -4265,7 +4341,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -4361,7 +4439,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -4396,7 +4482,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -4492,9 +4580,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -4534,7 +4626,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -4680,7 +4780,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -4714,7 +4816,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -4810,7 +4914,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -4845,7 +4957,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -4941,9 +5055,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -4983,7 +5101,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -5129,7 +5255,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -5163,7 +5291,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -5259,7 +5389,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -5294,7 +5432,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -5390,9 +5531,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -5432,9 +5577,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -5582,7 +5731,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -5616,7 +5767,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -5712,7 +5865,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -5747,7 +5908,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -5843,9 +6007,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -5885,9 +6053,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -7022,7 +7194,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -7056,7 +7230,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -7152,7 +7328,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -7187,7 +7371,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -7283,9 +7469,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -7325,7 +7515,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -7421,9 +7619,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -7463,9 +7665,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -7615,7 +7821,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -7649,7 +7857,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -7745,7 +7955,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -7780,7 +7998,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -7876,9 +8096,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -7918,7 +8142,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -8014,9 +8246,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -8056,9 +8292,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -8208,7 +8448,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -8242,7 +8484,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -8338,7 +8582,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -8373,7 +8625,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -8469,9 +8724,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -8511,9 +8770,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -8611,9 +8874,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -8653,9 +8920,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -8805,7 +9076,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -8839,7 +9112,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -8935,7 +9210,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -8970,7 +9253,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -9066,9 +9352,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -9108,9 +9398,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -9208,9 +9502,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -9250,9 +9548,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -10574,7 +10876,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -10608,7 +10912,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -10704,7 +11010,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -10739,7 +11053,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -10835,9 +11151,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -10877,7 +11197,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -10973,9 +11301,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -11015,9 +11347,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -11115,9 +11451,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -11157,9 +11498,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -11311,7 +11656,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -11345,7 +11692,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -11441,7 +11790,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -11476,7 +11833,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -11572,9 +11931,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -11614,7 +11977,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -11710,9 +12081,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -11752,9 +12127,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -11852,9 +12231,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -11894,9 +12278,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -12048,7 +12436,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -12082,7 +12472,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -12178,7 +12570,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -12213,7 +12613,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -12309,9 +12712,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -12351,9 +12758,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -12451,9 +12862,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -12493,9 +12908,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -12593,9 +13012,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -12635,9 +13059,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -12789,7 +13217,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -12823,7 +13253,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -12919,7 +13351,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -12954,7 +13394,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -13050,9 +13493,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -13092,9 +13539,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -13192,9 +13643,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -13234,9 +13689,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -13334,9 +13793,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -13376,9 +13840,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -14920,7 +15388,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -14954,7 +15424,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -15050,7 +15522,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -15085,7 +15565,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -15181,9 +15663,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -15223,7 +15709,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -15319,9 +15813,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -15361,9 +15859,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -15461,9 +15963,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -15503,9 +16010,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -15616,9 +16127,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -15666,9 +16184,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -15831,7 +16356,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -15865,7 +16392,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -15961,7 +16490,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -15996,7 +16533,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -16092,9 +16631,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -16134,7 +16677,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -16230,9 +16781,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -16272,9 +16827,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -16372,9 +16931,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -16414,9 +16978,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -16527,9 +17095,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -16577,9 +17152,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -16742,7 +17324,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -16776,7 +17360,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -16872,7 +17458,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -16907,7 +17501,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -17003,9 +17600,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -17045,9 +17646,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -17145,9 +17750,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -17187,9 +17796,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -17287,9 +17900,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -17329,9 +17947,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -17442,9 +18064,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -17492,9 +18121,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -17657,7 +18293,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -17691,7 +18329,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -17787,7 +18427,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -17822,7 +18470,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -17918,9 +18569,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -17960,9 +18615,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -18060,9 +18719,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -18102,9 +18765,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -18202,9 +18869,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -18244,9 +18916,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -18357,9 +19033,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -18407,9 +19090,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -20206,7 +20896,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -20240,7 +20932,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -20336,7 +21030,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -20371,7 +21073,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -20467,9 +21171,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -20509,7 +21217,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -20605,9 +21321,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -20647,9 +21367,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -20747,9 +21471,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -20789,9 +21518,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -20902,9 +21635,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -20952,9 +21692,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -21075,9 +21822,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -21128,9 +21882,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -21299,7 +22060,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -21333,7 +22096,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -21429,7 +22194,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -21464,7 +22237,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -21560,9 +22335,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -21602,7 +22381,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -21698,9 +22485,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -21740,9 +22531,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -21840,9 +22635,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -21882,9 +22682,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -21995,9 +22799,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -22045,9 +22856,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -22168,9 +22986,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -22221,9 +23046,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -22392,7 +23224,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -22426,7 +23260,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -22522,7 +23358,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -22557,7 +23401,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -22653,9 +23500,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -22695,9 +23546,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -22795,9 +23650,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -22837,9 +23696,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -22937,9 +23800,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -22979,9 +23847,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -23092,9 +23964,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -23142,9 +24021,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -23265,9 +24151,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -23318,9 +24211,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -23489,7 +24389,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -23523,7 +24425,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -23619,7 +24523,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -23654,7 +24566,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -23750,9 +24665,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -23792,9 +24711,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -23892,9 +24815,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -23934,9 +24861,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -24034,9 +24965,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -24076,9 +25012,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -24189,9 +25129,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -24239,9 +25186,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -24362,9 +25316,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -24415,9 +25376,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -26466,7 +27434,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -26500,7 +27470,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -26596,7 +27568,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -26631,7 +27611,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -26727,9 +27709,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -26769,7 +27755,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -26865,9 +27859,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -26907,9 +27905,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -27007,9 +28009,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -27049,9 +28056,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -27162,9 +28173,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -27212,9 +28230,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -27335,9 +28360,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -27388,9 +28420,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -27518,9 +28557,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -27571,9 +28617,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -27744,7 +28797,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -27778,7 +28833,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -27874,7 +28931,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -27909,7 +28974,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -28005,9 +29072,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -28047,7 +29118,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -28143,9 +29222,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -28185,9 +29268,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -28285,9 +29372,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -28327,9 +29419,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -28440,9 +29536,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -28490,9 +29593,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -28613,9 +29723,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -28666,9 +29783,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -28796,9 +29920,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -28849,9 +29980,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -29022,7 +30160,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -29056,7 +30196,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -29152,7 +30294,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -29187,7 +30337,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -29283,9 +30436,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -29325,9 +30482,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -29425,9 +30586,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -29467,9 +30632,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -29567,9 +30736,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -29609,9 +30783,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -29722,9 +30900,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -29772,9 +30957,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -29895,9 +31087,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -29948,9 +31147,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -30078,9 +31284,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -30131,9 +31344,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -30304,7 +31524,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -30338,7 +31560,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -30434,7 +31658,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -30469,7 +31701,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -30565,9 +31800,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -30607,9 +31846,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -30707,9 +31950,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -30749,9 +31996,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -30849,9 +32100,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -30891,9 +32147,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -31004,9 +32264,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -31054,9 +32321,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -31177,9 +32451,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -31230,9 +32511,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -31360,9 +32648,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -31413,9 +32708,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -33713,7 +35015,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -33747,7 +35051,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -33843,7 +35149,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -33878,7 +35192,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -33974,9 +35290,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -34016,7 +35336,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -34112,9 +35440,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -34154,9 +35486,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -34254,9 +35590,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -34296,9 +35637,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -34409,9 +35754,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -34459,9 +35811,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -34582,9 +35941,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -34635,9 +36001,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -34765,9 +36138,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -34818,9 +36198,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -34951,9 +36338,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -35008,9 +36402,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -35184,7 +36585,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -35218,7 +36621,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -35314,7 +36719,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -35349,7 +36762,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -35445,9 +36860,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -35487,7 +36906,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -35583,9 +37010,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -35625,9 +37056,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -35725,9 +37160,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -35767,9 +37207,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -35880,9 +37324,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -35930,9 +37381,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -36053,9 +37511,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -36106,9 +37571,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -36236,9 +37708,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -36289,9 +37768,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -36422,9 +37908,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -36479,9 +37972,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -36655,7 +38155,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -36689,7 +38191,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -36785,7 +38289,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -36820,7 +38332,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -36916,9 +38431,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -36958,9 +38477,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -37058,9 +38581,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -37100,9 +38627,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -37200,9 +38731,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -37242,9 +38778,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -37355,9 +38895,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -37405,9 +38952,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -37528,9 +39082,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -37581,9 +39142,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -37711,9 +39279,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -37764,9 +39339,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -37897,9 +39479,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -37954,9 +39543,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -38130,7 +39726,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -38164,7 +39762,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -38260,7 +39860,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -38295,7 +39903,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -38391,9 +40002,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -38433,9 +40048,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -38533,9 +40152,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -38575,9 +40198,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -38675,9 +40302,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -38717,9 +40349,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -38830,9 +40466,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -38880,9 +40523,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -39003,9 +40653,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -39056,9 +40713,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -39186,9 +40850,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -39239,9 +40910,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -39372,9 +41050,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -39429,9 +41114,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -41982,7 +43674,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -42016,7 +43710,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -42112,7 +43808,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -42147,7 +43851,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -42243,9 +43949,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -42285,7 +43995,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -42381,9 +44099,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -42423,9 +44145,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -42523,9 +44249,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -42565,9 +44296,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -42678,9 +44413,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -42728,9 +44470,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -42851,9 +44600,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -42904,9 +44660,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -43034,9 +44797,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -43087,9 +44857,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -43220,9 +44997,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -43277,9 +45061,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -43417,9 +45208,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -43474,9 +45272,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Less"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -43654,7 +45459,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -43688,7 +45495,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -43784,7 +45593,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -43819,7 +45636,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -43915,9 +45734,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -43957,7 +45780,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -44053,9 +45884,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -44095,9 +45930,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -44195,9 +46034,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -44237,9 +46081,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -44350,9 +46198,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -44400,9 +46255,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -44523,9 +46385,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -44576,9 +46445,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -44706,9 +46582,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -44759,9 +46642,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -44892,9 +46782,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -44949,9 +46846,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -45089,9 +46993,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -45146,9 +47057,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Less"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -45326,7 +47244,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -45360,7 +47280,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -45456,7 +47378,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -45491,7 +47421,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -45587,9 +47520,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -45629,9 +47566,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -45729,9 +47670,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -45771,9 +47716,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -45871,9 +47820,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -45913,9 +47867,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -46026,9 +47984,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -46076,9 +48041,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -46199,9 +48171,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -46252,9 +48231,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -46382,9 +48368,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -46435,9 +48428,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -46568,9 +48568,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -46625,9 +48632,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -46765,9 +48779,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -46822,9 +48843,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Greater"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -47002,7 +49030,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -47036,7 +49066,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -47132,7 +49164,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -47167,7 +49207,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -47263,9 +49306,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -47305,9 +49352,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -47405,9 +49456,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -47447,9 +49502,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -47547,9 +49606,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -47589,9 +49653,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -47702,9 +49770,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -47752,9 +49827,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -47875,9 +49957,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -47928,9 +50017,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -48058,9 +50154,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -48111,9 +50214,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -48244,9 +50354,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -48301,9 +50418,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -48441,9 +50565,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -48498,9 +50629,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Greater"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -51309,7 +53447,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -51343,7 +53483,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -51439,7 +53581,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -51474,7 +53624,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -51570,9 +53722,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -51612,7 +53768,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -51708,9 +53872,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -51750,9 +53918,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -51850,9 +54022,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -51892,9 +54069,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -52005,9 +54186,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -52055,9 +54243,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -52178,9 +54373,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -52231,9 +54433,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -52361,9 +54570,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -52414,9 +54630,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -52547,9 +54770,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -52604,9 +54834,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -52744,9 +54981,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -52801,9 +55045,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Less"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -52945,9 +55196,16 @@ Module tuple.
                                                                                                                 M.alloc (|
                                                                                                                   Value.StructTuple
                                                                                                                     "core::option::Option::Some"
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "core::cmp::Ordering"
+                                                                                                                    ]
                                                                                                                     [
                                                                                                                       Value.StructTuple
                                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                                        []
+                                                                                                                        []
                                                                                                                         []
                                                                                                                     ]
                                                                                                                 |)
@@ -53003,9 +55261,16 @@ Module tuple.
                                                                                                             M.alloc (|
                                                                                                               Value.StructTuple
                                                                                                                 "core::option::Option::Some"
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::cmp::Ordering"
+                                                                                                                ]
                                                                                                                 [
                                                                                                                   Value.StructTuple
                                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                                    []
+                                                                                                                    []
                                                                                                                     []
                                                                                                                 ]
                                                                                                             |)
@@ -53186,7 +55451,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -53220,7 +55487,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                             |)
                           |)
                         ]
@@ -53316,7 +55585,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -53351,7 +55628,9 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                                     |)
                                   |)
                                 ]
@@ -53447,9 +55726,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -53489,7 +55772,15 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
-                                                [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
+                                                [
+                                                  Value.StructTuple
+                                                    "core::cmp::Ordering::Less"
+                                                    []
+                                                    []
+                                                    []
+                                                ]
                                             |)
                                           |)
                                         ]
@@ -53585,9 +55876,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -53627,9 +55922,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Less"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -53727,9 +56026,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -53769,9 +56073,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -53882,9 +56190,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -53932,9 +56247,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Less"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -54055,9 +56377,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -54108,9 +56437,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Less"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -54238,9 +56574,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -54291,9 +56634,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Less"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -54424,9 +56774,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -54481,9 +56838,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -54621,9 +56985,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -54678,9 +57049,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Less"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -54822,9 +57200,16 @@ Module tuple.
                                                                                                                 M.alloc (|
                                                                                                                   Value.StructTuple
                                                                                                                     "core::option::Option::Some"
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "core::cmp::Ordering"
+                                                                                                                    ]
                                                                                                                     [
                                                                                                                       Value.StructTuple
                                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                                        []
+                                                                                                                        []
                                                                                                                         []
                                                                                                                     ]
                                                                                                                 |)
@@ -54880,9 +57265,16 @@ Module tuple.
                                                                                                             M.alloc (|
                                                                                                               Value.StructTuple
                                                                                                                 "core::option::Option::Some"
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::cmp::Ordering"
+                                                                                                                ]
                                                                                                                 [
                                                                                                                   Value.StructTuple
                                                                                                                     "core::cmp::Ordering::Less"
+                                                                                                                    []
+                                                                                                                    []
                                                                                                                     []
                                                                                                                 ]
                                                                                                             |)
@@ -55063,7 +57455,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -55097,7 +57491,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -55193,7 +57589,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -55228,7 +57632,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -55324,9 +57731,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -55366,9 +57777,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -55466,9 +57881,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -55508,9 +57927,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -55608,9 +58031,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -55650,9 +58078,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -55763,9 +58195,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -55813,9 +58252,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -55936,9 +58382,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -55989,9 +58442,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -56119,9 +58579,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -56172,9 +58639,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -56305,9 +58779,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -56362,9 +58843,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -56502,9 +58990,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -56559,9 +59054,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Greater"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -56703,9 +59205,16 @@ Module tuple.
                                                                                                                 M.alloc (|
                                                                                                                   Value.StructTuple
                                                                                                                     "core::option::Option::Some"
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "core::cmp::Ordering"
+                                                                                                                    ]
                                                                                                                     [
                                                                                                                       Value.StructTuple
                                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                                        []
+                                                                                                                        []
                                                                                                                         []
                                                                                                                     ]
                                                                                                                 |)
@@ -56761,9 +59270,16 @@ Module tuple.
                                                                                                             M.alloc (|
                                                                                                               Value.StructTuple
                                                                                                                 "core::option::Option::Some"
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::cmp::Ordering"
+                                                                                                                ]
                                                                                                                 [
                                                                                                                   Value.StructTuple
                                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                                    []
+                                                                                                                    []
                                                                                                                     []
                                                                                                                 ]
                                                                                                             |)
@@ -56944,7 +59460,9 @@ Module tuple.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]
+                                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                                 |)
                               |)
                             ]
@@ -56978,7 +59496,9 @@ Module tuple.
                             M.alloc (|
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                []
+                                [ Ty.path "core::cmp::Ordering" ]
+                                [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                             |)
                           |)
                         ]
@@ -57074,7 +59594,15 @@ Module tuple.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
-                                            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]
+                                            [
+                                              Value.StructTuple
+                                                "core::cmp::Ordering::Equal"
+                                                []
+                                                []
+                                                []
+                                            ]
                                         |)
                                       |)
                                     ]
@@ -57109,7 +59637,10 @@ Module tuple.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                                        []
+                                        [ Ty.path "core::cmp::Ordering" ]
+                                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                                        ]
                                     |)
                                   |)
                                 ]
@@ -57205,9 +59736,13 @@ Module tuple.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]
                                                     [
                                                       Value.StructTuple
                                                         "core::cmp::Ordering::Equal"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                 |)
@@ -57247,9 +59782,13 @@ Module tuple.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "core::cmp::Ordering" ]
                                                 [
                                                   Value.StructTuple
                                                     "core::cmp::Ordering::Greater"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                             |)
@@ -57347,9 +59886,13 @@ Module tuple.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ]
                                                             [
                                                               Value.StructTuple
                                                                 "core::cmp::Ordering::Equal"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                         |)
@@ -57389,9 +59932,13 @@ Module tuple.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::cmp::Ordering" ]
                                                         [
                                                           Value.StructTuple
                                                             "core::cmp::Ordering::Greater"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                     |)
@@ -57489,9 +60036,14 @@ Module tuple.
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "core::cmp::Ordering::Equal"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -57531,9 +60083,13 @@ Module tuple.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ]
                                                                 [
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Greater"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                             |)
@@ -57644,9 +60200,16 @@ Module tuple.
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ]
                                                                             [
                                                                               Value.StructTuple
                                                                                 "core::cmp::Ordering::Equal"
+                                                                                []
+                                                                                []
                                                                                 []
                                                                             ]
                                                                         |)
@@ -57694,9 +60257,16 @@ Module tuple.
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering"
+                                                                        ]
                                                                         [
                                                                           Value.StructTuple
                                                                             "core::cmp::Ordering::Greater"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                     |)
@@ -57817,9 +60387,16 @@ Module tuple.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::Some"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "core::cmp::Ordering::Equal"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -57870,9 +60447,16 @@ Module tuple.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering"
+                                                                                ]
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "core::cmp::Ordering::Greater"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                             |)
@@ -58000,9 +60584,16 @@ Module tuple.
                                                                                         M.alloc (|
                                                                                           Value.StructTuple
                                                                                             "core::option::Option::Some"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -58053,9 +60644,16 @@ Module tuple.
                                                                                     M.alloc (|
                                                                                       Value.StructTuple
                                                                                         "core::option::Option::Some"
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering"
+                                                                                        ]
                                                                                         [
                                                                                           Value.StructTuple
                                                                                             "core::cmp::Ordering::Greater"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                     |)
@@ -58186,9 +60784,16 @@ Module tuple.
                                                                                                 M.alloc (|
                                                                                                   Value.StructTuple
                                                                                                     "core::option::Option::Some"
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ]
                                                                                                     [
                                                                                                       Value.StructTuple
                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []
                                                                                                     ]
                                                                                                 |)
@@ -58243,9 +60848,16 @@ Module tuple.
                                                                                             M.alloc (|
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::Some"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -58383,9 +60995,16 @@ Module tuple.
                                                                                                         M.alloc (|
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::Some"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::cmp::Ordering"
+                                                                                                            ]
                                                                                                             [
                                                                                                               Value.StructTuple
                                                                                                                 "core::cmp::Ordering::Equal"
+                                                                                                                []
+                                                                                                                []
                                                                                                                 []
                                                                                                             ]
                                                                                                         |)
@@ -58440,9 +61059,16 @@ Module tuple.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::cmp::Ordering"
+                                                                                                        ]
                                                                                                         [
                                                                                                           Value.StructTuple
                                                                                                             "core::cmp::Ordering::Greater"
+                                                                                                            []
+                                                                                                            []
                                                                                                             []
                                                                                                         ]
                                                                                                     |)
@@ -58584,9 +61210,16 @@ Module tuple.
                                                                                                                 M.alloc (|
                                                                                                                   Value.StructTuple
                                                                                                                     "core::option::Option::Some"
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "core::cmp::Ordering"
+                                                                                                                    ]
                                                                                                                     [
                                                                                                                       Value.StructTuple
                                                                                                                         "core::cmp::Ordering::Equal"
+                                                                                                                        []
+                                                                                                                        []
                                                                                                                         []
                                                                                                                     ]
                                                                                                                 |)
@@ -58642,9 +61275,16 @@ Module tuple.
                                                                                                             M.alloc (|
                                                                                                               Value.StructTuple
                                                                                                                 "core::option::Option::Some"
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::cmp::Ordering"
+                                                                                                                ]
                                                                                                                 [
                                                                                                                   Value.StructTuple
                                                                                                                     "core::cmp::Ordering::Greater"
+                                                                                                                    []
+                                                                                                                    []
                                                                                                                     []
                                                                                                                 ]
                                                                                                             |)

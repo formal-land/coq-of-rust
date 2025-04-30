@@ -1150,6 +1150,8 @@ Module ascii.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                           [
                             M.call_closure (|
                               Ty.path "core::ascii::ascii_char::AsciiChar",
@@ -1165,7 +1167,13 @@ Module ascii.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1247,6 +1255,8 @@ Module ascii.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                           [
                             M.call_closure (|
                               Ty.path "core::ascii::ascii_char::AsciiChar",
@@ -1262,7 +1272,13 @@ Module ascii.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1843,7 +1859,13 @@ Module ascii.
                                 Ty.path "usize"
                               ],
                             M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
+                            [
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::Digit0"
+                                []
+                                []
+                                []
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -1865,7 +1887,13 @@ Module ascii.
                                 Ty.path "usize"
                               ],
                             M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
+                            [
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::SmallT"
+                                []
+                                []
+                                []
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -1887,7 +1915,13 @@ Module ascii.
                                 Ty.path "usize"
                               ],
                             M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
+                            [
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::SmallR"
+                                []
+                                []
+                                []
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -1909,7 +1943,13 @@ Module ascii.
                                 Ty.path "usize"
                               ],
                             M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
+                            [
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::SmallN"
+                                []
+                                []
+                                []
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -1935,6 +1975,8 @@ Module ascii.
                               Value.StructTuple
                                 "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
                                 []
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -1957,7 +1999,12 @@ Module ascii.
                                 Ty.path "usize"
                               ],
                             M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" []
+                            [
+                              Value.StructTuple
+                                "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                []
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -2083,15 +2130,25 @@ Module ascii.
                                 [
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    []
+                                    []
                                     [];
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                                    []
+                                    []
                                     [];
-                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" [];
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::SmallX"
+                                    []
+                                    []
+                                    [];
                                   M.read (| hi |);
                                   M.read (| lo |);
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    []
+                                    []
                                     []
                                 ];
                               Value.Integer IntegerKind.Usize 6
@@ -2106,14 +2163,30 @@ Module ascii.
                                 [
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    []
+                                    []
                                     [];
                                   M.read (| M.deref (| M.read (| self |) |) |);
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    []
+                                    []
                                     [];
-                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [];
-                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [];
-                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Null"
+                                    []
+                                    []
+                                    [];
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Null"
+                                    []
+                                    []
+                                    [];
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Null"
+                                    []
+                                    []
+                                    []
                                 ];
                               Value.Integer IntegerKind.Usize 3
                             ]
@@ -2190,6 +2263,8 @@ Module ascii.
                                             M.borrow (| Pointer.Kind.Ref, buf |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("end_", M.read (| len |)) ]
                                           ]
                                         |)

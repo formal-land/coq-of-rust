@@ -190,6 +190,8 @@ Module effects.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::effects::Op::New"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
@@ -219,6 +221,8 @@ Module effects.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::effects::Op::Modify"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
@@ -239,7 +243,9 @@ Module effects.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
-                    M.alloc (| Value.StructTuple "move_core_types::effects::Op::Delete" [] |)))
+                    M.alloc (|
+                      Value.StructTuple "move_core_types::effects::Op::Delete" [] [ T ] []
+                    |)))
               ]
             |)
           |)))
@@ -586,7 +592,7 @@ Module effects.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)));
                 fun γ =>
@@ -825,6 +831,8 @@ Module effects.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::effects::Op::New"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |)));
                 fun γ =>
@@ -840,13 +848,21 @@ Module effects.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::effects::Op::Modify"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
-                    M.alloc (| Value.StructTuple "move_core_types::effects::Op::Delete" [] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "move_core_types::effects::Op::Delete"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -900,6 +916,8 @@ Module effects.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::effects::Op::New"
+                        []
+                        [ U ]
                         [
                           M.call_closure (|
                             U,
@@ -928,6 +946,8 @@ Module effects.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::effects::Op::Modify"
+                        []
+                        [ U ]
                         [
                           M.call_closure (|
                             U,
@@ -947,7 +967,9 @@ Module effects.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
-                    M.alloc (| Value.StructTuple "move_core_types::effects::Op::Delete" [] |)))
+                    M.alloc (|
+                      Value.StructTuple "move_core_types::effects::Op::Delete" [] [ U ] []
+                    |)))
               ]
             |)
           |)))
@@ -1013,7 +1035,11 @@ Module effects.
                           | [ data ] =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "core::option::Option::Some" [ M.read (| data |) ]
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [ T ]
+                                  [ M.read (| data |) ]
                               |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
@@ -1021,7 +1047,7 @@ Module effects.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
               ]
             |)
           |)))
@@ -1165,6 +1191,8 @@ Module effects.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::effects::AccountChangeSet"
+            []
+            []
             [
               ("modules",
                 M.call_closure (|
@@ -2268,6 +2296,12 @@ Module effects.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "anyhow::Error"
+                                                                            ]
                                                                             [
                                                                               M.read (|
                                                                                 let~ error :
@@ -2360,6 +2394,8 @@ Module effects.
                                                             M.deref (| M.read (| r |) |),
                                                             Value.StructTuple
                                                               "move_core_types::effects::Op::Modify"
+                                                              []
+                                                              [ V ]
                                                               [ M.read (| data |) ]
                                                           |)
                                                         |)));
@@ -2387,6 +2423,8 @@ Module effects.
                                                             M.deref (| M.read (| r |) |),
                                                             Value.StructTuple
                                                               "move_core_types::effects::Op::New"
+                                                              []
+                                                              [ V ]
                                                               [ M.read (| data |) ]
                                                           |)
                                                         |)));
@@ -2413,6 +2451,8 @@ Module effects.
                                                             Value.StructTuple
                                                               "move_core_types::effects::Op::Delete"
                                                               []
+                                                              [ V ]
+                                                              []
                                                           |)
                                                         |)));
                                                     fun γ =>
@@ -2438,6 +2478,8 @@ Module effects.
                                                             M.deref (| M.read (| r |) |),
                                                             Value.StructTuple
                                                               "move_core_types::effects::Op::Modify"
+                                                              []
+                                                              [ V ]
                                                               [ M.read (| data |) ]
                                                           |)
                                                         |)));
@@ -2566,7 +2608,13 @@ Module effects.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2596,6 +2644,8 @@ Module effects.
           let resources := M.alloc (| resources |) in
           Value.StructRecord
             "move_core_types::effects::AccountChangeSet"
+            []
+            []
             [ ("modules", M.read (| modules |)); ("resources", M.read (| resources |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2619,6 +2669,8 @@ Module effects.
         ltac:(M.monadic
           (Value.StructRecord
             "move_core_types::effects::AccountChangeSet"
+            []
+            []
             [
               ("modules",
                 M.call_closure (|
@@ -2809,6 +2861,8 @@ Module effects.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -3050,7 +3104,13 @@ Module effects.
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3160,6 +3220,8 @@ Module effects.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -3401,7 +3463,13 @@ Module effects.
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3937,6 +4005,8 @@ Module effects.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::effects::ChangeSet"
+            []
+            []
             [
               ("accounts",
                 M.call_closure (|
@@ -4303,6 +4373,8 @@ Module effects.
         ltac:(M.monadic
           (Value.StructRecord
             "move_core_types::effects::ChangeSet"
+            []
+            []
             [
               ("accounts",
                 M.call_closure (|
@@ -4424,6 +4496,8 @@ Module effects.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "anyhow::Error",
@@ -4586,7 +4660,13 @@ Module effects.
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5442,7 +5522,13 @@ Module effects.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

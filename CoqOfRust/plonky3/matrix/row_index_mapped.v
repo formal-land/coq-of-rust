@@ -80,6 +80,8 @@ Module row_index_mapped.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_",
@@ -226,6 +228,8 @@ Module row_index_mapped.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_matrix::row_index_mapped::RowIndexMappedView"
+            []
+            [ IndexMap; Inner ]
             [
               ("index_map",
                 M.call_closure (|

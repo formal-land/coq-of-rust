@@ -103,7 +103,12 @@ Module extension.
           (let inner := M.alloc (| inner |) in
           Value.StructTuple
             "p3_matrix::extension::FlatMatrixView"
-            [ M.read (| inner |); Value.StructTuple "core::marker::PhantomData" [] ]))
+            []
+            [ F; EF; Inner ]
+            [
+              M.read (| inner |);
+              Value.StructTuple "core::marker::PhantomData" [] [ Ty.tuple [ F; EF ] ] []
+            ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -276,6 +281,8 @@ Module extension.
           let r := M.alloc (| r |) in
           Value.StructRecord
             "p3_matrix::extension::FlatIter"
+            []
+            [ F; Ty.associated_in_trait "p3_matrix::Matrix" [] [ EF ] Inner "Row" ]
             [
               ("inner",
                 M.call_closure (|
@@ -319,7 +326,7 @@ Module extension.
                   ]
                 |));
               ("idx", Value.Integer IntegerKind.Usize 0);
-              ("_phantom", Value.StructTuple "core::marker::PhantomData" [])
+              ("_phantom", Value.StructTuple "core::marker::PhantomData" [] [ F ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -866,7 +873,9 @@ Module extension.
                       |)
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] |)
+                M.alloc (|
+                  Value.StructTuple "core::option::Option::Some" [] [ F ] [ M.read (| value |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

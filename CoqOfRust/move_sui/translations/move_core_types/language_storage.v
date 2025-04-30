@@ -739,9 +739,21 @@ Module language_storage.
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::language_storage::TypeTag" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -885,6 +897,21 @@ Module language_storage.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -967,6 +994,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1048,6 +1090,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1129,6 +1186,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1218,6 +1290,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1304,9 +1391,21 @@ Module language_storage.
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::language_storage::StructTag" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -1436,6 +1535,21 @@ Module language_storage.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -1518,6 +1632,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1599,6 +1728,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1685,9 +1829,21 @@ Module language_storage.
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'5::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::language_storage::ResourceKey" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -1817,6 +1973,21 @@ Module language_storage.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -1899,6 +2070,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -1980,6 +2166,21 @@ Module language_storage.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2066,9 +2267,21 @@ Module language_storage.
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'7::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::language_storage::ModuleId" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2823,7 +3036,7 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::Bool" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::Bool" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2831,7 +3044,7 @@ Module language_storage.
                     let _ :=
                       M.is_struct_tuple (| γ, "move_core_types::language_storage::TypeTag::U8" |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U8" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U8" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2842,7 +3055,7 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U64" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2853,7 +3066,7 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U128" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U128" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2864,7 +3077,11 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::Address"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::Address" []
+                      Value.StructTuple
+                        "move_core_types::language_storage::TypeTag::Address"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2875,7 +3092,11 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::Signer"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::Signer" []
+                      Value.StructTuple
+                        "move_core_types::language_storage::TypeTag::Signer"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2890,6 +3111,8 @@ Module language_storage.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::language_storage::TypeTag::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -2931,6 +3154,8 @@ Module language_storage.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::language_storage::TypeTag::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -2968,7 +3193,7 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U16" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2979,7 +3204,7 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U32" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2990,7 +3215,7 @@ Module language_storage.
                         "move_core_types::language_storage::TypeTag::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U256" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U256" [] [] []
                     |)))
               ]
             |)
@@ -3366,7 +3591,7 @@ Module language_storage.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)));
                 fun γ =>
@@ -3483,6 +3708,8 @@ Module language_storage.
           let with_prefix := M.alloc (| with_prefix |) in
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
+            []
+            []
             [
               ("data", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |));
               ("with_prefix", M.read (| with_prefix |))
@@ -4378,6 +4605,8 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::language_storage::StructTag"
+            []
+            []
             [
               ("address",
                 M.call_closure (|
@@ -5705,6 +5934,8 @@ Module language_storage.
           let with_prefix := M.alloc (| with_prefix |) in
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
+            []
+            []
             [
               ("data", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |));
               ("with_prefix", M.read (| with_prefix |))
@@ -6556,6 +6787,8 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::language_storage::ResourceKey"
+            []
+            []
             [
               ("address",
                 M.call_closure (|
@@ -6947,6 +7180,8 @@ Module language_storage.
           let type_ := M.alloc (| type_ |) in
           Value.StructRecord
             "move_core_types::language_storage::ResourceKey"
+            []
+            []
             [ ("address", M.read (| address |)); ("type_", M.read (| type_ |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7280,6 +7515,8 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::language_storage::ModuleId"
+            []
+            []
             [
               ("address",
                 M.call_closure (|
@@ -7665,6 +7902,8 @@ Module language_storage.
           let name := M.alloc (| name |) in
           Value.StructRecord
             "move_core_types::language_storage::ModuleId"
+            []
+            []
             [ ("address", M.read (| address |)); ("name", M.read (| name |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7998,6 +8237,8 @@ Module language_storage.
           let with_prefix := M.alloc (| with_prefix |) in
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::IdDisplay"
+            []
+            []
             [
               ("id", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |));
               ("with_prefix", M.read (| with_prefix |))
@@ -9460,7 +9701,13 @@ Module language_storage.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10262,6 +10509,8 @@ Module language_storage.
           (let t := M.alloc (| t |) in
           Value.StructTuple
             "move_core_types::language_storage::TypeTag::Struct"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply

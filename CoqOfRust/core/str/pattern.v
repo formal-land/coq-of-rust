@@ -440,6 +440,8 @@ Module str.
                                                             Value.StructTuple
                                                               "core::panicking::AssertKind::Eq"
                                                               []
+                                                              []
+                                                              []
                                                           |) in
                                                         M.alloc (|
                                                           M.call_closure (|
@@ -475,6 +477,8 @@ Module str.
                                                               |);
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::fmt::Arguments" ]
                                                                 [
                                                                   M.call_closure (|
                                                                     Ty.path "core::fmt::Arguments",
@@ -528,6 +532,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -552,6 +558,8 @@ Module str.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("start", M.read (| len |)) ]
                                   ]
                                 |)
@@ -561,7 +569,13 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -754,6 +768,8 @@ Module str.
                                                             Value.StructTuple
                                                               "core::panicking::AssertKind::Eq"
                                                               []
+                                                              []
+                                                              []
                                                           |) in
                                                         M.alloc (|
                                                           M.call_closure (|
@@ -789,6 +805,8 @@ Module str.
                                                               |);
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ Ty.path "core::fmt::Arguments" ]
                                                                 [
                                                                   M.call_closure (|
                                                                     Ty.path "core::fmt::Arguments",
@@ -842,6 +860,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -866,6 +886,8 @@ Module str.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", M.read (| start |)) ]
                                   ]
                                 |)
@@ -875,7 +897,13 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -894,7 +922,11 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::option::Option::None" []))
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.path "core::str::pattern::Utf8Pattern" ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1854,6 +1886,8 @@ Module str.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                                           [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
                                       |)
                                     |)
@@ -1870,7 +1904,11 @@ Module str.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -1951,6 +1989,8 @@ Module str.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                                           [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
                                       |)
                                     |)
@@ -1967,7 +2007,11 @@ Module str.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -2052,6 +2096,8 @@ Module str.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                                           [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
                                       |)
                                     |)
@@ -2068,7 +2114,11 @@ Module str.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -2149,6 +2199,8 @@ Module str.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                                           [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
                                       |)
                                     |)
@@ -2165,7 +2217,11 @@ Module str.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -2220,6 +2276,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::pattern::CharSearcher"
+              []
+              []
               [
                 ("haystack",
                   M.borrow (|
@@ -2770,6 +2828,8 @@ Module str.
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", M.read (| old_finger |));
                           ("end_",
@@ -2926,6 +2986,8 @@ Module str.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::str::pattern::SearchStep::Match"
+                                  []
+                                  []
                                   [
                                     M.read (| old_finger |);
                                     M.read (|
@@ -2942,6 +3004,8 @@ Module str.
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::str::pattern::SearchStep::Reject"
+                                  []
+                                  []
                                   [
                                     M.read (| old_finger |);
                                     M.read (|
@@ -2957,7 +3021,9 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::str::pattern::SearchStep::Done" [] [] []
+                      |)))
                 ]
               |)
             |)))
@@ -3132,6 +3198,8 @@ Module str.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.read (|
@@ -3466,6 +3534,8 @@ Module str.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start", M.read (| found_char |));
                                                             ("end_",
@@ -3584,6 +3654,8 @@ Module str.
                                                                               |);
                                                                               Value.StructRecord
                                                                                 "core::ops::range::Range"
+                                                                                []
+                                                                                [ Ty.path "usize" ]
                                                                                 [
                                                                                   ("start",
                                                                                     Value.Integer
@@ -3632,6 +3704,14 @@ Module str.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::option::Option::Some"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.path "usize";
+                                                                        Ty.path "usize"
+                                                                      ]
+                                                                  ]
                                                                   [
                                                                     Value.Tuple
                                                                       [
@@ -3685,7 +3765,11 @@ Module str.
                                           |)
                                         |) in
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -3777,6 +3861,8 @@ Module str.
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start",
                             M.read (|
@@ -3933,6 +4019,8 @@ Module str.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::str::pattern::SearchStep::Match"
+                                  []
+                                  []
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
@@ -3949,6 +4037,8 @@ Module str.
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::str::pattern::SearchStep::Reject"
+                                  []
+                                  []
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
@@ -3964,7 +4054,9 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::str::pattern::SearchStep::Done" [] [] []
+                      |)))
                 ]
               |)
             |)))
@@ -4154,6 +4246,8 @@ Module str.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start",
                                                   M.read (|
@@ -4435,6 +4529,8 @@ Module str.
                                                               |);
                                                               Value.StructRecord
                                                                 "core::ops::range::Range"
+                                                                []
+                                                                [ Ty.path "usize" ]
                                                                 [
                                                                   ("start",
                                                                     M.read (| found_char |));
@@ -4580,6 +4676,11 @@ Module str.
                                                                                     |);
                                                                                     Value.StructRecord
                                                                                       "core::ops::range::Range"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ]
                                                                                       [
                                                                                         ("start",
                                                                                           Value.Integer
@@ -4645,6 +4746,14 @@ Module str.
                                                                     M.return_ (|
                                                                       Value.StructTuple
                                                                         "core::option::Option::Some"
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.path "usize";
+                                                                              Ty.path "usize"
+                                                                            ]
+                                                                        ]
                                                                         [
                                                                           Value.Tuple
                                                                             [
@@ -4749,7 +4858,11 @@ Module str.
                                               |)
                                             |) in
                                           M.return_ (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                                              []
                                           |)
                                         |)
                                       |)
@@ -4907,6 +5020,8 @@ Module str.
               M.alloc (|
                 Value.StructRecord
                   "core::str::pattern::CharSearcher"
+                  []
+                  []
                   [
                     ("haystack",
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
@@ -5318,9 +5433,13 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::str::pattern::Utf8Pattern" ]
               [
                 Value.StructTuple
                   "core::str::pattern::Utf8Pattern::CharPattern"
+                  []
+                  []
                   [ M.read (| M.deref (| M.read (| self |) |) |) ]
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5715,6 +5834,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::pattern::MultiCharEqSearcher"
+              []
+              [ C ]
               [
                 ("char_eq",
                   M.call_closure (|
@@ -5932,6 +6053,8 @@ Module str.
             let haystack := M.alloc (| haystack |) in
             Value.StructRecord
               "core::str::pattern::MultiCharEqSearcher"
+              []
+              [ C ]
               [
                 ("haystack", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
                 ("char_eq",
@@ -6184,6 +6307,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Match"
+                                              []
+                                              []
                                               [
                                                 M.read (| i |);
                                                 M.call_closure (|
@@ -6204,6 +6329,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Reject"
+                                              []
+                                              []
                                               [
                                                 M.read (| i |);
                                                 M.call_closure (|
@@ -6221,7 +6348,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)
+                  M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] [] [] |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6436,6 +6563,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Match"
+                                              []
+                                              []
                                               [
                                                 M.read (| i |);
                                                 M.call_closure (|
@@ -6456,6 +6585,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Reject"
+                                              []
+                                              []
                                               [
                                                 M.read (| i |);
                                                 M.call_closure (|
@@ -6473,7 +6604,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)
+                  M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] [] [] |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6535,6 +6666,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::pattern::CharArraySearcher"
+              [ N ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6677,6 +6810,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::pattern::CharArrayRefSearcher"
+              [ N ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6822,6 +6957,8 @@ Module str.
             let haystack := M.alloc (| haystack |) in
             Value.StructTuple
               "core::str::pattern::CharArraySearcher"
+              [ N ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -6843,6 +6980,8 @@ Module str.
                   [
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
                       [ M.read (| self |) ];
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
@@ -6883,7 +7022,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -6922,7 +7065,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -6964,7 +7111,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7006,7 +7157,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7051,7 +7206,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7472,6 +7631,8 @@ Module str.
             let haystack := M.alloc (| haystack |) in
             Value.StructTuple
               "core::str::pattern::CharArrayRefSearcher"
+              [ N ]
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -7503,6 +7664,13 @@ Module str.
                   [
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                      ]
                       [ M.read (| self |) ];
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
@@ -7548,7 +7716,16 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7592,7 +7769,16 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7639,7 +7825,16 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7686,7 +7881,16 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -7736,7 +7940,16 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -8195,6 +8408,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::pattern::CharSliceSearcher"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -8667,6 +8882,8 @@ Module str.
             let haystack := M.alloc (| haystack |) in
             Value.StructTuple
               "core::str::pattern::CharSliceSearcher"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -8694,6 +8911,13 @@ Module str.
                   [
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                      ]
                       [ M.read (| self |) ];
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
@@ -8729,7 +8953,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -8763,7 +8991,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -8800,7 +9032,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -8837,7 +9073,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -8877,7 +9117,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -8931,6 +9175,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::pattern::CharPredicateSearcher"
+              []
+              [ F ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
@@ -9479,6 +9725,8 @@ Module str.
             let haystack := M.alloc (| haystack |) in
             Value.StructTuple
               "core::str::pattern::CharPredicateSearcher"
+              []
+              [ F ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
@@ -9494,6 +9742,8 @@ Module str.
                   [
                     Value.StructTuple
                       "core::str::pattern::MultiCharEqPattern"
+                      []
+                      [ F ]
                       [ M.read (| self |) ];
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
                   ]
@@ -9531,7 +9781,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ F ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -9567,7 +9821,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ F ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -9606,7 +9864,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ F ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -9645,7 +9907,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ F ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -9687,7 +9953,11 @@ Module str.
                 []
               |),
               [
-                Value.StructTuple "core::str::pattern::MultiCharEqPattern" [ M.read (| self |) ];
+                Value.StructTuple
+                  "core::str::pattern::MultiCharEqPattern"
+                  []
+                  [ F ]
+                  [ M.read (| self |) ];
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
               ]
             |)))
@@ -11014,6 +11284,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -11038,6 +11310,8 @@ Module str.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start",
                                           M.call_closure (|
@@ -11088,7 +11362,13 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -11255,6 +11535,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -11279,6 +11561,8 @@ Module str.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", M.read (| i |)) ]
                                   ]
                                 |)
@@ -11288,7 +11572,13 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -11307,9 +11597,13 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::str::pattern::Utf8Pattern" ]
               [
                 Value.StructTuple
                   "core::str::pattern::Utf8Pattern::StringPattern"
+                  []
+                  []
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -11377,6 +11671,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::pattern::StrSearcher"
+              []
+              []
               [
                 ("haystack",
                   M.borrow (|
@@ -11627,6 +11923,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::str::pattern::StrSearcherImpl::Empty"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "core::str::pattern::EmptyNeedle",
@@ -11657,6 +11955,8 @@ Module str.
                       M.alloc (|
                         Value.StructTuple
                           "core::str::pattern::StrSearcherImpl::TwoWay"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "core::str::pattern::TwoWaySearcher",
@@ -11821,6 +12121,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::pattern::EmptyNeedle"
+              []
+              []
               [
                 ("position",
                   M.call_closure (|
@@ -12153,6 +12455,8 @@ Module str.
                       M.alloc (|
                         Value.StructRecord
                           "core::str::pattern::StrSearcher"
+                          []
+                          []
                           [
                             ("haystack",
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
@@ -12161,9 +12465,13 @@ Module str.
                             ("searcher",
                               Value.StructTuple
                                 "core::str::pattern::StrSearcherImpl::Empty"
+                                []
+                                []
                                 [
                                   Value.StructRecord
                                     "core::str::pattern::EmptyNeedle"
+                                    []
+                                    []
                                     [
                                       ("position", Value.Integer IntegerKind.Usize 0);
                                       ("end_",
@@ -12194,6 +12502,8 @@ Module str.
                       (M.alloc (|
                         Value.StructRecord
                           "core::str::pattern::StrSearcher"
+                          []
+                          []
                           [
                             ("haystack",
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |));
@@ -12202,6 +12512,8 @@ Module str.
                             ("searcher",
                               Value.StructTuple
                                 "core::str::pattern::StrSearcherImpl::TwoWay"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.path "core::str::pattern::TwoWaySearcher",
@@ -12392,6 +12704,8 @@ Module str.
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Done"
                                               []
+                                              []
+                                              []
                                           |)
                                         |)
                                       |)
@@ -12495,6 +12809,8 @@ Module str.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("start", M.read (| pos |)) ]
                                                 ]
                                               |)
@@ -12519,6 +12835,8 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::str::pattern::SearchStep::Match"
+                                      []
+                                      []
                                       [ M.read (| pos |); M.read (| pos |) ]
                                   |)));
                               fun γ =>
@@ -12537,7 +12855,11 @@ Module str.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::str::pattern::SearchStep::Done" []
+                                    Value.StructTuple
+                                      "core::str::pattern::SearchStep::Done"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -12580,6 +12902,8 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::str::pattern::SearchStep::Reject"
+                                      []
+                                      []
                                       [
                                         M.read (| pos |);
                                         M.read (|
@@ -12660,6 +12984,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Done"
+                                              []
+                                              []
                                               []
                                           |)
                                         |)
@@ -12905,6 +13231,8 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::str::pattern::SearchStep::Reject"
+                                      []
+                                      []
                                       [ M.read (| a |); M.read (| b |) ]
                                   |)));
                               fun γ =>
@@ -13037,6 +13365,11 @@ Module str.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [ Ty.path "usize"; Ty.path "usize" ]
+                                                      ]
                                                       [
                                                         Value.Tuple
                                                           [ M.read (| a |); M.read (| b |) ]
@@ -13058,6 +13391,11 @@ Module str.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [ Ty.path "usize"; Ty.path "usize" ]
+                                                      ]
                                                       []
                                                   |)
                                                 |)
@@ -13420,6 +13758,8 @@ Module str.
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Done"
                                               []
+                                              []
+                                              []
                                           |)
                                         |)
                                       |)
@@ -13523,6 +13863,8 @@ Module str.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeTo"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("end_", M.read (| end_ |)) ]
                                                 ]
                                               |)
@@ -13547,6 +13889,8 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::str::pattern::SearchStep::Match"
+                                      []
+                                      []
                                       [ M.read (| end_ |); M.read (| end_ |) ]
                                   |)));
                               fun γ =>
@@ -13565,7 +13909,11 @@ Module str.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::str::pattern::SearchStep::Done" []
+                                    Value.StructTuple
+                                      "core::str::pattern::SearchStep::Done"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -13608,6 +13956,8 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::str::pattern::SearchStep::Reject"
+                                      []
+                                      []
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
@@ -13666,6 +14016,8 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::str::pattern::SearchStep::Done"
+                                              []
+                                              []
                                               []
                                           |)
                                         |)
@@ -13911,6 +14263,8 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::str::pattern::SearchStep::Reject"
+                                      []
+                                      []
                                       [ M.read (| a |); M.read (| b |) ]
                                   |)));
                               fun γ =>
@@ -14042,6 +14396,11 @@ Module str.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [ Ty.path "usize"; Ty.path "usize" ]
+                                                      ]
                                                       [
                                                         Value.Tuple
                                                           [ M.read (| a |); M.read (| b |) ]
@@ -14063,6 +14422,11 @@ Module str.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [ Ty.path "usize"; Ty.path "usize" ]
+                                                      ]
                                                       []
                                                   |)
                                                 |)
@@ -14353,6 +14717,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::pattern::TwoWaySearcher"
+              []
+              []
               [
                 ("crit_pos",
                   M.call_closure (|
@@ -15094,6 +15460,8 @@ Module str.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [ ("end_", M.read (| crit_pos |))
                                                                   ]
                                                               ]
@@ -15138,6 +15506,8 @@ Module str.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::Range"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start", M.read (| period |));
                                                                     ("end_",
@@ -15239,6 +15609,8 @@ Module str.
                                               M.alloc (|
                                                 Value.StructRecord
                                                   "core::str::pattern::TwoWaySearcher"
+                                                  []
+                                                  []
                                                   [
                                                     ("crit_pos", M.read (| crit_pos |));
                                                     ("crit_pos_back", M.read (| crit_pos_back |));
@@ -15297,6 +15669,8 @@ Module str.
                                                                       |);
                                                                       Value.StructRecord
                                                                         "core::ops::range::RangeTo"
+                                                                        []
+                                                                        [ Ty.path "usize" ]
                                                                         [
                                                                           ("end_",
                                                                             M.read (| period |))
@@ -15338,6 +15712,8 @@ Module str.
                                               (M.alloc (|
                                                 Value.StructRecord
                                                   "core::str::pattern::TwoWaySearcher"
+                                                  []
+                                                  []
                                                   [
                                                     ("crit_pos", M.read (| crit_pos |));
                                                     ("crit_pos_back", M.read (| crit_pos |));
@@ -16127,6 +16503,8 @@ Module str.
                                       [
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start", M.read (| start |));
                                             ("end_",
@@ -16480,6 +16858,8 @@ Module str.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", M.read (| start |));
                                                 ("end_",
@@ -17445,6 +17825,8 @@ Module str.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_", M.read (| crit |))
@@ -17819,6 +18201,8 @@ Module str.
                                       [
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.read (|
@@ -19137,7 +19521,11 @@ Module str.
           ltac:(M.monadic
             (let _a := M.alloc (| _a |) in
             let _b := M.alloc (| _b |) in
-            Value.StructTuple "core::option::Option::None" []))
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -19154,6 +19542,8 @@ Module str.
             let b := M.alloc (| b |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
               [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19213,6 +19603,8 @@ Module str.
             let b := M.alloc (| b |) in
             Value.StructTuple
               "core::str::pattern::SearchStep::Reject"
+              []
+              []
               [ M.read (| a |); M.read (| b |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19230,6 +19622,8 @@ Module str.
             let b := M.alloc (| b |) in
             Value.StructTuple
               "core::str::pattern::SearchStep::Match"
+              []
+              []
               [ M.read (| a |); M.read (| b |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19567,6 +19961,8 @@ Module str.
                                       M.alloc (|
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.call_closure (|
@@ -19740,6 +20136,8 @@ Module str.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "bool" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -19994,6 +20392,8 @@ Module str.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [ ("start", Value.Integer IntegerKind.Usize 1) ]
                           ]
                         |)
@@ -20299,6 +20699,11 @@ Module str.
                                                                                         |);
                                                                                         Value.StructRecord
                                                                                           "core::ops::range::RangeFrom"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ]
                                                                                           [
                                                                                             ("start",
                                                                                               M.read (|
@@ -20311,6 +20716,9 @@ Module str.
                                                                                 |);
                                                                                 Value.StructRecord
                                                                                   "core::ops::range::RangeTo"
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
                                                                                   [
                                                                                     ("end_",
                                                                                       M.call_closure (|
@@ -20958,6 +21366,8 @@ Module str.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
@@ -21129,6 +21539,8 @@ Module str.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
@@ -21714,7 +22126,13 @@ Module str.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "bool" ]
+                    [ M.read (| result |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -21910,6 +22328,8 @@ Module str.
                                                       Value.StructTuple
                                                         "core::panicking::AssertKind::Eq"
                                                         []
+                                                        []
+                                                        []
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -21941,6 +22361,8 @@ Module str.
                                                         |);
                                                         Value.StructTuple
                                                           "core::option::Option::None"
+                                                          []
+                                                          [ Ty.path "core::fmt::Arguments" ]
                                                           []
                                                       ]
                                                     |)

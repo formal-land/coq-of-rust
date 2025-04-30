@@ -118,7 +118,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              Value.StructTuple "core::cmp::Ordering::Equal" []))
+              Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -143,7 +143,9 @@ Module collections.
               let other := M.alloc (| other |) in
               Value.StructTuple
                 "core::option::Option::Some"
-                [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+                []
+                [ Ty.path "core::cmp::Ordering" ]
+                [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -189,7 +191,7 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
+              Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -209,7 +211,8 @@ Module collections.
         Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
           | [], [], [] =>
-            ltac:(M.monadic (Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
+            ltac:(M.monadic
+              (Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         

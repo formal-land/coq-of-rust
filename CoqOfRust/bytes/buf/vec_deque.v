@@ -176,7 +176,11 @@ Module buf.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| cnt |)) ]
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        []
+                        [ Ty.path "usize" ]
+                        [ ("end_", M.read (| cnt |)) ]
                     ]
                   |)
                 |) in

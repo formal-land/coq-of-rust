@@ -67,9 +67,13 @@ Module bits.
             (let word := M.alloc (| word |) in
             Value.StructTuple
               "alloy_primitives::bits::function::Function"
+              []
+              []
               [
                 Value.StructTuple
                   "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 24 ]
+                  []
                   [
                     M.call_closure (|
                       Ty.apply
@@ -150,6 +154,8 @@ Module bits.
                                     M.borrow (| Pointer.Kind.Ref, word |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", Value.Integer IntegerKind.Usize 24) ]
                                   ]
                                 |)
@@ -235,6 +241,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, word |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", Value.Integer IntegerKind.Usize 24) ]
                             ]
                           |)
@@ -297,7 +305,11 @@ Module bits.
                   |)
                 |) in
               M.alloc (|
-                Value.StructTuple "alloy_primitives::bits::fixed::FixedBytes" [ M.read (| word |) ]
+                Value.StructTuple
+                  "alloy_primitives::bits::fixed::FixedBytes"
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  []
+                  [ M.read (| word |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -384,6 +396,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", Value.Integer IntegerKind.Usize 20) ]
                             ]
                           |)
@@ -465,6 +479,8 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", Value.Integer IntegerKind.Usize 20) ]
                             ]
                           |)
@@ -509,9 +525,13 @@ Module bits.
               M.alloc (|
                 Value.StructTuple
                   "alloy_primitives::bits::function::Function"
+                  []
+                  []
                   [
                     Value.StructTuple
                       "alloy_primitives::bits::fixed::FixedBytes"
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      []
                       [ M.read (| bytes |) ]
                   ]
               |)

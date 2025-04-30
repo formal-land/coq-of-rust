@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "payment_channel::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -1240,6 +1242,8 @@ Module Impl_payment_channel_PaymentChannel.
         let close_duration := M.alloc (| close_duration |) in
         Value.StructRecord
           "payment_channel::PaymentChannel"
+          []
+          []
           [
             ("sender",
               M.call_closure (|
@@ -1264,7 +1268,7 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |));
             ("recipient", M.read (| recipient |));
-            ("expiration", Value.StructTuple "core::option::Option::None" []);
+            ("expiration", Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []);
             ("withdrawn", Value.Integer IntegerKind.U128 0);
             ("close_duration", M.read (| close_duration |))
           ]))
@@ -1387,9 +1391,13 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
                                   [
                                     Value.StructTuple
                                       "payment_channel::Error::CallerIsNotRecipient"
+                                      []
+                                      []
                                       []
                                   ]
                               |)
@@ -1431,9 +1439,13 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
                                   [
                                     Value.StructTuple
                                       "payment_channel::Error::AmountIsLessThanWithdrawn"
+                                      []
+                                      []
                                       []
                                   ]
                               |)
@@ -1480,7 +1492,14 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "payment_channel::Error::InvalidSignature" []
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                                  [
+                                    Value.StructTuple
+                                      "payment_channel::Error::InvalidSignature"
+                                      []
+                                      []
+                                      []
                                   ]
                               |)
                             |)
@@ -1614,6 +1633,8 @@ Module Impl_payment_channel_PaymentChannel.
                                             ltac:(M.monadic
                                               (Value.StructTuple
                                                 "payment_channel::Error::TransferFailed"
+                                                []
+                                                []
                                                 []))
                                         ]
                                       |)))
@@ -1681,7 +1702,13 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1856,7 +1883,13 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1974,7 +2007,14 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "payment_channel::Error::CallerIsNotSender" []
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                                  [
+                                    Value.StructTuple
+                                      "payment_channel::Error::CallerIsNotSender"
+                                      []
+                                      []
+                                      []
                                   ]
                               |)
                             |)
@@ -2057,9 +2097,13 @@ Module Impl_payment_channel_PaymentChannel.
                       |);
                       Value.StructTuple
                         "payment_channel::Event::SenderCloseStarted"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "payment_channel::SenderCloseStarted"
+                            []
+                            []
                             [
                               ("expiration", M.read (| expiration |));
                               ("close_duration",
@@ -2083,10 +2127,20 @@ Module Impl_payment_channel_PaymentChannel.
                       "payment_channel::PaymentChannel",
                       "expiration"
                     |),
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| expiration |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "u64" ]
+                      [ M.read (| expiration |) ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2215,9 +2269,13 @@ Module Impl_payment_channel_PaymentChannel.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [ Ty.tuple []; Ty.path "payment_channel::Error" ]
                                           [
                                             Value.StructTuple
                                               "payment_channel::Error::NotYetExpired"
+                                              []
+                                              []
                                               []
                                           ]
                                       |)
@@ -2269,7 +2327,11 @@ Module Impl_payment_channel_PaymentChannel.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                          [ Value.Tuple [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2277,7 +2339,9 @@ Module Impl_payment_channel_PaymentChannel.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "payment_channel::Error::NotYetExpired" [] ]
+                          []
+                          [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                          [ Value.StructTuple "payment_channel::Error::NotYetExpired" [] [] [] ]
                       |)))
                 ]
               |)
@@ -2407,9 +2471,13 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
                                   [
                                     Value.StructTuple
                                       "payment_channel::Error::CallerIsNotRecipient"
+                                      []
+                                      []
                                       []
                                   ]
                               |)
@@ -2456,7 +2524,14 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "payment_channel::Error::InvalidSignature" []
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                                  [
+                                    Value.StructTuple
+                                      "payment_channel::Error::InvalidSignature"
+                                      []
+                                      []
+                                      []
                                   ]
                               |)
                             |)
@@ -2497,9 +2572,13 @@ Module Impl_payment_channel_PaymentChannel.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
                                   [
                                     Value.StructTuple
                                       "payment_channel::Error::AmountIsLessThanWithdrawn"
+                                      []
+                                      []
                                       []
                                   ]
                               |)
@@ -2655,6 +2734,8 @@ Module Impl_payment_channel_PaymentChannel.
                                             ltac:(M.monadic
                                               (Value.StructTuple
                                                 "payment_channel::Error::TransferFailed"
+                                                []
+                                                []
                                                 []))
                                         ]
                                       |)))
@@ -2722,7 +2803,13 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

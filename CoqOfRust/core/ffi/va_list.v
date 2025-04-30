@@ -256,9 +256,16 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ffi::va_list::VaList"
+              []
+              []
               [
                 ("inner", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ] ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

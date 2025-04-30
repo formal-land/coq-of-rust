@@ -23,6 +23,8 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "revm_interpreter::interpreter::return_data::ReturnDataImpl"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -134,6 +136,8 @@ Module interpreter.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_interpreter::interpreter::return_data::ReturnDataImpl"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "alloy_primitives::bytes_::Bytes",

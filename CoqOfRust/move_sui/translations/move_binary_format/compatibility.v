@@ -538,6 +538,8 @@ Module compatibility.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::compatibility::Compatibility"
+            []
+            []
             [
               ("check_struct_and_pub_function_linking", Value.Bool true);
               ("check_struct_layout", Value.Bool true);
@@ -616,6 +618,8 @@ Module compatibility.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::compatibility::Compatibility"
+            []
+            []
             [
               ("check_struct_and_pub_function_linking", Value.Bool false);
               ("check_struct_layout", Value.Bool false);
@@ -1834,6 +1838,8 @@ Module compatibility.
                                                                                 Value.StructTuple
                                                                                   "move_binary_format::file_format::Visibility::Private"
                                                                                   []
+                                                                                  []
+                                                                                  []
                                                                               |)
                                                                             |)
                                                                           ]
@@ -2656,6 +2662,11 @@ Module compatibility.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -2668,6 +2679,8 @@ Module compatibility.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -2708,6 +2721,11 @@ Module compatibility.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -2720,6 +2738,8 @@ Module compatibility.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -2760,6 +2780,11 @@ Module compatibility.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -2772,6 +2797,8 @@ Module compatibility.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -2812,6 +2839,11 @@ Module compatibility.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -2825,6 +2857,8 @@ Module compatibility.
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
                                             []
+                                            []
+                                            []
                                         ]
                                       |)
                                     ]
@@ -2835,7 +2869,13 @@ Module compatibility.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3738,6 +3778,8 @@ Module compatibility.
                       Value.StructTuple
                         "move_binary_format::compatibility::InclusionCheck::Subset"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3750,6 +3792,8 @@ Module compatibility.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::compatibility::InclusionCheck::Equal"
+                        []
+                        []
                         []
                     |)))
               ]
@@ -4142,6 +4186,8 @@ Module compatibility.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -4154,6 +4200,8 @@ Module compatibility.
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -4311,6 +4359,8 @@ Module compatibility.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "move_binary_format::compatibility::InclusionCheck::Equal"
+                                                []
+                                                []
                                                 []
                                             |)
                                           |)
@@ -5150,7 +5200,13 @@ Module compatibility.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

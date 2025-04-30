@@ -37,6 +37,8 @@ Module bn128.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.read (|
                 get_constant (|
@@ -223,6 +225,8 @@ Module bn128.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.read (|
                 get_constant (|
@@ -426,6 +430,8 @@ Module bn128.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.read (|
                 get_constant (|
@@ -612,6 +618,8 @@ Module bn128.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.read (|
                 get_constant (|
@@ -823,6 +831,8 @@ Module bn128.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.read (|
                 get_constant (|
@@ -1027,6 +1037,8 @@ Module bn128.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.read (|
                 get_constant (|
@@ -1308,6 +1320,8 @@ Module bn128.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
+                              []
+                              [ Ty.path "usize" ]
                               [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                           ]
                         |)
@@ -1338,6 +1352,8 @@ Module bn128.
                             ltac:(M.monadic
                               (Value.StructTuple
                                 "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
+                                []
+                                []
                                 []))
                         ]
                       |)))
@@ -1450,6 +1466,8 @@ Module bn128.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_", Value.Integer IntegerKind.Usize 32)
@@ -1606,6 +1624,8 @@ Module bn128.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 32);
                                               ("end_", Value.Integer IntegerKind.Usize 64)
@@ -1814,6 +1834,11 @@ Module bn128.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "substrate_bn::G1";
+                        Ty.path "revm_precompile::interface::PrecompileError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "substrate_bn::G1",
@@ -1927,6 +1952,8 @@ Module bn128.
                                         ltac:(M.monadic
                                           (Value.StructTuple
                                             "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
+                                            []
+                                            []
                                             []))
                                     ]
                                   |)))
@@ -2005,6 +2032,11 @@ Module bn128.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -2020,6 +2052,8 @@ Module bn128.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -2175,6 +2209,8 @@ Module bn128.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", Value.Integer IntegerKind.Usize 64) ]
                                         ]
                                       |)
@@ -2361,6 +2397,8 @@ Module bn128.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 64) ]
                                         ]
                                       |)
@@ -2567,6 +2605,8 @@ Module bn128.
                                                 M.borrow (| Pointer.Kind.MutRef, output |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeTo"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                                               ]
                                             |)
@@ -2652,6 +2692,8 @@ Module bn128.
                                                 M.borrow (| Pointer.Kind.MutRef, output |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeFrom"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("start", Value.Integer IntegerKind.Usize 32) ]
                                               ]
                                             |)
@@ -2671,6 +2713,11 @@ Module bn128.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",
@@ -2773,6 +2820,11 @@ Module bn128.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -2788,6 +2840,8 @@ Module bn128.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -2943,6 +2997,8 @@ Module bn128.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", Value.Integer IntegerKind.Usize 64) ]
                                         ]
                                       |)
@@ -3110,6 +3166,8 @@ Module bn128.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start", Value.Integer IntegerKind.Usize 64);
                                           ("end_", Value.Integer IntegerKind.Usize 96)
@@ -3255,6 +3313,8 @@ Module bn128.
                                                 M.borrow (| Pointer.Kind.MutRef, output |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeTo"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                                               ]
                                             |)
@@ -3340,6 +3400,8 @@ Module bn128.
                                                 M.borrow (| Pointer.Kind.MutRef, output |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeFrom"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("start", Value.Integer IntegerKind.Usize 32) ]
                                               ]
                                             |)
@@ -3359,6 +3421,11 @@ Module bn128.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",
@@ -3552,6 +3619,11 @@ Module bn128.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -3567,6 +3639,8 @@ Module bn128.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3630,6 +3704,11 @@ Module bn128.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -3645,6 +3724,8 @@ Module bn128.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::Bn128PairLength"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3783,6 +3864,8 @@ Module bn128.
                                     [
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_", M.read (| elements |))
@@ -4144,6 +4227,11 @@ Module bn128.
                                                                                     |);
                                                                                     Value.StructRecord
                                                                                       "core::ops::range::Range"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ]
                                                                                       [
                                                                                         ("start",
                                                                                           M.read (|
@@ -4269,6 +4357,8 @@ Module bn128.
                                                                                                   ltac:(M.monadic
                                                                                                     (Value.StructTuple
                                                                                                       "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
+                                                                                                      []
+                                                                                                      []
                                                                                                       []))
                                                                                               ]
                                                                                             |)))
@@ -5697,6 +5787,8 @@ Module bn128.
                                                                                                     ltac:(M.monadic
                                                                                                       (Value.StructTuple
                                                                                                         "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
+                                                                                                        []
+                                                                                                        []
                                                                                                         []))
                                                                                                 ]
                                                                                               |)))
@@ -5930,6 +6022,11 @@ Module bn128.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",

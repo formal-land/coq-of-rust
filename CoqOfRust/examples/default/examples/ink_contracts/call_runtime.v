@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "call_runtime::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -201,7 +203,7 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   (* Default *)
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -374,7 +376,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                   (let _ :=
                     M.is_struct_tuple (| γ, "call_runtime::EnvError::CallRuntimeFailed" |) in
                   M.alloc (|
-                    Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" []
+                    Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" [] [] []
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -589,9 +591,13 @@ Module Impl_call_runtime_RuntimeCaller.
                       M.alloc (|
                         Value.StructTuple
                           "call_runtime::RuntimeCall::Balances"
+                          []
+                          []
                           [
                             Value.StructRecord
                               "call_runtime::BalancesCall::Transfer"
+                              []
+                              []
                               [
                                 ("dest",
                                   M.call_closure (|

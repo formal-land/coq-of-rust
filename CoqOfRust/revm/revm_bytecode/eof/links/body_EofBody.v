@@ -24,7 +24,7 @@ Module EofBody.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_bytecode::eof::body::EofBody";
     φ '(Build_t types_section code_section code container_section data_section is_data_filled) :=
-      Value.StructRecord "revm_bytecode::eof::body::EofBody" [
+      Value.StructRecord "revm_bytecode::eof::body::EofBody" [] [] [
         ("types_section", φ types_section);
         ("code_section", φ code_section);
         ("code", φ code);
@@ -51,7 +51,7 @@ Module EofBody.
     container_section' = φ container_section ->
     data_section' = φ data_section ->
     is_data_filled' = φ is_data_filled ->
-    Value.StructRecord "revm_bytecode::eof::body::EofBody" [
+    Value.StructRecord "revm_bytecode::eof::body::EofBody" [] [] [
       ("types_section", types_section');
       ("code_section", code_section');
       ("code", code');
@@ -70,7 +70,7 @@ Module EofBody.
       (data_section : Bytes.t)
       (is_data_filled : bool) :
     OfValue.t (
-      Value.StructRecord "revm_bytecode::eof::body::EofBody" [
+      Value.StructRecord "revm_bytecode::eof::body::EofBody" [] [] [
         ("types_section", φ types_section);
         ("code_section", φ code_section);
         ("code", φ code);

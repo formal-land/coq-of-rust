@@ -38,6 +38,8 @@ Module mem.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
+              []
+              [ T ]
               [
                 ("value",
                   M.call_closure (|
@@ -147,6 +149,8 @@ Module mem.
           ltac:(M.monadic
             (Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
+              []
+              [ T ]
               [
                 ("value",
                   M.call_closure (|
@@ -444,6 +448,8 @@ Module mem.
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
+              []
+              [ T ]
               [ ("value", M.read (| value |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

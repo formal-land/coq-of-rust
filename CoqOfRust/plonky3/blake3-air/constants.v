@@ -140,6 +140,8 @@ Module constants.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_", Value.Integer IntegerKind.Usize 16)

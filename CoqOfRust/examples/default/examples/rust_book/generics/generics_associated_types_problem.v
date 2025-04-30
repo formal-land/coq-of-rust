@@ -229,6 +229,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "generics_associated_types_problem::Container"
+              []
+              []
               [ M.read (| number_1 |); M.read (| number_2 |) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

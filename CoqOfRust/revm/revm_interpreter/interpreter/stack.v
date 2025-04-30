@@ -1348,7 +1348,26 @@ Module interpreter.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ N ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              []
+                                          ]
+                                      ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1358,6 +1377,21 @@ Module interpreter.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                      ]
                       [
                         M.call_closure (|
                           Ty.apply
@@ -1474,7 +1508,41 @@ Module interpreter.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ POPN ]
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ]
+                                          ]
+                                      ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1484,6 +1552,36 @@ Module interpreter.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ POPN ]
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ]
+                          ]
+                      ]
                       [
                         M.call_closure (|
                           Ty.tuple
@@ -1643,6 +1741,8 @@ Module interpreter.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter::stack::Stack"
+              []
+              []
               [
                 ("data",
                   M.call_closure (|
@@ -1945,6 +2045,8 @@ Module interpreter.
                 |);
                 Value.StructTuple
                   "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                  []
+                  []
                   []
               ]
             |)))
@@ -3054,6 +3156,17 @@ Module interpreter.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [];
+                            Ty.path "revm_interpreter::instruction_result::InstructionResult"
+                          ]
                           [
                             M.read (|
                               M.deref (|
@@ -3156,9 +3269,22 @@ Module interpreter.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [];
+                            Ty.path "revm_interpreter::instruction_result::InstructionResult"
+                          ]
                           [
                             Value.StructTuple
                               "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                              []
+                              []
                               []
                           ]
                       |)))
@@ -4188,7 +4314,15 @@ Module interpreter.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                    Value.StructTuple
+                                      "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path
+                                          "revm_interpreter::instruction_result::InstructionResult"
+                                      ]
+                                      [ Value.Tuple [] ]
                                   |)
                                 |)
                               |)
@@ -4297,9 +4431,17 @@ Module interpreter.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path
+                                          "revm_interpreter::instruction_result::InstructionResult"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -4973,6 +5115,12 @@ Module interpreter.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Ok"
+                                        []
+                                        [
+                                          Ty.tuple [];
+                                          Ty.path
+                                            "revm_interpreter::instruction_result::InstructionResult"
+                                        ]
                                         [ Value.Tuple [] ]
                                     |)
                                   |)
@@ -5350,6 +5498,8 @@ Module interpreter.
                                               M.borrow (| Pointer.Kind.MutRef, tmp |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [
                                                   ("start",
                                                     M.call_closure (|
@@ -5529,6 +5679,8 @@ Module interpreter.
                                                           Value.StructTuple
                                                             "core::panicking::AssertKind::Eq"
                                                             []
+                                                            []
+                                                            []
                                                         |) in
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -5564,6 +5716,8 @@ Module interpreter.
                                                             |);
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
+                                                              []
+                                                              [ Ty.path "core::fmt::Arguments" ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path "core::fmt::Arguments",
@@ -5671,7 +5825,16 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.path "revm_interpreter::instruction_result::InstructionResult"
+                      ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5861,16 +6024,30 @@ Module interpreter.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.tuple [];
+                            Ty.path "revm_interpreter::instruction_result::InstructionResult"
+                          ]
+                          [ Value.Tuple [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.tuple [];
+                            Ty.path "revm_interpreter::instruction_result::InstructionResult"
+                          ]
                           [
                             Value.StructTuple
                               "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                              []
+                              []
                               []
                           ]
                       |)))

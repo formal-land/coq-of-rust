@@ -159,6 +159,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_methods::Owner"
+              []
+              []
               [ Value.Integer IntegerKind.I32 18 ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

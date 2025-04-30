@@ -77,6 +77,8 @@ Module host.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_context_interface::host::dummy::DummyHost"
+              []
+              [ BLOCK; TX; CFG ]
               [
                 ("tx",
                   M.call_closure (|
@@ -556,6 +558,8 @@ Module host.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_context_interface::host::dummy::DummyHost"
+              []
+              [ BLOCK; TX; CFG ]
               [
                 ("tx",
                   M.call_closure (|
@@ -763,6 +767,8 @@ Module host.
             let block := M.alloc (| block |) in
             Value.StructRecord
               "revm_context_interface::host::dummy::DummyHost"
+              []
+              [ BLOCK; TX; CFG ]
               [
                 ("tx", M.read (| tx |));
                 ("block", M.read (| block |));
@@ -1188,6 +1194,8 @@ Module host.
             let _address := M.alloc (| _address |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ]
               [
                 M.call_closure (|
                   Ty.path "revm_context_interface::journaled_state::AccountLoad",
@@ -1225,6 +1233,13 @@ Module host.
             let _number := M.alloc (| _number |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  []
+              ]
               [
                 M.read (|
                   get_associated_constant (|
@@ -1262,6 +1277,18 @@ Module host.
             let _address := M.alloc (| _address |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [
+                Ty.apply
+                  (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ]
+              ]
               [
                 M.call_closure (|
                   Ty.apply
@@ -1315,6 +1342,13 @@ Module host.
             let _address := M.alloc (| _address |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [
+                Ty.apply
+                  (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                  []
+                  [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+              ]
               [
                 M.call_closure (|
                   Ty.apply
@@ -1358,6 +1392,18 @@ Module host.
             let _address := M.alloc (| _address |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [
+                Ty.apply
+                  (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  ]
+              ]
               [
                 M.call_closure (|
                   Ty.apply
@@ -1513,6 +1559,21 @@ Module host.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -1689,6 +1750,21 @@ Module host.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ]
+                          ]
                           [
                             M.call_closure (|
                               Ty.apply
@@ -1850,13 +1926,24 @@ Module host.
               M.alloc (|
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                      []
+                      [ Ty.path "revm_context_interface::host::SStoreResult" ]
+                  ]
                   [
                     Value.StructRecord
                       "revm_context_interface::journaled_state::StateLoad"
+                      []
+                      [ Ty.path "revm_context_interface::host::SStoreResult" ]
                       [
                         ("data",
                           Value.StructRecord
                             "revm_context_interface::host::SStoreResult"
+                            []
+                            []
                             [
                               ("original_value",
                                 M.read (|
@@ -2265,6 +2352,13 @@ Module host.
             let _target := M.alloc (| _target |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [
+                Ty.apply
+                  (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                  []
+                  [ Ty.path "revm_context_interface::host::SelfDestructResult" ]
+              ]
               [
                 M.call_closure (|
                   Ty.apply

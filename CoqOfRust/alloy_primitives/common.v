@@ -167,7 +167,7 @@ Module common.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic (Value.StructTuple "alloy_primitives::common::TxKind::Create" []))
+        ltac:(M.monadic (Value.StructTuple "alloy_primitives::common::TxKind::Create" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -455,7 +455,9 @@ Module common.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "alloy_primitives::common::TxKind::Create" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "alloy_primitives::common::TxKind::Create" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -468,6 +470,8 @@ Module common.
                     M.alloc (|
                       Value.StructTuple
                         "alloy_primitives::common::TxKind::Call"
+                        []
+                        []
                         [ M.read (| addr |) ]
                     |)))
               ]
@@ -504,7 +508,7 @@ Module common.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructTuple "alloy_primitives::common::TxKind::Call" [ M.read (| value |) ]))
+          Value.StructTuple "alloy_primitives::common::TxKind::Call" [] [] [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -617,7 +621,18 @@ Module common.
                     (let γ := M.read (| γ |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::common::TxKind::Create" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
@@ -631,6 +646,13 @@ Module common.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| to |) |) |) ]
                     |)))
               ]

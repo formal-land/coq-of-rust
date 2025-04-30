@@ -764,7 +764,9 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          M.alloc (| Value.StructRecord "ruint::Uint" [ ("limbs", M.read (| limbs |)) ] |)
+          M.alloc (|
+            Value.StructRecord "ruint::Uint" [ BITS; LIMBS ] [] [ ("limbs", M.read (| limbs |)) ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -915,13 +917,25 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let n := M.copy (| γ0_0 |) in
                   let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                      [ M.read (| n |) ]
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                      []
+                  |)))
             ]
           |)
         |)))
@@ -1087,6 +1101,8 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                   M.borrow (| Pointer.Kind.MutRef, limbs |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|

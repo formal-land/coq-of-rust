@@ -32,6 +32,8 @@ Module Impl_generics_new_type_idiom_Years.
         (let self := M.alloc (| self |) in
         Value.StructTuple
           "generics_new_type_idiom::Days"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "i64",
@@ -71,6 +73,8 @@ Module Impl_generics_new_type_idiom_Days.
         (let self := M.alloc (| self |) in
         Value.StructTuple
           "generics_new_type_idiom::Years"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "i64",
@@ -143,7 +147,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ age : Ty.apply (Ty.path "*") [] [ Ty.path "generics_new_type_idiom::Years" ] :=
           M.alloc (|
-            Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer IntegerKind.I64 5 ]
+            Value.StructTuple
+              "generics_new_type_idiom::Years"
+              []
+              []
+              [ Value.Integer IntegerKind.I64 5 ]
           |) in
         let~ age_days : Ty.apply (Ty.path "*") [] [ Ty.path "generics_new_type_idiom::Days" ] :=
           M.alloc (|

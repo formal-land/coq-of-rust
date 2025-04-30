@@ -170,7 +170,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
-              [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Apple" [] ]
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ]
+              [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Apple" [] [] [] ]
           |) in
         let~ orange :
             Ty.apply
@@ -185,7 +187,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
-              [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Orange" [] ]
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ]
+              [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Orange" [] [] [] ]
           |) in
         let~ no_fruit :
             Ty.apply
@@ -197,7 +201,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ]
+              []
+          |) in
         let~ first_available_fruit :
             Ty.apply
               (Ty.path "*")

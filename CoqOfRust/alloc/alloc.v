@@ -82,7 +82,7 @@ Module alloc.
     (* Default *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.StructTuple "alloc::alloc::Global" []))
+      | [], [], [] => ltac:(M.monadic (Value.StructTuple "alloc::alloc::Global" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -442,6 +442,14 @@ Module alloc.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -624,7 +632,7 @@ Module alloc.
                                           |),
                                           [ M.read (| raw_ptr |) ]
                                         |);
-                                        Value.StructTuple "core::alloc::AllocError" []
+                                        Value.StructTuple "core::alloc::AllocError" [] [] []
                                       ]
                                     |)
                                   ]
@@ -709,6 +717,14 @@ Module alloc.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -1172,7 +1188,7 @@ Module alloc.
                                           |),
                                           [ M.read (| raw_ptr |) ]
                                         |);
-                                        Value.StructTuple "core::alloc::AllocError" []
+                                        Value.StructTuple "core::alloc::AllocError" [] [] []
                                       ]
                                     |)
                                   ]
@@ -1304,6 +1320,14 @@ Module alloc.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -1552,7 +1576,17 @@ Module alloc.
                             |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
+                            [ M.read (| new_ptr |) ]
                         |)))
                   ]
                 |)
@@ -2010,6 +2044,14 @@ Module alloc.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -2236,7 +2278,7 @@ Module alloc.
                                           |),
                                           [ M.read (| raw_ptr |) ]
                                         |);
-                                        Value.StructTuple "core::alloc::AllocError" []
+                                        Value.StructTuple "core::alloc::AllocError" [] [] []
                                       ]
                                     |)
                                   ]
@@ -2321,6 +2363,14 @@ Module alloc.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -2571,7 +2621,17 @@ Module alloc.
                             |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
+                            [ M.read (| new_ptr |) ]
                         |)))
                   ]
                 |)
@@ -2652,7 +2712,7 @@ Module alloc.
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                    M.alloc (| Value.StructTuple "alloc::alloc::Global" [] [] [] |)
                   |);
                   M.read (| layout |)
                 ]

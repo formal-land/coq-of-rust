@@ -193,6 +193,8 @@ Module task.
             let vtable := M.alloc (| vtable |) in
             Value.StructRecord
               "core::task::wake::RawWaker"
+              []
+              []
               [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -595,6 +597,8 @@ Module task.
             let drop := M.alloc (| drop |) in
             Value.StructRecord
               "core::task::wake::RawWakerVTable"
+              []
+              []
               [
                 ("clone", M.read (| clone |));
                 ("wake", M.read (| wake |));
@@ -1270,12 +1274,29 @@ Module task.
               M.alloc (|
                 Value.StructRecord
                   "core::task::wake::ContextBuilder"
+                  []
+                  []
                   [
                     ("waker", M.read (| waker |));
                     ("local_waker", M.read (| local_waker |));
-                    ("ext", Value.StructTuple "core::task::wake::ExtData::None" [ Value.Tuple [] ]);
-                    ("_marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
+                    ("ext",
+                      Value.StructTuple "core::task::wake::ExtData::None" [] [] [ Value.Tuple [] ]);
+                    ("_marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [
+                          Ty.function
+                            [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                            (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
+                        ]
+                        []);
+                    ("_marker2",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               |)
             |)))
@@ -1340,6 +1361,8 @@ Module task.
                           M.alloc (|
                             Value.StructTuple
                               "core::task::wake::ExtData::Some"
+                              []
+                              []
                               [
                                 (* Unsize *)
                                 M.pointer_coercion
@@ -1359,7 +1382,11 @@ Module task.
                               0
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::task::wake::ExtData::None" [ Value.Tuple [] ]
+                            Value.StructTuple
+                              "core::task::wake::ExtData::None"
+                              []
+                              []
+                              [ Value.Tuple [] ]
                           |)))
                     ]
                   |)
@@ -1367,6 +1394,8 @@ Module task.
               M.alloc (|
                 Value.StructRecord
                   "core::task::wake::ContextBuilder"
+                  []
+                  []
                   [
                     ("waker",
                       M.borrow (|
@@ -1395,8 +1424,22 @@ Module task.
                         |)
                       |));
                     ("ext", M.read (| ext |));
-                    ("_marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
+                    ("_marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [
+                          Ty.function
+                            [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                            (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
+                        ]
+                        []);
+                    ("_marker2",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               |)
             |)))
@@ -1465,6 +1508,8 @@ Module task.
                 ("ext",
                   Value.StructTuple
                     "core::task::wake::ExtData::Some"
+                    []
+                    []
                     [
                       (* Unsize *)
                       M.pointer_coercion
@@ -1534,6 +1579,8 @@ Module task.
                       M.alloc (|
                         Value.StructRecord
                           "core::task::wake::Context"
+                          []
+                          []
                           [
                             ("waker",
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| waker |) |) |));
@@ -1545,6 +1592,8 @@ Module task.
                             ("ext",
                               Value.StructTuple
                                 "core::panic::unwind_safe::AssertUnwindSafe"
+                                []
+                                [ Ty.path "core::task::wake::ExtData" ]
                                 [ M.read (| ext |) ]);
                             ("_marker", M.read (| _marker |));
                             ("_marker2", M.read (| _marker2 |))
@@ -1912,10 +1961,14 @@ Module task.
             let vtable := M.alloc (| vtable |) in
             Value.StructRecord
               "core::task::wake::Waker"
+              []
+              []
               [
                 ("waker",
                   Value.StructRecord
                     "core::task::wake::RawWaker"
+                    []
+                    []
                     [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1935,7 +1988,7 @@ Module task.
         | [], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
-            Value.StructRecord "core::task::wake::Waker" [ ("waker", M.read (| waker |)) ]))
+            Value.StructRecord "core::task::wake::Waker" [] [] [ ("waker", M.read (| waker |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2044,6 +2097,8 @@ Module task.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::task::wake::Waker"
+              []
+              []
               [
                 ("waker",
                   M.call_closure (|
@@ -2726,10 +2781,14 @@ Module task.
             let vtable := M.alloc (| vtable |) in
             Value.StructRecord
               "core::task::wake::LocalWaker"
+              []
+              []
               [
                 ("waker",
                   Value.StructRecord
                     "core::task::wake::RawWaker"
+                    []
+                    []
                     [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2749,7 +2808,11 @@ Module task.
         | [], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
-            Value.StructRecord "core::task::wake::LocalWaker" [ ("waker", M.read (| waker |)) ]))
+            Value.StructRecord
+              "core::task::wake::LocalWaker"
+              []
+              []
+              [ ("waker", M.read (| waker |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2858,6 +2921,8 @@ Module task.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::task::wake::LocalWaker"
+              []
+              []
               [
                 ("waker",
                   M.call_closure (|

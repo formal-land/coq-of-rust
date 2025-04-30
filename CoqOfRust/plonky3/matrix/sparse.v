@@ -212,6 +212,8 @@ Module sparse.
             M.alloc (|
               Value.StructRecord
                 "core::ops::range::Range"
+                []
+                [ Ty.path "usize" ]
                 [
                   ("start",
                     M.read (|
@@ -617,6 +619,8 @@ Module sparse.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             Value.Integer IntegerKind.Usize 0);
@@ -779,6 +783,8 @@ Module sparse.
             M.alloc (|
               Value.StructRecord
                 "p3_matrix::sparse::CsrMatrix"
+                []
+                [ T ]
                 [
                   ("width", M.read (| cols |));
                   ("nonzero_values", M.read (| nonzero_values |));

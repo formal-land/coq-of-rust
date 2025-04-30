@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import core.links.cmp.
+Require Import core.links.option.
 Require Import core.num.links.mod.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.gas.links.calc.
@@ -37,14 +38,10 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  (* NOTE: Stuck on
-  {{CoqOfRust.M.LowM.CallPrimitive
-    (Primitive.GetTraitMethod "core::convert::AsRef"
-       (Ty.apply (Ty.path "slice") [] [Ty.path "u8"]) []
-       [Ty.apply (Ty.path "slice") [] [Ty.path "u8"]] "as_ref" [] [])
-  *)
+  destruct run_Deref_for_Synthetic1.
+  destruct (Impl_AsRef_for_Slice.run U8.t).
   run_symbolic.
-Admitted.
+Defined.
 
 (* pub fn mstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -67,17 +64,8 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  (* 
-  TODO: resolve the link issue for `set`, seemly coming from `MemoryTrait.set`...
-  Trait set.(TraitMethod.method) [] []
-    [Ref.IsLink.(φ)
-      (Ref.cast_to Pointer.Kind.MutRef sub_ref3);
-    Integer.IsLink.(φ) value1;
-    Ref.IsLink.(φ)
-      (Ref.cast_to Pointer.Kind.Ref
-          (Ref.immediate Pointer.Kind.Raw output4))] unit
-  *)
   run_symbolic.
+  (* pointer_coercion *)
 Admitted.
 
 (* pub fn mstore8<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -102,10 +90,7 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
   run_symbolic.
-  (* NOTE:
-  - After correctly defined `ruint::Uint::byte`'s link, the goal seems to be
-    asking for its proof of being an associated function...?
-  *)
+  (* pointer_coercion *)
 Admitted.
 
 (* pub fn msize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -152,7 +137,5 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_MemoryTrait_for_Memory.
-  (* NOTE: This command seems to be exploded? *)
-  (* destruct core.links.cmp.run_max. *)
   run_symbolic.
-Admitted.
+Defined.

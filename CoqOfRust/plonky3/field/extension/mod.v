@@ -96,7 +96,11 @@ Module extension.
                       ]
                     |),
                     [
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| self |) ];
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Self ]
+                        [ M.read (| self |) ];
                       M.closure
                         (fun γ =>
                           ltac:(M.monadic
@@ -119,6 +123,8 @@ Module extension.
                                         (let x := M.copy (| γ |) in
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Self ]
                                           [
                                             M.call_closure (|
                                               Self,

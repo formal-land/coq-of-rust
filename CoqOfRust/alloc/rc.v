@@ -234,7 +234,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -384,6 +384,8 @@ Module rc.
                             [
                               Value.StructRecord
                                 "alloc::rc::RcInner"
+                                []
+                                [ T ]
                                 [
                                   ("strong",
                                     M.call_closure (|
@@ -456,7 +458,7 @@ Module rc.
               [],
               [ F ]
             |),
-            [ M.read (| data_fn |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| data_fn |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -613,7 +615,9 @@ Module rc.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                          M.alloc (|
+                                            Value.StructTuple "alloc::alloc::Global" [] [] []
+                                          |)
                                         |);
                                         M.read (| layout |)
                                       ]
@@ -792,7 +796,9 @@ Module rc.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                          M.alloc (|
+                                            Value.StructTuple "alloc::alloc::Global" [] [] []
+                                          |)
                                         |);
                                         M.read (| layout |)
                                       ]
@@ -860,6 +866,11 @@ Module rc.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
@@ -1009,6 +1020,8 @@ Module rc.
                                               [
                                                 Value.StructRecord
                                                   "alloc::rc::RcInner"
+                                                  []
+                                                  [ T ]
                                                   [
                                                     ("strong",
                                                       M.call_closure (|
@@ -1178,6 +1191,17 @@ Module rc.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1424,6 +1448,8 @@ Module rc.
                                                               Value.StructTuple
                                                                 "alloc::alloc::Global"
                                                                 []
+                                                                []
+                                                                []
                                                             |)
                                                           |);
                                                           M.read (| layout |)
@@ -1588,6 +1614,17 @@ Module rc.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1834,6 +1871,8 @@ Module rc.
                                                               Value.StructTuple
                                                                 "alloc::alloc::Global"
                                                                 []
+                                                                []
+                                                                []
                                                             |)
                                                           |);
                                                           M.read (| layout |)
@@ -2025,7 +2064,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2060,7 +2099,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2095,7 +2134,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2616,6 +2655,8 @@ Module rc.
                                                         Value.StructTuple
                                                           "core::panicking::AssertKind::Eq"
                                                           []
+                                                          []
+                                                          []
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -2650,6 +2691,8 @@ Module rc.
                                                           |);
                                                           Value.StructTuple
                                                             "core::option::Option::None"
+                                                            []
+                                                            [ Ty.path "core::fmt::Arguments" ]
                                                             []
                                                         ]
                                                       |)
@@ -2737,7 +2780,19 @@ Module rc.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| inner |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcInner") [] [ T ] ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [ M.read (| inner |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2951,9 +3006,16 @@ Module rc.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::rc::Rc"
+            []
+            [ T; A ]
             [
               ("ptr", M.read (| ptr |));
-              ("phantom", Value.StructTuple "core::marker::PhantomData" []);
+              ("phantom",
+                Value.StructTuple
+                  "core::marker::PhantomData"
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcInner") [] [ T ] ]
+                  []);
               ("alloc", M.read (| alloc |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3044,6 +3106,8 @@ Module rc.
               M.alloc (|
                 Value.StructRecord
                   "alloc::rc::Weak"
+                  []
+                  [ T; Ty.apply (Ty.path "&") [] [ A ] ]
                   [
                     ("ptr",
                       M.read (|
@@ -3682,6 +3746,8 @@ Module rc.
                       [
                         Value.StructRecord
                           "alloc::rc::RcInner"
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                           [
                             ("strong",
                               M.call_closure (|
@@ -3861,6 +3927,8 @@ Module rc.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::rc::Weak"
+                          []
+                          [ T; A ]
                           [ ("ptr", M.read (| init_ptr |)); ("alloc", M.read (| alloc |)) ]
                       |) in
                     let~ data : Ty.apply (Ty.path "*") [] [ T ] :=
@@ -4051,6 +4119,8 @@ Module rc.
                                                               Value.StructTuple
                                                                 "core::panicking::AssertKind::Eq"
                                                                 []
+                                                                []
+                                                                []
                                                             |) in
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -4086,6 +4156,8 @@ Module rc.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "core::option::Option::Some"
+                                                                  []
+                                                                  [ Ty.path "core::fmt::Arguments" ]
                                                                   [
                                                                     M.call_closure (|
                                                                       Ty.path
@@ -4336,6 +4408,8 @@ Module rc.
                                     [
                                       Value.StructRecord
                                         "alloc::rc::RcInner"
+                                        []
+                                        [ T ]
                                         [
                                           ("strong",
                                             M.call_closure (|
@@ -4456,6 +4530,11 @@ Module rc.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -4547,6 +4626,14 @@ Module rc.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -4946,6 +5033,14 @@ Module rc.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -5621,6 +5716,8 @@ Module rc.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::rc::Weak"
+                          []
+                          [ T; A ]
                           [
                             ("ptr",
                               M.read (|
@@ -5654,12 +5751,20 @@ Module rc.
                           ]
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ T; Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
+                        [ M.read (| val |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| this |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ T; Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
+                        [ M.read (| this |) ]
                     |)))
               ]
             |)
@@ -6288,6 +6393,8 @@ Module rc.
             M.alloc (|
               Value.StructRecord
                 "alloc::rc::Weak"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.read (|
@@ -6701,6 +6808,8 @@ Module rc.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -6725,7 +6834,14 @@ Module rc.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -8387,7 +8503,9 @@ Module rc.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                          M.alloc (|
+                                            Value.StructTuple "alloc::alloc::Global" [] [] []
+                                          |)
                                         |);
                                         M.read (| layout |)
                                       ]
@@ -8641,7 +8759,9 @@ Module rc.
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                      M.alloc (|
+                                        Value.StructTuple "alloc::alloc::Global" [] [] []
+                                      |)
                                     |);
                                     M.read (| layout |)
                                   ]
@@ -9017,6 +9137,8 @@ Module rc.
               M.alloc (|
                 Value.StructRecord
                   "alloc::rc::from_iter_exact::Guard"
+                  []
+                  [ T ]
                   [
                     ("mem",
                       M.call_closure (|
@@ -10271,6 +10393,14 @@ Module rc.
                             M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::Rc")
+                                    []
+                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                                ]
                                 [
                                   M.call_closure (|
                                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -10314,6 +10444,14 @@ Module rc.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                          Ty.apply
+                            (Ty.path "alloc::rc::Rc")
+                            []
+                            [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                        ]
                         [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
                     |)))
               ]
@@ -11048,6 +11186,8 @@ Module rc.
                               |);
                               Value.StructRecord
                                 "alloc::rc::RcInner"
+                                []
+                                [ T ]
                                 [
                                   ("strong",
                                     M.call_closure (|
@@ -12653,7 +12793,7 @@ Module rc.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, v |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -13215,6 +13355,17 @@ Module rc.
                             M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::Rc")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ];
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::Rc")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                                ]
                                 [
                                   M.call_closure (|
                                     Ty.apply
@@ -13272,7 +13423,20 @@ Module rc.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| boxed_slice |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::rc::Rc")
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ];
+                          Ty.apply
+                            (Ty.path "alloc::rc::Rc")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                        ]
+                        [ M.read (| boxed_slice |) ]
                     |)))
               ]
             |)
@@ -13599,6 +13763,8 @@ Module rc.
                                                                   Value.StructTuple
                                                                     "core::panicking::AssertKind::Eq"
                                                                     []
+                                                                    []
+                                                                    []
                                                                 |) in
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -13637,6 +13803,11 @@ Module rc.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "core::option::Option::Some"
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -13912,6 +14083,8 @@ Module rc.
         ltac:(M.monadic
           (Value.StructRecord
             "alloc::rc::Weak"
+            []
+            [ T; Ty.path "alloc::alloc::Global" ]
             [
               ("ptr",
                 M.call_closure (|
@@ -13947,7 +14120,7 @@ Module rc.
                     |)
                   ]
                 |));
-              ("alloc", Value.StructTuple "alloc::alloc::Global" [])
+              ("alloc", Value.StructTuple "alloc::alloc::Global" [] [] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13976,7 +14149,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -14009,6 +14182,8 @@ Module rc.
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::rc::Weak"
+            []
+            [ T; A ]
             [
               ("ptr",
                 M.call_closure (|
@@ -14510,6 +14685,8 @@ Module rc.
             M.alloc (|
               Value.StructRecord
                 "alloc::rc::Weak"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.call_closure (|
@@ -14710,7 +14887,13 @@ Module rc.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -14732,6 +14915,8 @@ Module rc.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -15053,12 +15238,20 @@ Module rc.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "alloc::rc::WeakInner" ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "alloc::rc::WeakInner" ]
                         [
                           M.read (|
                             let~ ptr :
@@ -15100,6 +15293,8 @@ Module rc.
                             M.alloc (|
                               Value.StructRecord
                                 "alloc::rc::WeakInner"
+                                []
+                                []
                                 [
                                   ("strong",
                                     M.borrow (|
@@ -15583,6 +15778,8 @@ Module rc.
             M.alloc (|
               Value.StructRecord
                 "alloc::rc::Weak"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.read (|
@@ -16663,7 +16860,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| value |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| value |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -16740,6 +16937,8 @@ Module rc.
                       [
                         Value.StructRecord
                           "alloc::rc::RcInner"
+                          []
+                          [ T ]
                           [
                             ("strong",
                               M.call_closure (|
@@ -16781,6 +16980,8 @@ Module rc.
                     M.alloc (|
                       Value.StructRecord
                         "alloc::rc::UniqueRc"
+                        []
+                        [ T; A ]
                         [
                           ("ptr",
                             M.call_closure (|
@@ -16807,7 +17008,12 @@ Module rc.
                               |),
                               [ M.read (| ptr |) ]
                             |));
-                          ("phantom", Value.StructTuple "core::marker::PhantomData" []);
+                          ("phantom",
+                            Value.StructTuple
+                              "core::marker::PhantomData"
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcInner") [] [ T ] ]
+                              []);
                           ("alloc", M.read (| alloc |))
                         ]
                     |)))
@@ -17104,6 +17310,8 @@ Module rc.
             M.alloc (|
               Value.StructRecord
                 "alloc::rc::Weak"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.read (|
@@ -17784,6 +17992,8 @@ Module rc.
             M.alloc (|
               Value.StructRecord
                 "alloc::rc::UniqueRcUninit"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.call_closure (|
@@ -17830,7 +18040,8 @@ Module rc.
                       ]
                     |));
                   ("layout_for_value", M.read (| layout |));
-                  ("alloc", Value.StructTuple "core::option::Option::Some" [ M.read (| alloc |) ])
+                  ("alloc",
+                    Value.StructTuple "core::option::Option::Some" [] [ A ] [ M.read (| alloc |) ])
                 ]
             |)
           |)))

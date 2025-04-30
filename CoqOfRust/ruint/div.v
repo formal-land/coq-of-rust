@@ -72,7 +72,13 @@ Module div.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -82,6 +88,8 @@ Module div.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -175,7 +183,13 @@ Module div.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -185,6 +199,8 @@ Module div.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],

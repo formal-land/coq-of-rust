@@ -213,6 +213,8 @@ Module char.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::char::EscapeUnicode"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -333,6 +335,8 @@ Module char.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeUnicode"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -459,7 +463,13 @@ Module char.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))
@@ -753,6 +763,8 @@ Module char.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::char::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -873,6 +885,8 @@ Module char.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -922,6 +936,8 @@ Module char.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -960,6 +976,8 @@ Module char.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -1086,7 +1104,13 @@ Module char.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))
@@ -1374,6 +1398,8 @@ Module char.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::char::EscapeDebug"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "core::char::EscapeDebugInner",
@@ -1531,6 +1557,8 @@ Module char.
                     M.alloc (|
                       Value.StructTuple
                         "core::char::EscapeDebugInner::Bytes"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -1566,6 +1594,8 @@ Module char.
                     M.alloc (|
                       Value.StructTuple
                         "core::char::EscapeDebugInner::Char"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "char",
@@ -1718,7 +1748,9 @@ Module char.
           (let chr := M.alloc (| chr |) in
           Value.StructTuple
             "core::char::EscapeDebug"
-            [ Value.StructTuple "core::char::EscapeDebugInner::Char" [ M.read (| chr |) ] ]))
+            []
+            []
+            [ Value.StructTuple "core::char::EscapeDebugInner::Char" [] [] [ M.read (| chr |) ] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1739,9 +1771,13 @@ Module char.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDebug"
+            []
+            []
             [
               Value.StructTuple
                 "core::char::EscapeDebugInner::Bytes"
+                []
+                []
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1781,9 +1817,13 @@ Module char.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDebug"
+            []
+            []
             [
               Value.StructTuple
                 "core::char::EscapeDebugInner::Bytes"
+                []
+                []
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1831,6 +1871,8 @@ Module char.
                   |),
                   Value.StructTuple
                     "core::char::EscapeDebugInner::Bytes"
+                    []
+                    []
                     [
                       M.call_closure (|
                         Ty.apply
@@ -1962,7 +2004,11 @@ Module char.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| chr |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "char" ]
+                        [ M.read (| chr |) ]
                     |)))
               ]
             |)
@@ -2000,7 +2046,13 @@ Module char.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))
@@ -2348,6 +2400,8 @@ Module char.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::char::ToLowercase"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "core::char::CaseMappingIter",
@@ -3066,6 +3120,8 @@ Module char.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::char::ToUppercase"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "core::char::CaseMappingIter",
@@ -3790,6 +3846,8 @@ Module char.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::char::CaseMappingIter"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -4000,7 +4058,9 @@ Module char.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            M.alloc (| Value.StructTuple "core::char::CaseMappingIter" [ M.read (| iter |) ] |)
+            M.alloc (|
+              Value.StructTuple "core::char::CaseMappingIter" [] [] [ M.read (| iter |) ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4850,7 +4910,13 @@ Module char.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

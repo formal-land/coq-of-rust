@@ -1646,6 +1646,9 @@ Module algorithms.
                                                                                 |);
                                                                                 Value.StructRecord
                                                                                   "core::ops::range::RangeTo"
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
                                                                                   [
                                                                                     ("end_",
                                                                                       M.call_closure (|
@@ -1735,6 +1738,8 @@ Module algorithms.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeFrom"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [
                                                                         ("start",
                                                                           Value.Integer
@@ -2108,7 +2113,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2138,7 +2143,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2226,7 +2235,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2256,7 +2265,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2473,7 +2486,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2503,7 +2516,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2580,7 +2597,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2610,7 +2627,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2687,7 +2708,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2717,7 +2738,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2858,7 +2883,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2888,7 +2913,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2965,7 +2994,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2995,7 +3024,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3072,7 +3105,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -3102,7 +3135,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3315,7 +3352,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -3345,7 +3382,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3422,7 +3463,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -3452,7 +3493,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3529,7 +3574,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -3559,7 +3604,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3879,7 +3928,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -3909,7 +3958,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3986,7 +4039,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -4016,7 +4069,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -4093,7 +4150,7 @@ Module algorithms.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -4123,7 +4180,11 @@ Module algorithms.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -4859,6 +4920,8 @@ Module algorithms.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -4890,6 +4953,8 @@ Module algorithms.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -5300,6 +5365,8 @@ Module algorithms.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -5331,6 +5398,8 @@ Module algorithms.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)

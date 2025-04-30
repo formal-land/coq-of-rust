@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "contract_ref::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -204,7 +206,7 @@ Module Impl_contract_ref_FlipperRef.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord "contract_ref::FlipperRef" [ ("value", M.read (| init_value |)) ]))
+        Value.StructRecord "contract_ref::FlipperRef" [] [] [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -282,6 +284,8 @@ Module Impl_contract_ref_FlipperRef.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
                       [
                         M.call_closure (|
                           Ty.path "contract_ref::FlipperRef",
@@ -300,7 +304,9 @@ Module Impl_contract_ref_FlipperRef.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
-                      [ Value.StructTuple "contract_ref::FlipperError" [] ]
+                      []
+                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
+                      [ Value.StructTuple "contract_ref::FlipperError" [] [] [] ]
                   |)))
             ]
           |)
@@ -433,7 +439,11 @@ Module Impl_contract_ref_ContractRef.
               |)
             |) in
           M.alloc (|
-            Value.StructRecord "contract_ref::ContractRef" [ ("flipper", M.read (| flipper |)) ]
+            Value.StructRecord
+              "contract_ref::ContractRef"
+              []
+              []
+              [ ("flipper", M.read (| flipper |)) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -513,7 +523,11 @@ Module Impl_contract_ref_ContractRef.
               |)
             |) in
           M.alloc (|
-            Value.StructRecord "contract_ref::ContractRef" [ ("flipper", M.read (| flipper |)) ]
+            Value.StructRecord
+              "contract_ref::ContractRef"
+              []
+              []
+              [ ("flipper", M.read (| flipper |)) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

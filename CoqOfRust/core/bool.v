@@ -26,10 +26,11 @@ Module bool.
                     (let γ := M.use self in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ]
+                      Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
               ]
             |)
           |)))
@@ -64,6 +65,8 @@ Module bool.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
@@ -81,7 +84,8 @@ Module bool.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
               ]
             |)
           |)))

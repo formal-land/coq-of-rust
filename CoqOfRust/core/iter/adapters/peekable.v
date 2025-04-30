@@ -45,6 +45,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::peekable::Peekable"
+                []
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -233,9 +235,28 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::peekable::Peekable"
+                []
+                [ I ]
                 [
                   ("iter", M.read (| iter |));
-                  ("peeked", Value.StructTuple "core::option::Option::None" [])
+                  ("peeked",
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -762,7 +783,18 @@ Module iter.
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| matched |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            [ M.read (| matched |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -839,10 +871,39 @@ Module iter.
                                 "core::iter::adapters::peekable::Peekable",
                                 "peeked"
                               |),
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| other |) ]
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
+                                ]
+                                [ M.read (| other |) ]
                             |)
                           |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -1383,7 +1444,20 @@ Module iter.
                             0
                           |) in
                         let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
@@ -1631,7 +1705,18 @@ Module iter.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ]
+                                          []
                                       |)
                                     |)
                                   |)
@@ -1649,7 +1734,20 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
+                                    []
+                                |)))
                           ]
                         |)
                       |) in
@@ -1782,6 +1880,8 @@ Module iter.
                                             Value.Integer IntegerKind.Usize 0;
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ Value.Integer IntegerKind.Usize 0 ]
                                           ]
                                       |)
@@ -1917,7 +2017,11 @@ Module iter.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "usize" ]
+                                            []
                                         |)))
                                   ]
                                 |)
@@ -2619,7 +2723,20 @@ Module iter.
                           |) in
                         let γ0_0 := M.read (| γ0_0 |) in
                         let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
@@ -2896,9 +3013,32 @@ Module iter.
                                       |),
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item"
+                                            ]
+                                        ]
                                         [
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item"
+                                            ]
                                             [ M.read (| v |) ]
                                         ]
                                     |)

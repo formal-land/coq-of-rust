@@ -174,7 +174,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
-              [ Value.StructTuple "unpacking_options_and_defaults_via_or_else::Fruit::Apple" [] ]
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+              [
+                Value.StructTuple
+                  "unpacking_options_and_defaults_via_or_else::Fruit::Apple"
+                  []
+                  []
+                  []
+              ]
           |) in
         let~ no_fruit :
             Ty.apply
@@ -186,7 +194,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+              []
+          |) in
         let~ get_kiwi_as_fallback :
             Ty.apply
               (Ty.path "*")
@@ -262,9 +276,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
                                     [
                                       Value.StructTuple
                                         "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -352,9 +370,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
                                     [
                                       Value.StructTuple
                                         "unpacking_options_and_defaults_via_or_else::Fruit::Lemon"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)

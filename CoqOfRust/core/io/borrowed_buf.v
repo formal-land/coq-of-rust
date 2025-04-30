@@ -251,6 +251,8 @@ Module io.
               M.alloc (|
                 Value.StructRecord
                   "core::io::borrowed_buf::BorrowedBuf"
+                  []
+                  []
                   [
                     ("buf",
                       M.borrow (|
@@ -379,6 +381,8 @@ Module io.
             (let buf := M.alloc (| buf |) in
             Value.StructRecord
               "core::io::borrowed_buf::BorrowedBuf"
+              []
+              []
               [
                 ("buf", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |));
                 ("filled", Value.Integer IntegerKind.Usize 0);
@@ -583,6 +587,8 @@ Module io.
                       |);
                       Value.StructRecord
                         "core::ops::range::RangeTo"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("end_",
                             M.read (|
@@ -715,6 +721,8 @@ Module io.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("end_",
                                     M.read (|
@@ -844,6 +852,8 @@ Module io.
                       |);
                       Value.StructRecord
                         "core::ops::range::RangeTo"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("end_",
                             M.read (|
@@ -977,6 +987,8 @@ Module io.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("end_",
                                     M.read (|
@@ -1045,6 +1057,8 @@ Module io.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::io::borrowed_buf::BorrowedCursor"
+              []
+              []
               [
                 ("start",
                   M.read (|
@@ -1296,6 +1310,8 @@ Module io.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::io::borrowed_buf::BorrowedCursor"
+              []
+              []
               [
                 ("buf",
                   M.borrow (|
@@ -1554,6 +1570,8 @@ Module io.
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start",
                             M.read (|
@@ -1715,6 +1733,8 @@ Module io.
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start",
                                     M.read (|
@@ -1865,6 +1885,8 @@ Module io.
                             |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.read (|
@@ -1976,6 +1998,8 @@ Module io.
                             |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.read (|
@@ -2710,6 +2734,8 @@ Module io.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.call_closure (|

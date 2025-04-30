@@ -387,6 +387,8 @@ Module identifier.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_core_types::identifier::Identifier"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -878,9 +880,21 @@ Module identifier.
                 mk_str (| "Identifier" |);
                 Value.StructRecord
                   "move_core_types::identifier::_'2::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::identifier::Identifier" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -999,9 +1013,16 @@ Module identifier.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.path "anyhow::Error"
+                            ]
                             [
                               Value.StructTuple
                                 "move_core_types::identifier::Identifier"
+                                []
+                                []
                                 [ M.read (| s |) ]
                             ]
                         |)));
@@ -1013,6 +1034,11 @@ Module identifier.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "move_core_types::identifier::Identifier";
+                                    Ty.path "anyhow::Error"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "anyhow::Error",
@@ -2369,6 +2395,14 @@ Module identifier.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::IdentStr" ];
+                              Ty.path "anyhow::Error"
+                            ]
                             [
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -2402,6 +2436,14 @@ Module identifier.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ];
+                                    Ty.path "anyhow::Error"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "anyhow::Error",
@@ -2813,6 +2855,8 @@ Module identifier.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_core_types::identifier::Identifier"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply

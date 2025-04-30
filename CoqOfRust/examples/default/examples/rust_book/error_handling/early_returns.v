@@ -68,7 +68,11 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ]
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                                  [ M.read (| e |) ]
                               |)
                             |)
                           |)
@@ -119,7 +123,11 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ]
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                                  [ M.read (| e |) ]
                               |)
                             |)
                           |)
@@ -130,6 +138,8 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
                 [
                   M.call_closure (|
                     Ty.path "i32",

@@ -735,6 +735,8 @@ Module algorithms.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 1);
                                       ("end_",
@@ -1843,6 +1845,8 @@ Module algorithms.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 1);
                                       ("end_",
@@ -2597,6 +2601,8 @@ Module algorithms.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -2628,6 +2634,8 @@ Module algorithms.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)
@@ -3735,6 +3743,8 @@ Module algorithms.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -3766,6 +3776,8 @@ Module algorithms.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)

@@ -719,6 +719,8 @@ Module util.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| h |))
                             ]
                         ]
@@ -949,6 +951,8 @@ Module util.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| upper |) |) |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start",
                                     M.call_closure (|
@@ -1004,6 +1008,8 @@ Module util.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| lower |) |) |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| w |)) ]
                             ]
                           |)

@@ -46,6 +46,8 @@ Module iter.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start", Value.Integer IntegerKind.Usize 0);
                                     ("end_", M.read (| n |))
@@ -189,6 +191,15 @@ Module iter.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::num::nonzero::NonZero")
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                ]
                                                                 [
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -232,7 +243,16 @@ Module iter.
                                 |)))
                           ]
                         |)) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ]
+                    |)
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -338,7 +358,18 @@ Module iter.
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            Self
+                                            "Item"
+                                        ]
+                                        []
                                     |)
                                   |)
                                 |)

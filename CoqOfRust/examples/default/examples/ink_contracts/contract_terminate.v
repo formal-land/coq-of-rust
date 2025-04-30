@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "contract_terminate::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -216,7 +218,8 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "contract_terminate::JustTerminate" []))
+    | [], [], [] =>
+      ltac:(M.monadic (Value.StructTuple "contract_terminate::JustTerminate" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

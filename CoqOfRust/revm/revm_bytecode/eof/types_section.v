@@ -170,6 +170,8 @@ Module eof.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_bytecode::eof::types_section::TypesSection"
+              []
+              []
               [
                 ("inputs",
                   M.call_closure (|
@@ -888,6 +890,8 @@ Module eof.
             let max_stack_size := M.alloc (| max_stack_size |) in
             Value.StructRecord
               "revm_bytecode::eof::types_section::TypesSection"
+              []
+              []
               [
                 ("inputs", M.read (| inputs |));
                 ("outputs", M.read (| outputs |));
@@ -1761,6 +1765,8 @@ Module eof.
                                             M.alloc (|
                                               Value.StructRecord
                                                 "revm_bytecode::eof::types_section::TypesSection"
+                                                []
+                                                []
                                                 [
                                                   ("inputs", M.read (| inputs |));
                                                   ("outputs", M.read (| outputs |));
@@ -1919,6 +1925,24 @@ Module eof.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::result::Result::Ok"
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path
+                                                      "revm_bytecode::eof::types_section::TypesSection";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                  ];
+                                                Ty.path "revm_bytecode::eof::EofDecodeError"
+                                              ]
                                               [
                                                 Value.Tuple
                                                   [
@@ -2035,9 +2059,13 @@ Module eof.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]
                                       [
                                         Value.StructTuple
                                           "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -2088,9 +2116,13 @@ Module eof.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]
                                       [
                                         Value.StructTuple
                                           "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -2100,7 +2132,13 @@ Module eof.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "revm_bytecode::eof::EofDecodeError" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

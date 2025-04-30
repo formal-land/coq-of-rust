@@ -306,6 +306,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_structs::Borrowed"
+              []
+              []
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
           |) in
         let~ double :
@@ -316,6 +318,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_lifetimes_structs::NamedBorrowed"
+              []
+              []
               [
                 ("x",
                   M.borrow (|
@@ -331,12 +335,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_structs::Either::Ref"
+              []
+              []
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
           |) in
         let~ number :
             Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_structs::Either" ] :=
           M.alloc (|
-            Value.StructTuple "scoping_rules_lifetimes_structs::Either::Num" [ M.read (| y |) ]
+            Value.StructTuple
+              "scoping_rules_lifetimes_structs::Either::Num"
+              []
+              []
+              [ M.read (| y |) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

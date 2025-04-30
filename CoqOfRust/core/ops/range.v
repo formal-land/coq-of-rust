@@ -51,7 +51,7 @@ Module ops.
       (* Default *)
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::ops::range::RangeFull" []))
+        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::ops::range::RangeFull" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -226,6 +226,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ops::range::Range"
+              []
+              [ Idx ]
               [
                 ("start",
                   M.call_closure (|
@@ -293,6 +295,8 @@ Module ops.
           ltac:(M.monadic
             (Value.StructRecord
               "core::ops::range::Range"
+              []
+              [ Idx ]
               [
                 ("start",
                   M.call_closure (|
@@ -909,7 +913,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1036,6 +1046,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ops::range::RangeFrom"
+              []
+              [ Idx ]
               [
                 ("start",
                   M.call_closure (|
@@ -1478,7 +1490,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1575,6 +1593,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ops::range::RangeTo"
+              []
+              [ Idx ]
               [
                 ("end_",
                   M.call_closure (|
@@ -2017,7 +2037,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2100,6 +2126,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ops::range::RangeInclusive"
+              []
+              [ Idx ]
               [
                 ("start",
                   M.call_closure (|
@@ -2460,6 +2488,8 @@ Module ops.
             let end_ := M.alloc (| end_ |) in
             Value.StructRecord
               "core::ops::range::RangeInclusive"
+              []
+              [ Idx ]
               [
                 ("start", M.read (| start |));
                 ("end_", M.read (| end_ |));
@@ -2753,6 +2783,8 @@ Module ops.
               M.alloc (|
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
                   [ ("start", M.read (| start |)); ("end_", M.read (| exclusive_end |)) ]
               |)
             |)))
@@ -3296,7 +3328,13 @@ Module ops.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3348,6 +3386,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ops::range::RangeToInclusive"
+              []
+              [ Idx ]
               [
                 ("end_",
                   M.call_closure (|
@@ -3790,7 +3830,13 @@ Module ops.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3907,6 +3953,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -3937,6 +3985,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -3958,7 +4008,9 @@ Module ops.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::ops::range::Bound::Unbounded" [] [ T ] []
+                      |)))
                 ]
               |)
             |)))
@@ -4478,6 +4530,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
@@ -4492,12 +4546,20 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::ops::range::Bound::Unbounded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -4550,6 +4612,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
@@ -4564,12 +4628,20 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::ops::range::Bound::Unbounded"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -4606,7 +4678,9 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::ops::range::Bound::Unbounded" [] [ U ] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -4619,6 +4693,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ U ]
                           [
                             M.call_closure (|
                               U,
@@ -4647,6 +4723,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ U ]
                           [
                             M.call_closure (|
                               U,
@@ -4703,7 +4781,9 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::ops::range::Bound::Unbounded" [] [ T ] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -4716,6 +4796,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -4744,6 +4826,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -4998,7 +5082,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5013,7 +5101,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5048,6 +5140,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5077,7 +5171,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5109,7 +5207,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5126,6 +5228,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5174,6 +5278,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5205,6 +5311,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5254,6 +5362,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5315,6 +5425,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -5336,6 +5448,8 @@ Module ops.
                       (M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -5387,7 +5501,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5404,6 +5522,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5486,6 +5606,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| start |) |) |) ]
                       |)));
                   fun γ =>
@@ -5502,6 +5624,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| start |) |) |) ]
                       |)));
                   fun γ =>
@@ -5509,7 +5633,13 @@ Module ops.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::ops::range::Bound::Unbounded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -5558,6 +5688,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Included"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| end_ |) |) |) ]
                       |)));
                   fun γ =>
@@ -5574,6 +5706,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| end_ |) |) |) ]
                       |)));
                   fun γ =>
@@ -5581,7 +5715,13 @@ Module ops.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ := M.is_struct_tuple (| γ0_1, "core::ops::range::Bound::Unbounded" |) in
-                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::ops::range::Bound::Unbounded"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -5671,6 +5811,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5699,7 +5841,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5732,7 +5878,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5749,6 +5899,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5797,6 +5949,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5827,6 +5981,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Excluded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5878,6 +6034,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5908,6 +6066,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5957,7 +6117,11 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::ops::range::Bound::Unbounded" []))
+            Value.StructTuple
+              "core::ops::range::Bound::Unbounded"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
+              []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5974,6 +6138,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::range::Bound::Included"
+              []
+              [ Ty.apply (Ty.path "&") [] [ T ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,

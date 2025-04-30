@@ -83,6 +83,8 @@ Module future.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::future::ready::Ready"
+              []
+              [ T ]
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -158,6 +160,8 @@ Module future.
             let _cx := M.alloc (| _cx |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
+              []
+              [ T ]
               [
                 M.call_closure (|
                   T,
@@ -287,7 +291,9 @@ Module future.
           (let t := M.alloc (| t |) in
           Value.StructTuple
             "core::future::ready::Ready"
-            [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
+            []
+            [ T ]
+            [ Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -182,6 +182,8 @@ Module mem.
             (let val := M.alloc (| val |) in
             Value.StructRecord
               "core::mem::maybe_uninit::MaybeUninit"
+              []
+              [ T ]
               [
                 ("value",
                   M.call_closure (|
@@ -216,6 +218,8 @@ Module mem.
           ltac:(M.monadic
             (Value.StructRecord
               "core::mem::maybe_uninit::MaybeUninit"
+              []
+              [ T ]
               [ ("uninit", Value.Tuple []) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1285,7 +1289,11 @@ Module mem.
                                                 []
                                                 [ Ty.path "core::panicking::AssertKind" ] :=
                                             M.alloc (|
-                                              Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                              Value.StructTuple
+                                                "core::panicking::AssertKind::Eq"
+                                                []
+                                                []
+                                                []
                                             |) in
                                           M.alloc (|
                                             M.call_closure (|
@@ -1317,6 +1325,8 @@ Module mem.
                                                 |);
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.path "core::fmt::Arguments" ]
                                                   [
                                                     M.call_closure (|
                                                       Ty.path "core::fmt::Arguments",
@@ -1402,6 +1412,8 @@ Module mem.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", M.read (| len |)) ]
                             ]
                           |)
@@ -1416,6 +1428,8 @@ Module mem.
                     M.alloc (|
                       Value.StructRecord
                         "core::mem::maybe_uninit::Guard"
+                        []
+                        [ T ]
                         [
                           ("slice",
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| this |) |) |));
@@ -1441,6 +1455,8 @@ Module mem.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_", M.read (| len |))
@@ -1751,6 +1767,8 @@ Module mem.
                     M.alloc (|
                       Value.StructRecord
                         "core::mem::maybe_uninit::Guard"
+                        []
+                        [ T ]
                         [
                           ("slice",
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| this |) |) |));
@@ -2086,6 +2104,8 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::Guard"
+                    []
+                    [ T ]
                     [
                       ("slice",
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| this |) |) |));
@@ -3133,6 +3153,8 @@ Module mem.
                           |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("end_",
                                 M.read (|
@@ -3237,6 +3259,8 @@ Module mem.
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::Guard"
+                    []
+                    [ T ]
                     [
                       ("slice",
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));

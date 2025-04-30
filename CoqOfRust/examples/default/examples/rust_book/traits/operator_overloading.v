@@ -147,7 +147,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] |)
+          M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] [] [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -215,7 +215,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] |)
+          M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] [] [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -303,8 +303,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructTuple "operator_overloading::Foo" [];
-                                                  Value.StructTuple "operator_overloading::Bar" []
+                                                  Value.StructTuple
+                                                    "operator_overloading::Foo"
+                                                    []
+                                                    []
+                                                    [];
+                                                  Value.StructTuple
+                                                    "operator_overloading::Bar"
+                                                    []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             |)
@@ -387,8 +395,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructTuple "operator_overloading::Bar" [];
-                                                  Value.StructTuple "operator_overloading::Foo" []
+                                                  Value.StructTuple
+                                                    "operator_overloading::Bar"
+                                                    []
+                                                    []
+                                                    [];
+                                                  Value.StructTuple
+                                                    "operator_overloading::Foo"
+                                                    []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             |)

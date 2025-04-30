@@ -63,6 +63,8 @@ Module collections.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::collections::btree::append::MergeIter"
+                      []
+                      [ K; V; I ]
                       [
                         M.call_closure (|
                           Ty.apply
@@ -1024,6 +1026,8 @@ Module collections.
                                                               [
                                                                 Value.StructRecord
                                                                   "core::ops::range::Range"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start",
                                                                       Value.Integer

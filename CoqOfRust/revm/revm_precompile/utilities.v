@@ -56,6 +56,8 @@ Module utilities.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                         Value.StructRecord
                           "core::ops::range::RangeFrom"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", M.read (| offset |)) ]
                       ]
                     |)
@@ -128,6 +130,8 @@ Module utilities.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                         Value.StructRecord
                           "core::ops::range::RangeFrom"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", M.read (| offset |)) ]
                       ]
                     |)
@@ -199,7 +203,11 @@ Module utilities.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.StructRecord "core::ops::range::RangeTo" [ ("end_", LEN) ]
+                          Value.StructRecord
+                            "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
+                            [ ("end_", LEN) ]
                         ]
                       |)
                     |) in
@@ -209,6 +217,8 @@ Module utilities.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                       [
                         M.call_closure (|
                           Ty.apply
@@ -310,6 +320,8 @@ Module utilities.
                                   M.borrow (| Pointer.Kind.MutRef, padded |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -337,7 +349,11 @@ Module utilities.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| padded |) ]
+                    Value.StructTuple
+                      "alloc::borrow::Cow::Owned"
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                      [ M.read (| padded |) ]
                   |)))
             ]
           |)
@@ -404,6 +420,8 @@ Module utilities.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", M.read (| len |)) ]
                         ]
                       |)
@@ -414,6 +432,8 @@ Module utilities.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)));
               fun γ =>
@@ -478,6 +498,8 @@ Module utilities.
                                   M.borrow (| Pointer.Kind.MutRef, padded |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -505,7 +527,11 @@ Module utilities.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| padded |) ]
+                    Value.StructTuple
+                      "alloc::borrow::Cow::Owned"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      [ M.read (| padded |) ]
                   |)))
             ]
           |)
@@ -569,7 +595,11 @@ Module utilities.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.StructRecord "core::ops::range::RangeTo" [ ("end_", LEN) ]
+                          Value.StructRecord
+                            "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
+                            [ ("end_", LEN) ]
                         ]
                       |)
                     |) in
@@ -579,6 +609,8 @@ Module utilities.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                       [
                         M.call_closure (|
                           Ty.apply
@@ -680,6 +712,8 @@ Module utilities.
                                   M.borrow (| Pointer.Kind.MutRef, padded |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.call_closure (|
@@ -714,7 +748,11 @@ Module utilities.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| padded |) ]
+                    Value.StructTuple
+                      "alloc::borrow::Cow::Owned"
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                      [ M.read (| padded |) ]
                   |)))
             ]
           |)
@@ -781,6 +819,8 @@ Module utilities.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", M.read (| len |)) ]
                         ]
                       |)
@@ -791,6 +831,8 @@ Module utilities.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)));
               fun γ =>
@@ -855,6 +897,8 @@ Module utilities.
                                   M.borrow (| Pointer.Kind.MutRef, padded |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.call_closure (|
@@ -889,7 +933,11 @@ Module utilities.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| padded |) ]
+                    Value.StructTuple
+                      "alloc::borrow::Cow::Owned"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      [ M.read (| padded |) ]
                   |)))
             ]
           |)

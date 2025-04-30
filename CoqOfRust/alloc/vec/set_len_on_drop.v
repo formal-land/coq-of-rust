@@ -30,6 +30,8 @@ Module vec.
             (let len := M.alloc (| len |) in
             Value.StructRecord
               "alloc::vec::set_len_on_drop::SetLenOnDrop"
+              []
+              []
               [
                 ("local_len", M.read (| M.deref (| M.read (| len |) |) |));
                 ("len", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| len |) |) |))

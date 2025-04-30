@@ -135,6 +135,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::array_chunks::ArrayChunks"
+                [ N ]
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -310,9 +312,28 @@ Module iter.
                 M.alloc (|
                   Value.StructRecord
                     "core::iter::adapters::array_chunks::ArrayChunks"
+                    [ N ]
+                    [ I ]
                     [
                       ("iter", M.read (| iter |));
-                      ("remainder", Value.StructTuple "core::option::Option::None" [])
+                      ("remainder",
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ N ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]
+                          ]
+                          [])
                     ]
                 |)
               |)))
@@ -860,7 +881,23 @@ Module iter.
                             "core::iter::adapters::array_chunks::ArrayChunks",
                             "remainder"
                           |),
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| remainder |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::array::iter::IntoIter")
+                                [ N ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item"
+                                ]
+                            ]
+                            [ M.read (| remainder |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
@@ -1025,7 +1062,23 @@ Module iter.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      M.constructor_as_closure "core::ops::control_flow::ControlFlow::Break"
+                      M.constructor_as_closure
+                        "core::ops::control_flow::ControlFlow::Break"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ N ]
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ];
+                          Ty.tuple []
+                        ]
                     ]
                   |)
                 ]
@@ -1833,6 +1886,21 @@ Module iter.
                                                 (let x := M.copy (| γ |) in
                                                 Value.StructTuple
                                                   "core::ops::control_flow::ControlFlow::Break"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ N ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          I
+                                                          "Item"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ]
                                                   [ M.read (| x |) ]))
                                           ]
                                         |)))
@@ -1948,6 +2016,8 @@ Module iter.
                           [
                             Value.StructTuple
                               "core::iter::adapters::by_ref_sized::ByRefSized"
+                              []
+                              [ I ]
                               [
                                 M.borrow (|
                                   Pointer.Kind.MutRef,

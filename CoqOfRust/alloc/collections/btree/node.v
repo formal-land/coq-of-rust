@@ -228,7 +228,21 @@ Module collections.
                             "parent"
                           |)
                         |);
-                        Value.StructTuple "core::option::Option::None" []
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::InternalNode")
+                                  []
+                                  [ K; V ]
+                              ]
+                          ]
+                          []
                       ]
                     |)
                   |) in
@@ -928,6 +942,13 @@ Module collections.
               (let leaf := M.alloc (| leaf |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [
+                  Ty.path "alloc::collections::btree::node::marker::Owned";
+                  K;
+                  V;
+                  Ty.path "alloc::collections::btree::node::marker::Leaf"
+                ]
                 [
                   ("height", Value.Integer IntegerKind.Usize 0);
                   ("node",
@@ -994,7 +1015,18 @@ Module collections.
                         |)
                       ]
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "alloc::collections::btree::node::marker::Owned";
+                            Ty.path "alloc::collections::btree::node::marker::Leaf"
+                          ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1412,10 +1444,28 @@ Module collections.
                   M.alloc (|
                     Value.StructRecord
                       "alloc::collections::btree::node::NodeRef"
+                      []
+                      [
+                        Ty.path "alloc::collections::btree::node::marker::Owned";
+                        K;
+                        V;
+                        Ty.path "alloc::collections::btree::node::marker::Internal"
+                      ]
                       [
                         ("height", M.read (| height |));
                         ("node", M.read (| node |));
-                        ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                        ("_marker",
+                          Value.StructTuple
+                            "core::marker::PhantomData"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "alloc::collections::btree::node::marker::Owned";
+                                  Ty.path "alloc::collections::btree::node::marker::Internal"
+                                ]
+                            ]
+                            [])
                       ]
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1564,6 +1614,9 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::NodeRef"
+                    []
+                    [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Internal"
+                    ]
                     [
                       ("height", M.read (| height |));
                       ("node",
@@ -1598,7 +1651,18 @@ Module collections.
                           |),
                           [ M.read (| node |) ]
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                BorrowType;
+                                Ty.path "alloc::collections::btree::node::marker::Internal"
+                              ]
+                          ]
+                          [])
                     ]
                 |)
               |)))
@@ -1690,6 +1754,13 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [
+                  BorrowType;
+                  K;
+                  V;
+                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                ]
                 [
                   ("height",
                     M.read (|
@@ -1707,7 +1778,18 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            BorrowType;
+                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                          ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3055,6 +3137,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -3072,7 +3156,13 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [ Ty.tuple [ Ty.path "alloc::collections::btree::node::marker::Immut"; Type_ ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3486,6 +3576,22 @@ Module collections.
                                             (let parent := M.copy (| γ |) in
                                             Value.StructRecord
                                               "alloc::collections::btree::node::Handle"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::NodeRef")
+                                                  []
+                                                  [
+                                                    BorrowType;
+                                                    K;
+                                                    V;
+                                                    Ty.path
+                                                      "alloc::collections::btree::node::marker::Internal"
+                                                  ];
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Edge"
+                                              ]
                                               [
                                                 ("node",
                                                   M.call_closure (|
@@ -3574,7 +3680,14 @@ Module collections.
                                                     ]
                                                   |));
                                                 ("_marker",
-                                                  Value.StructTuple "core::marker::PhantomData" [])
+                                                  Value.StructTuple
+                                                    "core::marker::PhantomData"
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Edge"
+                                                    ]
+                                                    [])
                                               ]))
                                       ]
                                     |)))
@@ -4166,6 +4279,8 @@ Module collections.
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
                                                                         []
+                                                                        []
+                                                                        []
                                                                     |) in
                                                                   M.alloc (|
                                                                     M.call_closure (|
@@ -4208,6 +4323,11 @@ Module collections.
                                                                         |);
                                                                         Value.StructTuple
                                                                           "core::option::Option::None"
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments"
+                                                                          ]
                                                                           []
                                                                       ]
                                                                     |)
@@ -4443,6 +4563,8 @@ Module collections.
                                     |));
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -4832,6 +4954,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -4849,7 +4973,12 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [ Ty.tuple [ Ty.path "alloc::collections::btree::node::marker::Mut"; Type_ ] ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -5055,6 +5184,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -5072,7 +5203,15 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [
+                        Ty.tuple
+                          [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; Type_ ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -5464,6 +5603,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -5481,7 +5622,12 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [ Ty.tuple [ Ty.path "alloc::collections::btree::node::marker::Mut"; Type_ ] ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -5969,7 +6115,21 @@ Module collections.
                         "alloc::collections::btree::node::LeafNode",
                         "parent"
                       |),
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| parent |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::InternalNode")
+                                []
+                                [ K; V ]
+                            ]
+                        ]
+                        [ M.read (| parent |) ]
                     |)
                   |) in
                 let~ _ :
@@ -6088,6 +6248,13 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::NodeRef"
+                    []
+                    [
+                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                      K;
+                      V;
+                      Ty.path "alloc::collections::btree::node::marker::Leaf"
+                    ]
                     [
                       ("height",
                         M.read (|
@@ -6105,7 +6272,18 @@ Module collections.
                             "node"
                           |)
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                Ty.path "alloc::collections::btree::node::marker::Leaf"
+                              ]
+                          ]
+                          [])
                     ]
                 |)
               |)))
@@ -6197,6 +6375,13 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::NodeRef"
+                    []
+                    [
+                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                      K;
+                      V;
+                      Ty.path "alloc::collections::btree::node::marker::Internal"
+                    ]
                     [
                       ("height",
                         M.read (|
@@ -6214,7 +6399,18 @@ Module collections.
                             "node"
                           |)
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                Ty.path "alloc::collections::btree::node::marker::Internal"
+                              ]
+                          ]
+                          [])
                     ]
                 |)
               |)))
@@ -6489,12 +6685,45 @@ Module collections.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::LeftOrRight")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path
+                                              "alloc::collections::btree::node::BalancingContext")
+                                            []
+                                            [ K; V ]
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::LeafOrInternal"
+                                        ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "alloc::collections::btree::node::LeftOrRight::Left"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path
+                                              "alloc::collections::btree::node::BalancingContext")
+                                            []
+                                            [ K; V ]
+                                        ]
                                         [
                                           Value.StructRecord
                                             "alloc::collections::btree::node::BalancingContext"
+                                            []
+                                            [ K; V ]
                                             [
                                               ("parent",
                                                 M.call_closure (|
@@ -6772,12 +7001,47 @@ Module collections.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::result::Result::Ok"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::node::LeftOrRight")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::BalancingContext")
+                                                    []
+                                                    [ K; V ]
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Mut";
+                                                  K;
+                                                  V;
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                ]
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "alloc::collections::btree::node::LeftOrRight::Right"
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::BalancingContext")
+                                                    []
+                                                    [ K; V ]
+                                                ]
                                                 [
                                                   Value.StructRecord
                                                     "alloc::collections::btree::node::BalancingContext"
+                                                    []
+                                                    [ K; V ]
                                                     [
                                                       ("parent",
                                                         M.call_closure (|
@@ -7025,7 +7289,30 @@ Module collections.
                           |) in
                         let root := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Err" [ M.read (| root |) ]
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::LeftOrRight")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::BalancingContext")
+                                    []
+                                    [ K; V ]
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  Ty.path "alloc::collections::btree::node::marker::Mut";
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                                ]
+                            ]
+                            [ M.read (| root |) ]
                         |)))
                   ]
                 |)
@@ -7161,7 +7448,21 @@ Module collections.
                         "alloc::collections::btree::node::LeafNode",
                         "parent"
                       |),
-                      Value.StructTuple "core::option::Option::None" []
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::InternalNode")
+                                []
+                                [ K; V ]
+                            ]
+                        ]
+                        []
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -7436,6 +7737,13 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::NodeRef"
+                    []
+                    [
+                      Ty.path "alloc::collections::btree::node::marker::Mut";
+                      K;
+                      V;
+                      Ty.path "alloc::collections::btree::node::marker::Internal"
+                    ]
                     [
                       ("height",
                         M.read (|
@@ -7453,7 +7761,18 @@ Module collections.
                             "node"
                           |)
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                Ty.path "alloc::collections::btree::node::marker::Internal"
+                              ]
+                          ]
+                          [])
                     ]
                 |)
               |)))
@@ -7870,6 +8189,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -7887,7 +8208,12 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [ Ty.tuple [ Ty.path "alloc::collections::btree::node::marker::Mut"; Type_ ] ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -7916,6 +8242,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -7933,7 +8261,15 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [
+                        Ty.tuple
+                          [ Ty.path "alloc::collections::btree::node::marker::ValMut"; Type_ ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -7962,6 +8298,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ]
                 [
                   ("height",
                     M.read (|
@@ -7979,7 +8317,13 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [ Ty.tuple [ Ty.path "alloc::collections::btree::node::marker::Dying"; Type_ ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -8263,6 +8607,13 @@ Module collections.
                     [
                       Value.StructRecord
                         "alloc::collections::btree::node::NodeRef"
+                        []
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                        ]
                         [
                           ("height",
                             M.read (|
@@ -8280,7 +8631,18 @@ Module collections.
                                 "node"
                               |)
                             |));
-                          ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                          ("_marker",
+                            Value.StructTuple
+                              "core::marker::PhantomData"
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                  ]
+                              ]
+                              [])
                         ];
                       M.read (| idx |)
                     ]
@@ -8412,6 +8774,13 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::NodeRef"
+                []
+                [
+                  BorrowType;
+                  K;
+                  V;
+                  Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                ]
                 [
                   ("height",
                     M.read (|
@@ -8429,7 +8798,18 @@ Module collections.
                         "node"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            BorrowType;
+                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                          ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -8538,9 +8918,37 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::node::ForceResult::Leaf'1"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  BorrowType;
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  BorrowType;
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::Internal"
+                                ]
+                            ]
                             [
                               Value.StructRecord
                                 "alloc::collections::btree::node::NodeRef"
+                                []
+                                [
+                                  BorrowType;
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                ]
                                 [
                                   ("height",
                                     M.read (|
@@ -8558,7 +8966,18 @@ Module collections.
                                         "node"
                                       |)
                                     |));
-                                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                                  ("_marker",
+                                    Value.StructTuple
+                                      "core::marker::PhantomData"
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            BorrowType;
+                                            Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                          ]
+                                      ]
+                                      [])
                                 ]
                             ]
                         |)));
@@ -8567,9 +8986,37 @@ Module collections.
                         (M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::node::ForceResult::Internal'1"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  BorrowType;
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
+                                [
+                                  BorrowType;
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::Internal"
+                                ]
+                            ]
                             [
                               Value.StructRecord
                                 "alloc::collections::btree::node::NodeRef"
+                                []
+                                [
+                                  BorrowType;
+                                  K;
+                                  V;
+                                  Ty.path "alloc::collections::btree::node::marker::Internal"
+                                ]
                                 [
                                   ("height",
                                     M.read (|
@@ -8587,7 +9034,19 @@ Module collections.
                                         "node"
                                       |)
                                     |));
-                                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                                  ("_marker",
+                                    Value.StructTuple
+                                      "core::marker::PhantomData"
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            BorrowType;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::Internal"
+                                          ]
+                                      ]
+                                      [])
                                 ]
                             ]
                         |)))
@@ -8836,10 +9295,23 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::Handle"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [ BorrowType; K; V; NodeType ];
+                      Ty.path "alloc::collections::btree::node::marker::KV"
+                    ]
                     [
                       ("node", M.read (| node |));
                       ("idx", M.read (| idx |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [ Ty.path "alloc::collections::btree::node::marker::KV" ]
+                          [])
                     ]
                 |)
               |)))
@@ -9172,6 +9644,14 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::Handle"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
+                    [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; NodeType ];
+                  HandleType
+                ]
                 [
                   ("node",
                     M.call_closure (|
@@ -9208,7 +9688,7 @@ Module collections.
                         "idx"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ HandleType ] [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9257,6 +9737,14 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::Handle"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
+                    [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ];
+                  HandleType
+                ]
                 [
                   ("node",
                     M.call_closure (|
@@ -9293,7 +9781,7 @@ Module collections.
                         "idx"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ HandleType ] [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9325,6 +9813,15 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::Handle"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
+                    [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; K; V; NodeType
+                    ];
+                  HandleType
+                ]
                 [
                   ("node",
                     M.call_closure (|
@@ -9366,7 +9863,7 @@ Module collections.
                         "idx"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ HandleType ] [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9412,6 +9909,14 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::Handle"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
+                    [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ];
+                  HandleType
+                ]
                 [
                   ("node",
                     M.call_closure (|
@@ -9451,7 +9956,7 @@ Module collections.
                         "idx"
                       |)
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ HandleType ] [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9567,10 +10072,23 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::Handle"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [ BorrowType; K; V; NodeType ];
+                      Ty.path "alloc::collections::btree::node::marker::Edge"
+                    ]
                     [
                       ("node", M.read (| node |));
                       ("idx", M.read (| idx |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [ Ty.path "alloc::collections::btree::node::marker::Edge" ]
+                          [])
                     ]
                 |)
               |)))
@@ -9664,6 +10182,29 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::KV"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::Edge"
+                                ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -9720,7 +10261,32 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::KV"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::Edge"
+                                ]
+                            ]
+                            [ M.read (| self |) ]
                         |)))
                   ]
                 |)
@@ -9836,6 +10402,29 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::KV"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::Edge"
+                                ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -9885,7 +10474,32 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::KV"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [ BorrowType; K; V; NodeType ];
+                                  Ty.path "alloc::collections::btree::node::marker::Edge"
+                                ]
+                            ]
+                            [ M.read (| self |) ]
                         |)))
                   ]
                 |)
@@ -10037,6 +10651,8 @@ Module collections.
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Left"
+                              []
+                              [ Ty.path "usize" ]
                               [ M.read (| edge_idx |) ]
                           ]
                       |)));
@@ -10058,6 +10674,8 @@ Module collections.
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Left"
+                              []
+                              [ Ty.path "usize" ]
                               [ M.read (| edge_idx |) ]
                           ]
                       |)));
@@ -10079,6 +10697,8 @@ Module collections.
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Right"
+                              []
+                              [ Ty.path "usize" ]
                               [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
@@ -10102,6 +10722,8 @@ Module collections.
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Right"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -10388,6 +11010,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", M.read (| new_len |)) ]
                               ]
                             |)
@@ -10471,6 +11095,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", M.read (| new_len |)) ]
                               ]
                             |)
@@ -10774,7 +11400,17 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.StructTuple "core::option::Option::None" [];
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::SplitResult")
+                                    []
+                                    [ K; V; Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                    ]
+                                ]
+                                [];
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
@@ -11400,6 +12036,18 @@ Module collections.
                                     [
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::SplitResult")
+                                            []
+                                            [
+                                              K;
+                                              V;
+                                              Ty.path
+                                                "alloc::collections::btree::node::marker::Leaf"
+                                            ]
+                                        ]
                                         [ M.read (| result |) ];
                                       M.read (| handle |)
                                     ]
@@ -12696,6 +13344,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", M.read (| new_len |)) ]
                               ]
                             |)
@@ -12779,6 +13429,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", M.read (| new_len |)) ]
                               ]
                             |)
@@ -12894,6 +13546,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("end_",
                                       M.call_closure (|
@@ -12994,6 +13648,8 @@ Module collections.
                         |);
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start",
                               M.call_closure (|
@@ -13230,7 +13886,19 @@ Module collections.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::SplitResult")
+                                []
+                                [ K; V; Ty.path "alloc::collections::btree::node::marker::Internal"
+                                ]
+                            ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -13706,6 +14374,18 @@ Module collections.
                                 M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::SplitResult")
+                                        []
+                                        [
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::Internal"
+                                        ]
+                                    ]
                                     [ M.read (| result |) ]
                                 |)))
                           ]
@@ -13947,6 +14627,13 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::NodeRef"
+                    []
+                    [
+                      BorrowType;
+                      K;
+                      V;
+                      Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                    ]
                     [
                       ("node", M.read (| node |));
                       ("height",
@@ -13968,7 +14655,18 @@ Module collections.
                             Value.Integer IntegerKind.Usize 1
                           ]
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                BorrowType;
+                                Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                              ]
+                          ]
+                          [])
                     ]
                 |)
               |)))
@@ -15830,6 +16528,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.call_closure (|
@@ -15906,6 +16606,8 @@ Module collections.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", M.read (| new_len |)) ]
                                   ]
                                 |)
@@ -15983,6 +16685,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.call_closure (|
@@ -16059,6 +16763,8 @@ Module collections.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", M.read (| new_len |)) ]
                                   ]
                                 |)
@@ -16772,6 +17478,8 @@ Module collections.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::collections::btree::node::drop_key_val::Dropper"
+                      []
+                      [ V ]
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -16954,6 +17662,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::SplitResult"
+                    []
+                    [ K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ]
                     [
                       ("left",
                         M.read (|
@@ -17094,6 +17804,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", M.read (| old_len |)) ]
                               ]
                             |)
@@ -17176,6 +17888,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("end_", M.read (| old_len |)) ]
                               ]
                             |)
@@ -17574,6 +18288,8 @@ Module collections.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.call_closure (|
@@ -17677,6 +18393,8 @@ Module collections.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.call_closure (|
@@ -17755,6 +18473,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::SplitResult"
+                    []
+                    [ K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ]
                     [
                       ("left",
                         M.read (|
@@ -17937,6 +18657,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::BalancingContext"
+                    []
+                    [ K; V ]
                     [
                       ("parent", M.read (| self |));
                       ("left_child",
@@ -18785,6 +19507,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, parent_node |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| old_parent_len |)) ]
                                         ]
                                       |)
@@ -18917,6 +19641,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, right_node |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| right_len |)) ]
                                         ]
                                       |)
@@ -18974,6 +19700,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, left_node |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -19055,6 +19783,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, parent_node |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| old_parent_len |)) ]
                                         ]
                                       |)
@@ -19187,6 +19917,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, right_node |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| right_len |)) ]
                                         ]
                                       |)
@@ -19244,6 +19976,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, left_node |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -19389,6 +20123,8 @@ Module collections.
                                                   M.borrow (| Pointer.Kind.MutRef, parent_node |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeTo"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("end_",
                                                         M.call_closure (|
@@ -19443,6 +20179,8 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, parent_node |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.call_closure (|
@@ -19747,6 +20485,8 @@ Module collections.
                                                   M.borrow (| Pointer.Kind.MutRef, right_node |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeTo"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("end_",
                                                         M.call_closure (|
@@ -19841,6 +20581,8 @@ Module collections.
                                                   M.borrow (| Pointer.Kind.MutRef, left_node |);
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -19897,6 +20639,8 @@ Module collections.
                                           M.borrow (| Pointer.Kind.MutRef, left_node |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -21455,6 +22199,8 @@ Module collections.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("end_", M.read (| new_right_len |)) ]
                                 ]
                               |)
@@ -21528,6 +22274,8 @@ Module collections.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("end_", M.read (| new_right_len |)) ]
                                 ]
                               |)
@@ -21601,6 +22349,8 @@ Module collections.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.call_closure (|
@@ -21671,6 +22421,8 @@ Module collections.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -21750,6 +22502,8 @@ Module collections.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.call_closure (|
@@ -21820,6 +22574,8 @@ Module collections.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -22403,6 +23159,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("end_",
                                               M.call_closure (|
@@ -22515,6 +23273,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, left |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.call_closure (|
@@ -22612,6 +23372,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| count |)) ]
                                       ]
                                     |)
@@ -22647,6 +23409,8 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, right |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start", Value.Integer IntegerKind.Usize 0);
                                     ("end_",
@@ -23429,6 +24193,8 @@ Module collections.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("end_",
                                                 M.call_closure (|
@@ -23499,6 +24265,8 @@ Module collections.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -23583,6 +24351,8 @@ Module collections.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("end_",
                                                 M.call_closure (|
@@ -23653,6 +24423,8 @@ Module collections.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -23737,6 +24509,8 @@ Module collections.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| old_right_len |)) ]
                                         ]
                                       |)
@@ -23811,6 +24585,8 @@ Module collections.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| old_right_len |)) ]
                                         ]
                                       |)
@@ -24088,6 +24864,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| count |)) ]
                                       ]
                                     |)
@@ -24166,6 +24944,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, left |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.call_closure (|
@@ -24286,6 +25066,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("end_",
                                               M.call_closure (|
@@ -24332,6 +25114,8 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, left |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.call_closure (|
@@ -24382,6 +25166,8 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, right |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start", Value.Integer IntegerKind.Usize 0);
                                     ("end_",
@@ -24832,9 +25618,55 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::node::ForceResult::Leaf'1"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      BorrowType;
+                                      K;
+                                      V;
+                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                    ];
+                                  Type_
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      BorrowType;
+                                      K;
+                                      V;
+                                      Ty.path "alloc::collections::btree::node::marker::Internal"
+                                    ];
+                                  Type_
+                                ]
+                            ]
                             [
                               Value.StructRecord
                                 "alloc::collections::btree::node::Handle"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      BorrowType;
+                                      K;
+                                      V;
+                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                    ];
+                                  Type_
+                                ]
                                 [
                                   ("node", M.read (| node |));
                                   ("idx",
@@ -24845,7 +25677,8 @@ Module collections.
                                         "idx"
                                       |)
                                     |));
-                                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                                  ("_marker",
+                                    Value.StructTuple "core::marker::PhantomData" [] [ Type_ ] [])
                                 ]
                             ]
                         |)));
@@ -24861,9 +25694,55 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::node::ForceResult::Internal'1"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      BorrowType;
+                                      K;
+                                      V;
+                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                    ];
+                                  Type_
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::node::Handle")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      BorrowType;
+                                      K;
+                                      V;
+                                      Ty.path "alloc::collections::btree::node::marker::Internal"
+                                    ];
+                                  Type_
+                                ]
+                            ]
                             [
                               Value.StructRecord
                                 "alloc::collections::btree::node::Handle"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
+                                    [
+                                      BorrowType;
+                                      K;
+                                      V;
+                                      Ty.path "alloc::collections::btree::node::marker::Internal"
+                                    ];
+                                  Type_
+                                ]
                                 [
                                   ("node", M.read (| node |));
                                   ("idx",
@@ -24874,7 +25753,8 @@ Module collections.
                                         "idx"
                                       |)
                                     |));
-                                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                                  ("_marker",
+                                    Value.StructTuple "core::marker::PhantomData" [] [ Type_ ] [])
                                 ]
                             ]
                         |)))
@@ -24983,6 +25863,19 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::btree::node::Handle"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                        ];
+                      Type_
+                    ]
                     [
                       ("node", M.read (| node |));
                       ("idx",
@@ -24993,7 +25886,7 @@ Module collections.
                             "idx"
                           |)
                         |));
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ Type_ ] [])
                     ]
                 |)
               |)))
@@ -25489,6 +26382,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, left_node |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start", M.read (| new_left_len |));
                                             ("end_", M.read (| old_left_len |))
@@ -25548,6 +26443,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right_node |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| new_right_len |)) ]
                                       ]
                                     |)
@@ -25617,6 +26514,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, left_node |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start", M.read (| new_left_len |));
                                             ("end_", M.read (| old_left_len |))
@@ -25676,6 +26575,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right_node |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| new_right_len |)) ]
                                       ]
                                     |)
@@ -25892,6 +26793,8 @@ Module collections.
                                                 M.borrow (| Pointer.Kind.MutRef, left |);
                                                 Value.StructRecord
                                                   "core::ops::range::Range"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [
                                                     ("start",
                                                       M.call_closure (|
@@ -25993,6 +26896,8 @@ Module collections.
                                                 M.borrow (| Pointer.Kind.MutRef, right |);
                                                 Value.StructRecord
                                                   "core::ops::range::Range"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [
                                                     ("start", Value.Integer IntegerKind.Usize 1);
                                                     ("end_",
@@ -26040,6 +26945,8 @@ Module collections.
                                         M.borrow (| Pointer.Kind.MutRef, right |);
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start", Value.Integer IntegerKind.Usize 1);
                                             ("end_",
@@ -26170,6 +27077,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::SplitResult"
+                []
+                [ K; V; Ty.path "alloc::collections::btree::node::marker::LeafOrInternal" ]
                 [
                   ("left",
                     M.call_closure (|
@@ -26285,6 +27194,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::node::SplitResult"
+                []
+                [ K; V; Ty.path "alloc::collections::btree::node::marker::LeafOrInternal" ]
                 [
                   ("left",
                     M.call_closure (|

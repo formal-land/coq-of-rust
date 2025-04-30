@@ -187,6 +187,8 @@ Module locals_safety.
                         Value.StructTuple
                           "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis"
                           []
+                          []
+                          []
                       |)
                     |);
                     M.read (| initial_state |);
@@ -402,7 +404,11 @@ Module locals_safety.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
-                            Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
+                            Value.StructTuple
+                              "move_bytecode_verifier_meter::Scope::Function"
+                              []
+                              []
+                              [];
                             M.read (|
                               get_constant (|
                                 "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST",
@@ -585,6 +591,12 @@ Module locals_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -603,6 +615,8 @@ Module locals_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -701,6 +715,12 @@ Module locals_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -719,6 +739,8 @@ Module locals_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -822,6 +844,12 @@ Module locals_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -840,6 +868,8 @@ Module locals_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -952,6 +982,12 @@ Module locals_safety.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -972,6 +1008,8 @@ Module locals_safety.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
+                                                                      []
+                                                                      []
                                                                       [];
                                                                     M.read (| offset |)
                                                                   ]
@@ -1107,6 +1145,8 @@ Module locals_safety.
                                       |);
                                       Value.StructTuple
                                         "move_bytecode_verifier_meter::Scope::Function"
+                                        []
+                                        []
                                         [];
                                       M.read (|
                                         get_constant (|
@@ -1659,6 +1699,12 @@ Module locals_safety.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -1681,6 +1727,8 @@ Module locals_safety.
                                                                                   |);
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
+                                                                                    []
+                                                                                    []
                                                                                     [];
                                                                                   M.read (|
                                                                                     offset
@@ -2398,7 +2446,13 @@ Module locals_safety.
                         |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

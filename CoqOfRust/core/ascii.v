@@ -27,6 +27,8 @@ Module ascii.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::ascii::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -112,6 +114,8 @@ Module ascii.
           (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::ascii::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -148,6 +152,8 @@ Module ascii.
         ltac:(M.monadic
           (Value.StructTuple
             "core::ascii::EscapeDefault"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -298,7 +304,13 @@ Module ascii.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))

@@ -703,6 +703,8 @@ Module control_flow_graph.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
@@ -898,6 +900,8 @@ Module control_flow_graph.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
@@ -1106,6 +1110,8 @@ Module control_flow_graph.
                                                 M.alloc (|
                                                   Value.StructRecord
                                                     "move_binary_format::control_flow_graph::BasicBlock"
+                                                    []
+                                                    []
                                                     [
                                                       ("exit", M.read (| exit |));
                                                       ("successors", M.read (| successors |))
@@ -1242,7 +1248,7 @@ Module control_flow_graph.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -1272,7 +1278,11 @@ Module control_flow_graph.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -1606,6 +1616,8 @@ Module control_flow_graph.
                                           M.read (| entry |);
                                           Value.StructTuple
                                             "move_binary_format::control_flow_graph::new::Exploration::InProgress"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -2151,6 +2163,8 @@ Module control_flow_graph.
                                                   Value.StructTuple
                                                     "move_binary_format::control_flow_graph::new::Exploration::Done"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             |) in
@@ -2502,6 +2516,8 @@ Module control_flow_graph.
             M.alloc (|
               Value.StructRecord
                 "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                []
+                []
                 [
                   ("blocks", M.read (| blocks |));
                   ("traversal_successors", M.read (| traversal_successors |));
@@ -2776,10 +2792,20 @@ Module control_flow_graph.
                                             Value.UnicodeChar 32;
                                             Value.StructTuple
                                               "core::fmt::rt::Alignment::Unknown"
+                                              []
+                                              []
                                               [];
                                             Value.Integer IntegerKind.U32 4;
-                                            Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                            Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            Value.StructTuple
+                                              "core::fmt::rt::Count::Implied"
+                                              []
+                                              []
+                                              [];
+                                            Value.StructTuple
+                                              "core::fmt::rt::Count::Implied"
+                                              []
+                                              []
+                                              []
                                           ]
                                         |)
                                       ]

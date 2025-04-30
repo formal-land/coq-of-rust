@@ -197,11 +197,21 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "combinators_and_then::Food" ]
+                    []
+                |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "combinators_and_then::Food" ]
+                    [ M.read (| food |) ]
                 |)))
           ]
         |)
@@ -239,11 +249,21 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "combinators_and_then::Food" ]
+                    []
+                |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "combinators_and_then::Food" ]
+                    [ M.read (| food |) ]
                 |)))
           ]
         |)
@@ -290,7 +310,13 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "combinators_and_then::Food" ]
+                    []
+                |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -320,7 +346,13 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.path "combinators_and_then::Food" ]
+                            []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
@@ -331,7 +363,11 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           |) in
                         let food := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [ Ty.path "combinators_and_then::Food" ]
+                            [ M.read (| food |) ]
                         |)))
                   ]
                 |)))
@@ -599,9 +635,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.StructTuple "combinators_and_then::Food::CordonBleu" [];
-                Value.StructTuple "combinators_and_then::Food::Steak" [];
-                Value.StructTuple "combinators_and_then::Food::Sushi" []
+                Value.StructTuple "combinators_and_then::Food::CordonBleu" [] [] [];
+                Value.StructTuple "combinators_and_then::Food::Steak" [] [] [];
+                Value.StructTuple "combinators_and_then::Food::Sushi" [] [] []
               ]
           |),
           [
@@ -620,7 +656,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_function (| "combinators_and_then::eat", [], [] |),
                       [
                         M.read (| cordon_bleu |);
-                        Value.StructTuple "combinators_and_then::Day::Monday" []
+                        Value.StructTuple "combinators_and_then::Day::Monday" [] [] []
                       ]
                     |)
                   |) in
@@ -631,7 +667,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_function (| "combinators_and_then::eat", [], [] |),
                       [
                         M.read (| steak |);
-                        Value.StructTuple "combinators_and_then::Day::Tuesday" []
+                        Value.StructTuple "combinators_and_then::Day::Tuesday" [] [] []
                       ]
                     |)
                   |) in
@@ -642,7 +678,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_function (| "combinators_and_then::eat", [], [] |),
                       [
                         M.read (| sushi |);
-                        Value.StructTuple "combinators_and_then::Day::Wednesday" []
+                        Value.StructTuple "combinators_and_then::Day::Wednesday" [] [] []
                       ]
                     |)
                   |) in

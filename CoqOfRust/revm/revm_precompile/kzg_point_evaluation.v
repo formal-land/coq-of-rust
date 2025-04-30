@@ -7,6 +7,8 @@ Module kzg_point_evaluation.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.read (|
               get_constant (|
@@ -162,6 +164,11 @@ Module kzg_point_evaluation.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -177,6 +184,8 @@ Module kzg_point_evaluation.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -250,6 +259,11 @@ Module kzg_point_evaluation.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -265,6 +279,8 @@ Module kzg_point_evaluation.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -348,6 +364,8 @@ Module kzg_point_evaluation.
                           |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                         ]
                       |)
@@ -426,6 +444,8 @@ Module kzg_point_evaluation.
                           |);
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 96);
                               ("end_", Value.Integer IntegerKind.Usize 144)
@@ -498,6 +518,11 @@ Module kzg_point_evaluation.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -513,6 +538,8 @@ Module kzg_point_evaluation.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -630,6 +657,8 @@ Module kzg_point_evaluation.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 32);
                                       ("end_", Value.Integer IntegerKind.Usize 64)
@@ -733,6 +762,8 @@ Module kzg_point_evaluation.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 64);
                                       ("end_", Value.Integer IntegerKind.Usize 96)
@@ -836,6 +867,8 @@ Module kzg_point_evaluation.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 144);
                                       ("end_", Value.Integer IntegerKind.Usize 192)
@@ -889,6 +922,11 @@ Module kzg_point_evaluation.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -905,6 +943,8 @@ Module kzg_point_evaluation.
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -918,6 +958,11 @@ Module kzg_point_evaluation.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",

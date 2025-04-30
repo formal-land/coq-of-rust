@@ -38,6 +38,8 @@ Module algorithms.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
@@ -216,6 +218,8 @@ Module algorithms.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",

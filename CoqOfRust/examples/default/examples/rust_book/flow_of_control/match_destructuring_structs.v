@@ -37,6 +37,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "match_destructuring_structs::Foo"
+              []
+              []
               [
                 ("x",
                   Value.Tuple [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.U32 2 ]);

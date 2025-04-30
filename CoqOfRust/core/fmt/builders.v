@@ -38,6 +38,8 @@ Module fmt.
           ltac:(M.monadic
             (Value.StructRecord
               "core::fmt::builders::PadAdapterState"
+              []
+              []
               [ ("on_newline", Value.Bool true) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -149,6 +151,8 @@ Module fmt.
                                             |);
                                             Value.StructRecord
                                               "core::fmt::builders::PadAdapter"
+                                              []
+                                              []
                                               [
                                                 ("buf",
                                                   (* Unsize *)
@@ -674,7 +678,13 @@ Module fmt.
                               |)))
                         ]
                       |)) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -991,6 +1001,8 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::builders::DebugStruct"
+                []
+                []
                 [
                   ("fmt", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |));
                   ("result", M.read (| result |));
@@ -1491,6 +1503,11 @@ Module fmt.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "core::option::Option::None"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "core::fmt::builders::PadAdapter"
+                                                              ]
                                                               []
                                                           |) in
                                                         let~ state :
@@ -2848,6 +2865,11 @@ Module fmt.
                                                                 Value.StructTuple
                                                                   "core::option::Option::None"
                                                                   []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::fmt::builders::PadAdapter"
+                                                                  ]
+                                                                  []
                                                               |) in
                                                             let~ state :
                                                                 Ty.apply
@@ -3566,6 +3588,8 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::builders::DebugTuple"
+                []
+                []
                 [
                   ("fmt", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |));
                   ("result", M.read (| result |));
@@ -4072,6 +4096,11 @@ Module fmt.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "core::option::Option::None"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "core::fmt::builders::PadAdapter"
+                                                              ]
                                                               []
                                                           |) in
                                                         let~ state :
@@ -4848,6 +4877,11 @@ Module fmt.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "core::option::Option::None"
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::fmt::builders::PadAdapter"
+                                                                  ]
                                                                   []
                                                               |) in
                                                             let~ state :
@@ -6052,6 +6086,11 @@ Module fmt.
                                                         Value.StructTuple
                                                           "core::option::Option::None"
                                                           []
+                                                          [
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapter"
+                                                          ]
+                                                          []
                                                       |) in
                                                     let~ state :
                                                         Ty.apply
@@ -6662,10 +6701,14 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::builders::DebugSet"
+                []
+                []
                 [
                   ("inner",
                     Value.StructRecord
                       "core::fmt::builders::DebugInner"
+                      []
+                      []
                       [
                         ("fmt", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |));
                         ("result", M.read (| result |));
@@ -7206,6 +7249,11 @@ Module fmt.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "core::option::Option::None"
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::fmt::builders::PadAdapter"
+                                                                  ]
                                                                   []
                                                               |) in
                                                             let~ state :
@@ -7792,10 +7840,14 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::builders::DebugList"
+                []
+                []
                 [
                   ("inner",
                     Value.StructRecord
                       "core::fmt::builders::DebugInner"
+                      []
+                      []
                       [
                         ("fmt", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |));
                         ("result", M.read (| result |));
@@ -8316,6 +8368,11 @@ Module fmt.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "core::option::Option::None"
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapter"
+                                                          ]
                                                           []
                                                       |) in
                                                     let~ state :
@@ -8869,6 +8926,8 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::builders::DebugMap"
+                []
+                []
                 [
                   ("fmt", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |));
                   ("result", M.read (| result |));
@@ -9530,6 +9589,11 @@ Module fmt.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::None"
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapter"
+                                                                ]
                                                                 []
                                                             |) in
                                                           let~ _ :
@@ -10497,6 +10561,8 @@ Module fmt.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::result::Result::Ok"
+                                                    []
+                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                                                     [ Value.Tuple [] ]
                                                 |)
                                               |)))
@@ -10856,6 +10922,11 @@ Module fmt.
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::option::Option::None"
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapter"
+                                                                ]
                                                                 []
                                                             |) in
                                                           let~ writer :
@@ -11433,6 +11504,8 @@ Module fmt.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::result::Result::Ok"
+                                                    []
+                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                                                     [ Value.Tuple [] ]
                                                 |)
                                               |)))
@@ -11893,6 +11966,11 @@ Module fmt.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "core::option::Option::None"
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::fmt::builders::PadAdapter"
+                                                                  ]
                                                                   []
                                                               |) in
                                                             let~ state :
@@ -12522,7 +12600,7 @@ Module fmt.
       | [], [ F ], [ f ] =>
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
-          Value.StructTuple "core::fmt::builders::FromFn" [ M.read (| f |) ]))
+          Value.StructTuple "core::fmt::builders::FromFn" [] [ F ] [ M.read (| f |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -1140,16 +1140,16 @@ Defined.
 Ltac run_symbolic_pure :=
   (
     eapply Run.PureSuccess;
-    repeat smpl of_value
+    repeat (smpl of_value || reflexivity)
   ) ||
   (
     eapply Run.PureException;
     repeat smpl of_output;
-    repeat smpl of_value
+    repeat (smpl of_value || reflexivity)
   ).
 
 Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat smpl of_value |].
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |].
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;
@@ -1185,7 +1185,7 @@ Ltac as_of_values elements :=
   | ?element :: ?elements =>
     let elements := as_of_values elements in
     constr:(
-      (let value := OfValue.get_value (value' := element) ltac:(repeat smpl of_value) in
+      (let value := OfValue.get_value (value' := element) ltac:(repeat (smpl of_value || reflexivity)) in
       φ value) ::
       elements
     )
@@ -1208,7 +1208,7 @@ Ltac prepare_call_f f :=
     let e' := prepare_call_f e in
     let x := fresh "x" in
     let const' := constr:(
-      let x := OfValue.get_value (value' := const) ltac:(repeat smpl of_value) in
+      let x := OfValue.get_value (value' := const) ltac:(repeat (smpl of_value || reflexivity)) in
       φ x
     ) in
     let const' := eval cbn in const' in
@@ -1308,10 +1308,12 @@ Ltac run_main_rewrites :=
       Ref.rewrite_borrow_eq ||
       Ref.rewrite_cast_cast_eq ||
       rewrite_if_then_else_bool_eq ||
-      erewrite IsTraitAssociatedType_eq
-        by match goal with
-        | H : _ |- _ => apply H
+      (repeat (
+        erewrite IsTraitAssociatedType_eq ||
+        match goal with
+        | H : _ |- _ => exact H
         end
+      ))
     ));
     reflexivity
   |].
@@ -1425,19 +1427,19 @@ Ltac run_symbolic :=
 Axiom is_discriminant_tuple_eq :
   forall
     (kind : IntegerKind.t)
-    (variant_name : string) (fields : list Value.t)
+    (variant_name : string) (consts : list Value.t) (tys : list Ty.t) (fields : list Value.t)
     (discriminant : Z),
   M.IsDiscriminant variant_name discriminant ->
-  M.cast (Φ (Integer.t kind)) (Value.StructTuple variant_name fields) =
+  M.cast (Φ (Integer.t kind)) (Value.StructTuple variant_name consts tys fields) =
   Value.Integer kind (Integer.normalize_wrap kind discriminant).
 
 Axiom is_discriminant_record_eq :
   forall
     (kind : IntegerKind.t)
-    (variant_name : string) (fields : list (string * Value.t))
+    (variant_name : string) (consts : list Value.t) (tys : list Ty.t) (fields : list (string * Value.t))
     (discriminant : Z),
   M.IsDiscriminant variant_name discriminant ->
-  M.cast (Φ (Integer.t kind)) (Value.StructRecord variant_name fields) =
+  M.cast (Φ (Integer.t kind)) (Value.StructRecord variant_name consts tys fields) =
   Value.Integer kind (Integer.normalize_wrap kind discriminant).
 
 Module Function1.

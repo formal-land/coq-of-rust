@@ -100,6 +100,8 @@ Module errmap.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::errmap::ErrorDescription"
+            []
+            []
             [
               ("code_name",
                 M.call_closure (|
@@ -286,6 +288,21 @@ Module errmap.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -368,6 +385,21 @@ Module errmap.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -449,6 +481,21 @@ Module errmap.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -535,9 +582,21 @@ Module errmap.
                 |);
                 Value.StructRecord
                   "move_core_types::errmap::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::errmap::ErrorDescription" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -667,6 +726,21 @@ Module errmap.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -758,6 +832,21 @@ Module errmap.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -855,6 +944,21 @@ Module errmap.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -941,9 +1045,21 @@ Module errmap.
                 |);
                 Value.StructRecord
                   "move_core_types::errmap::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::errmap::ErrorMapping" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -1082,6 +1198,8 @@ Module errmap.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::errmap::ErrorMapping"
+            []
+            []
             [
               ("error_categories",
                 M.call_closure (|
@@ -1206,6 +1324,8 @@ Module errmap.
         ltac:(M.monadic
           (Value.StructRecord
             "move_core_types::errmap::ErrorMapping"
+            []
+            []
             [
               ("error_categories",
                 M.call_closure (|
@@ -1376,6 +1496,8 @@ Module errmap.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.read (|
                                         let~ error :
@@ -1528,15 +1650,21 @@ Module errmap.
                                                                                       32;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Alignment::Unknown"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.Integer
                                                                                       IntegerKind.U32
                                                                                       0;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |);
@@ -1558,15 +1686,21 @@ Module errmap.
                                                                                       32;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Alignment::Unknown"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.Integer
                                                                                       IntegerKind.U32
                                                                                       4;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |)
@@ -1654,7 +1788,13 @@ Module errmap.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1865,6 +2005,8 @@ Module errmap.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
                                     [
                                       M.read (|
                                         let~ error :
@@ -2045,15 +2187,21 @@ Module errmap.
                                                                                       32;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Alignment::Unknown"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.Integer
                                                                                       IntegerKind.U32
                                                                                       0;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |);
@@ -2075,15 +2223,21 @@ Module errmap.
                                                                                       32;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Alignment::Unknown"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.Integer
                                                                                       IntegerKind.U32
                                                                                       0;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |);
@@ -2105,15 +2259,21 @@ Module errmap.
                                                                                       32;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Alignment::Unknown"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.Integer
                                                                                       IntegerKind.U32
                                                                                       4;
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     Value.StructTuple
                                                                                       "core::fmt::rt::Count::Implied"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |)
@@ -2201,7 +2361,13 @@ Module errmap.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

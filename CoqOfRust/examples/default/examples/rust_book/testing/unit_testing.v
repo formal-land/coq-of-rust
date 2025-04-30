@@ -107,7 +107,7 @@ Module tests.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -137,7 +137,11 @@ Module tests.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -228,7 +232,7 @@ Module tests.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -258,7 +262,11 @@ Module tests.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)

@@ -337,7 +337,16 @@ Module deserializer.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| module |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::CompiledModule";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                    [ M.read (| module |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -432,6 +441,8 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::deserializer::Table"
+            []
+            []
             [
               ("kind",
                 M.call_closure (|
@@ -642,6 +653,8 @@ Module deserializer.
           let count := M.alloc (| count |) in
           Value.StructRecord
             "move_binary_format::deserializer::Table"
+            []
+            []
             [
               ("kind", M.read (| kind |));
               ("offset", M.read (| offset |));
@@ -800,6 +813,8 @@ Module deserializer.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::BAD_U16"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)))
                                         ]
@@ -877,6 +892,8 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u16"; Ty.path "move_binary_format::errors::PartialVMError" ]
                   [
                     M.call_closure (|
                       Ty.path "u16",
@@ -1040,6 +1057,8 @@ Module deserializer.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::BAD_U32"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)))
                                         ]
@@ -1117,6 +1136,8 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError" ]
                   [
                     M.call_closure (|
                       Ty.path "u32",
@@ -1280,6 +1301,8 @@ Module deserializer.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::BAD_U64"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)))
                                         ]
@@ -1357,6 +1380,8 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u64"; Ty.path "move_binary_format::errors::PartialVMError" ]
                   [
                     M.call_closure (|
                       Ty.path "u64",
@@ -1520,6 +1545,8 @@ Module deserializer.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::BAD_U128"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)))
                                         ]
@@ -1597,6 +1624,8 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u128"; Ty.path "move_binary_format::errors::PartialVMError" ]
                   [
                     M.call_closure (|
                       Ty.path "u128",
@@ -1765,6 +1794,8 @@ Module deserializer.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::BAD_U256"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)))
                                         ]
@@ -1842,6 +1873,11 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_core_types::u256::U256";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "move_core_types::u256::U256",
@@ -2019,6 +2055,8 @@ Module deserializer.
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::MALFORMED"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |);
                                                     M.call_closure (|
@@ -2131,6 +2169,8 @@ Module deserializer.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ T; Ty.path "move_binary_format::errors::PartialVMError" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -2152,6 +2192,8 @@ Module deserializer.
                                           [
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                              []
+                                              []
                                               []
                                           ]
                                         |);
@@ -2331,6 +2373,8 @@ Module deserializer.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |);
                                               M.read (| msg |)
@@ -2379,9 +2423,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::SignatureIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::SignatureIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -2547,9 +2598,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::ModuleHandleIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::ModuleHandleIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -2717,9 +2775,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::IdentifierIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::IdentifierIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -2885,9 +2950,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::StructHandleIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::StructHandleIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -3061,9 +3133,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::AddressIdentifierIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::AddressIdentifierIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -3233,9 +3312,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::StructDefinitionIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -3403,9 +3489,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::FunctionHandleIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -3573,9 +3666,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::FieldHandleIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::FieldHandleIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -3745,9 +3845,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::FieldInstantiationIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::FieldInstantiationIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -3915,9 +4022,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::FunctionInstantiationIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::FunctionInstantiationIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -4087,9 +4201,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::StructDefInstantiationIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::StructDefInstantiationIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -4257,9 +4378,16 @@ Module deserializer.
           ltac:(M.monadic
             (Value.StructTuple
               "core::result::Result::Ok"
+              []
+              [
+                Ty.path "move_binary_format::file_format::ConstantPoolIndex";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ]
               [
                 Value.StructTuple
                   "move_binary_format::file_format::ConstantPoolIndex"
+                  []
+                  []
                   [
                     M.read (|
                       M.match_operator (|
@@ -5475,6 +5603,11 @@ Module deserializer.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::CompiledModule";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -5488,6 +5621,8 @@ Module deserializer.
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::TRAILING_BYTES"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -5498,7 +5633,16 @@ Module deserializer.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| module |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::CompiledModule";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| module |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5556,6 +5700,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "u8" ]
                             [
                               ("start", Value.Integer IntegerKind.U8 0);
                               ("end_", M.read (| table_count |))
@@ -5786,7 +5932,13 @@ Module deserializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5870,6 +6022,11 @@ Module deserializer.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::deserializer::Table";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -5891,6 +6048,8 @@ Module deserializer.
                                             [
                                               Value.StructTuple
                                                 "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |);
@@ -6151,6 +6310,11 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_binary_format::deserializer::Table";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "move_binary_format::deserializer::Table",
@@ -6679,6 +6843,12 @@ Module deserializer.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "u32";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -6693,6 +6863,8 @@ Module deserializer.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |)
@@ -6741,6 +6913,12 @@ Module deserializer.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "u32";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -6755,6 +6933,8 @@ Module deserializer.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |)
@@ -6823,6 +7003,12 @@ Module deserializer.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "u32";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -6837,6 +7023,8 @@ Module deserializer.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |)
@@ -6902,6 +7090,12 @@ Module deserializer.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "u32";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -6916,6 +7110,8 @@ Module deserializer.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::DUPLICATE_TABLE"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |)
@@ -6959,6 +7155,12 @@ Module deserializer.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.path "u32";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -6973,6 +7175,8 @@ Module deserializer.
                                                               [
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
+                                                                  []
+                                                                  []
                                                                   []
                                                               ]
                                                             |)
@@ -6991,7 +7195,11 @@ Module deserializer.
                     ]
                   |)) in
               M.alloc (|
-                Value.StructTuple "core::result::Result::Ok" [ M.read (| current_offset |) ]
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ M.read (| current_offset |) ]
               |)
             |)))
         |)))
@@ -7563,7 +7771,13 @@ Module deserializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8221,6 +8435,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -8246,6 +8466,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -8763,6 +8985,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -8788,6 +9016,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -9305,6 +9535,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -9330,6 +9566,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -9847,6 +10085,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -9872,6 +10116,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -10387,6 +10633,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -10412,6 +10664,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -10927,6 +11181,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -10952,6 +11212,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -11270,6 +11532,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -11295,6 +11563,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -11926,6 +12196,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -11951,6 +12227,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -12468,6 +12746,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -12493,6 +12777,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -12837,6 +13123,12 @@ Module deserializer.
                                                                       M.return_ (|
                                                                         Value.StructTuple
                                                                           "core::result::Result::Err"
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ]
                                                                           [
                                                                             M.call_closure (|
                                                                               Ty.path
@@ -12862,6 +13154,8 @@ Module deserializer.
                                                                                   [
                                                                                     Value.StructTuple
                                                                                       "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |);
@@ -12909,7 +13203,11 @@ Module deserializer.
                             ]
                           |)) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                          [ Value.Tuple [] ]
                       |)))
                 ]
               |)
@@ -13503,6 +13801,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -13528,6 +13832,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -14018,6 +14324,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -14043,6 +14355,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -14533,6 +14847,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -14558,6 +14878,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -15048,6 +15370,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -15073,6 +15401,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -15563,6 +15893,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -15588,6 +15924,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -16078,6 +16416,12 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -16103,6 +16447,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -16437,7 +16783,11 @@ Module deserializer.
                             ]
                           |)) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                          [ Value.Tuple [] ]
                       |)))
                 ]
               |)
@@ -16878,6 +17228,8 @@ Module deserializer.
                                     |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::ModuleHandle"
+                                      []
+                                      []
                                       [
                                         ("address", M.read (| address |));
                                         ("name", M.read (| name |))
@@ -16900,7 +17252,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -17383,6 +17741,8 @@ Module deserializer.
                                             Value.StructTuple
                                               "move_binary_format::deserializer::AbilitySetPosition::StructHandle"
                                               []
+                                              []
+                                              []
                                           ]
                                         |)
                                       ]
@@ -17651,6 +18011,8 @@ Module deserializer.
                                     |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::StructHandle"
+                                      []
+                                      []
                                       [
                                         ("module", M.read (| module |));
                                         ("name", M.read (| name |));
@@ -17675,7 +18037,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -18470,6 +18838,8 @@ Module deserializer.
                                             Value.StructTuple
                                               "move_binary_format::deserializer::AbilitySetPosition::FunctionTypeParameters"
                                               []
+                                              []
+                                              []
                                           ]
                                         |)
                                       ]
@@ -18565,6 +18935,8 @@ Module deserializer.
                                     |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::FunctionHandle"
+                                      []
+                                      []
                                       [
                                         ("module", M.read (| module |));
                                         ("name", M.read (| name |));
@@ -18590,7 +18962,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -19031,6 +19409,8 @@ Module deserializer.
                                     |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::StructDefInstantiation"
+                                      []
+                                      []
                                       [
                                         ("def", M.read (| def |));
                                         ("type_parameters", M.read (| type_parameters |))
@@ -19053,7 +19433,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -19497,6 +19883,8 @@ Module deserializer.
                                     |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::FunctionInstantiation"
+                                      []
+                                      []
                                       [
                                         ("handle", M.read (| handle |));
                                         ("type_parameters", M.read (| type_parameters |))
@@ -19519,7 +19907,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -19925,6 +20319,12 @@ Module deserializer.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::result::Result::Err"
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ]
                                                         [
                                                           M.call_closure (|
                                                             Ty.path
@@ -19950,6 +20350,8 @@ Module deserializer.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |);
@@ -20128,6 +20530,8 @@ Module deserializer.
                                                                               Value.StructTuple
                                                                                 "move_core_types::vm_status::StatusCode::MALFORMED"
                                                                                 []
+                                                                                []
+                                                                                []
                                                                             ]
                                                                           |);
                                                                           M.call_closure (|
@@ -20276,7 +20680,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -20386,6 +20796,11 @@ Module deserializer.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -20407,6 +20822,8 @@ Module deserializer.
                                           [
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                              []
+                                              []
                                               []
                                           ]
                                         |);
@@ -20459,6 +20876,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
@@ -20678,6 +21097,12 @@ Module deserializer.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -20703,6 +21128,8 @@ Module deserializer.
                                                                     [
                                                                       Value.StructTuple
                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |);
@@ -20794,7 +21221,13 @@ Module deserializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -21111,7 +21544,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -21438,9 +21877,16 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::Constant";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
                   [
                     Value.StructRecord
                       "move_binary_format::file_format::Constant"
+                      []
+                      []
                       [ ("type_", M.read (| type_ |)); ("data", M.read (| data |)) ]
                   ]
               |)
@@ -21757,7 +22203,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -22125,9 +22577,16 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_core_types::metadata::Metadata";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
                   [
                     Value.StructRecord
                       "move_core_types::metadata::Metadata"
+                      []
+                      []
                       [ ("key", M.read (| key |)); ("value", M.read (| value |)) ]
                   ]
               |)
@@ -22494,6 +22953,8 @@ Module deserializer.
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::MALFORMED"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |);
                                                     M.call_closure (|
@@ -22620,6 +23081,14 @@ Module deserializer.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -22641,6 +23110,8 @@ Module deserializer.
                                           [
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                              []
+                                              []
                                               []
                                           ]
                                         |);
@@ -22672,7 +23143,19 @@ Module deserializer.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| data |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| data |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -22841,6 +23324,8 @@ Module deserializer.
                                     |);
                                     Value.StructTuple
                                       "move_binary_format::file_format::Signature"
+                                      []
+                                      []
                                       [
                                         M.read (|
                                           M.match_operator (|
@@ -23024,7 +23509,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -23249,6 +23740,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "u64" ]
                             [ ("start", Value.Integer IntegerKind.U64 0); ("end_", M.read (| len |))
                             ]
                         ]
@@ -23494,7 +23987,22 @@ Module deserializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| tokens |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::SignatureToken";
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| tokens |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -23994,6 +24502,13 @@ Module deserializer.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -24019,6 +24534,8 @@ Module deserializer.
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                   |);
@@ -24177,6 +24694,13 @@ Module deserializer.
                                               M.alloc (|
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ]
                                                   [
                                                     M.read (|
                                                       M.match_operator (|
@@ -24337,9 +24861,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::Bool"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24353,9 +24881,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::U8"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24369,9 +24901,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::U16"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24385,9 +24921,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::U32"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24401,9 +24941,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::U64"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24417,9 +24961,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::U128"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24433,9 +24981,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::U256"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24449,9 +25001,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::Address"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24465,9 +25021,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::Signer"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               |)));
@@ -24482,6 +25042,8 @@ Module deserializer.
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Vector"
                                                                   []
+                                                                  []
+                                                                  []
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -24494,6 +25056,8 @@ Module deserializer.
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Reference"
                                                                   []
+                                                                  []
+                                                                  []
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -24505,6 +25069,8 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::MutableReference"
+                                                                  []
+                                                                  []
                                                                   []
                                                               |)));
                                                           fun γ =>
@@ -24682,9 +25248,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::Struct"
+                                                                      []
+                                                                      []
                                                                       [ M.read (| sh_idx |) ]
                                                                   ]
                                                               |)));
@@ -25057,6 +25627,13 @@ Module deserializer.
                                                                               M.return_ (|
                                                                                 Value.StructTuple
                                                                                   "core::result::Result::Err"
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
                                                                                   [
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -25082,6 +25659,8 @@ Module deserializer.
                                                                                           [
                                                                                             Value.StructTuple
                                                                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                              []
+                                                                                              []
                                                                                               []
                                                                                           ]
                                                                                         |);
@@ -25126,6 +25705,8 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructRecord
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::StructInst"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     ("sh_idx", M.read (| sh_idx |));
                                                                     ("arity", M.read (| arity |));
@@ -25326,9 +25907,13 @@ Module deserializer.
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_binary_format::file_format::SignatureToken::TypeParameter"
+                                                                      []
+                                                                      []
                                                                       [ M.read (| idx |) ]
                                                                   ]
                                                               |)))
@@ -25342,6 +25927,13 @@ Module deserializer.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ]
                                                   [
                                                     M.call_closure (|
                                                       Ty.path
@@ -25367,6 +25959,8 @@ Module deserializer.
                                                           [
                                                             Value.StructTuple
                                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                         |);
@@ -25582,7 +26176,14 @@ Module deserializer.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ M.read (| tok |) ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
+                                    [ M.read (| tok |) ]
                                 |)
                               |)
                             |)
@@ -25714,6 +26315,12 @@ Module deserializer.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -25739,6 +26346,8 @@ Module deserializer.
                                                     [
                                                       Value.StructTuple
                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                   |);
@@ -26040,6 +26649,13 @@ Module deserializer.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ]
                                                   [ M.read (| tok |) ]
                                               |)
                                             |)
@@ -26361,9 +26977,13 @@ Module deserializer.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                          []
+                          []
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Vector"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -26400,9 +27020,13 @@ Module deserializer.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                          []
+                          []
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Reference"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -26439,9 +27063,13 @@ Module deserializer.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                          []
+                          []
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::MutableReference"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -26555,9 +27183,13 @@ Module deserializer.
                               M.alloc (|
                                 Value.StructTuple
                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+                                  []
+                                  []
                                   [
                                     Value.StructTuple
                                       "move_binary_format::file_format::SignatureToken::StructInstantiation"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -26616,6 +27248,8 @@ Module deserializer.
                               (M.alloc (|
                                 Value.StructRecord
                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::StructInst"
+                                  []
+                                  []
                                   [
                                     ("sh_idx", M.read (| sh_idx |));
                                     ("arity", M.read (| arity |));
@@ -27085,6 +27719,11 @@ Module deserializer.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::file_format::AbilitySet";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -27110,6 +27749,8 @@ Module deserializer.
                                                     [
                                                       Value.StructTuple
                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                   |);
@@ -27166,6 +27807,11 @@ Module deserializer.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::AbilitySet";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.read (|
                                       M.match_operator (|
@@ -27362,10 +28008,14 @@ Module deserializer.
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::Ability::Store"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |);
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::Ability::Key"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -27441,15 +28091,21 @@ Module deserializer.
                                                             Value.StructTuple
                                                               "move_binary_format::file_format::Ability::Store"
                                                               []
+                                                              []
+                                                              []
                                                           ]
                                                         |);
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::Ability::Copy"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |);
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::Ability::Drop"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -27708,10 +28364,14 @@ Module deserializer.
                                                               Value.StructTuple
                                                                 "move_binary_format::file_format::Ability::Copy"
                                                                 []
+                                                                []
+                                                                []
                                                             ]
                                                           |);
                                                           Value.StructTuple
                                                             "move_binary_format::file_format::Ability::Drop"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |)
@@ -27753,6 +28413,8 @@ Module deserializer.
                                                           Value.StructTuple
                                                             "move_binary_format::file_format::Ability::Key"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |)
                                                     |)))
@@ -27762,6 +28424,11 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::result::Result::Ok"
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::file_format::AbilitySet";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -27826,6 +28493,8 @@ Module deserializer.
                                                               M.read (| set |);
                                                               Value.StructTuple
                                                                 "move_binary_format::file_format::Ability::Store"
+                                                                []
+                                                                []
                                                                 []
                                                             ]
                                                           |)
@@ -28039,6 +28708,11 @@ Module deserializer.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::AbilitySet";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [ M.read (| abilities |) ]
                               |)));
                           fun γ =>
@@ -28047,6 +28721,11 @@ Module deserializer.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::AbilitySet";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -28059,6 +28738,8 @@ Module deserializer.
                                       [
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -28297,6 +28978,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_", M.read (| len |))
@@ -28545,7 +29228,22 @@ Module deserializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| kinds |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::AbilitySet";
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| kinds |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -28779,6 +29477,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_", M.read (| len |))
@@ -29027,7 +29727,20 @@ Module deserializer.
                     ]
                   |)) in
               M.alloc (|
-                Value.StructTuple "core::result::Result::Ok" [ M.read (| type_params |) ]
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::StructTypeParameter";
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| type_params |) ]
               |)
             |)))
         |)))
@@ -29132,6 +29845,8 @@ Module deserializer.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
                               Value.StructTuple
                                 "move_binary_format::deserializer::AbilitySetPosition::StructTypeParameters"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -29389,9 +30104,16 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::StructTypeParameter";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
                   [
                     Value.StructRecord
                       "move_binary_format::file_format::StructTypeParameter"
+                      []
+                      []
                       [
                         ("constraints", M.read (| constraints |));
                         ("is_phantom", M.read (| is_phantom |))
@@ -29890,6 +30612,12 @@ Module deserializer.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
+                                                  []
+                                                  [
+                                                    Ty.tuple [];
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ]
                                                   [
                                                     M.call_closure (|
                                                       Ty.path
@@ -29915,6 +30643,8 @@ Module deserializer.
                                                           [
                                                             Value.StructTuple
                                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                         |);
@@ -29979,6 +30709,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::StructFieldInformation::Native"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -30171,6 +30903,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::StructFieldInformation::Declared"
+                                            []
+                                            []
                                             [ M.read (| fields |) ]
                                         |)))
                                   ]
@@ -30199,6 +30933,8 @@ Module deserializer.
                                     |);
                                     Value.StructRecord
                                       "move_binary_format::file_format::StructDefinition"
+                                      []
+                                      []
                                       [
                                         ("struct_handle", M.read (| struct_handle |));
                                         ("field_information", M.read (| field_information |))
@@ -30221,7 +30957,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -30446,6 +31188,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "u64" ]
                             [
                               ("start", Value.Integer IntegerKind.U64 0);
                               ("end_", M.read (| field_count |))
@@ -30693,7 +31437,22 @@ Module deserializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| fields |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::FieldDefinition";
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| fields |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -30984,14 +31743,23 @@ Module deserializer.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::FieldDefinition";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
                   [
                     Value.StructRecord
                       "move_binary_format::file_format::FieldDefinition"
+                      []
+                      []
                       [
                         ("name", M.read (| name |));
                         ("signature",
                           Value.StructTuple
                             "move_binary_format::file_format::TypeSignature"
+                            []
+                            []
                             [ M.read (| signature |) ])
                       ]
                   ]
@@ -31322,7 +32090,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -31759,13 +32533,21 @@ Module deserializer.
                             |);
                             Value.StructRecord
                               "move_binary_format::file_format::FieldHandle"
+                              []
+                              []
                               [ ("owner", M.read (| struct_idx |)); ("field", M.read (| offset |)) ]
                           ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -32207,6 +32989,8 @@ Module deserializer.
                             |);
                             Value.StructRecord
                               "move_binary_format::file_format::FieldInstantiation"
+                              []
+                              []
                               [
                                 ("handle", M.read (| handle |));
                                 ("type_parameters", M.read (| type_parameters |))
@@ -32216,7 +33000,13 @@ Module deserializer.
                       |) in
                     M.alloc (| Value.Tuple [] |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -32562,6 +33352,8 @@ Module deserializer.
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::MALFORMED"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |);
                                                     M.call_closure (|
@@ -32794,12 +33586,16 @@ Module deserializer.
                                       Value.StructTuple
                                         "move_binary_format::file_format::Visibility::Public"
                                         []
+                                        []
+                                        []
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       Value.StructTuple
                                         "move_binary_format::file_format::Visibility::Private"
+                                        []
+                                        []
                                         []
                                     |)))
                               ]
@@ -32919,6 +33715,8 @@ Module deserializer.
                                               [
                                                 Value.StructTuple
                                                   "move_binary_format::file_format::Visibility::Public"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Bool true
                                               ]
@@ -33079,6 +33877,8 @@ Module deserializer.
                                                                                   [
                                                                                     Value.StructTuple
                                                                                       "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                      []
+                                                                                      []
                                                                                       []
                                                                                   ]
                                                                                 |);
@@ -33335,6 +34135,8 @@ Module deserializer.
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                               |);
@@ -33599,6 +34401,8 @@ Module deserializer.
                                                                           Value.StructTuple
                                                                             "move_core_types::vm_status::StatusCode::MALFORMED"
                                                                             []
+                                                                            []
+                                                                            []
                                                                         ]
                                                                       |);
                                                                       M.call_closure (|
@@ -33833,6 +34637,8 @@ Module deserializer.
                                                                         [
                                                                           Value.StructTuple
                                                                             "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                            []
+                                                                            []
                                                                             []
                                                                         ]
                                                                       |);
@@ -34274,12 +35080,20 @@ Module deserializer.
                                         |)
                                       |)
                                     |) in
-                                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                                  M.alloc (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                                      []
+                                  |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                                       [
                                         M.read (|
                                           M.match_operator (|
@@ -34450,6 +35264,12 @@ Module deserializer.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition";
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -34464,6 +35284,8 @@ Module deserializer.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::INVALID_FLAG_BITS"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -34477,9 +35299,16 @@ Module deserializer.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::FunctionDefinition";
+                            Ty.path "move_binary_format::errors::PartialVMError"
+                          ]
                           [
                             Value.StructRecord
                               "move_binary_format::file_format::FunctionDefinition"
+                              []
+                              []
                               [
                                 ("function", M.read (| function |));
                                 ("visibility", M.read (| visibility |));
@@ -34722,6 +35551,8 @@ Module deserializer.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "u64" ]
                             [ ("start", Value.Integer IntegerKind.U64 0); ("end_", M.read (| len |))
                             ]
                         ]
@@ -34967,7 +35798,22 @@ Module deserializer.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| indices |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| indices |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -35141,6 +35987,8 @@ Module deserializer.
                 M.alloc (|
                   Value.StructRecord
                     "move_binary_format::file_format::CodeUnit"
+                    []
+                    []
                     [
                       ("locals", M.read (| locals |));
                       ("code",
@@ -35292,7 +36140,16 @@ Module deserializer.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| code_unit |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::CodeUnit";
+                    Ty.path "move_binary_format::errors::PartialVMError"
+                  ]
+                  [ M.read (| code_unit |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -35785,6 +36642,8 @@ Module deserializer.
                                                                       Value.StructTuple
                                                                         "move_core_types::vm_status::StatusCode::MALFORMED"
                                                                         []
+                                                                        []
+                                                                        []
                                                                     ]
                                                                   |);
                                                                   M.call_closure (|
@@ -36149,6 +37008,12 @@ Module deserializer.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ]
                                                                   [
                                                                     M.call_closure (|
                                                                       Ty.path
@@ -36174,6 +37039,8 @@ Module deserializer.
                                                                           [
                                                                             Value.StructTuple
                                                                               "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                              []
+                                                                              []
                                                                               []
                                                                           ]
                                                                         |);
@@ -36417,6 +37284,12 @@ Module deserializer.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -36442,6 +37315,8 @@ Module deserializer.
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                                 |);
@@ -36615,6 +37490,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Pop"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -36627,6 +37504,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Ret"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -36638,6 +37517,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::BrTrue"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -36782,6 +37663,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::BrFalse"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -36926,6 +37809,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Branch"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -37201,6 +38086,8 @@ Module deserializer.
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::MALFORMED"
                                                                                     []
+                                                                                    []
+                                                                                    []
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
@@ -37310,6 +38197,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdU8"
+                                            []
+                                            []
                                             [ M.read (| value |) ]
                                         |)));
                                     fun γ =>
@@ -37451,6 +38340,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdU64"
+                                            []
+                                            []
                                             [ M.read (| value |) ]
                                         |)));
                                     fun γ =>
@@ -37592,6 +38483,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdU128"
+                                            []
+                                            []
                                             [
                                               M.call_closure (|
                                                 Ty.apply
@@ -37624,6 +38517,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CastU8"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -37635,6 +38530,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CastU64"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -37648,6 +38545,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CastU128"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -37659,6 +38558,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdConst"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -37813,6 +38714,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdTrue"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -37825,6 +38728,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdFalse"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -37836,6 +38741,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CopyLoc"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -37980,6 +38887,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MoveLoc"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -38124,6 +39033,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::StLoc"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -38268,6 +39179,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MutBorrowLoc"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -38412,6 +39325,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ImmBorrowLoc"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -38556,6 +39471,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MutBorrowField"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -38709,6 +39626,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MutBorrowFieldGeneric"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -38862,6 +39781,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ImmBorrowField"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39015,6 +39936,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ImmBorrowFieldGeneric"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39168,6 +40091,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Call"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39321,6 +40246,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CallGeneric"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39474,6 +40401,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Pack"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39627,6 +40556,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::PackGeneric"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39780,6 +40711,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Unpack"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -39933,6 +40866,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::UnpackGeneric"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -40087,6 +41022,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ReadRef"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40098,6 +41035,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::WriteRef"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40111,6 +41050,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Add"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40122,6 +41063,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Sub"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40135,6 +41078,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Mul"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40146,6 +41091,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Mod"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40159,6 +41106,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Div"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40170,6 +41119,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::BitOr"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40183,6 +41134,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::BitAnd"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40194,6 +41147,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Xor"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40207,6 +41162,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Shl"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40218,6 +41175,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Shr"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40231,6 +41190,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Or"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40242,6 +41203,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::And"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40255,6 +41218,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Not"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40266,6 +41231,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Eq"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40279,6 +41246,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Neq"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40290,6 +41259,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Lt"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40303,6 +41274,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Gt"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40314,6 +41287,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Le"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40327,6 +41302,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Ge"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40338,6 +41315,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Abort"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -40351,6 +41330,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::Nop"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40363,6 +41344,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::FreezeRef"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -40374,6 +41357,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecPack"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -40658,6 +41643,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecLen"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -40811,6 +41798,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecImmBorrow"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -40964,6 +41953,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecMutBorrow"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -41117,6 +42108,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecPushBack"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -41270,6 +42263,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecPopBack"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -41423,6 +42418,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecUnpack"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -41707,6 +42704,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::VecSwap"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -41989,6 +42988,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdU16"
+                                            []
+                                            []
                                             [ M.read (| value |) ]
                                         |)));
                                     fun γ =>
@@ -42130,6 +43131,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdU32"
+                                            []
+                                            []
                                             [ M.read (| value |) ]
                                         |)));
                                     fun γ =>
@@ -42278,6 +43281,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::LdU256"
+                                            []
+                                            []
                                             [
                                               M.call_closure (|
                                                 Ty.apply
@@ -42314,6 +43319,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CastU16"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -42325,6 +43332,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CastU32"
+                                            []
+                                            []
                                             []
                                         |)));
                                     fun γ =>
@@ -42338,6 +43347,8 @@ Module deserializer.
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::CastU256"
                                             []
+                                            []
+                                            []
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -42349,6 +43360,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ExistsDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -42502,6 +43515,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ExistsGenericDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -42655,6 +43670,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MutBorrowGlobalDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -42808,6 +43825,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MutBorrowGlobalGenericDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -42961,6 +43980,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ImmBorrowGlobalDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -43114,6 +44135,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::ImmBorrowGlobalGenericDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -43267,6 +44290,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MoveFromDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -43420,6 +44445,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MoveFromGenericDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -43573,6 +44600,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MoveToDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -43726,6 +44755,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.StructTuple
                                             "move_binary_format::file_format::Bytecode::MoveToGenericDeprecated"
+                                            []
+                                            []
                                             [
                                               M.read (|
                                                 M.match_operator (|
@@ -43912,7 +44943,13 @@ Module deserializer.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -43979,9 +45016,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::MODULE_HANDLES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -43995,9 +45039,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::STRUCT_HANDLES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44011,9 +45062,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::FUNCTION_HANDLES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44027,9 +45085,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::FUNCTION_INST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44043,9 +45108,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::SIGNATURES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44059,9 +45131,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::CONSTANT_POOL"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44075,9 +45154,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::IDENTIFIERS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44091,9 +45177,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::ADDRESS_IDENTIFIERS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44107,9 +45200,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44123,9 +45223,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44139,9 +45246,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::FUNCTION_DEFS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44155,9 +45269,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44171,9 +45292,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::FIELD_INST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44187,9 +45315,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44203,9 +45338,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::TableType::METADATA"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44214,6 +45356,11 @@ Module deserializer.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::TableType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -44226,6 +45373,8 @@ Module deserializer.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_TABLE_TYPE"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -44298,9 +45447,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::BOOL"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44314,9 +45470,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::U8"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44330,9 +45493,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::U64"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44346,9 +45516,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::U128"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44362,9 +45539,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::ADDRESS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44378,9 +45562,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::REFERENCE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44394,9 +45585,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44410,9 +45608,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::STRUCT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44426,9 +45631,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44442,9 +45654,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::VECTOR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44458,9 +45677,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::STRUCT_INST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44474,9 +45700,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::SIGNER"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44490,9 +45723,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::U16"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44506,9 +45746,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::U32"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44522,9 +45769,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedType::U256"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44533,6 +45787,11 @@ Module deserializer.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::SerializedType";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -44545,6 +45804,8 @@ Module deserializer.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_SERIALIZED_TYPE"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -44738,9 +45999,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedNominalResourceFlag";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::deserializer::DeprecatedNominalResourceFlag::NOMINAL_RESOURCE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44754,9 +46022,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedNominalResourceFlag";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::deserializer::DeprecatedNominalResourceFlag::NORMAL_STRUCT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44765,6 +46040,11 @@ Module deserializer.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedNominalResourceFlag";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -44777,6 +46057,8 @@ Module deserializer.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -44867,9 +46149,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedKind";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::deserializer::DeprecatedKind::ALL"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44883,9 +46172,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedKind";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::deserializer::DeprecatedKind::COPYABLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44899,9 +46195,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedKind";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::deserializer::DeprecatedKind::RESOURCE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44910,6 +46213,11 @@ Module deserializer.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path "move_binary_format::deserializer::DeprecatedKind";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -44922,6 +46230,8 @@ Module deserializer.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -44982,9 +46292,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path
+                            "move_binary_format::file_format_common::SerializedNativeStructFlag";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -44998,9 +46316,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path
+                            "move_binary_format::file_format_common::SerializedNativeStructFlag";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45009,6 +46335,12 @@ Module deserializer.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path
+                            "move_binary_format::file_format_common::SerializedNativeStructFlag";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -45021,6 +46353,8 @@ Module deserializer.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_NATIVE_STRUCT_FLAG"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -45155,9 +46489,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::POP"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45171,9 +46512,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::RET"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45187,9 +46535,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::BR_TRUE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45203,9 +46558,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::BR_FALSE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45219,9 +46581,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::BRANCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45235,9 +46604,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_U64"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45251,9 +46627,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_CONST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45267,9 +46650,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_TRUE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45283,9 +46673,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_FALSE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45299,9 +46696,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::COPY_LOC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45315,9 +46719,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MOVE_LOC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45331,9 +46742,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::ST_LOC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45347,9 +46765,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45363,9 +46788,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45379,9 +46811,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45395,9 +46834,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45411,9 +46857,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CALL"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45427,9 +46880,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::PACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45443,9 +46903,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::UNPACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45459,9 +46926,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::READ_REF"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45475,9 +46949,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::WRITE_REF"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45491,9 +46972,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::ADD"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45507,9 +46995,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::SUB"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45523,9 +47018,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MUL"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45539,9 +47041,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MOD"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45555,9 +47064,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::DIV"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45571,9 +47087,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::BIT_OR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45587,9 +47110,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::BIT_AND"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45603,9 +47133,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::XOR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45619,7 +47156,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format_common::Opcodes::OR" []
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format_common::Opcodes::OR"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -45632,9 +47179,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::AND"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45648,9 +47202,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::NOT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45664,7 +47225,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format_common::Opcodes::EQ" []
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format_common::Opcodes::EQ"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -45677,9 +47248,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::NEQ"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45693,7 +47271,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format_common::Opcodes::LT" []
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format_common::Opcodes::LT"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -45706,7 +47294,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format_common::Opcodes::GT" []
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format_common::Opcodes::GT"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -45719,7 +47317,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format_common::Opcodes::LE" []
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format_common::Opcodes::LE"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -45732,7 +47340,17 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_binary_format::file_format_common::Opcodes::GE" []
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format_common::Opcodes::GE"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -45745,9 +47363,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::ABORT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45761,9 +47386,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::NOP"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45777,9 +47409,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45793,9 +47432,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45809,9 +47455,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45825,9 +47478,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45841,9 +47501,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45857,9 +47524,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::FREEZE_REF"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45873,9 +47547,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::SHL"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45889,9 +47570,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::SHR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45905,9 +47593,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_U8"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45921,9 +47616,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_U128"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45937,9 +47639,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CAST_U8"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45953,9 +47662,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CAST_U64"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45969,9 +47685,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CAST_U128"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -45985,9 +47708,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46001,9 +47731,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46017,9 +47754,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CALL_GENERIC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46033,9 +47777,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::PACK_GENERIC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46049,9 +47800,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46065,9 +47823,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46081,9 +47846,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46097,9 +47869,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46113,9 +47892,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46129,9 +47915,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46145,9 +47938,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_PACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46161,9 +47961,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_LEN"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46177,9 +47984,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46193,9 +48007,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46209,9 +48030,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46225,9 +48053,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46241,9 +48076,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_UNPACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46257,9 +48099,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::VEC_SWAP"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46273,9 +48122,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_U16"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46289,9 +48145,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_U32"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46305,9 +48168,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::LD_U256"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46321,9 +48191,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CAST_U16"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46337,9 +48214,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CAST_U32"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46353,9 +48237,16 @@ Module deserializer.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           Value.StructTuple
                             "move_binary_format::file_format_common::Opcodes::CAST_U256"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -46364,6 +48255,11 @@ Module deserializer.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format_common::Opcodes";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -46376,6 +48272,8 @@ Module deserializer.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::UNKNOWN_OPCODE"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -47021,6 +48919,12 @@ Module deserializer.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::deserializer::VersionedBinary";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -47035,6 +48939,8 @@ Module deserializer.
                                                 [
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::BAD_MAGIC"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                               |)
@@ -47054,6 +48960,11 @@ Module deserializer.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::deserializer::VersionedBinary";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -47075,6 +48986,8 @@ Module deserializer.
                                             [
                                               Value.StructTuple
                                                 "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |);
@@ -47153,6 +49066,11 @@ Module deserializer.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::deserializer::VersionedBinary";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -47175,6 +49093,8 @@ Module deserializer.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -47267,6 +49187,11 @@ Module deserializer.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::deserializer::VersionedBinary";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -47279,6 +49204,8 @@ Module deserializer.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERSION"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -47298,6 +49225,8 @@ Module deserializer.
                   M.alloc (|
                     Value.StructRecord
                       "move_binary_format::deserializer::VersionedCursor"
+                      []
+                      []
                       [ ("version", M.read (| version |)); ("cursor", M.read (| cursor |)) ]
                   |) in
                 let~ table_count : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
@@ -47744,6 +49673,11 @@ Module deserializer.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::deserializer::VersionedBinary";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -47765,6 +49699,8 @@ Module deserializer.
                                             [
                                               Value.StructTuple
                                                 "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |);
@@ -47990,6 +49926,8 @@ Module deserializer.
                             (M.alloc (|
                               Value.StructTuple
                                 "move_binary_format::file_format::ModuleHandleIndex"
+                                []
+                                []
                                 [ Value.Integer IntegerKind.U16 0 ]
                             |)))
                       ]
@@ -48013,9 +49951,16 @@ Module deserializer.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "move_binary_format::deserializer::VersionedBinary";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
                     [
                       Value.StructRecord
                         "move_binary_format::deserializer::VersionedBinary"
+                        []
+                        []
                         [
                           ("binary_config", M.read (| binary_config |));
                           ("binary", M.read (| binary |));
@@ -48128,6 +50073,8 @@ Module deserializer.
           let end_ := M.alloc (| end_ |) in
           Value.StructRecord
             "move_binary_format::deserializer::VersionedCursor"
+            []
+            []
             [
               ("cursor",
                 M.call_closure (|
@@ -48187,6 +50134,8 @@ Module deserializer.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.call_closure (|
@@ -48291,6 +50240,8 @@ Module deserializer.
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start",
                             M.call_closure (|

@@ -177,6 +177,8 @@ Module air.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_", M.read (| num_hashes |))
@@ -455,6 +457,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.read (|
@@ -598,6 +602,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start",
                                           M.read (|
@@ -843,6 +849,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.read (|
@@ -986,6 +994,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start",
                                           M.read (|
@@ -1221,6 +1231,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.read (|
@@ -1364,6 +1376,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start",
                                           M.read (|
@@ -1611,6 +1625,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.read (|
@@ -1754,6 +1770,8 @@ Module air.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start",
                                           M.read (|
@@ -1921,6 +1939,8 @@ Module air.
           let index := M.alloc (| index |) in
           Value.StructRecord
             "p3_blake3_air::columns::QuarterRound"
+            []
+            [ T; U ]
             [
               ("a",
                 M.borrow (|
@@ -2254,6 +2274,8 @@ Module air.
           let index := M.alloc (| index |) in
           Value.StructRecord
             "p3_blake3_air::columns::QuarterRound"
+            []
+            [ T; U ]
             [
               ("a",
                 M.borrow (|
@@ -4910,6 +4932,8 @@ Module air.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       M.read (|
@@ -5114,6 +5138,8 @@ Module air.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeFrom"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start",
                                                                       M.read (|
@@ -5877,6 +5903,8 @@ Module air.
                                                               M.borrow (| Pointer.Kind.Ref, bits |);
                                                               Value.StructRecord
                                                                 "core::ops::range::RangeTo"
+                                                                []
+                                                                [ Ty.path "usize" ]
                                                                 [
                                                                   ("end_",
                                                                     M.read (|
@@ -6061,6 +6089,8 @@ Module air.
                                                               M.borrow (| Pointer.Kind.Ref, bits |);
                                                               Value.StructRecord
                                                                 "core::ops::range::RangeFrom"
+                                                                []
+                                                                [ Ty.path "usize" ]
                                                                 [
                                                                   ("start",
                                                                     M.read (|
@@ -6101,6 +6131,8 @@ Module air.
               M.alloc (|
                 Value.StructRecord
                   "p3_blake3_air::columns::Blake3State"
+                  []
+                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                   [
                     ("row0",
                       M.read (|
@@ -7066,6 +7098,8 @@ Module air.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       M.read (|
@@ -7270,6 +7304,8 @@ Module air.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeFrom"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start",
                                                                       M.read (|

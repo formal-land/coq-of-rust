@@ -180,6 +180,8 @@ Module clone.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -211,6 +213,8 @@ Module clone.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         [
                                                           M.call_closure (|
                                                             Ty.path "core::fmt::Arguments",
@@ -617,6 +621,8 @@ Module clone.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -648,6 +654,8 @@ Module clone.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         [
                                                           M.call_closure (|
                                                             Ty.path "core::fmt::Arguments",
@@ -784,6 +792,8 @@ Module clone.
             (let data := M.alloc (| data |) in
             Value.StructRecord
               "core::clone::uninit::InitializingSlice"
+              []
+              [ T ]
               [
                 ("data", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| data |) |) |));
                 ("initialized_len", Value.Integer IntegerKind.Usize 0)

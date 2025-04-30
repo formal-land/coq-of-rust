@@ -574,6 +574,8 @@ Module signed.
                 M.alloc (|
                   Value.StructTuple
                     "alloy_primitives::signed::int::Signed"
+                    [ BITS; LIMBS ]
+                    []
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -689,6 +691,8 @@ Module signed.
                 M.alloc (|
                   Value.StructTuple
                     "alloy_primitives::signed::int::Signed"
+                    [ BITS; LIMBS ]
+                    []
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -732,6 +736,8 @@ Module signed.
             M.alloc (|
               Value.StructTuple
                 "alloy_primitives::signed::int::Signed"
+                [ BITS; LIMBS ]
+                []
                 [
                   M.call_closure (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -830,6 +836,8 @@ Module signed.
                 M.alloc (|
                   Value.StructTuple
                     "alloy_primitives::signed::int::Signed"
+                    [ BITS; LIMBS ]
+                    []
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],

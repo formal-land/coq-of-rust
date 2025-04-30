@@ -913,6 +913,8 @@ Module instruction_result.
         ltac:(M.monadic
           (Value.StructTuple
             "revm_interpreter::instruction_result::InstructionResult::Continue"
+            []
+            []
             []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1114,6 +1116,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1126,6 +1130,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1137,6 +1143,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
+                        []
+                        []
                         []
                     |)))
               ]
@@ -1822,6 +1830,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::Return"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1833,6 +1843,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::Stop"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1846,6 +1858,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1857,6 +1871,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                        []
+                        []
                         []
                     |)))
               ]
@@ -1953,6 +1969,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                 []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1964,6 +1982,8 @@ Module instruction_result.
                             M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                []
+                                []
                                 []
                             |)));
                         fun γ =>
@@ -1977,6 +1997,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                                 []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1988,6 +2010,8 @@ Module instruction_result.
                             M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
+                                []
+                                []
                                 []
                             |)));
                         fun γ =>
@@ -2001,6 +2025,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                                 []
+                                []
+                                []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -2012,6 +2038,8 @@ Module instruction_result.
                             M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
+                                []
+                                []
                                 []
                             |)))
                       ]
@@ -2027,6 +2055,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2038,6 +2068,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2051,6 +2083,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2062,6 +2096,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2075,6 +2111,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2086,6 +2124,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2099,6 +2139,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2110,6 +2152,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2123,6 +2167,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2134,6 +2180,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2147,6 +2195,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2158,6 +2208,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2171,6 +2223,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2182,6 +2236,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2195,6 +2251,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2206,6 +2264,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2219,6 +2279,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2230,6 +2292,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2243,6 +2307,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2254,6 +2320,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -2267,6 +2335,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2278,6 +2348,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
+                        []
+                        []
                         []
                     |)))
               ]
@@ -2716,6 +2788,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             Ty.path "revm_context_interface::result::SuccessReason",
@@ -2744,6 +2818,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
+                        [ HaltReasonT ]
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2758,6 +2834,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -2786,6 +2864,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                         []
+                        [ HaltReasonT ]
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2800,6 +2880,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             Ty.path "revm_interpreter::instruction_result::InternalResult",
@@ -3571,10 +3653,21 @@ Module instruction_result.
                       |) in
                     let reason := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| reason |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "revm_context_interface::result::SuccessReason" ]
+                        [ M.read (| reason |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "revm_context_interface::result::SuccessReason" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -3709,10 +3802,17 @@ Module instruction_result.
                       |) in
                     let reason := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| reason |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ HaltReasonT ]
+                        [ M.read (| reason |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple "core::option::Option::None" [] [ HaltReasonT ] []
+                    |)))
               ]
             |)
           |)))
@@ -3743,6 +3843,8 @@ Module instruction_result.
           (let reason := M.alloc (| reason |) in
           Value.StructTuple
             "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+            []
+            [ HALT ]
             [
               M.call_closure (|
                 HALT,
@@ -3890,9 +3992,13 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        []
+                        [ HaltReasonT ]
                         [
                           Value.StructTuple
                             "revm_interpreter::instruction_result::InternalResult::InternalContinue"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -3906,7 +4012,14 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
-                        [ Value.StructTuple "revm_context_interface::result::SuccessReason::Stop" []
+                        []
+                        [ HaltReasonT ]
+                        [
+                          Value.StructTuple
+                            "revm_context_interface::result::SuccessReason::Stop"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -3919,9 +4032,13 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
+                        []
+                        [ HaltReasonT ]
                         [
                           Value.StructTuple
                             "revm_context_interface::result::SuccessReason::Return"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -3935,9 +4052,13 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
+                        []
+                        [ HaltReasonT ]
                         [
                           Value.StructTuple
                             "revm_context_interface::result::SuccessReason::SelfDestruct"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -3952,6 +4073,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
+                        [ HaltReasonT ]
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3964,6 +4087,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
+                        [ HaltReasonT ]
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3975,9 +4100,13 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        []
+                        [ HaltReasonT ]
                         [
                           Value.StructTuple
                             "revm_interpreter::instruction_result::InternalResult::InternalCallOrCreate"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -3991,6 +4120,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4007,6 +4138,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::CallTooDeep"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4021,6 +4154,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4037,6 +4172,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfFunds"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4051,6 +4188,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4066,9 +4205,13 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfGas"
+                                []
+                                []
                                 [
                                   Value.StructTuple
                                     "revm_context_interface::result::OutOfGasError::Basic"
+                                    []
+                                    []
                                     []
                                 ]
                             ]
@@ -4085,6 +4228,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4100,9 +4245,13 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfGas"
+                                []
+                                []
                                 [
                                   Value.StructTuple
                                     "revm_context_interface::result::OutOfGasError::MemoryLimit"
+                                    []
+                                    []
                                     []
                                 ]
                             ]
@@ -4119,6 +4268,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4134,9 +4285,13 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfGas"
+                                []
+                                []
                                 [
                                   Value.StructTuple
                                     "revm_context_interface::result::OutOfGasError::Memory"
+                                    []
+                                    []
                                     []
                                 ]
                             ]
@@ -4153,6 +4308,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4168,9 +4325,13 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfGas"
+                                []
+                                []
                                 [
                                   Value.StructTuple
                                     "revm_context_interface::result::OutOfGasError::Precompile"
+                                    []
+                                    []
                                     []
                                 ]
                             ]
@@ -4187,6 +4348,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4202,9 +4365,13 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfGas"
+                                []
+                                []
                                 [
                                   Value.StructTuple
                                     "revm_context_interface::result::OutOfGasError::InvalidOperand"
+                                    []
+                                    []
                                     []
                                 ]
                             ]
@@ -4221,6 +4388,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4236,9 +4405,13 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfGas"
+                                []
+                                []
                                 [
                                   Value.StructTuple
                                     "revm_context_interface::result::OutOfGasError::ReentrancySentry"
+                                    []
+                                    []
                                     []
                                 ]
                             ]
@@ -4275,6 +4448,8 @@ Module instruction_result.
                               (M.alloc (|
                                 Value.StructTuple
                                   "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                  []
+                                  [ HaltReasonT ]
                                   [
                                     M.call_closure (|
                                       HaltReasonT,
@@ -4290,6 +4465,8 @@ Module instruction_result.
                                       [
                                         Value.StructTuple
                                           "revm_context_interface::result::HaltReason::OpcodeNotFound"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -4308,6 +4485,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4324,6 +4503,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4338,6 +4519,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4354,6 +4537,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4368,6 +4553,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4384,6 +4571,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::InvalidFEOpcode"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4398,6 +4587,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4414,6 +4605,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::InvalidJump"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4428,6 +4621,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4444,6 +4639,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::NotActivated"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4458,6 +4655,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4474,6 +4673,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::StackUnderflow"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4488,6 +4689,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4504,6 +4707,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::StackOverflow"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4518,6 +4723,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4534,6 +4741,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OutOfOffset"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4548,6 +4757,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4564,6 +4775,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::CreateCollision"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4578,6 +4791,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4594,6 +4809,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OverflowPayment"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4608,6 +4825,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4624,6 +4843,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::PrecompileError"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4638,6 +4859,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4653,6 +4876,8 @@ Module instruction_result.
                             [
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::NonceOverflow"
+                                []
+                                []
                                 []
                             ]
                           |)
@@ -4688,6 +4913,8 @@ Module instruction_result.
                               (M.alloc (|
                                 Value.StructTuple
                                   "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                  []
+                                  [ HaltReasonT ]
                                   [
                                     M.call_closure (|
                                       HaltReasonT,
@@ -4703,6 +4930,8 @@ Module instruction_result.
                                       [
                                         Value.StructTuple
                                           "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -4721,6 +4950,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4737,6 +4968,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4752,6 +4985,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
+                        [ HaltReasonT ]
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4764,6 +4999,8 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                         []
+                        [ HaltReasonT ]
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4775,6 +5012,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4791,6 +5030,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::OpcodeNotFound"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4805,6 +5046,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4821,6 +5064,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4835,9 +5080,13 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
+                        []
+                        [ HaltReasonT ]
                         [
                           Value.StructTuple
                             "revm_context_interface::result::SuccessReason::EofReturnContract"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -4851,6 +5100,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4867,6 +5118,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4881,6 +5134,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4897,6 +5152,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4911,6 +5168,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           M.call_closure (|
                             HaltReasonT,
@@ -4927,6 +5186,8 @@ Module instruction_result.
                               Value.StructTuple
                                 "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -4941,9 +5202,13 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        []
+                        [ HaltReasonT ]
                         [
                           Value.StructTuple
                             "revm_interpreter::instruction_result::InternalResult::InvalidExtDelegateCallTarget"
+                            []
+                            []
                             []
                         ]
                     |)))

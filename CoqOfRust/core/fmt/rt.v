@@ -128,6 +128,8 @@ Module fmt.
             let width := M.alloc (| width |) in
             Value.StructRecord
               "core::fmt::rt::Placeholder"
+              []
+              []
               [
                 ("position", M.read (| position |));
                 ("fill", M.read (| fill |));
@@ -636,10 +638,14 @@ Module fmt.
             let f := M.alloc (| f |) in
             Value.StructRecord
               "core::fmt::rt::Argument"
+              []
+              []
               [
                 ("ty",
                   Value.StructRecord
                     "core::fmt::rt::ArgumentType::Placeholder"
+                    []
+                    []
                     [
                       ("value",
                         M.call_closure (|
@@ -706,7 +712,12 @@ Module fmt.
                           |),
                           [ M.read (| f |) ]
                         |));
-                      ("_lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                      ("_lifetime",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                          [])
                     ])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -847,6 +858,8 @@ Module fmt.
                                           ltac:(M.monadic
                                             (Value.StructTuple
                                               "core::result::Result::Ok"
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                                               [ Value.Tuple [] ]))
                                       ]
                                     |)))
@@ -1072,10 +1085,14 @@ Module fmt.
             (let x := M.alloc (| x |) in
             Value.StructRecord
               "core::fmt::rt::Argument"
+              []
+              []
               [
                 ("ty",
                   Value.StructTuple
                     "core::fmt::rt::ArgumentType::Count"
+                    []
+                    []
                     [ M.read (| M.deref (| M.read (| x |) |) |) ])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1216,13 +1233,19 @@ Module fmt.
                         |) in
                       let count := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| count |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ Ty.path "usize" ]
+                          [ M.read (| count |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::fmt::rt::ArgumentType::Placeholder" |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1270,7 +1293,7 @@ Module fmt.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord "core::fmt::rt::UnsafeArg" [ ("_private", Value.Tuple []) ]))
+            (Value.StructRecord "core::fmt::rt::UnsafeArg" [] [] [ ("_private", Value.Tuple []) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

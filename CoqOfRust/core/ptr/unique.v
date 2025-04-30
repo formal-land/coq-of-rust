@@ -57,6 +57,8 @@ Module ptr.
           ltac:(M.monadic
             (Value.StructRecord
               "core::ptr::unique::Unique"
+              []
+              [ T ]
               [
                 ("pointer",
                   M.call_closure (|
@@ -69,7 +71,7 @@ Module ptr.
                     |),
                     []
                   |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -98,6 +100,8 @@ Module ptr.
             (let ptr := M.alloc (| ptr |) in
             Value.StructRecord
               "core::ptr::unique::Unique"
+              []
+              [ T ]
               [
                 ("pointer",
                   M.call_closure (|
@@ -110,7 +114,7 @@ Module ptr.
                     |),
                     [ M.read (| ptr |) ]
                   |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -177,18 +181,29 @@ Module ptr.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
                           [
                             Value.StructRecord
                               "core::ptr::unique::Unique"
+                              []
+                              [ T ]
                               [
                                 ("pointer", M.read (| pointer |));
-                                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                                ("_marker",
+                                  Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                               ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -388,6 +403,8 @@ Module ptr.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ptr::unique::Unique"
+              []
+              [ U ]
               [
                 ("pointer",
                   M.call_closure (|
@@ -408,7 +425,7 @@ Module ptr.
                       |)
                     ]
                   |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ U ] [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -705,9 +722,11 @@ Module ptr.
             (let pointer := M.alloc (| pointer |) in
             Value.StructRecord
               "core::ptr::unique::Unique"
+              []
+              [ T ]
               [
                 ("pointer", M.read (| pointer |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

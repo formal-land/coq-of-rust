@@ -543,6 +543,8 @@ Module panic.
           ltac:(M.monadic
             (Value.StructTuple
               "core::panic::unwind_safe::AssertUnwindSafe"
+              []
+              [ T ]
               [
                 M.call_closure (|
                   T,

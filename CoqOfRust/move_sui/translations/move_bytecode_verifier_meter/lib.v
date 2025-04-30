@@ -414,7 +414,14 @@ Module Meter.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
+                                  [ Value.Tuple [] ]
                               |)
                             |)
                           |)
@@ -497,7 +504,14 @@ Module Meter.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
+                                  [ Value.Tuple [] ]
                               |)
                             |)
                           |)
@@ -524,6 +538,8 @@ Module Meter.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_", M.read (| items |))
@@ -749,7 +765,13 @@ Module Meter.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

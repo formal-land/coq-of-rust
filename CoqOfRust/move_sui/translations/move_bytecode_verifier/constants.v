@@ -72,6 +72,8 @@ Module constants.
                                   M.read (| e |);
                                   Value.StructTuple
                                     "move_binary_format::errors::Location::Module"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "move_core_types::language_storage::ModuleId",
@@ -439,7 +441,13 @@ Module constants.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -669,12 +677,20 @@ Module constants.
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -686,8 +702,14 @@ Module constants.
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
+                              []
+                              []
                               [];
-                            Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
+                            Value.StructTuple
+                              "move_binary_format::IndexKind::ConstantPool"
+                              []
+                              []
+                              [];
                             M.cast (Ty.path "u16") (M.read (| idx |))
                           ]
                         |)
@@ -753,13 +775,21 @@ Module constants.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -771,8 +801,14 @@ Module constants.
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
+                              []
+                              []
                               [];
-                            Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
+                            Value.StructTuple
+                              "move_binary_format::IndexKind::ConstantPool"
+                              []
+                              []
+                              [];
                             M.cast (Ty.path "u16") (M.read (| idx |))
                           ]
                         |)

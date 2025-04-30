@@ -34,6 +34,8 @@ Module virtual_column.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_air::virtual_column::VirtualPairCol"
+            []
+            [ F ]
             [
               ("column_weights",
                 M.call_closure (|
@@ -442,6 +444,8 @@ Module virtual_column.
           let constant := M.alloc (| constant |) in
           Value.StructRecord
             "p3_air::virtual_column::VirtualPairCol"
+            []
+            [ F ]
             [ ("column_weights", M.read (| column_weights |)); ("constant", M.read (| constant |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -599,6 +603,8 @@ Module virtual_column.
                                           [
                                             Value.StructTuple
                                               "p3_air::virtual_column::PairCol::Preprocessed"
+                                              []
+                                              []
                                               [ M.read (| i |) ];
                                             M.read (| w |)
                                           ]))
@@ -763,6 +769,8 @@ Module virtual_column.
                                           [
                                             Value.StructTuple
                                               "p3_air::virtual_column::PairCol::Main"
+                                              []
+                                              []
                                               [ M.read (| i |) ];
                                             M.read (| w |)
                                           ]))
@@ -826,6 +834,8 @@ Module virtual_column.
           (let x := M.alloc (| x |) in
           Value.StructRecord
             "p3_air::virtual_column::VirtualPairCol"
+            []
+            [ F ]
             [
               ("column_weights",
                 M.call_closure (|
@@ -877,6 +887,8 @@ Module virtual_column.
           (let column := M.alloc (| column |) in
           Value.StructRecord
             "p3_air::virtual_column::VirtualPairCol"
+            []
+            [ F ]
             [
               ("column_weights",
                 M.call_closure (|
@@ -986,6 +998,8 @@ Module virtual_column.
             [
               Value.StructTuple
                 "p3_air::virtual_column::PairCol::Preprocessed"
+                []
+                []
                 [ M.read (| column |) ]
             ]
           |)))
@@ -1017,7 +1031,13 @@ Module virtual_column.
               [],
               []
             |),
-            [ Value.StructTuple "p3_air::virtual_column::PairCol::Main" [ M.read (| column |) ] ]
+            [
+              Value.StructTuple
+                "p3_air::virtual_column::PairCol::Main"
+                []
+                []
+                [ M.read (| column |) ]
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::filter::Filter"
+                []
+                [ I; P ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -98,6 +100,8 @@ Module iter.
               let predicate := M.alloc (| predicate |) in
               Value.StructRecord
                 "core::iter::adapters::filter::Filter"
+                []
+                [ I; P ]
                 [ ("iter", M.read (| iter |)); ("predicate", M.read (| predicate |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -488,6 +492,8 @@ Module iter.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::ops::control_flow::ControlFlow::Continue"
+                                                        []
+                                                        [ Ty.tuple []; Ty.tuple [] ]
                                                         [ Value.Tuple [] ]
                                                     |)));
                                                 fun γ =>
@@ -495,6 +501,8 @@ Module iter.
                                                     (M.alloc (|
                                                       Value.StructTuple
                                                         "core::ops::control_flow::ControlFlow::Break"
+                                                        []
+                                                        [ Ty.tuple []; Ty.tuple [] ]
                                                         [ Value.Tuple [] ]
                                                     |)))
                                               ]
@@ -553,6 +561,31 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ N ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item"
+                                ];
+                              Ty.apply
+                                (Ty.path "core::array::iter::IntoIter")
+                                [ N ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item"
+                                ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -597,6 +630,31 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ N ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item"
+                                ];
+                              Ty.apply
+                                (Ty.path "core::array::iter::IntoIter")
+                                [ N ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item"
+                                ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -630,6 +688,8 @@ Module iter.
                                   M.read (| array |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", M.read (| initialized |))

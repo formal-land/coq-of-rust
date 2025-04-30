@@ -60,6 +60,8 @@ Module transpose.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start",
                           M.call_closure (|
@@ -156,6 +158,8 @@ Module transpose.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("start", M.read (| x |)); ("end_", M.read (| i |))
                                               ]
                                           ]
@@ -408,6 +412,8 @@ Module transpose.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start", M.read (| x |));
                         ("end_",
@@ -499,6 +505,8 @@ Module transpose.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", M.read (| y |));
                                                 ("end_",

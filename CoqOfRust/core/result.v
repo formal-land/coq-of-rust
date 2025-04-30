@@ -992,13 +992,13 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| x |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
               ]
             |)
           |)))
@@ -1034,14 +1034,14 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ E ] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      Value.StructTuple "core::option::Option::Some" [] [ E ] [ M.read (| x |) ]
                     |)))
               ]
             |)
@@ -1090,6 +1090,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -1100,6 +1102,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                     |)))
               ]
@@ -1149,6 +1153,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ]
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
@@ -1159,6 +1165,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ]
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
                     |)))
               ]
@@ -1201,6 +1209,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ U; E ]
                         [
                           M.call_closure (|
                             U,
@@ -1222,7 +1232,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -1391,7 +1403,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let t := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Ok" [] [ T; F ] [ M.read (| t |) ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -1400,6 +1414,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ T; F ]
                         [
                           M.call_closure (|
                             F,
@@ -1835,6 +1851,8 @@ Module result.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::result::Iter"
+            []
+            [ T ]
             [
               ("inner",
                 M.call_closure (|
@@ -1887,6 +1905,8 @@ Module result.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::result::IterMut"
+            []
+            [ T ]
             [
               ("inner",
                 M.call_closure (|
@@ -2407,7 +2427,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -2465,7 +2487,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -2503,7 +2527,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let v := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Ok" [] [ T; F ] [ M.read (| v |) ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -2546,7 +2572,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let t := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Ok" [] [ T; F ] [ M.read (| t |) ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -2832,13 +2860,17 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let γ0_0 := M.read (| γ0_0 |) in
                     let v := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -2954,13 +2986,17 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let γ0_0 := M.read (| γ0_0 |) in
                     let v := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -3094,14 +3130,28 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "core::result::Result::Ok" [ M.read (| x |) ] ]
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                        [
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ T; E ]
+                            [ M.read (| x |) ]
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -3110,7 +3160,15 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                        [
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [ T; E ]
+                            [ M.read (| e |) ]
+                        ]
                     |)))
               ]
             |)
@@ -3163,7 +3221,9 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -3301,6 +3361,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ T; E ]
                         [
                           M.call_closure (|
                             T,
@@ -3326,6 +3388,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ T; E ]
                         [
                           M.call_closure (|
                             E,
@@ -3512,6 +3576,8 @@ Module result.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::result::IntoIter"
+            []
+            [ T ]
             [
               ("inner",
                 M.call_closure (|
@@ -3808,7 +3874,13 @@ Module result.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))
@@ -3931,6 +4003,8 @@ Module result.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::result::Iter"
+            []
+            [ T ]
             [
               ("inner",
                 M.read (|
@@ -4121,7 +4195,13 @@ Module result.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))
@@ -4248,6 +4328,8 @@ Module result.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::result::IntoIter"
+            []
+            [ T ]
             [
               ("inner",
                 M.call_closure (|
@@ -4443,7 +4525,13 @@ Module result.
               |) in
             M.alloc (|
               Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                [
+                  M.read (| n |);
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "usize" ]
+                    [ M.read (| n |) ]
                 ]
             |)
           |)))
@@ -4731,7 +4819,7 @@ Module result.
       | [], [], [ output ] =>
         ltac:(M.monadic
           (let output := M.alloc (| output |) in
-          Value.StructTuple "core::result::Result::Ok" [ M.read (| output |) ]))
+          Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| output |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -4776,6 +4864,14 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::ops::control_flow::ControlFlow::Continue"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; E ];
+                          T
+                        ]
                         [ M.read (| v |) ]
                     |)));
                 fun γ =>
@@ -4786,7 +4882,21 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::ops::control_flow::ControlFlow::Break"
-                        [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; E ];
+                          T
+                        ]
+                        [
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [ Ty.path "core::convert::Infallible"; E ]
+                            [ M.read (| e |) ]
+                        ]
                     |)))
               ]
             |)
@@ -4844,6 +4954,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ T; F ]
                         [
                           M.call_closure (|
                             F,
@@ -4907,6 +5019,8 @@ Module result.
                   let e := M.copy (| γ0_0 |) in
                   Value.StructTuple
                     "core::result::Result::Err"
+                    []
+                    [ T; F ]
                     [
                       M.call_closure (|
                         F,

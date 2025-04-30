@@ -158,6 +158,8 @@ Module num.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.call_closure (|
@@ -260,7 +262,9 @@ Module num.
                                 |)))
                           ]
                         |)) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::None" [] [ Ty.path "u8" ] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
@@ -314,6 +318,8 @@ Module num.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start", Value.Integer IntegerKind.Usize 1);
                                     ("end_",
@@ -414,6 +420,8 @@ Module num.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "u8" ]
                         [ M.read (| UnsupportedLiteral |) ]
                     |)));
                 fun γ =>
@@ -422,6 +430,8 @@ Module num.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "u8" ]
                         [ M.read (| UnsupportedLiteral |) ]
                     |)))
               ]
@@ -702,6 +712,8 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Copy"
+                                []
+                                []
                                 [
                                   (* Unsize *)
                                   M.pointer_coercion
@@ -738,6 +750,8 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Zero"
+                                []
+                                []
                                 [ M.read (| minus_exp |) ]
                             ]
                           |)
@@ -767,6 +781,8 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Copy"
+                                []
+                                []
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |) ]
                             ]
                           |)
@@ -870,6 +886,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Zero"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -984,6 +1002,8 @@ Module num.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeTo"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                                 ]
                                               |)
@@ -1074,6 +1094,8 @@ Module num.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeTo"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("end_", Value.Integer IntegerKind.Usize 3) ]
                                                 ]
                                               |)
@@ -1158,6 +1180,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -1199,6 +1223,8 @@ Module num.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeTo"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [ ("end_", M.read (| exp |)) ]
                                                     ]
                                                   |)
@@ -1235,6 +1261,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -1271,6 +1299,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -1312,6 +1342,8 @@ Module num.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeFrom"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [ ("start", M.read (| exp |)) ]
                                                     ]
                                                   |)
@@ -1408,6 +1440,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Zero"
+                                                []
+                                                []
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "usize",
@@ -1522,6 +1556,8 @@ Module num.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeTo"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("end_",
                                                                 Value.Integer IntegerKind.Usize 4)
@@ -1615,6 +1651,8 @@ Module num.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeTo"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("end_",
                                                                 Value.Integer IntegerKind.Usize 3)
@@ -1658,6 +1696,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -1692,6 +1732,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Zero"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -1780,6 +1822,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   (* Unsize *)
                                                   M.pointer_coercion
@@ -1816,6 +1860,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Zero"
+                                                []
+                                                []
                                                 [ M.read (| frac_digits |) ]
                                             ]
                                           |)
@@ -1897,6 +1943,8 @@ Module num.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeTo"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("end_",
                                                                 Value.Integer IntegerKind.Usize 4)
@@ -1990,6 +2038,8 @@ Module num.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeTo"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("end_",
                                                                 Value.Integer IntegerKind.Usize 2)
@@ -2230,6 +2280,8 @@ Module num.
                     [
                       Value.StructTuple
                         "core::num::fmt::Part::Copy"
+                        []
+                        []
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2263,6 +2315,8 @@ Module num.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("end_", Value.Integer IntegerKind.Usize 1) ]
                                     ]
                                   |)
@@ -2353,6 +2407,8 @@ Module num.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
+                                  []
+                                  []
                                   [
                                     (* Unsize *)
                                     M.pointer_coercion
@@ -2393,6 +2449,8 @@ Module num.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
+                                  []
+                                  []
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -2426,6 +2484,8 @@ Module num.
                                                 |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeFrom"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                               ]
                                             |)
@@ -2508,6 +2568,8 @@ Module num.
                                       [
                                         Value.StructTuple
                                           "core::num::fmt::Part::Zero"
+                                          []
+                                          []
                                           [
                                             M.call_closure (|
                                               Ty.path "usize",
@@ -2604,6 +2666,8 @@ Module num.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
+                                  []
+                                  []
                                   [
                                     M.read (|
                                       M.match_operator (|
@@ -2680,6 +2744,8 @@ Module num.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Num"
+                                  []
+                                  []
                                   [ M.cast (Ty.path "u16") (UnOp.neg (| M.read (| exp |) |)) ]
                               ]
                             |)
@@ -2712,6 +2778,8 @@ Module num.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Copy"
+                                  []
+                                  []
                                   [
                                     M.read (|
                                       M.match_operator (|
@@ -2788,6 +2856,8 @@ Module num.
                               [
                                 Value.StructTuple
                                   "core::num::fmt::Part::Num"
+                                  []
+                                  []
                                   [ M.cast (Ty.path "u16") (M.read (| exp |)) ]
                               ]
                             |)
@@ -2862,6 +2932,8 @@ Module num.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -3437,6 +3509,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -3452,6 +3526,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -3534,6 +3610,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -3581,6 +3659,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -3596,6 +3676,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -3678,6 +3760,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -3748,6 +3832,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   (* Unsize *)
                                                   M.pointer_coercion
@@ -3784,6 +3870,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Zero"
+                                                []
+                                                []
                                                 [ M.read (| frac_digits |) ]
                                             ]
                                           |)
@@ -3792,6 +3880,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -3882,6 +3972,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       Value.Integer
@@ -3926,6 +4018,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   (* Unsize *)
                                                   M.pointer_coercion
@@ -3941,6 +4035,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -4031,6 +4127,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       Value.Integer
@@ -4129,6 +4227,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -4469,6 +4569,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -4484,6 +4586,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -4566,6 +4670,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -4613,6 +4719,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -4628,6 +4736,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -4710,6 +4820,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -4811,6 +4923,8 @@ Module num.
                                                 [
                                                   Value.StructTuple
                                                     "core::num::fmt::Part::Copy"
+                                                    []
+                                                    []
                                                     [
                                                       (* Unsize *)
                                                       M.pointer_coercion
@@ -4844,6 +4958,8 @@ Module num.
                                                 [
                                                   Value.StructTuple
                                                     "core::num::fmt::Part::Copy"
+                                                    []
+                                                    []
                                                     [
                                                       M.read (|
                                                         M.match_operator (|
@@ -4912,6 +5028,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -4994,6 +5112,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -5247,6 +5367,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -5570,6 +5692,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -5585,6 +5709,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -5667,6 +5793,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -5714,6 +5842,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -5729,6 +5859,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -5811,6 +5943,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -5881,6 +6015,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   (* Unsize *)
                                                   M.pointer_coercion
@@ -5917,6 +6053,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Zero"
+                                                []
+                                                []
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "usize",
@@ -5955,6 +6093,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   M.read (|
                                                     M.match_operator (|
@@ -6015,6 +6155,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -6105,6 +6247,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       Value.Integer
@@ -6149,6 +6293,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   M.read (|
                                                     M.match_operator (|
@@ -6209,6 +6355,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -6299,6 +6447,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       Value.Integer
@@ -6578,6 +6728,8 @@ Module num.
                                                     |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [ ("end_", M.read (| trunc |)) ]
                                                   ]
                                                 |)
@@ -6606,6 +6758,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -6883,6 +7037,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -6898,6 +7054,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -6980,6 +7138,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -7027,6 +7187,8 @@ Module num.
                                     [
                                       Value.StructTuple
                                         "core::num::fmt::Part::Copy"
+                                        []
+                                        []
                                         [
                                           (* Unsize *)
                                           M.pointer_coercion
@@ -7042,6 +7204,8 @@ Module num.
                             M.alloc (|
                               Value.StructRecord
                                 "core::num::fmt::Formatted"
+                                []
+                                []
                                 [
                                   ("sign",
                                     M.borrow (|
@@ -7124,6 +7288,8 @@ Module num.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("end_",
                                                               Value.Integer IntegerKind.Usize 1)
@@ -7194,6 +7360,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   (* Unsize *)
                                                   M.pointer_coercion
@@ -7230,6 +7398,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Zero"
+                                                []
+                                                []
                                                 [ M.read (| frac_digits |) ]
                                             ]
                                           |)
@@ -7238,6 +7408,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -7328,6 +7500,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       Value.Integer
@@ -7372,6 +7546,8 @@ Module num.
                                             [
                                               Value.StructTuple
                                                 "core::num::fmt::Part::Copy"
+                                                []
+                                                []
                                                 [
                                                   (* Unsize *)
                                                   M.pointer_coercion
@@ -7387,6 +7563,8 @@ Module num.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::num::fmt::Formatted"
+                                        []
+                                        []
                                         [
                                           ("sign",
                                             M.borrow (|
@@ -7477,6 +7655,8 @@ Module num.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("end_",
                                                                       Value.Integer
@@ -7731,6 +7911,8 @@ Module num.
                                                     |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [ ("end_", M.read (| maxlen |)) ]
                                                   ]
                                                 |)
@@ -7903,6 +8085,8 @@ Module num.
                                                                                   Value.StructTuple
                                                                                     "core::panicking::AssertKind::Eq"
                                                                                     []
+                                                                                    []
+                                                                                    []
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 M.call_closure (|
@@ -7949,6 +8133,11 @@ Module num.
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "core::option::Option::None"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::fmt::Arguments"
+                                                                                      ]
                                                                                       []
                                                                                   ]
                                                                                 |)
@@ -8023,6 +8212,8 @@ Module num.
                                                             [
                                                               Value.StructTuple
                                                                 "core::num::fmt::Part::Copy"
+                                                                []
+                                                                []
                                                                 [
                                                                   (* Unsize *)
                                                                   M.pointer_coercion
@@ -8066,6 +8257,8 @@ Module num.
                                                             [
                                                               Value.StructTuple
                                                                 "core::num::fmt::Part::Zero"
+                                                                []
+                                                                []
                                                                 [ M.read (| frac_digits |) ]
                                                             ]
                                                           |)
@@ -8074,6 +8267,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.StructRecord
                                                         "core::num::fmt::Formatted"
+                                                        []
+                                                        []
                                                         [
                                                           ("sign",
                                                             M.borrow (|
@@ -8178,6 +8373,9 @@ Module num.
                                                                                 |);
                                                                                 Value.StructRecord
                                                                                   "core::ops::range::RangeTo"
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
                                                                                   [
                                                                                     ("end_",
                                                                                       Value.Integer
@@ -8225,6 +8423,8 @@ Module num.
                                                             [
                                                               Value.StructTuple
                                                                 "core::num::fmt::Part::Copy"
+                                                                []
+                                                                []
                                                                 [
                                                                   (* Unsize *)
                                                                   M.pointer_coercion
@@ -8244,6 +8444,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.StructRecord
                                                         "core::num::fmt::Formatted"
+                                                        []
+                                                        []
                                                         [
                                                           ("sign",
                                                             M.borrow (|
@@ -8348,6 +8550,9 @@ Module num.
                                                                                 |);
                                                                                 Value.StructRecord
                                                                                   "core::ops::range::RangeTo"
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
                                                                                   [
                                                                                     ("end_",
                                                                                       Value.Integer
@@ -8373,6 +8578,8 @@ Module num.
                                             (M.alloc (|
                                               Value.StructRecord
                                                 "core::num::fmt::Formatted"
+                                                []
+                                                []
                                                 [
                                                   ("sign",
                                                     M.borrow (|

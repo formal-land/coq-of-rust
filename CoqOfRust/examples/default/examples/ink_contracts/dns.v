@@ -24,6 +24,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "dns::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -284,6 +286,8 @@ Module Impl_core_default_Default_for_dns_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "dns::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -853,6 +857,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
           M.alloc (|
             Value.StructRecord
               "dns::DomainNameService"
+              []
+              []
               [
                 ("name_to_address", M.read (| name_to_address |));
                 ("name_to_owner", M.read (| name_to_owner |));
@@ -1173,7 +1179,9 @@ Module Impl_dns_DomainNameService.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "dns::Error::NameAlreadyExists" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "dns::Error" ]
+                                  [ Value.StructTuple "dns::Error::NameAlreadyExists" [] [] [] ]
                               |)
                             |)
                           |)
@@ -1241,15 +1249,25 @@ Module Impl_dns_DomainNameService.
                       |);
                       Value.StructTuple
                         "dns::Event::Register"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "dns::Register"
+                            []
+                            []
                             [ ("name", M.read (| name |)); ("from", M.read (| caller |)) ]
                         ]
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "dns::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1432,7 +1450,9 @@ Module Impl_dns_DomainNameService.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "dns::Error" ]
+                                  [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] [] [] ]
                               |)
                             |)
                           |)
@@ -1539,9 +1559,13 @@ Module Impl_dns_DomainNameService.
                       |);
                       Value.StructTuple
                         "dns::Event::SetAddress"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "dns::SetAddress"
+                            []
+                            []
                             [
                               ("name", M.read (| name |));
                               ("from", M.read (| caller |));
@@ -1552,7 +1576,13 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "dns::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1669,7 +1699,9 @@ Module Impl_dns_DomainNameService.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "dns::Error" ]
+                                  [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] [] [] ]
                               |)
                             |)
                           |)
@@ -1776,9 +1808,13 @@ Module Impl_dns_DomainNameService.
                       |);
                       Value.StructTuple
                         "dns::Event::Transfer"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "dns::Transfer"
+                            []
+                            []
                             [
                               ("name", M.read (| name |));
                               ("from", M.read (| caller |));
@@ -1789,7 +1825,13 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "dns::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

@@ -98,6 +98,8 @@ Module limits.
                                     M.read (| e |);
                                     Value.StructTuple
                                       "move_binary_format::errors::Location::Module"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -167,6 +169,8 @@ Module limits.
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::limits::LimitsVerifier"
+                      []
+                      []
                       [ ("module", M.read (| module |)) ]
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1080,6 +1084,12 @@ Module limits.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -1106,10 +1116,14 @@ Module limits.
                                                                               Value.StructTuple
                                                                                 "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_PARAMETERS"
                                                                                 []
+                                                                                []
+                                                                                []
                                                                             ]
                                                                           |);
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::StructHandle"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           M.cast
                                                                             (Ty.path "u16")
@@ -1135,7 +1149,13 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1455,6 +1475,12 @@ Module limits.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -1481,10 +1507,14 @@ Module limits.
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_PARAMETERS"
                                                                                   []
+                                                                                  []
+                                                                                  []
                                                                               ]
                                                                             |);
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
+                                                                              []
+                                                                              []
                                                                               [];
                                                                             M.cast
                                                                               (Ty.path "u16")
@@ -1627,6 +1657,12 @@ Module limits.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -1653,10 +1689,14 @@ Module limits.
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::TOO_MANY_PARAMETERS"
                                                                                   []
+                                                                                  []
+                                                                                  []
                                                                               ]
                                                                             |);
                                                                             Value.StructTuple
                                                                               "move_binary_format::IndexKind::FunctionHandle"
+                                                                              []
+                                                                              []
                                                                               [];
                                                                             M.cast
                                                                               (Ty.path "u16")
@@ -1684,7 +1724,13 @@ Module limits.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2927,7 +2973,13 @@ Module limits.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3251,6 +3303,11 @@ Module limits.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -3266,6 +3323,8 @@ Module limits.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_NODES"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             ]
@@ -3279,7 +3338,13 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3456,6 +3521,11 @@ Module limits.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -3470,6 +3540,8 @@ Module limits.
                                                 [
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::MAX_FUNCTION_DEFINITIONS_REACHED"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                               |)
@@ -3601,6 +3673,11 @@ Module limits.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -3615,6 +3692,8 @@ Module limits.
                                                 [
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::MAX_STRUCT_DEFINITIONS_REACHED"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                               |)
@@ -3843,6 +3922,12 @@ Module limits.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -3857,6 +3942,8 @@ Module limits.
                                                                                 [
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::MAX_FIELD_DEFINITIONS_REACHED"
+                                                                                    []
+                                                                                    []
                                                                                     []
                                                                                 ]
                                                                               |)
@@ -3881,7 +3968,13 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4300,9 +4393,13 @@ Module limits.
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
+                                                                                                []
+                                                                                                []
                                                                                                 [];
                                                                                               Value.StructTuple
                                                                                                 "move_binary_format::IndexKind::ConstantPool"
+                                                                                                []
+                                                                                                []
                                                                                                 [];
                                                                                               M.cast
                                                                                                 (Ty.path
@@ -4490,6 +4587,12 @@ Module limits.
                                                                                 M.return_ (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Err"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ]
                                                                                     [
                                                                                       M.call_closure (|
                                                                                         Ty.path
@@ -4515,6 +4618,8 @@ Module limits.
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "move_core_types::vm_status::StatusCode::TOO_MANY_VECTOR_ELEMENTS"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                           |);
@@ -4659,6 +4764,12 @@ Module limits.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -4671,9 +4782,13 @@ Module limits.
                                                                         [
                                                                           Value.StructTuple
                                                                             "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::ConstantPool"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           M.cast
                                                                             (Ty.path "u16")
@@ -4697,7 +4812,13 @@ Module limits.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5036,6 +5157,12 @@ Module limits.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ]
                                                                     [
                                                                       M.call_closure (|
                                                                         Ty.path
@@ -5048,9 +5175,13 @@ Module limits.
                                                                         [
                                                                           Value.StructTuple
                                                                             "move_core_types::vm_status::StatusCode::IDENTIFIER_TOO_LONG"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           Value.StructTuple
                                                                             "move_binary_format::IndexKind::Identifier"
+                                                                            []
+                                                                            []
                                                                             [];
                                                                           M.cast
                                                                             (Ty.path "u16")
@@ -5076,7 +5207,13 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

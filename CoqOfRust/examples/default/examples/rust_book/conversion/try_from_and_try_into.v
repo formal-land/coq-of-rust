@@ -173,12 +173,25 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ M.read (| value |) ]
+                      []
+                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                      [
+                        Value.StructTuple
+                          "try_from_and_try_into::EvenNumber"
+                          []
+                          []
+                          [ M.read (| value |) ]
                       ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)))
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))
@@ -247,9 +260,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
                         [
                           Value.StructTuple
                             "try_from_and_try_into::EvenNumber"
+                            []
+                            []
                             [ Value.Integer IntegerKind.I32 8 ]
                         ]
                     |)
@@ -318,7 +335,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -359,7 +376,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)
@@ -400,7 +421,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        [ Value.Tuple [] ]
+                    |)
                   |)
                 ]
             |),
@@ -466,7 +493,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -507,7 +534,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)
@@ -559,9 +590,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
                         [
                           Value.StructTuple
                             "try_from_and_try_into::EvenNumber"
+                            []
+                            []
                             [ Value.Integer IntegerKind.I32 8 ]
                         ]
                     |)
@@ -630,7 +665,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -671,7 +706,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)
@@ -720,7 +759,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.borrow (| Pointer.Kind.Ref, result |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        [ Value.Tuple [] ]
+                    |)
                   |)
                 ]
             |),
@@ -786,7 +831,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -827,7 +872,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           |)
                                         |)
                                       |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
+                                        []
                                     ]
                                   |)
                                 |)

@@ -22,7 +22,7 @@ Module Impl_core_convert_From_i32_for_into_Number.
     | [], [], [ item ] =>
       ltac:(M.monadic
         (let item := M.alloc (| item |) in
-        Value.StructRecord "into::Number" [ ("value", M.read (| item |)) ]))
+        Value.StructRecord "into::Number" [] [] [ ("value", M.read (| item |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

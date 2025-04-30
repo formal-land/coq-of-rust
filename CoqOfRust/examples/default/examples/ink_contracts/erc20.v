@@ -24,6 +24,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "erc20::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -146,6 +148,8 @@ Module Impl_core_default_Default_for_erc20_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "erc20::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -251,6 +255,8 @@ Module Impl_core_default_Default_for_erc20_Erc20.
       ltac:(M.monadic
         (Value.StructRecord
           "erc20::Erc20"
+          []
+          []
           [
             ("total_supply",
               M.call_closure (|
@@ -614,13 +620,26 @@ Module Impl_erc20_Erc20.
                   |);
                   Value.StructTuple
                     "erc20::Event::Transfer"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "erc20::Transfer"
+                        []
+                        []
                         [
-                          ("from", Value.StructTuple "core::option::Option::None" []);
+                          ("from",
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.path "erc20::AccountId" ]
+                              []);
                           ("to",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| caller |) ]);
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ Ty.path "erc20::AccountId" ]
+                              [ M.read (| caller |) ]);
                           ("value", M.read (| total_supply |))
                         ]
                     ]
@@ -630,6 +649,8 @@ Module Impl_erc20_Erc20.
           M.alloc (|
             Value.StructRecord
               "erc20::Erc20"
+              []
+              []
               [
                 ("total_supply", M.read (| total_supply |));
                 ("balances", M.read (| balances |));
@@ -943,7 +964,9 @@ Module Impl_erc20_Erc20.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "erc20::Error::InsufficientBalance" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc20::Error" ]
+                                  [ Value.StructTuple "erc20::Error::InsufficientBalance" [] [] [] ]
                               |)
                             |)
                           |)
@@ -1047,17 +1070,25 @@ Module Impl_erc20_Erc20.
                       |);
                       Value.StructTuple
                         "erc20::Event::Transfer"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "erc20::Transfer"
+                            []
+                            []
                             [
                               ("from",
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "erc20::AccountId" ]
                                   [ M.read (| M.deref (| M.read (| from |) |) |) ]);
                               ("to",
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "erc20::AccountId" ]
                                   [ M.read (| M.deref (| M.read (| to |) |) |) ]);
                               ("value", M.read (| value |))
                             ]
@@ -1065,7 +1096,13 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc20::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1219,9 +1256,13 @@ Module Impl_erc20_Erc20.
                   |);
                   Value.StructTuple
                     "erc20::Event::Approval"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "erc20::Approval"
+                        []
+                        []
                         [
                           ("owner", M.read (| owner |));
                           ("spender", M.read (| spender |));
@@ -1231,7 +1272,13 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+          M.alloc (|
+            Value.StructTuple
+              "core::result::Result::Ok"
+              []
+              [ Ty.tuple []; Ty.path "erc20::Error" ]
+              [ Value.Tuple [] ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1329,7 +1376,10 @@ Module Impl_erc20_Erc20.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "erc20::Error::InsufficientAllowance" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc20::Error" ]
+                                  [ Value.StructTuple "erc20::Error::InsufficientAllowance" [] [] []
+                                  ]
                               |)
                             |)
                           |)
@@ -1483,7 +1533,13 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc20::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

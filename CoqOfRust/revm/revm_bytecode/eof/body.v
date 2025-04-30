@@ -45,6 +45,8 @@ Module eof.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_bytecode::eof::body::EofBody"
+              []
+              []
               [
                 ("types_section",
                   M.call_closure (|
@@ -488,6 +490,8 @@ Module eof.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_bytecode::eof::body::EofBody"
+              []
+              []
               [
                 ("types_section",
                   M.call_closure (|
@@ -2039,6 +2043,8 @@ Module eof.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                       [
                                         M.call_closure (|
                                           Ty.path "alloy_primitives::bytes_::Bytes",
@@ -2064,6 +2070,8 @@ Module eof.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("end_",
                                                   M.read (|
@@ -2229,6 +2237,8 @@ Module eof.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::Range"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [
                                                   ("start",
                                                     M.read (|
@@ -2342,6 +2352,8 @@ Module eof.
                 M.alloc (|
                   Value.StructRecord
                     "revm_bytecode::eof::header::EofHeader"
+                    []
+                    []
                     [
                       ("types_size",
                         M.call_closure (|
@@ -3146,6 +3158,8 @@ Module eof.
               M.alloc (|
                 Value.StructRecord
                   "revm_bytecode::eof::Eof"
+                  []
+                  []
                   [
                     ("header", M.read (| header |));
                     ("body", M.read (| self |));
@@ -3219,6 +3233,8 @@ Module eof.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 |)
@@ -4000,9 +4016,16 @@ Module eof.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "revm_bytecode::eof::body::EofBody";
+                                        Ty.path "revm_bytecode::eof::EofDecodeError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "revm_bytecode::eof::EofDecodeError::MissingBodyWithoutData"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -4079,9 +4102,16 @@ Module eof.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "revm_bytecode::eof::body::EofBody";
+                                        Ty.path "revm_bytecode::eof::EofDecodeError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "revm_bytecode::eof::EofDecodeError::DanglingData"
+                                          []
+                                          []
                                           []
                                       ]
                                   |)
@@ -4192,6 +4222,8 @@ Module eof.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", M.read (| header_len |)) ]
                             ]
                           |)
@@ -4217,6 +4249,8 @@ Module eof.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_",
@@ -4850,6 +4884,8 @@ Module eof.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", M.read (| start |));
                                 ("end_",
@@ -5150,6 +5186,8 @@ Module eof.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start", M.read (| start |));
                                                             ("end_",
@@ -5211,6 +5249,8 @@ Module eof.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [ ("start", M.read (| start |)) ]
                           ]
                         |)
@@ -5279,7 +5319,16 @@ Module eof.
                         |)
                       |)
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| body |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "revm_bytecode::eof::body::EofBody";
+                        Ty.path "revm_bytecode::eof::EofDecodeError"
+                      ]
+                      [ M.read (| body |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

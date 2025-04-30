@@ -441,6 +441,8 @@ Module vec.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ T ]
                                                   [
                                                     M.call_closure (|
                                                       T,
@@ -590,7 +592,7 @@ Module vec.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -617,6 +619,8 @@ Module vec.
                 Value.Integer IntegerKind.Usize 0;
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     M.call_closure (|
                       Ty.path "usize",

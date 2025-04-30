@@ -328,6 +328,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::ffi::c_str::CString"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -405,6 +407,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloc::ffi::c_str::NulError"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "usize",
@@ -742,6 +746,8 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "alloc::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "usize",
@@ -770,6 +776,8 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "alloc::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                          []
+                          []
                           []
                       |)))
                 ]
@@ -1068,6 +1076,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::ffi::c_str::FromVecWithNulError"
+              []
+              []
               [
                 ("error_kind",
                   M.call_closure (|
@@ -1407,7 +1417,7 @@ Module ffi.
                             "bytes"
                           |)
                         |);
-                        Value.StructTuple "core::ops::range::RangeFull" []
+                        Value.StructTuple "core::ops::range::RangeFull" [] [] []
                       ]
                     |)
                   |)
@@ -1471,6 +1481,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::ffi::c_str::IntoStringError"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -2044,6 +2056,8 @@ Module ffi.
               M.alloc (|
                 Value.StructRecord
                   "alloc::ffi::c_str::CString"
+                  []
+                  []
                   [
                     ("inner",
                       M.call_closure (|
@@ -2139,6 +2153,8 @@ Module ffi.
               M.alloc (|
                 Value.StructRecord
                   "alloc::ffi::c_str::CString"
+                  []
+                  []
                   [
                     ("inner",
                       M.call_closure (|
@@ -2322,6 +2338,8 @@ Module ffi.
                                   (let e := M.copy (| γ |) in
                                   Value.StructRecord
                                     "alloc::ffi::c_str::IntoStringError"
+                                    []
+                                    []
                                     [
                                       ("error",
                                         M.call_closure (|
@@ -2470,6 +2488,8 @@ Module ffi.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "u8" ]
                                         [ Value.Integer IntegerKind.U8 0 ]
                                     |)
                                   |)
@@ -2541,6 +2561,8 @@ Module ffi.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -2581,6 +2603,8 @@ Module ffi.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)
@@ -2689,6 +2713,8 @@ Module ffi.
                     |);
                     Value.StructRecord
                       "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("end_",
                           M.call_closure (|
@@ -3184,6 +3210,8 @@ Module ffi.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "alloc::ffi::c_str::CString"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -3338,6 +3366,11 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "alloc::ffi::c_str::CString";
+                            Ty.path "alloc::ffi::c_str::FromVecWithNulError"
+                          ]
                           [
                             M.call_closure (|
                               Ty.path "alloc::ffi::c_str::CString",
@@ -3363,13 +3396,22 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.path "alloc::ffi::c_str::CString";
+                            Ty.path "alloc::ffi::c_str::FromVecWithNulError"
+                          ]
                           [
                             Value.StructRecord
                               "alloc::ffi::c_str::FromVecWithNulError"
+                              []
+                              []
                               [
                                 ("error_kind",
                                   Value.StructTuple
                                     "alloc::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul"
+                                    []
+                                    []
                                     [ M.read (| nul_pos |) ]);
                                 ("bytes", M.read (| v |))
                               ]
@@ -3381,13 +3423,22 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.path "alloc::ffi::c_str::CString";
+                            Ty.path "alloc::ffi::c_str::FromVecWithNulError"
+                          ]
                           [
                             Value.StructRecord
                               "alloc::ffi::c_str::FromVecWithNulError"
+                              []
+                              []
                               [
                                 ("error_kind",
                                   Value.StructTuple
                                     "alloc::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                                    []
+                                    []
                                     []);
                                 ("bytes", M.read (| v |))
                               ]
@@ -4111,6 +4162,8 @@ Module ffi.
               M.alloc (|
                 Value.StructRecord
                   "alloc::ffi::c_str::CString"
+                  []
+                  []
                   [
                     ("inner",
                       M.call_closure (|
@@ -4510,7 +4563,11 @@ Module ffi.
         | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
-            Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| s |) ]))
+            Value.StructTuple
+              "alloc::borrow::Cow::Owned"
+              []
+              [ Ty.path "core::ffi::c_str::CStr" ]
+              [ M.read (| s |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4539,6 +4596,8 @@ Module ffi.
             (let s := M.alloc (| s |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
+              []
+              [ Ty.path "core::ffi::c_str::CStr" ]
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4569,6 +4628,8 @@ Module ffi.
             (let s := M.alloc (| s |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
+              []
+              [ Ty.path "core::ffi::c_str::CStr" ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5890,6 +5951,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::ffi::c_str::CString"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -6389,6 +6452,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
               [
                 (* Unsize *)
                 M.pointer_coercion

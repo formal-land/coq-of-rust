@@ -30,6 +30,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::scan::Scan"
+                []
+                [ I; St; F ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -124,6 +126,8 @@ Module iter.
               let f := M.alloc (| f |) in
               Value.StructRecord
                 "core::iter::adapters::scan::Scan"
+                []
+                [ I; St; F ]
                 [ ("iter", M.read (| iter |)); ("state", M.read (| state |)); ("f", M.read (| f |))
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"

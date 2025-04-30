@@ -651,11 +651,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Right" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Right"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 5 ]
                                       ]
                                     |)
@@ -764,11 +770,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 48;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Left" [];
+                                        Value.StructTuple "core::fmt::rt::Alignment::Left" [] [] [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 5 ]
                                       ]
                                     |)
@@ -897,11 +905,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 48;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Right" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Right"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Param"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 1 ]
                                       ]
                                     |)
@@ -1081,11 +1095,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Right" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Right"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Param"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 1 ]
                                       ]
                                     |)

@@ -914,6 +914,8 @@ Module panic.
             let col := M.alloc (| col |) in
             Value.StructRecord
               "core::panic::location::Location"
+              []
+              []
               [
                 ("file", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| file |) |) |));
                 ("line", M.read (| line |));

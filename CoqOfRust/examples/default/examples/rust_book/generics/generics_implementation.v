@@ -106,6 +106,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "generics_implementation::Val"
+              []
+              []
               [ ("val", M.read (| UnsupportedLiteral |)) ]
           |) in
         let~ y :
@@ -116,6 +118,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "generics_implementation::GenVal"
+              []
+              [ Ty.path "i32" ]
               [ ("gen_val", Value.Integer IntegerKind.I32 3) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

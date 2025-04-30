@@ -791,7 +791,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| cmd |) |) |);
-                                Value.StructTuple "core::ops::range::RangeFull" []
+                                Value.StructTuple "core::ops::range::RangeFull" [] [] []
                               ]
                             |)
                           |)

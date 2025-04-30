@@ -11,8 +11,8 @@ Module Option.
     Φ := Ty.apply (Ty.path "core::option::Option") [] [Φ A];
     φ x :=
       match x with
-      | None => Value.StructTuple "core::option::Option::None" []
-      | Some x => Value.StructTuple "core::option::Option::Some" [φ x]
+      | None => Value.StructTuple "core::option::Option::None" [] [Φ A] []
+      | Some x => Value.StructTuple "core::option::Option::Some" [] [Φ A] [φ x]
       end;
   }.
 
@@ -25,35 +25,44 @@ Module Option.
   Defined.
   Smpl Add apply of_ty : of_ty.
 
-  Lemma of_value_with_None {A : Set} `{Link A} :
-    Value.StructTuple "core::option::Option::None" [] =
+  Lemma of_value_with_None {A : Set} `{Link A} A' :
+    A' = Φ A ->
+    Value.StructTuple "core::option::Option::None" [] [A'] [] =
     φ (None (A := A)).
-  Proof. reflexivity. Qed.
+  Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with_None : of_value.
 
   Lemma of_value_with_Some {A : Set} `{Link A} (value : A) value' :
     value' = φ value ->
-    Value.StructTuple "core::option::Option::Some" [value'] =
+    Value.StructTuple "core::option::Option::Some" [] [Φ A] [value'] =
     φ (Some value).
   Proof. intros; subst; reflexivity. Qed.
   Smpl Add apply of_value_with_Some : of_value.
 
-  Definition of_value_None {A : Set} `{Link A} :
-    OfValue.t (Value.StructTuple "core::option::Option::None" []).
-  Proof. eapply OfValue.Make with (A := option A); apply of_value_with_None. Defined.
-  Smpl Add eapply of_value_None : of_value.
-
-  Definition of_value_Some value' :
-    OfValue.t value' ->
-    OfValue.t (Value.StructTuple "core::option::Option::Some" [value']).
+  Definition of_value_None A' :
+    OfTy.t A' ->
+    OfValue.t (Value.StructTuple "core::option::Option::None" [] [A'] []).
   Proof.
-    intros [A]; eapply OfValue.Make with (A := option A).
-    apply of_value_with_Some; eassumption.
+    intros [A].
+    eapply OfValue.Make with (A := option A) (value := None).
+    now subst.
   Defined.
-  Smpl Add eapply of_value_Some : of_value.
+  Smpl Add unshelve eapply of_value_None : of_value.
+
+  Definition of_value_Some A' value' :
+    forall
+      (of_value_value : OfValue.t value'),
+    A' = Φ (OfValue.get_Set of_value_value) ->
+    OfValue.t (Value.StructTuple "core::option::Option::Some" [] [A'] [value']).
+  Proof.
+    intros [A ? value] **.
+    eapply OfValue.Make with (A := option A) (value := Some value).
+    now subst.
+  Defined.
+  Smpl Add unshelve eapply of_value_Some : of_value.
 
   Module SubPointer.
-    Definition get_Some_0 {A : Set} `{Link A} :
+    Definition get_Some_0 (A : Set) `{Link A} :
       SubPointer.Runner.t (option A) (Pointer.Index.StructTuple "core::option::Option::Some" 0) :=
     {|
       SubPointer.Runner.projection (x : option A) := x;
@@ -64,8 +73,8 @@ Module Option.
         end;
     |}.
 
-    Lemma get_Some_0_is_valid {A : Set} `{Link A} :
-      SubPointer.Runner.Valid.t (get_Some_0 (A := A)).
+    Lemma get_Some_0_is_valid (A : Set) `{Link A} :
+      SubPointer.Runner.Valid.t (get_Some_0 A).
     Proof.
       sauto lq: on.
     Qed.
@@ -93,7 +102,10 @@ Module Impl_Option.
     Run.Trait
       (option.Impl_core_option_Option_T.ok_or (Φ T)) [] [ Φ E ] [ φ self; φ err ]
       (Result.t T E).
-  Admitted.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
 
   (* pub const fn unwrap(self) -> T *)
   Instance run_unwrap {T : Set} `{Link T}
@@ -101,6 +113,9 @@ Module Impl_Option.
     Run.Trait
       (option.Impl_core_option_Option_T.unwrap (Φ T)) [] [] [ φ self ]
       T.
+  Proof.
+    constructor.
+    run_symbolic.
   Admitted.
 
   (* pub const unsafe fn unwrap_unchecked(self) -> T *)

@@ -7,6 +7,8 @@ Module modexp.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -29,6 +31,8 @@ Module modexp.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -948,6 +952,11 @@ Module modexp.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -963,6 +972,8 @@ Module modexp.
                                       [
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1332,6 +1343,13 @@ Module modexp.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "revm_precompile::interface::PrecompileOutput";
+                                                    Ty.path
+                                                      "revm_precompile::interface::PrecompileErrors"
+                                                  ]
                                                   [
                                                     M.call_closure (|
                                                       Ty.path
@@ -1502,6 +1520,8 @@ Module modexp.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.read (|
@@ -1688,6 +1708,8 @@ Module modexp.
                                                               |);
                                                               Value.StructRecord
                                                                 "core::ops::range::RangeTo"
+                                                                []
+                                                                [ Ty.path "usize" ]
                                                                 [
                                                                   ("end_",
                                                                     M.read (| exp_highp_len |))
@@ -1827,6 +1849,13 @@ Module modexp.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "revm_precompile::interface::PrecompileOutput";
+                                                            Ty.path
+                                                              "revm_precompile::interface::PrecompileErrors"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -1847,6 +1876,8 @@ Module modexp.
                                                               [
                                                                 Value.StructTuple
                                                                   "revm_precompile::interface::PrecompileError::OutOfGas"
+                                                                  []
+                                                                  []
                                                                   []
                                                               ]
                                                             |)
@@ -2209,6 +2240,8 @@ Module modexp.
                                                                                             Value.StructTuple
                                                                                               "core::panicking::AssertKind::Eq"
                                                                                               []
+                                                                                              []
+                                                                                              []
                                                                                           |) in
                                                                                         M.alloc (|
                                                                                           M.call_closure (|
@@ -2256,6 +2289,11 @@ Module modexp.
                                                                                               |);
                                                                                               Value.StructTuple
                                                                                                 "core::option::Option::None"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Arguments"
+                                                                                                ]
                                                                                                 []
                                                                                             ]
                                                                                           |)
@@ -2324,6 +2362,13 @@ Module modexp.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "core::result::Result::Ok"
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "revm_precompile::interface::PrecompileOutput";
+                                                            Ty.path
+                                                              "revm_precompile::interface::PrecompileErrors"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path

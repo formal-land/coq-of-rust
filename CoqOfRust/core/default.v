@@ -85,7 +85,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []))
+        ltac:(M.monadic (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

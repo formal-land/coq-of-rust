@@ -41,6 +41,8 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
       ltac:(M.monadic
         (Value.StructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
+          []
+          []
           [
             ("value",
               M.call_closure (|
@@ -84,6 +86,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
+          []
+          []
           [ ("value", M.read (| value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -118,7 +122,11 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
-        Value.StructTuple "core::option::Option::None" []))
+        Value.StructTuple
+          "core::option::Option::None"
+          []
+          [ Ty.path "call_builder_delegate::LangError" ]
+          []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

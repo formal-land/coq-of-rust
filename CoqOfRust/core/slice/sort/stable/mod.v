@@ -655,6 +655,8 @@ Module slice.
             ltac:(M.monadic
               (Value.StructRecord
                 "core::slice::sort::stable::AlignedStorage"
+                [ N ]
+                [ T ]
                 [
                   ("_align", Value.Array []);
                   ("storage",

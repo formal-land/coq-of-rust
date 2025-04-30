@@ -149,7 +149,11 @@ Module iter.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ A ]
+                          [ M.read (| item |) ]
                       ]
                     |)
                   |) in

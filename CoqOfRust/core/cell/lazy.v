@@ -62,6 +62,8 @@ Module cell.
             (let f := M.alloc (| f |) in
             Value.StructRecord
               "core::cell::lazy::LazyCell"
+              []
+              [ T; F ]
               [
                 ("state",
                   M.call_closure (|
@@ -78,7 +80,13 @@ Module cell.
                       [],
                       []
                     |),
-                    [ Value.StructTuple "core::cell::lazy::State::Uninit" [ M.read (| f |) ] ]
+                    [
+                      Value.StructTuple
+                        "core::cell::lazy::State::Uninit"
+                        []
+                        [ T; F ]
+                        [ M.read (| f |) ]
+                    ]
                   |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -147,7 +155,11 @@ Module cell.
                         |) in
                       let data := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| data |) ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ T; F ]
+                          [ M.read (| data |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -159,7 +171,7 @@ Module cell.
                         |) in
                       let f := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Err" [ M.read (| f |) ]
+                        Value.StructTuple "core::result::Result::Err" [] [ T; F ] [ M.read (| f |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -609,7 +621,7 @@ Module cell.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
-                      Value.StructTuple "core::cell::lazy::State::Poisoned" []
+                      Value.StructTuple "core::cell::lazy::State::Poisoned" [] [ T; F ] []
                     ]
                   |)
                 |),
@@ -680,6 +692,8 @@ Module cell.
                               |);
                               Value.StructTuple
                                 "core::cell::lazy::State::Init"
+                                []
+                                [ T; F ]
                                 [ M.read (| data |) ]
                             ]
                           |)
@@ -834,11 +848,19 @@ Module cell.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| data |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -934,11 +956,19 @@ Module cell.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))

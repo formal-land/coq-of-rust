@@ -12,7 +12,7 @@ Module Uint.
 
   Global Instance IsLink {BITS LIMBS : Usize.t} : Link (t BITS LIMBS) := {
     Φ := Ty.apply (Ty.path "ruint::Uint") [ φ BITS; φ LIMBS ] [];
-    φ x := Value.StructRecord "ruint::Uint" [
+    φ x := Value.StructRecord "ruint::Uint" [ φ BITS; φ LIMBS ] [] [
       ("limbs", φ x.(limbs))
     ];
   }.

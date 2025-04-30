@@ -894,6 +894,8 @@ Module decode_errors.
           (let error := M.alloc (| error |) in
           Value.StructTuple
             "revm_bytecode::decode_errors::BytecodeDecodeError::Eof"
+            []
+            []
             [ M.read (| error |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -922,6 +924,8 @@ Module decode_errors.
           (let error := M.alloc (| error |) in
           Value.StructTuple
             "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702"
+            []
+            []
             [ M.read (| error |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

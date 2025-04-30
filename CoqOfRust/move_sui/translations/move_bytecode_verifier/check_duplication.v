@@ -94,6 +94,8 @@ Module check_duplication.
                                     M.read (| e |);
                                     Value.StructTuple
                                       "move_binary_format::errors::Location::Module"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -1440,6 +1442,8 @@ Module check_duplication.
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::check_duplication::DuplicationChecker"
+                      []
+                      []
                       [ ("module", M.read (| module |)) ]
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1974,6 +1978,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -1985,8 +1991,14 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
+                              Value.StructTuple
+                                "move_binary_format::IndexKind::Identifier"
+                                []
+                                []
+                                [];
                               M.read (| idx |)
                             ]
                           |)
@@ -1995,7 +2007,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2074,6 +2092,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2085,9 +2105,13 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
                               Value.StructTuple
                                 "move_binary_format::IndexKind::AddressIdentifier"
+                                []
+                                []
                                 [];
                               M.read (| idx |)
                             ]
@@ -2097,7 +2121,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2172,6 +2202,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2183,8 +2215,14 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
+                              Value.StructTuple
+                                "move_binary_format::IndexKind::ConstantPool"
+                                []
+                                []
+                                [];
                               M.read (| idx |)
                             ]
                           |)
@@ -2193,7 +2231,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2268,6 +2312,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2279,8 +2325,10 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::Signature" [];
+                              Value.StructTuple "move_binary_format::IndexKind::Signature" [] [] [];
                               M.read (| idx |)
                             ]
                           |)
@@ -2289,7 +2337,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2364,6 +2418,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2375,8 +2431,14 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
+                              Value.StructTuple
+                                "move_binary_format::IndexKind::ModuleHandle"
+                                []
+                                []
+                                [];
                               M.read (| idx |)
                             ]
                           |)
@@ -2385,7 +2447,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2616,6 +2684,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2627,8 +2697,14 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
+                              Value.StructTuple
+                                "move_binary_format::IndexKind::StructHandle"
+                                []
+                                []
+                                [];
                               M.read (| idx |)
                             ]
                           |)
@@ -2637,7 +2713,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2718,6 +2800,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2729,9 +2813,13 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
                               Value.StructTuple
                                 "move_binary_format::IndexKind::FunctionInstantiation"
+                                []
+                                []
                                 [];
                               M.read (| idx |)
                             ]
@@ -2741,7 +2829,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -2972,6 +3066,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -2983,8 +3079,14 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
+                              Value.StructTuple
+                                "move_binary_format::IndexKind::FunctionHandle"
+                                []
+                                []
+                                [];
                               M.read (| idx |)
                             ]
                           |)
@@ -2993,7 +3095,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -3100,6 +3208,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -3111,8 +3221,14 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
-                              Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
+                              Value.StructTuple
+                                "move_binary_format::IndexKind::FieldHandle"
+                                []
+                                []
+                                [];
                               M.read (| idx |)
                             ]
                           |)
@@ -3121,7 +3237,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -3232,6 +3354,8 @@ Module check_duplication.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -3243,9 +3367,13 @@ Module check_duplication.
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                []
+                                []
                                 [];
                               Value.StructTuple
                                 "move_binary_format::IndexKind::StructDefInstantiation"
+                                []
+                                []
                                 [];
                               M.read (| idx |)
                             ]
@@ -3255,7 +3383,13 @@ Module check_duplication.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)))
               ]
             |)
           |)))
@@ -3377,6 +3511,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -3388,9 +3527,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FieldInstantiation"
+                                            []
+                                            []
                                             [];
                                           M.read (| idx |)
                                         ]
@@ -3403,7 +3546,13 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3723,6 +3872,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -3734,9 +3888,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructDefinition"
+                                            []
+                                            []
                                             [];
                                           M.read (| idx |)
                                         ]
@@ -4068,6 +4226,12 @@ Module check_duplication.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -4080,9 +4244,13 @@ Module check_duplication.
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::ZERO_SIZED_STRUCT"
+                                                                      []
+                                                                      []
                                                                       [];
                                                                     Value.StructTuple
                                                                       "move_binary_format::IndexKind::StructDefinition"
+                                                                      []
+                                                                      []
                                                                       [];
                                                                     M.cast
                                                                       (Ty.path "u16")
@@ -4349,6 +4517,12 @@ Module check_duplication.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -4361,9 +4535,13 @@ Module check_duplication.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                                                    []
+                                                                    []
                                                                     [];
                                                                   Value.StructTuple
                                                                     "move_binary_format::IndexKind::FieldDefinition"
+                                                                    []
+                                                                    []
                                                                     [];
                                                                   M.read (| idx |)
                                                                 ]
@@ -4639,6 +4817,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -4650,9 +4833,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_HANDLE"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructDefinition"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
@@ -4911,6 +5098,8 @@ Module check_duplication.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_",
@@ -5177,6 +5366,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -5188,9 +5382,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::UNIMPLEMENTED_HANDLE"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructHandle"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
@@ -5203,7 +5401,13 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5517,6 +5721,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -5528,9 +5737,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
+                                            []
+                                            []
                                             [];
                                           M.read (| idx |)
                                         ]
@@ -5893,6 +6106,12 @@ Module check_duplication.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -5905,9 +6124,13 @@ Module check_duplication.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::DUPLICATE_ACQUIRES_ANNOTATION"
+                                                                    []
+                                                                    []
                                                                     [];
                                                                   Value.StructTuple
                                                                     "move_binary_format::IndexKind::FunctionDefinition"
+                                                                    []
+                                                                    []
                                                                     [];
                                                                   M.cast
                                                                     (Ty.path "u16")
@@ -6186,6 +6409,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -6197,9 +6425,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_HANDLE"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
@@ -6460,6 +6692,8 @@ Module check_duplication.
                                     M.alloc (|
                                       Value.StructRecord
                                         "core::ops::range::Range"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_",
@@ -6726,6 +6960,11 @@ Module check_duplication.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -6737,9 +6976,13 @@ Module check_duplication.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::UNIMPLEMENTED_HANDLE"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionHandle"
+                                            []
+                                            []
                                             [];
                                           M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
@@ -6752,7 +6995,13 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7054,6 +7303,8 @@ Module check_duplication.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.path "u16" ]
                                                             [
                                                               M.cast
                                                                 (Ty.path "u16")
@@ -7073,7 +7324,7 @@ Module check_duplication.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "u16" ] [] |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

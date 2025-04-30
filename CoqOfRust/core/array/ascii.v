@@ -69,6 +69,18 @@ Module array.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              ]
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -98,7 +110,23 @@ Module array.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))

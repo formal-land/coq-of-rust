@@ -7,6 +7,8 @@ Module identity.
       (M.alloc (|
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
@@ -136,6 +138,11 @@ Module identity.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -152,6 +159,8 @@ Module identity.
                                         Value.StructTuple
                                           "revm_precompile::interface::PrecompileError::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -165,6 +174,11 @@ Module identity.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]
                   [
                     M.call_closure (|
                       Ty.path "revm_precompile::interface::PrecompileOutput",

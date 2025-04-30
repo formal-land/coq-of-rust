@@ -81,6 +81,8 @@ Module signed.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -1115,6 +1117,8 @@ Module signed.
           (M.alloc (|
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.read (|
                   get_associated_constant (|
@@ -1148,7 +1152,11 @@ Module signed.
         | [], [], [ val ] =>
           ltac:(M.monadic
             (let val := M.alloc (| val |) in
-            Value.StructTuple "alloy_primitives::signed::int::Signed" [ M.read (| val |) ]))
+            Value.StructTuple
+              "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
+              [ M.read (| val |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1489,6 +1497,8 @@ Module signed.
                                             Value.StructTuple
                                               "alloy_primitives::signed::sign::Sign::Negative"
                                               []
+                                              []
+                                              []
                                           |)
                                         |)
                                       |)
@@ -1500,7 +1510,7 @@ Module signed.
                       ]
                     |) in
                   M.alloc (|
-                    Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" []
+                    Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                   |)
                 |)))
             |)))
@@ -2319,6 +2329,8 @@ Module signed.
                 M.alloc (|
                   Value.StructTuple
                     "alloy_primitives::signed::int::Signed"
+                    [ BITS; LIMBS ]
+                    []
                     [
                       M.read (|
                         M.match_operator (|
@@ -2537,12 +2549,30 @@ Module signed.
                               (let γ := M.use overflow in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                              M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  ]
+                                  []
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  ]
                                   [ M.read (| result |) ]
                               |)))
                         ]
@@ -2675,6 +2705,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Positive"
+                                    []
+                                    []
                                     [];
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -2702,6 +2734,8 @@ Module signed.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)
@@ -2728,6 +2762,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Negative"
+                                    []
+                                    []
                                     [];
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -2755,6 +2791,8 @@ Module signed.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)
@@ -2769,6 +2807,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Positive"
+                                    []
+                                    []
                                     [];
                                   M.read (| value |)
                                 ]
@@ -2973,6 +3013,8 @@ Module signed.
                                 |);
                                 Value.StructTuple
                                   "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                  []
+                                  []
                                   []
                               ]
                             |)
@@ -3272,6 +3314,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Positive"
+                                    []
+                                    []
                                     [];
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -3299,6 +3343,8 @@ Module signed.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)
@@ -3325,6 +3371,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Negative"
+                                    []
+                                    []
                                     [];
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -3352,6 +3400,8 @@ Module signed.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)
@@ -3366,6 +3416,8 @@ Module signed.
                                 [
                                   Value.StructTuple
                                     "alloy_primitives::signed::sign::Sign::Positive"
+                                    []
+                                    []
                                     [];
                                   M.read (| value |)
                                 ]
@@ -3464,9 +3516,20 @@ Module signed.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [];
+                                                Ty.path
+                                                  "alloy_primitives::signed::errors::ParseSignedError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                           |)
@@ -3667,6 +3730,8 @@ Module signed.
                                 |);
                                 Value.StructTuple
                                   "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                  []
+                                  []
                                   []
                               ]
                             |)
@@ -4056,6 +4121,8 @@ Module signed.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -4095,6 +4162,8 @@ Module signed.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -4165,7 +4234,7 @@ Module signed.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                 |);
-                M.constructor_as_closure "alloy_primitives::signed::int::Signed"
+                M.constructor_as_closure "alloy_primitives::signed::int::Signed" [ BITS; LIMBS ] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4229,7 +4298,7 @@ Module signed.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                 |);
-                M.constructor_as_closure "alloy_primitives::signed::int::Signed"
+                M.constructor_as_closure "alloy_primitives::signed::int::Signed" [ BITS; LIMBS ] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4357,6 +4426,8 @@ Module signed.
             (let limbs := M.alloc (| limbs |) in
             Value.StructTuple
               "alloy_primitives::signed::int::Signed"
+              [ BITS; LIMBS ]
+              []
               [
                 M.call_closure (|
                   Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -4409,9 +4480,16 @@ Module signed.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                    Ty.path "ruint::base_convert::BaseConvertError"
+                  ]
                   [
                     Value.StructTuple
                       "alloy_primitives::signed::int::Signed"
+                      [ BITS; LIMBS ]
+                      []
                       [
                         M.read (|
                           M.match_operator (|

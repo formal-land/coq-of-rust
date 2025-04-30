@@ -48,6 +48,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "match_guards::Temperature::Celsius"
+              []
+              []
               [ Value.Integer IntegerKind.I32 35 ]
           |) in
         M.match_operator (|

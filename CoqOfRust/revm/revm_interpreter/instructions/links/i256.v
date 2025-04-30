@@ -28,9 +28,9 @@ Module Sign.
     Φ := Ty.path "revm_interpreter::instructions::i256::Sign";
     φ x :=
       match x with
-      | Minus => Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" []
-      | Zero => Value.StructTuple "revm_interpreter::instructions::i256::Sign::Zero" []
-      | Plus => Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" []
+      | Minus => Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" [] [] []
+      | Zero => Value.StructTuple "revm_interpreter::instructions::i256::Sign::Zero" [] [] []
+      | Plus => Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" [] [] []
       end;
   }.
 
@@ -39,22 +39,22 @@ Module Sign.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with_Minus :
-    Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" [] = φ Minus.
+    Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" [] [] [] = φ Minus.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Minus : of_value.
 
   Lemma of_value_with_Zero :
-    Value.StructTuple "revm_interpreter::instructions::i256::Sign::Zero" [] = φ Zero.
+    Value.StructTuple "revm_interpreter::instructions::i256::Sign::Zero" [] [] [] = φ Zero.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Zero : of_value.
 
   Lemma of_value_with_Plus :
-    Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" [] = φ Plus.
+    Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" [] [] [] = φ Plus.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Plus : of_value.
 
   Definition of_value_Minus :
-    OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Minus" [] [] []).
   Proof.
     econstructor.
     apply of_value_with_Minus.
@@ -62,7 +62,7 @@ Module Sign.
   Smpl Add apply of_value_Minus : of_value.
 
   Definition of_value_Zero :
-    OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Zero" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Zero" [] [] []).
   Proof.
     econstructor.
     apply of_value_with_Zero.
@@ -70,7 +70,7 @@ Module Sign.
   Smpl Add apply of_value_Zero : of_value.
 
   Definition of_value_Plus :
-    OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::instructions::i256::Sign::Plus" [] [] []).
   Proof.
     econstructor.
     apply of_value_with_Plus.

@@ -33,7 +33,7 @@ Module ops.
               [],
               []
             |),
-            [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
+            [ Value.StructTuple "core::ops::try_trait::Yeet" [] [ Y ] [ M.read (| yeeted |) ] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -104,6 +104,8 @@ Module ops.
                               (let a := M.copy (| γ |) in
                               Value.StructTuple
                                 "core::ops::try_trait::NeverShortCircuit"
+                                []
+                                [ T ]
                                 [
                                   M.call_closure (|
                                     T,
@@ -188,6 +190,8 @@ Module ops.
                                       (let b := M.copy (| γ |) in
                                       Value.StructTuple
                                         "core::ops::try_trait::NeverShortCircuit"
+                                        []
+                                        [ T ]
                                         [
                                           M.call_closure (|
                                             T,
@@ -256,6 +260,8 @@ Module ops.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ops::control_flow::ControlFlow::Continue"
+              []
+              [ Ty.path "core::ops::try_trait::NeverShortCircuitResidual"; T ]
               [
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
@@ -279,7 +285,11 @@ Module ops.
         | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple "core::ops::try_trait::NeverShortCircuit" [ M.read (| x |) ]))
+            Value.StructTuple
+              "core::ops::try_trait::NeverShortCircuit"
+              []
+              [ T ]
+              [ M.read (| x |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

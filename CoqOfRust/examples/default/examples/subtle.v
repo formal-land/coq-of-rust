@@ -723,6 +723,8 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
         (let input := M.alloc (| input |) in
         Value.StructTuple
           "subtle::Choice"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u8",
@@ -4001,6 +4003,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
         let choice := M.alloc (| choice |) in
         Value.StructTuple
           "subtle::Choice"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u8",
@@ -4163,6 +4167,8 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         Value.StructRecord
           "subtle::CtOption"
+          []
+          [ T ]
           [
             ("value",
               M.call_closure (|
@@ -4379,6 +4385,8 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ T ]
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4390,7 +4398,8 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                       ]
                   |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ltac:(M.monadic
+                  (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
             ]
           |)
         |)))
@@ -4427,6 +4436,8 @@ Module Impl_subtle_CtOption_T.
         let is_some := M.alloc (| is_some |) in
         Value.StructRecord
           "subtle::CtOption"
+          []
+          [ T ]
           [ ("value", M.read (| value |)); ("is_some", M.read (| is_some |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -4523,7 +4534,7 @@ Module Impl_subtle_CtOption_T.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -4555,6 +4566,8 @@ Module Impl_subtle_CtOption_T.
                                         |);
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
                                           [
                                             M.call_closure (|
                                               Ty.path "core::fmt::Arguments",
@@ -4725,7 +4738,7 @@ Module Impl_subtle_CtOption_T.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -4755,7 +4768,11 @@ Module Impl_subtle_CtOption_T.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)

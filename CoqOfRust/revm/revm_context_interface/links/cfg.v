@@ -21,9 +21,9 @@ Module CreateScheme.
     Φ := Ty.path "revm_context_interface::cfg::CreateScheme";
     φ x :=
       match x with
-      | Create => Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" []
+      | Create => Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" [] [] []
       | Create2 x =>
-        Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
+        Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [] [] [
           ("salt", φ x)
         ]
       end;
@@ -34,26 +34,26 @@ Module CreateScheme.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with_Create :
-    Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" [] = φ Create.
+    Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" [] [] [] = φ Create.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Create : of_value.
 
   Lemma of_value_with_Create2 (x : aliases.U256.t) x' :
     x' = φ x ->
-    Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
+    Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [] [] [
       ("salt", x')
     ] = φ (Create2 x).
   Proof. now intros; subst. Qed.
   Smpl Add eapply of_value_with_Create2 : of_value.
 
   Definition of_value_Create :
-    OfValue.t (Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" []).
+    OfValue.t (Value.StructTuple "revm_context_interface::cfg::CreateScheme::Create" [] [] []).
   Proof. eapply OfValue.Make; apply of_value_with_Create. Defined.
   Smpl Add apply of_value_Create : of_value.
 
   Definition of_value_Create2 (x : aliases.U256.t) x' :
     x' = φ x ->
-    OfValue.t (Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [
+    OfValue.t (Value.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" [] [] [
       ("salt", x')
     ]).
   Proof. intros; eapply OfValue.Make with (A := t); apply of_value_with_Create2; eassumption. Defined.

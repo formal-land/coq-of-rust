@@ -501,6 +501,8 @@ Module acquires_list_verifier.
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier"
+                      []
+                      []
                       [
                         ("module", M.read (| module |));
                         ("current_function", M.read (| index |));
@@ -744,6 +746,8 @@ Module acquires_list_verifier.
                                                                         Value.StructTuple
                                                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       ]
                                                                     |);
                                                                     M.call_closure (|
@@ -978,6 +982,12 @@ Module acquires_list_verifier.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [ M.read (| err |) ]
                                                                           |)
                                                                         |)
@@ -1384,6 +1394,12 @@ Module acquires_list_verifier.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -1398,6 +1414,8 @@ Module acquires_list_verifier.
                                                                   [
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::EXTRANEOUS_ACQUIRES_ANNOTATION"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                                 |)
@@ -1559,6 +1577,8 @@ Module acquires_list_verifier.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |);
@@ -1789,6 +1809,12 @@ Module acquires_list_verifier.
                                                                     M.return_ (|
                                                                       Value.StructTuple
                                                                         "core::result::Result::Err"
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ]
                                                                         [ M.read (| err |) ]
                                                                     |)
                                                                   |)
@@ -1887,6 +1913,12 @@ Module acquires_list_verifier.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -1901,6 +1933,8 @@ Module acquires_list_verifier.
                                                                 [
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::INVALID_ACQUIRES_ANNOTATION"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |)
@@ -1919,7 +1953,13 @@ Module acquires_list_verifier.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3026,7 +3066,14 @@ Module acquires_list_verifier.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
+                                  [ Value.Tuple [] ]
                               |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
@@ -3309,6 +3356,12 @@ Module acquires_list_verifier.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path
@@ -3327,6 +3380,8 @@ Module acquires_list_verifier.
                                                                   |);
                                                                   Value.StructTuple
                                                                     "move_core_types::vm_status::StatusCode::MISSING_ACQUIRES_ANNOTATION"
+                                                                    []
+                                                                    []
                                                                     [];
                                                                   M.read (| offset |)
                                                                 ]
@@ -3380,7 +3435,13 @@ Module acquires_list_verifier.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3490,12 +3551,20 @@ Module acquires_list_verifier.
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -3510,6 +3579,8 @@ Module acquires_list_verifier.
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::MISSING_ACQUIRES_ANNOTATION"
+                                []
+                                []
                                 [];
                               M.read (| offset |)
                             ]

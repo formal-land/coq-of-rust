@@ -84,7 +84,7 @@ Module raw_vec.
     Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "alloc::raw_vec::Cap" [ Value.Integer IntegerKind.Usize 0 ]
+          Value.StructTuple "alloc::raw_vec::Cap" [] [] [ Value.Integer IntegerKind.Usize 0 ]
         |))).
     
     Global Instance AssociatedConstant_value_ZERO : M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
@@ -122,7 +122,9 @@ Module raw_vec.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| cap |) ] |)))
+                    (M.alloc (|
+                      Value.StructTuple "alloc::raw_vec::Cap" [] [] [ M.read (| cap |) ]
+                    |)))
               ]
             |)
           |)))
@@ -181,7 +183,7 @@ Module raw_vec.
               [],
               []
             |),
-            [ Value.StructTuple "alloc::alloc::Global" [] ]
+            [ Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -205,6 +207,8 @@ Module raw_vec.
           (let capacity := M.alloc (| capacity |) in
           Value.StructRecord
             "alloc::raw_vec::RawVec"
+            []
+            [ T; Ty.path "alloc::alloc::Global" ]
             [
               ("inner",
                 M.call_closure (|
@@ -231,7 +235,7 @@ Module raw_vec.
                     |)
                   ]
                 |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+              ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -263,6 +267,8 @@ Module raw_vec.
           (let capacity := M.alloc (| capacity |) in
           Value.StructRecord
             "alloc::raw_vec::RawVec"
+            []
+            [ T; Ty.path "alloc::alloc::Global" ]
             [
               ("inner",
                 M.call_closure (|
@@ -281,7 +287,7 @@ Module raw_vec.
                   |),
                   [
                     M.read (| capacity |);
-                    Value.StructTuple "alloc::alloc::Global" [];
+                    Value.StructTuple "alloc::alloc::Global" [] [] [];
                     M.read (|
                       get_constant (|
                         "core::mem::SizedTypeProperties::LAYOUT",
@@ -290,7 +296,7 @@ Module raw_vec.
                     |)
                   ]
                 |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+              ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -354,8 +360,8 @@ Module raw_vec.
                   |),
                   [
                     M.read (| capacity |);
-                    Value.StructTuple "alloc::raw_vec::AllocInit::Uninitialized" [];
-                    Value.StructTuple "alloc::alloc::Global" [];
+                    Value.StructTuple "alloc::raw_vec::AllocInit::Uninitialized" [] [] [];
+                    Value.StructTuple "alloc::alloc::Global" [] [] [];
                     M.read (| elem_layout |)
                   ]
                 |)
@@ -507,6 +513,8 @@ Module raw_vec.
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::raw_vec::RawVec"
+            []
+            [ T; A ]
             [
               ("inner",
                 M.call_closure (|
@@ -526,7 +534,7 @@ Module raw_vec.
                     |)
                   ]
                 |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+              ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -559,6 +567,8 @@ Module raw_vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::raw_vec::RawVec"
+            []
+            [ T; A ]
             [
               ("inner",
                 M.call_closure (|
@@ -580,7 +590,7 @@ Module raw_vec.
                     |)
                   ]
                 |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+              ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -661,12 +671,19 @@ Module raw_vec.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ];
+                          Ty.path "alloc::collections::TryReserveError"
+                        ]
                         [
                           Value.StructRecord
                             "alloc::raw_vec::RawVec"
+                            []
+                            [ T; A ]
                             [
                               ("inner", M.read (| inner |));
-                              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                             ]
                         ]
                     |)));
@@ -675,7 +692,16 @@ Module raw_vec.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ];
+                          Ty.path "alloc::collections::TryReserveError"
+                        ]
+                        [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -710,6 +736,8 @@ Module raw_vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::raw_vec::RawVec"
+            []
+            [ T; A ]
             [
               ("inner",
                 M.call_closure (|
@@ -731,7 +759,7 @@ Module raw_vec.
                     |)
                   ]
                 |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+              ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1097,6 +1125,8 @@ Module raw_vec.
             M.alloc (|
               Value.StructRecord
                 "alloc::raw_vec::RawVec"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -1109,7 +1139,7 @@ Module raw_vec.
                       |),
                       [ M.read (| ptr |); M.read (| capacity |); M.read (| alloc |) ]
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                 ]
             |)
           |)))
@@ -1174,6 +1204,8 @@ Module raw_vec.
             M.alloc (|
               Value.StructRecord
                 "alloc::raw_vec::RawVec"
+                []
+                [ T; A ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -1186,7 +1218,7 @@ Module raw_vec.
                       |),
                       [ M.read (| ptr |); M.read (| capacity |); M.read (| alloc |) ]
                     |));
-                  ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                 ]
             |)
           |)))
@@ -1772,6 +1804,8 @@ Module raw_vec.
             M.alloc (|
               Value.StructRecord
                 "alloc::raw_vec::RawVecInner"
+                []
+                [ A ]
                 [
                   ("ptr", M.read (| ptr |));
                   ("cap",
@@ -1845,7 +1879,7 @@ Module raw_vec.
                   |),
                   [
                     M.read (| capacity |);
-                    Value.StructTuple "alloc::raw_vec::AllocInit::Uninitialized" [];
+                    Value.StructTuple "alloc::raw_vec::AllocInit::Uninitialized" [] [] [];
                     M.read (| alloc |);
                     M.read (| elem_layout |)
                   ]
@@ -1950,7 +1984,7 @@ Module raw_vec.
             |),
             [
               M.read (| capacity |);
-              Value.StructTuple "alloc::raw_vec::AllocInit::Uninitialized" [];
+              Value.StructTuple "alloc::raw_vec::AllocInit::Uninitialized" [] [] [];
               M.read (| alloc |);
               M.read (| elem_layout |)
             ]
@@ -2008,7 +2042,7 @@ Module raw_vec.
                   |),
                   [
                     M.read (| capacity |);
-                    Value.StructTuple "alloc::raw_vec::AllocInit::Zeroed" [];
+                    Value.StructTuple "alloc::raw_vec::AllocInit::Zeroed" [] [] [];
                     M.read (| alloc |);
                     M.read (| elem_layout |)
                   ]
@@ -2152,6 +2186,11 @@ Module raw_vec.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                                        Ty.path "alloc::collections::TryReserveError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "alloc::collections::TryReserveError",
@@ -2167,6 +2206,8 @@ Module raw_vec.
                                           [
                                             Value.StructTuple
                                               "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                              []
+                                              []
                                               []
                                           ]
                                         |)
@@ -2214,6 +2255,11 @@ Module raw_vec.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
@@ -2285,7 +2331,14 @@ Module raw_vec.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ]
+                                    [ M.read (| err |) ]
                                 |)
                               |)
                             |)
@@ -2437,6 +2490,11 @@ Module raw_vec.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                                        Ty.path "alloc::collections::TryReserveError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "alloc::collections::TryReserveError",
@@ -2452,6 +2510,8 @@ Module raw_vec.
                                           [
                                             Value.StructRecord
                                               "alloc::collections::TryReserveErrorKind::AllocError"
+                                              []
+                                              []
                                               [
                                                 ("layout", M.read (| layout |));
                                                 ("non_exhaustive", Value.Tuple [])
@@ -2469,9 +2529,16 @@ Module raw_vec.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                      Ty.path "alloc::collections::TryReserveError"
+                    ]
                     [
                       Value.StructRecord
                         "alloc::raw_vec::RawVecInner"
+                        []
+                        [ A ]
                         [
                           ("ptr",
                             M.call_closure (|
@@ -2510,7 +2577,11 @@ Module raw_vec.
                               ]
                             |));
                           ("cap",
-                            Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| capacity |) ]);
+                            Value.StructTuple
+                              "alloc::raw_vec::Cap"
+                              []
+                              []
+                              [ M.read (| capacity |) ]);
                           ("alloc", M.read (| alloc |))
                         ]
                     ]
@@ -2546,6 +2617,8 @@ Module raw_vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::raw_vec::RawVecInner"
+            []
+            [ A ]
             [
               ("ptr",
                 M.call_closure (|
@@ -2590,6 +2663,8 @@ Module raw_vec.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::raw_vec::RawVecInner"
+            []
+            [ A ]
             [
               ("ptr",
                 M.call_closure (|
@@ -2886,7 +2961,19 @@ Module raw_vec.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ];
+                              Ty.path "core::alloc::layout::Layout"
+                            ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let~ alloc_size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -2948,6 +3035,14 @@ Module raw_vec.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ];
+                              Ty.path "core::alloc::layout::Layout"
+                            ]
+                        ]
                         [
                           Value.Tuple
                             [
@@ -3383,7 +3478,13 @@ Module raw_vec.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3685,7 +3786,13 @@ Module raw_vec.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3891,7 +3998,7 @@ Module raw_vec.
                     "alloc::raw_vec::RawVecInner",
                     "cap"
                   |),
-                  Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| cap |) ]
+                  Value.StructTuple "alloc::raw_vec::Cap" [] [] [ M.read (| cap |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -4047,6 +4154,8 @@ Module raw_vec.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "alloc::collections::TryReserveError",
@@ -4062,6 +4171,8 @@ Module raw_vec.
                                         [
                                           Value.StructTuple
                                             "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -4131,6 +4242,8 @@ Module raw_vec.
                                 |);
                                 Value.StructTuple
                                   "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                  []
+                                  []
                                   []
                               ]
                             |)
@@ -4562,7 +4675,13 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4650,6 +4769,8 @@ Module raw_vec.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "alloc::collections::TryReserveError",
@@ -4665,6 +4786,8 @@ Module raw_vec.
                                         [
                                           Value.StructTuple
                                             "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -4734,6 +4857,8 @@ Module raw_vec.
                                 |);
                                 Value.StructTuple
                                   "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                  []
+                                  []
                                   []
                               ]
                             |)
@@ -5113,7 +5238,13 @@ Module raw_vec.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5374,7 +5505,11 @@ Module raw_vec.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                                    [ Value.Tuple [] ]
                                 |)
                               |)
                             |)
@@ -5733,6 +5868,8 @@ Module raw_vec.
                                                                   ltac:(M.monadic
                                                                     (Value.StructRecord
                                                                       "alloc::collections::TryReserveErrorKind::AllocError"
+                                                                      []
+                                                                      []
                                                                       [
                                                                         ("layout",
                                                                           M.read (| new_layout |));
@@ -5840,7 +5977,11 @@ Module raw_vec.
                             ]
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                            [ Value.Tuple [] ]
                         |)))
                   ]
                 |)
@@ -6280,6 +6421,8 @@ Module raw_vec.
                                                                 Value.StructTuple
                                                                   "core::panicking::AssertKind::Eq"
                                                                   []
+                                                                  []
+                                                                  []
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
@@ -6316,6 +6459,9 @@ Module raw_vec.
                                                                   |);
                                                                   Value.StructTuple
                                                                     "core::option::Option::None"
+                                                                    []
+                                                                    [ Ty.path "core::fmt::Arguments"
+                                                                    ]
                                                                     []
                                                                 ]
                                                               |)
@@ -6496,6 +6642,8 @@ Module raw_vec.
                                         [
                                           Value.StructRecord
                                             "alloc::collections::TryReserveErrorKind::AllocError"
+                                            []
+                                            []
                                             [
                                               ("layout", M.read (| new_layout |));
                                               ("non_exhaustive", Value.Tuple [])
@@ -6655,6 +6803,8 @@ Module raw_vec.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
                       [
                         M.call_closure (|
                           Ty.path "alloc::collections::TryReserveError",
@@ -6671,13 +6821,21 @@ Module raw_vec.
                             Value.StructTuple
                               "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                               []
+                              []
+                              []
                           ]
                         |)
                       ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))
@@ -6833,6 +6991,8 @@ Module raw_vec.
                                 [
                                   Value.StructTuple
                                     "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                    []
+                                    []
                                     []
                                 ]
                               |)))

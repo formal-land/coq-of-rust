@@ -81,6 +81,8 @@ Module iter.
               M.alloc (|
                 Value.StructRecord
                   "core::iter::sources::repeat_n::RepeatN"
+                  []
+                  [ T ]
                   [ ("element", M.read (| element |)); ("count", M.read (| count |)) ]
               |)
             |)))
@@ -166,6 +168,8 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ A ] ]
                             [
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -198,7 +202,13 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ A ] ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -323,6 +333,8 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ A ]
                             [
                               M.call_closure (|
                                 A,
@@ -341,7 +353,7 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ A ] [] |)))
                   ]
                 |)
               |)))
@@ -375,6 +387,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::sources::repeat_n::RepeatN"
+                []
+                [ A ]
                 [
                   ("count",
                     M.read (|
@@ -718,6 +732,8 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ A ]
                             [
                               M.call_closure (|
                                 A,
@@ -744,7 +760,7 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ A ] [] |)))
                   ]
                 |)
               |)))
@@ -784,7 +800,11 @@ Module iter.
                   Value.Tuple
                     [
                       M.read (| len |);
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| len |) ]
                     ]
                 |)
               |)))
@@ -906,6 +926,14 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply
@@ -949,7 +977,17 @@ Module iter.
                             |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ]
                         |)))
                   ]
                 |)

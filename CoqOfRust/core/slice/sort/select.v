@@ -384,7 +384,11 @@ Module slice.
                                                   M.deref (| M.read (| v |) |)
                                                 |);
                                                 M.read (| index |);
-                                                Value.StructTuple "core::option::Option::None" [];
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                  [];
                                                 M.borrow (|
                                                   Pointer.Kind.MutRef,
                                                   M.deref (|
@@ -1243,6 +1247,8 @@ Module slice.
                                                                       |);
                                                                       Value.StructRecord
                                                                         "core::ops::range::RangeFrom"
+                                                                        []
+                                                                        [ Ty.path "usize" ]
                                                                         [
                                                                           ("start",
                                                                             M.read (| mid |))
@@ -1274,6 +1280,8 @@ Module slice.
                                                           ancestor_pivot,
                                                           Value.StructTuple
                                                             "core::option::Option::None"
+                                                            []
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             []
                                                         |)
                                                       |) in
@@ -1457,6 +1465,8 @@ Module slice.
                                                           ancestor_pivot,
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             [
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
@@ -2730,6 +2740,8 @@ Module slice.
                                                               |);
                                                               Value.StructRecord
                                                                 "core::ops::range::RangeTo"
+                                                                []
+                                                                [ Ty.path "usize" ]
                                                                 [ ("end_", M.read (| p |)) ]
                                                             ]
                                                           |)
@@ -2780,6 +2792,8 @@ Module slice.
                                                               |);
                                                               Value.StructRecord
                                                                 "core::ops::range::RangeFrom"
+                                                                []
+                                                                [ Ty.path "usize" ]
                                                                 [
                                                                   ("start",
                                                                     M.call_closure (|
@@ -3161,6 +3175,8 @@ Module slice.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", M.read (| lo |)); ("end_", M.read (| hi |)) ]
                         ]
                       |)
@@ -3356,6 +3372,8 @@ Module slice.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", M.read (| lo |));
                                       ("end_",

@@ -223,6 +223,8 @@ Module interpreter.
               M.alloc (|
                 Value.StructRecord
                   "revm_interpreter::interpreter::ext_bytecode::ExtBytecode"
+                  []
+                  []
                   [
                     ("base", M.read (| base |));
                     ("instruction_pointer", M.read (| instruction_pointer |))

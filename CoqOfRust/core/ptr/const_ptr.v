@@ -448,12 +448,20 @@ Module ptr.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -561,12 +569,30 @@ Module ptr.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1334,13 +1360,17 @@ Module ptr.
                           M.read (| γ |),
                           Value.Integer IntegerKind.U8 2
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "bool" ] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let other := M.copy (| γ |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "bool" ]
                           [
                             M.call_closure (|
                               Ty.path "bool",
@@ -1406,7 +1436,9 @@ Module ptr.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "bool" ] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -1419,6 +1451,8 @@ Module ptr.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "bool" ]
                           [ UnOp.not (| M.read (| eq |) |) ]
                       |)))
                 ]
@@ -2636,11 +2670,31 @@ Module ptr.
                             |))
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| me |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "*const")
+                              []
+                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                          ]
+                          [ M.read (| me |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "*const")
+                              []
+                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -2770,12 +2824,50 @@ Module ptr.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -3015,7 +3107,7 @@ Module ptr.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -3054,10 +3146,14 @@ Module ptr.
                                   |)) in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                              M.alloc (|
+                                Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
+                              (M.alloc (|
+                                Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                              |)))
                         ]
                       |)))
                 ]
@@ -3093,6 +3189,8 @@ Module ptr.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",

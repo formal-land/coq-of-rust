@@ -243,6 +243,8 @@ Module bytes.
                   M.return_ (|
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -337,6 +339,8 @@ Module bytes.
                     M.alloc (|
                       Value.StructTuple
                         "alloc::borrow::Cow::Borrowed"
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -396,7 +400,11 @@ Module bytes.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| vec |) ]
+                      Value.StructTuple
+                        "alloc::borrow::Cow::Owned"
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        [ M.read (| vec |) ]
                     |)))
               ]
             |)
@@ -1365,7 +1373,13 @@ Module bytes.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -1639,6 +1653,8 @@ Module bytes.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                     [
                                       M.call_closure (|
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -1877,7 +1893,13 @@ Module bytes.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -1887,6 +1909,8 @@ Module bytes.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -2216,7 +2240,13 @@ Module bytes.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -2472,6 +2502,8 @@ Module bytes.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                     [
                                       M.call_closure (|
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -2685,7 +2717,13 @@ Module bytes.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -2695,6 +2733,8 @@ Module bytes.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],

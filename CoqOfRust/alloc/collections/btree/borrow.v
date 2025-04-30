@@ -117,9 +117,16 @@ Module collections.
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| new_ref |) |) |);
                       Value.StructRecord
                         "alloc::collections::btree::borrow::DormantMutRef"
+                        []
+                        [ T ]
                         [
                           ("ptr", M.read (| ptr |));
-                          ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                          ("_marker",
+                            Value.StructTuple
+                              "core::marker::PhantomData"
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                              [])
                         ]
                     ]
                 |)

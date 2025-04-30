@@ -94,6 +94,8 @@ Module array.
               M.alloc (|
                 Value.StructRecord
                   "core::array::iter::IntoIter"
+                  [ N ]
+                  [ T ]
                   [
                     ("data", M.read (| data |));
                     ("alive",
@@ -227,6 +229,8 @@ Module array.
               M.alloc (|
                 Value.StructRecord
                   "core::array::iter::IntoIter"
+                  [ N ]
+                  [ T ]
                   [ ("data", M.read (| buffer |)); ("alive", M.read (| alive |)) ]
               |)
             |)))
@@ -290,6 +294,8 @@ Module array.
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_", Value.Integer IntegerKind.Usize 0)
@@ -769,7 +775,11 @@ Module array.
                 Value.Tuple
                   [
                     M.read (| len |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| len |) ]
                   ]
               |)
             |)))
@@ -848,6 +858,8 @@ Module array.
                   [
                     Value.StructTuple
                       "core::iter::adapters::by_ref_sized::ByRefSized"
+                      []
+                      [ Ty.path "core::ops::index_range::IndexRange" ]
                       [
                         M.borrow (|
                           Pointer.Kind.MutRef,
@@ -1250,8 +1262,21 @@ Module array.
                       |),
                       [ M.read (| remaining |) ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -1628,6 +1653,8 @@ Module array.
                   [
                     Value.StructTuple
                       "core::iter::adapters::by_ref_sized::ByRefSized"
+                      []
+                      [ Ty.path "core::ops::index_range::IndexRange" ]
                       [
                         M.borrow (|
                           Pointer.Kind.MutRef,
@@ -1964,8 +1991,21 @@ Module array.
                       |),
                       [ M.read (| remaining |) ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -2264,6 +2304,8 @@ Module array.
                 M.alloc (|
                   Value.StructRecord
                     "core::array::iter::IntoIter"
+                    [ N ]
+                    [ T ]
                     [
                       ("data",
                         repeat (|

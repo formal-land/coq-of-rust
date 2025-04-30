@@ -34,7 +34,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "i32" ]
+              [ Value.Integer IntegerKind.I32 0 ]
           |) in
         M.loop (|
           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -109,7 +113,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.alloc (|
                                 M.write (|
                                   optional,
-                                  Value.StructTuple "core::option::Option::None" []
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "i32" ]
+                                    []
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -192,6 +200,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   optional,
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "i32" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "i32",

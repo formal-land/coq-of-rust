@@ -20,7 +20,7 @@ Module Range.
     Φ :=
       Ty.apply (Ty.path "core::ops::range::Range") [] [ Φ Idx ];
     φ x :=
-      Value.StructRecord "core::ops::range::Range" [
+      Value.StructRecord "core::ops::range::Range" [] [ Φ Idx ] [
         ("start", φ x.(start));
         ("end", φ x.(end_))
       ];
@@ -69,9 +69,9 @@ Module Bound.
     Φ := Ty.apply (Ty.path "core::ops::Range::Bound") [] [Φ T];
     φ x :=
       match x with
-      | Included x => Value.StructTuple "core::ops::Range::Bound::Included" [φ x]
-      | Excluded x => Value.StructTuple "core::ops::Range::Bound::Excluded" [φ x]
-      | Unbounded => Value.StructTuple "core::ops::Range::Bound::Unbounded" []
+      | Included x => Value.StructTuple "core::ops::Range::Bound::Included" [] [Φ T] [φ x]
+      | Excluded x => Value.StructTuple "core::ops::Range::Bound::Excluded" [] [Φ T] [φ x]
+      | Unbounded => Value.StructTuple "core::ops::Range::Bound::Unbounded" [] [Φ T] []
       end;
   }.
 End Bound.
@@ -154,7 +154,7 @@ Module RangeTo.
 
   Global Instance IsLink (Idx : Set) `{Link Idx} : Link (t Idx) := {
     Φ := Ty.apply (Ty.path "core::ops::range::RangeTo") [] [Φ Idx];
-    φ x := Value.StructRecord "core::ops::range::RangeTo" [("end_", φ x.(end_))];
+    φ x := Value.StructRecord "core::ops::range::RangeTo" [] [Φ Idx] [("end_", φ x.(end_))];
   }.
 
   Definition of_ty (Idx_ty : Ty.t) :
@@ -168,24 +168,26 @@ Module RangeTo.
   Defined.
   Smpl Add eapply of_ty : of_ty.
 
-  Lemma of_value_with {Idx : Set} `{Link Idx} (end_ : Idx) end_' :
+  Lemma of_value_with {Idx : Set} `{Link Idx} Idx' (end_ : Idx) end_' :
+    Idx' = Φ Idx ->
     end_' = φ end_ ->
-    Value.StructRecord "core::ops::range::RangeTo" [("end_", end_')] =
-    φ (Build_t _ end_).
+    Value.StructRecord "core::ops::range::RangeTo" [] [Idx'] [("end_", end_')] =
+    φ (Build_t Idx end_).
   Proof.
     now intros; subst.
   Qed.
   Smpl Add eapply of_value_with : of_value.
 
-  Definition of_value end_' :
-    OfValue.t end_' ->
-    OfValue.t (Value.StructRecord "core::ops::range::RangeTo" [("end_", end_')]).
+  Definition of_value Idx' end_' :
+    forall
+      (of_value_end : OfValue.t end_'),
+    Idx' = Φ (OfValue.get_Set of_value_end) ->
+    OfValue.t (Value.StructRecord "core::ops::range::RangeTo" [] [Idx'] [("end_", end_')]).
   Proof.
-    intros [Idx ? end_].
+    intros [Idx ? end_] **.
     eapply OfValue.Make with (A := t Idx) (value := Build_t Idx end_).
-    subst.
-    reflexivity.
+    now subst.
   Defined.
-  Smpl Add eapply of_value : of_value.
+  Smpl Add unshelve eapply of_value : of_value.
 End RangeTo.
 Export RangeTo.

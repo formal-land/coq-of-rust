@@ -275,7 +275,12 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
               M.read (| opt |);
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ Value.StructTuple "core::option::Option::None" [] ];
+                []
+                [
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ];
+                  Ty.path "core::num::error::ParseIntError"
+                ]
+                [ Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] ];
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -343,7 +348,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   |),
                                   [
                                     M.read (| r |);
-                                    M.constructor_as_closure "core::option::Option::Some"
+                                    M.constructor_as_closure
+                                      "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "i32" ]
                                   ]
                                 |)))
                           ]

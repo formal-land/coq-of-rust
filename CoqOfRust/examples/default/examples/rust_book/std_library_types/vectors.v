@@ -91,6 +91,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "i32" ]
                   [
                     ("start", Value.Integer IntegerKind.I32 0);
                     ("end_", Value.Integer IntegerKind.I32 10)

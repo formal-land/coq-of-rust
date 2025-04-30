@@ -164,13 +164,17 @@ Module checked.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
-                      [ Value.StructTuple "result::checked::MathError::DivisionByZero" [] ]
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+                      [ Value.StructTuple "result::checked::MathError::DivisionByZero" [] [] [] ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
                       [
                         M.call_closure (|
                           Ty.path "f64",
@@ -231,13 +235,18 @@ Module checked.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
-                      [ Value.StructTuple "result::checked::MathError::NegativeSquareRoot" [] ]
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+                      [ Value.StructTuple "result::checked::MathError::NegativeSquareRoot" [] [] []
+                      ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
                       [
                         M.call_closure (|
                           Ty.path "f64",
@@ -298,13 +307,23 @@ Module checked.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
-                      [ Value.StructTuple "result::checked::MathError::NonPositiveLogarithm" [] ]
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+                      [
+                        Value.StructTuple
+                          "result::checked::MathError::NonPositiveLogarithm"
+                          []
+                          []
+                          []
+                      ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
                       [
                         M.call_closure (|
                           Ty.path "f64",

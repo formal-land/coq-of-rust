@@ -862,6 +862,15 @@ pub(crate) fn compile_expr<'a>(
             }
         }
         thir::ExprKind::Adt(adt_expr) => {
+            let ty = compile_type(env, &expr.span, generics, &expr.ty);
+            let (arg_consts, arg_tys) = match ty.as_ref() {
+                CoqType::Application {
+                    func: _,
+                    consts,
+                    tys,
+                } => (consts.clone(), tys.clone()),
+                _ => (vec![], vec![]),
+            };
             let AdtExpr {
                 adt_def,
                 variant_index,
@@ -894,6 +903,8 @@ pub(crate) fn compile_expr<'a>(
             if fields.is_empty() {
                 return Rc::new(Expr::StructTuple {
                     path,
+                    arg_consts,
+                    arg_tys,
                     fields: vec![],
                 })
                 .alloc();
@@ -901,9 +912,22 @@ pub(crate) fn compile_expr<'a>(
 
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Rc::new(Expr::StructTuple { path, fields }).alloc()
+                Rc::new(Expr::StructTuple {
+                    path,
+                    arg_consts,
+                    arg_tys,
+                    fields,
+                })
+                .alloc()
             } else {
-                Rc::new(Expr::StructStruct { path, fields, base }).alloc()
+                Rc::new(Expr::StructStruct {
+                    path,
+                    arg_consts,
+                    arg_tys,
+                    fields,
+                    base,
+                })
+                .alloc()
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
@@ -1129,11 +1153,29 @@ pub(crate) fn compile_expr<'a>(
                         }
                         DefKind::Struct | DefKind::Variant => {
                             let path = compile_def_id(env, *def_id);
+                            let generic_consts = generic_args
+                                .iter()
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect::<Vec<_>>();
+                            let generic_tys = generic_args
+                                .iter()
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_type()
+                                        .as_ref()
+                                        .map(|ty| compile_type(env, &expr.span, generics, ty))
+                                })
+                                .collect::<Vec<_>>();
 
-                            Rc::new(Expr::Call {
-                                func: Expr::local_var("M.constructor_as_closure"),
-                                args: vec![Rc::new(Expr::InternalString(path.to_string()))],
-                                kind: CallKind::Pure,
+                            Rc::new(Expr::ConstructorAsClosure {
+                                path,
+                                generic_consts,
+                                generic_tys,
                             })
                             .alloc()
                         }

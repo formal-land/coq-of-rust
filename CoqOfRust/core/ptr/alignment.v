@@ -205,7 +205,9 @@ Module ptr.
           (M.alloc (|
             Value.StructTuple
               "core::ptr::alignment::Alignment"
-              [ Value.StructTuple "core::ptr::alignment::AlignmentEnum::_Align1Shl0" [] ]
+              []
+              []
+              [ Value.StructTuple "core::ptr::alignment::AlignmentEnum::_Align1Shl0" [] [] [] ]
           |))).
       
       Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
@@ -293,6 +295,8 @@ Module ptr.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "core::ptr::alignment::Alignment" ]
                           [
                             M.call_closure (|
                               Ty.path "core::ptr::alignment::Alignment",
@@ -308,7 +312,13 @@ Module ptr.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::ptr::alignment::Alignment" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -841,7 +851,7 @@ Module ptr.
                   |),
                   [ M.read (| align |) ]
                 |);
-                Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
+                Value.StructTuple "core::num::error::TryFromIntError" [] [] [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1036,6 +1046,8 @@ Module ptr.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",

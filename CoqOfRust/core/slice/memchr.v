@@ -312,6 +312,8 @@ Module slice.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ M.read (| i |) ]
                                               |)
                                             |)
@@ -349,7 +351,9 @@ Module slice.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                M.alloc (|
+                  Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -740,6 +744,8 @@ Module slice.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeFrom"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [ ("start", M.read (| offset |)) ]
                                                         ]
                                                       |)
@@ -807,6 +813,8 @@ Module slice.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "usize",
@@ -1085,6 +1093,8 @@ Module slice.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("end_", M.read (| offset |)) ]
                                             ]
                                           |)

@@ -676,15 +676,15 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)))
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] [] [] |)))
               ]
             |)
           |)))
@@ -966,6 +966,8 @@ Module cmp.
         ltac:(M.monadic
           (Value.StructTuple
             "core::cmp::Reverse"
+            []
+            [ T ]
             [
               M.call_closure (|
                 T,
@@ -1311,6 +1313,8 @@ Module cmp.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::cmp::Reverse"
+            []
+            [ T ]
             [
               M.call_closure (|
                 T,
@@ -3746,7 +3750,9 @@ Module cmp.
                   ltac:(M.monadic
                     (Value.StructTuple
                       "core::option::Option::Some"
-                      [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+                      []
+                      [ Ty.path "core::cmp::Ordering" ]
+                      [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3777,6 +3783,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -3855,7 +3863,13 @@ Module cmp.
                         is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -3867,7 +3881,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3880,7 +3896,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3893,7 +3911,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                       |)))
                 ]
               |)
@@ -4045,7 +4065,13 @@ Module cmp.
                         is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -4057,7 +4083,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4070,7 +4098,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4083,7 +4113,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                       |)))
                 ]
               |)
@@ -4235,7 +4267,13 @@ Module cmp.
                         is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -4247,7 +4285,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4260,7 +4300,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4273,7 +4315,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                       |)))
                 ]
               |)
@@ -4425,7 +4469,13 @@ Module cmp.
                         is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -4437,7 +4487,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4450,7 +4502,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4463,7 +4517,9 @@ Module cmp.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]
+                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
                       |)))
                 ]
               |)
@@ -4573,7 +4629,7 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
-            Value.StructTuple "core::cmp::Ordering::Equal" []))
+            Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -4630,7 +4686,7 @@ Module cmp.
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 (-1)
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
@@ -4638,7 +4694,7 @@ Module cmp.
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 0
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
@@ -4646,7 +4702,7 @@ Module cmp.
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 1
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -4804,6 +4860,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -4959,6 +5017,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -5114,6 +5174,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -5265,6 +5327,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -5416,6 +5480,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -5567,6 +5633,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -5718,6 +5786,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -5873,6 +5943,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -6028,6 +6100,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -6179,6 +6253,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -6330,6 +6406,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -6481,6 +6559,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -6632,6 +6712,8 @@ Module cmp.
             let other := M.alloc (| other |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.path "core::cmp::Ordering" ]
               [
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",

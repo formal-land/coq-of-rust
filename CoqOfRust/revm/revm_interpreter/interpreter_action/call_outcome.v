@@ -27,6 +27,8 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
+              []
+              []
               [
                 ("result",
                   M.call_closure (|
@@ -335,6 +337,8 @@ Module interpreter_action.
             let memory_offset := M.alloc (| memory_offset |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
+              []
+              []
               [ ("result", M.read (| result |)); ("memory_offset", M.read (| memory_offset |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

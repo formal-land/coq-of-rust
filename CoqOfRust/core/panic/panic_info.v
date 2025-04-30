@@ -155,6 +155,8 @@ Module panic.
             let force_no_backtrace := M.alloc (| force_no_backtrace |) in
             Value.StructRecord
               "core::panic::panic_info::PanicInfo"
+              []
+              []
               [
                 ("location", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| location |) |) |));
                 ("message", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| message |) |) |));
@@ -180,6 +182,8 @@ Module panic.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::panic::panic_info::PanicMessage"
+              []
+              []
               [
                 ("message",
                   M.borrow (|
@@ -216,6 +220,8 @@ Module panic.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::option::Option::Some"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ] ]
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -267,7 +273,7 @@ Module panic.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.StructTuple "core::panic::panic_info::payload::NoPayload" []
+                            Value.StructTuple "core::panic::panic_info::payload::NoPayload" [] [] []
                           |)
                         |)
                       |)
@@ -813,7 +819,13 @@ Module panic.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

@@ -24,6 +24,8 @@ Module async_iter.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::async_iter::from_iter::FromIter"
+              []
+              [ I ]
               [
                 ("iter",
                   M.call_closure (|
@@ -147,6 +149,9 @@ Module async_iter.
           (let iter := M.alloc (| iter |) in
           Value.StructRecord
             "core::async_iter::from_iter::FromIter"
+            []
+            [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"
+            ]
             [
               ("iter",
                 M.call_closure (|
@@ -198,6 +203,13 @@ Module async_iter.
             let _cx := M.alloc (| _cx |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ]
+              ]
               [
                 M.call_closure (|
                   Ty.apply

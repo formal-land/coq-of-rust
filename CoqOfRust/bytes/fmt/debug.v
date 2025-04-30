@@ -1462,6 +1462,11 @@ Module fmt.
                                                                                                         M.alloc (|
                                                                                                           Value.StructRecord
                                                                                                             "core::ops::range::Range"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "u8"
+                                                                                                            ]
                                                                                                             [
                                                                                                               ("start",
                                                                                                                 Value.Integer
@@ -1940,15 +1945,21 @@ Module fmt.
                                                                                                                                   32;
                                                                                                                                 Value.StructTuple
                                                                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                                                                  []
+                                                                                                                                  []
                                                                                                                                   [];
                                                                                                                                 Value.Integer
                                                                                                                                   IntegerKind.U32
                                                                                                                                   8;
                                                                                                                                 Value.StructTuple
                                                                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                                                                  []
+                                                                                                                                  []
                                                                                                                                   [];
                                                                                                                                 Value.StructTuple
                                                                                                                                   "core::fmt::rt::Count::Is"
+                                                                                                                                  []
+                                                                                                                                  []
                                                                                                                                   [
                                                                                                                                     Value.Integer
                                                                                                                                       IntegerKind.Usize
@@ -2213,7 +2224,13 @@ Module fmt.
                             val))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2265,6 +2282,8 @@ Module fmt.
                       M.alloc (|
                         Value.StructTuple
                           "bytes::fmt::BytesRef"
+                          []
+                          []
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -2345,6 +2364,8 @@ Module fmt.
                       M.alloc (|
                         Value.StructTuple
                           "bytes::fmt::BytesRef"
+                          []
+                          []
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,

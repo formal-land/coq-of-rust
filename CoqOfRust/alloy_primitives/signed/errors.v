@@ -375,12 +375,16 @@ Module signed.
                         Value.StructTuple
                           "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signed::errors::ParseSignedError::Ruint"
+                          []
+                          []
                           [ M.read (| err |) ]
                       |)))
                 ]
@@ -440,6 +444,13 @@ Module signed.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
                           [
                             (* Unsize *)
                             M.pointer_coercion
@@ -454,7 +465,18 @@ Module signed.
                           γ,
                           "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))

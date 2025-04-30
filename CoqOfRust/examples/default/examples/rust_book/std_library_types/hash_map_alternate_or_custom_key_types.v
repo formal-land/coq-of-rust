@@ -449,6 +449,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
+              []
+              []
               [
                 ("username", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| username |) |) |));
                 ("password", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| password |) |) |))
@@ -790,6 +792,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
+              []
+              []
               [
                 ("username",
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |));
@@ -805,6 +809,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::AccountInfo"
+              []
+              []
               [
                 ("name",
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "John Everyman" |) |) |));

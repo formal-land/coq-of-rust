@@ -79,6 +79,8 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       ltac:(M.monadic
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
+          []
+          []
           [
             ("x",
               M.borrow (|

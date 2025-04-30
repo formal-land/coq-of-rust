@@ -123,6 +123,8 @@ Module code_unit_verifier.
                                     M.read (| e |);
                                     Value.StructTuple
                                       "move_binary_format::errors::Location::Module"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -530,6 +532,8 @@ Module code_unit_verifier.
                                                   |);
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                    []
+                                                    []
                                                     [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                                 ]
                                               |)
@@ -748,6 +752,8 @@ Module code_unit_verifier.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                []
+                                                []
                                                 [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                             |) in
                                           let~ num_back_edges :
@@ -916,6 +922,8 @@ Module code_unit_verifier.
                                                                                 M.read (| err |);
                                                                                 Value.StructTuple
                                                                                   "move_binary_format::IndexKind::FunctionDefinition"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 M.read (|
                                                                                   M.SubPointer.get_struct_tuple_field (|
@@ -1071,6 +1079,11 @@ Module code_unit_verifier.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -1086,6 +1099,8 @@ Module code_unit_verifier.
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TOO_MANY_BACK_EDGES"
                                                     []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             ]
@@ -1099,7 +1114,13 @@ Module code_unit_verifier.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1284,7 +1305,7 @@ Module code_unit_verifier.
                             |)
                           |)
                         |);
-                        Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" []
+                        Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [] [] []
                       ]
                     |)
                   |) in
@@ -1341,6 +1362,11 @@ Module code_unit_verifier.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.path "usize";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [ Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 |)
@@ -1601,6 +1627,11 @@ Module code_unit_verifier.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "usize";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -1626,6 +1657,8 @@ Module code_unit_verifier.
                                                     [
                                                       Value.StructTuple
                                                         "move_core_types::vm_status::StatusCode::TOO_MANY_BASIC_BLOCKS"
+                                                        []
+                                                        []
                                                         []
                                                     ]
                                                   |);
@@ -1728,6 +1761,11 @@ Module code_unit_verifier.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "usize";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -1754,6 +1792,8 @@ Module code_unit_verifier.
                                                       Value.StructTuple
                                                         "move_core_types::vm_status::StatusCode::TOO_MANY_BACK_EDGES"
                                                         []
+                                                        []
+                                                        []
                                                     ]
                                                   |);
                                                   M.read (| index |);
@@ -1779,6 +1819,8 @@ Module code_unit_verifier.
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier"
+                      []
+                      []
                       [
                         ("module",
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |));
@@ -2071,8 +2113,16 @@ Module code_unit_verifier.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
-                              Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
-                              Value.StructTuple "move_bytecode_verifier_meter::Scope::Module" [];
+                              Value.StructTuple
+                                "move_bytecode_verifier_meter::Scope::Function"
+                                []
+                                []
+                                [];
+                              Value.StructTuple
+                                "move_bytecode_verifier_meter::Scope::Module"
+                                []
+                                []
+                                [];
                               M.read (| UnsupportedLiteral |)
                             ]
                           |)
@@ -2143,7 +2193,11 @@ Module code_unit_verifier.
                     ]
                   |) in
                 M.alloc (|
-                  Value.StructTuple "core::result::Result::Ok" [ M.read (| num_back_edges |) ]
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ M.read (| num_back_edges |) ]
                 |)
               |)))
           |)))

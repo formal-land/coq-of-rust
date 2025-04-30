@@ -1001,7 +1001,7 @@ Module collections.
                               "inner"
                             |)
                           |);
-                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                         ]
                       |)
                     |) in
@@ -1034,6 +1034,8 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 Value.StructRecord
                   "alloc::collections::btree::set::entry::OccupiedEntry"
+                  []
+                  [ T; A ]
                   [
                     ("inner",
                       M.call_closure (|
@@ -1058,7 +1060,7 @@ Module collections.
                               "inner"
                             |)
                           |);
-                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []
                         ]
                       |))
                   ]))

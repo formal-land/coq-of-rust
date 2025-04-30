@@ -17,7 +17,7 @@ Module Eof.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_bytecode::eof::Eof";
     φ '(Build_t header body raw) :=
-      Value.StructRecord "revm_bytecode::eof::Eof" [
+      Value.StructRecord "revm_bytecode::eof::Eof" [] [] [
         ("header", φ header);
         ("body", φ body);
         ("raw", φ raw)
@@ -32,7 +32,7 @@ Module Eof.
     header' = φ header ->
     body' = φ body ->
     raw' = φ raw ->
-    Value.StructRecord "revm_bytecode::eof::Eof" [
+    Value.StructRecord "revm_bytecode::eof::Eof" [] [] [
       ("header", header');
       ("body", body');
       ("raw", raw')
@@ -47,7 +47,7 @@ Module Eof.
     header' = φ header ->
     body' = φ body ->
     raw' = φ raw ->
-    OfValue.t (Value.StructRecord "revm_bytecode::eof::Eof" [
+    OfValue.t (Value.StructRecord "revm_bytecode::eof::Eof" [] [] [
       ("header", header');
       ("body", body');
       ("raw", raw')
@@ -127,26 +127,26 @@ Module EofDecodeError.
     Φ := Ty.path "revm_bytecode::eof::EofDecodeError";
     φ x := 
       match x with
-      | MissingInput => Value.StructTuple "revm_bytecode::eof::EofDecodeError::MissingInput" []
-      | MissingBodyWithoutData => Value.StructTuple "revm_bytecode::eof::EofDecodeError::MissingBodyWithoutData" []
-      | DanglingData => Value.StructTuple "revm_bytecode::eof::EofDecodeError::DanglingData" []
-      | InvalidCodeInfo => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidCodeInfo" []
-      | InvalidCodeInfoSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidCodeInfoSize" []
-      | InvalidEOFMagicNumber => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidEOFMagicNumber" []
-      | InvalidEOFVersion => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidEOFVersion" []
-      | InvalidTypesKind => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidTypesKind" []
-      | InvalidCodeKind => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidCodeKind" []
-      | InvalidTerminalByte => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidTerminalByte" []
-      | InvalidDataKind => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidDataKind" []
-      | InvalidKindAfterCode => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidKindAfterCode" []
-      | MismatchCodeAndInfoSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::MismatchCodeAndInfoSize" []
-      | NonSizes => Value.StructTuple "revm_bytecode::eof::EofDecodeError::NonSizes" []
-      | ShortInputForSizes => Value.StructTuple "revm_bytecode::eof::EofDecodeError::ShortInputForSizes" []
-      | ZeroSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::ZeroSize" []
-      | TooManyCodeSections => Value.StructTuple "revm_bytecode::eof::EofDecodeError::TooManyCodeSections" []
-      | ZeroCodeSections => Value.StructTuple "revm_bytecode::eof::EofDecodeError::ZeroCodeSections" []
-      | TooManyContainerSections => Value.StructTuple "revm_bytecode::eof::EofDecodeError::TooManyContainerSections" []
-      | InvalidEOFSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidEOFSize" []
+      | MissingInput => Value.StructTuple "revm_bytecode::eof::EofDecodeError::MissingInput" [] [] []
+      | MissingBodyWithoutData => Value.StructTuple "revm_bytecode::eof::EofDecodeError::MissingBodyWithoutData" [] [] []
+      | DanglingData => Value.StructTuple "revm_bytecode::eof::EofDecodeError::DanglingData" [] [] []
+      | InvalidCodeInfo => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidCodeInfo" [] [] []
+      | InvalidCodeInfoSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidCodeInfoSize" [] [] []
+      | InvalidEOFMagicNumber => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidEOFMagicNumber" [] [] []
+      | InvalidEOFVersion => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidEOFVersion" [] [] []
+      | InvalidTypesKind => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidTypesKind" [] [] []
+      | InvalidCodeKind => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidCodeKind" [] [] []
+      | InvalidTerminalByte => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidTerminalByte" [] [] []
+      | InvalidDataKind => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidDataKind" [] [] []
+      | InvalidKindAfterCode => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidKindAfterCode" [] [] []
+      | MismatchCodeAndInfoSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::MismatchCodeAndInfoSize" [] [] []
+      | NonSizes => Value.StructTuple "revm_bytecode::eof::EofDecodeError::NonSizes" [] [] []
+      | ShortInputForSizes => Value.StructTuple "revm_bytecode::eof::EofDecodeError::ShortInputForSizes" [] [] []
+      | ZeroSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::ZeroSize" [] [] []
+      | TooManyCodeSections => Value.StructTuple "revm_bytecode::eof::EofDecodeError::TooManyCodeSections" [] [] []
+      | ZeroCodeSections => Value.StructTuple "revm_bytecode::eof::EofDecodeError::ZeroCodeSections" [] [] []
+      | TooManyContainerSections => Value.StructTuple "revm_bytecode::eof::EofDecodeError::TooManyContainerSections" [] [] []
+      | InvalidEOFSize => Value.StructTuple "revm_bytecode::eof::EofDecodeError::InvalidEOFSize" [] [] []
       end;
   }.
 

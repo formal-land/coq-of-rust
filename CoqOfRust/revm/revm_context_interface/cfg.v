@@ -1705,7 +1705,7 @@ Module cfg.
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_context_interface::cfg::AnalysisKind::Raw" |) in
                     M.alloc (|
-                      Value.StructTuple "revm_context_interface::cfg::AnalysisKind::Raw" []
+                      Value.StructTuple "revm_context_interface::cfg::AnalysisKind::Raw" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1716,7 +1716,11 @@ Module cfg.
                         "revm_context_interface::cfg::AnalysisKind::Analyse"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "revm_context_interface::cfg::AnalysisKind::Analyse" []
+                      Value.StructTuple
+                        "revm_context_interface::cfg::AnalysisKind::Analyse"
+                        []
+                        []
+                        []
                     |)))
               ]
             |)
@@ -1740,7 +1744,8 @@ Module cfg.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic (Value.StructTuple "revm_context_interface::cfg::AnalysisKind::Analyse" []))
+        ltac:(M.monadic
+          (Value.StructTuple "revm_context_interface::cfg::AnalysisKind::Analyse" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

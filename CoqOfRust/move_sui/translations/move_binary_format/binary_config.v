@@ -37,6 +37,8 @@ Module binary_config.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::binary_config::TableConfig"
+            []
+            []
             [
               ("module_handles",
                 M.call_closure (|
@@ -849,6 +851,8 @@ Module binary_config.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::binary_config::TableConfig"
+            []
+            []
             [
               ("module_handles",
                 M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |));
@@ -911,6 +915,8 @@ Module binary_config.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::binary_config::BinaryConfig"
+            []
+            []
             [
               ("max_binary_format_version",
                 M.call_closure (|
@@ -1131,6 +1137,8 @@ Module binary_config.
           let table_config := M.alloc (| table_config |) in
           Value.StructRecord
             "move_binary_format::binary_config::BinaryConfig"
+            []
+            []
             [
               ("max_binary_format_version", M.read (| max_binary_format_version |));
               ("check_no_extraneous_bytes", M.read (| check_no_extraneous_bytes |));
@@ -1160,6 +1168,8 @@ Module binary_config.
           let check_no_extraneous_bytes := M.alloc (| check_no_extraneous_bytes |) in
           Value.StructRecord
             "move_binary_format::binary_config::BinaryConfig"
+            []
+            []
             [
               ("max_binary_format_version", M.read (| max_binary_format_version |));
               ("check_no_extraneous_bytes", M.read (| check_no_extraneous_bytes |));
@@ -1202,6 +1212,8 @@ Module binary_config.
           (let check_no_extraneous_bytes := M.alloc (| check_no_extraneous_bytes |) in
           Value.StructRecord
             "move_binary_format::binary_config::BinaryConfig"
+            []
+            []
             [
               ("max_binary_format_version",
                 M.read (|
@@ -1246,6 +1258,8 @@ Module binary_config.
         ltac:(M.monadic
           (Value.StructRecord
             "move_binary_format::binary_config::BinaryConfig"
+            []
+            []
             [
               ("max_binary_format_version",
                 M.read (|

@@ -303,6 +303,8 @@ Module slice.
                       M.alloc (|
                         Value.StructRecord
                           "core::slice::sort::stable::merge::MergeState"
+                          []
+                          [ T ]
                           [
                             ("start", M.read (| buf |));
                             ("end_",

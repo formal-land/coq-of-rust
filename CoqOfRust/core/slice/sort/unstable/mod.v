@@ -405,7 +405,11 @@ Module slice.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
-                                  Value.StructTuple "core::option::Option::None" [];
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                    [];
                                   M.read (| limit |);
                                   M.borrow (|
                                     Pointer.Kind.MutRef,

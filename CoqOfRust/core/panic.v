@@ -1032,7 +1032,11 @@ Module panic.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::option::Option::None" []))
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -68,9 +68,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ empty : Ty.apply (Ty.path "*") [] [ Ty.path "generics_traits::Empty" ] :=
-          M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
+          M.alloc (| Value.StructTuple "generics_traits::Empty" [] [] [] |) in
         let~ null : Ty.apply (Ty.path "*") [] [ Ty.path "generics_traits::Null" ] :=
-          M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
+          M.alloc (| Value.StructTuple "generics_traits::Null" [] [] [] |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|

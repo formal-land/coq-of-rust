@@ -714,6 +714,8 @@ Module loop_summary.
               M.alloc (|
                 Value.StructTuple
                   "move_bytecode_verifier::loop_summary::NodeId"
+                  []
+                  []
                   [ Value.Integer IntegerKind.U16 0 ]
               |) in
             let~ root_block : Ty.apply (Ty.path "*") [] [ Ty.path "u16" ] :=
@@ -862,6 +864,8 @@ Module loop_summary.
                     M.read (| root_block |);
                     Value.StructTuple
                       "move_bytecode_verifier::loop_summary::new::Exploration::InProgress"
+                      []
+                      []
                       [ M.read (| root_node |) ]
                   ]
                 |)
@@ -1032,6 +1036,8 @@ Module loop_summary.
                                           (let succ := M.copy (| γ |) in
                                           Value.StructRecord
                                             "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
+                                            []
+                                            []
                                             [
                                               ("from_node", M.read (| root_node |));
                                               ("to_block",
@@ -1283,6 +1289,8 @@ Module loop_summary.
                                         |),
                                         Value.StructTuple
                                           "move_bytecode_verifier::loop_summary::new::Exploration::Done"
+                                          []
+                                          []
                                           [ M.read (| node_id |) ]
                                       |)
                                     |) in
@@ -1654,6 +1662,8 @@ Module loop_summary.
                                                   M.read (| entry |);
                                                   Value.StructTuple
                                                     "move_bytecode_verifier::loop_summary::new::Exploration::InProgress"
+                                                    []
+                                                    []
                                                     [ M.read (| to_node |) ]
                                                 ]
                                               |)
@@ -1807,6 +1817,8 @@ Module loop_summary.
                                                   M.borrow (| Pointer.Kind.MutRef, stack |);
                                                   Value.StructRecord
                                                     "move_bytecode_verifier::loop_summary::new::Frontier::Finish"
+                                                    []
+                                                    []
                                                     [
                                                       ("block", M.read (| to_block |));
                                                       ("node_id", M.read (| to_node |));
@@ -2034,6 +2046,8 @@ Module loop_summary.
                                                                           M.copy (| γ |) in
                                                                         Value.StructRecord
                                                                           "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
+                                                                          []
+                                                                          []
                                                                           [
                                                                             ("from_node",
                                                                               M.read (| to_node |));
@@ -2077,6 +2091,8 @@ Module loop_summary.
             M.alloc (|
               Value.StructRecord
                 "move_bytecode_verifier::loop_summary::LoopSummary"
+                []
+                []
                 [
                   ("blocks", M.read (| blocks |));
                   ("descs", M.read (| descs |));
@@ -2236,6 +2252,8 @@ Module loop_summary.
             [
               Value.StructRecord
                 "core::ops::range::Range"
+                []
+                [ Ty.path "usize" ]
                 [
                   ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
@@ -2284,6 +2302,8 @@ Module loop_summary.
                                 (let id := M.copy (| γ |) in
                                 Value.StructTuple
                                   "move_bytecode_verifier::loop_summary::NodeId"
+                                  []
+                                  []
                                   [ M.cast (Ty.path "u16") (M.read (| id |)) ]))
                           ]
                         |)))
@@ -2579,6 +2599,8 @@ Module loop_summary.
             M.alloc (|
               Value.StructRecord
                 "move_bytecode_verifier::loop_summary::LoopPartition"
+                []
+                []
                 [
                   ("parents",
                     M.call_closure (|
@@ -2642,6 +2664,8 @@ Module loop_summary.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_", M.read (| num_blocks |))
@@ -2669,6 +2693,8 @@ Module loop_summary.
                                               (let id := M.copy (| γ |) in
                                               Value.StructTuple
                                                 "move_bytecode_verifier::loop_summary::NodeId"
+                                                []
+                                                []
                                                 [ M.cast (Ty.path "u16") (M.read (| id |)) ]))
                                         ]
                                       |)))
@@ -3239,6 +3265,8 @@ Module loop_summary.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -3275,6 +3303,8 @@ Module loop_summary.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -3535,6 +3565,8 @@ Module loop_summary.
                                                                             Value.StructTuple
                                                                               "core::panicking::AssertKind::Eq"
                                                                               []
+                                                                              []
+                                                                              []
                                                                           |) in
                                                                         M.alloc (|
                                                                           M.call_closure (|
@@ -3579,6 +3611,11 @@ Module loop_summary.
                                                                               |);
                                                                               Value.StructTuple
                                                                                 "core::option::Option::None"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments"
+                                                                                ]
                                                                                 []
                                                                             ]
                                                                           |)

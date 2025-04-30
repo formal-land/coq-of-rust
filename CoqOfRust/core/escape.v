@@ -94,13 +94,13 @@ Module escape.
                 [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                 ] :=
             M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |)
+              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
               |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -116,6 +116,8 @@ Module escape.
                 M.read (| output |);
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "u8" ]
                   [
                     ("start", Value.Integer IntegerKind.U8 0);
                     ("end_", Value.Integer IntegerKind.U8 2)
@@ -163,7 +165,7 @@ Module escape.
                 [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                 ] :=
             M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |)
+              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
             |) in
           let~ hi : Ty.apply (Ty.path "*") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
             M.copy (|
@@ -207,14 +209,14 @@ Module escape.
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 0 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
               |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 1 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" [] [] []
               |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -237,6 +239,8 @@ Module escape.
                 M.read (| output |);
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "u8" ]
                   [
                     ("start", Value.Integer IntegerKind.U8 0);
                     ("end_", Value.Integer IntegerKind.U8 4)
@@ -278,7 +282,7 @@ Module escape.
                 [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                 ] :=
             M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |)
+              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
@@ -293,6 +297,8 @@ Module escape.
                 M.read (| output |);
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "u8" ]
                   [
                     ("start", Value.Integer IntegerKind.U8 0);
                     ("end_", Value.Integer IntegerKind.U8 1)
@@ -841,7 +847,7 @@ Module escape.
                 [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                 ] :=
             M.alloc (|
-              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |)
+              repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [], N |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|
@@ -1033,7 +1039,7 @@ Module escape.
             M.alloc (|
               M.write (|
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 9 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" [] [] []
               |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1047,7 +1053,7 @@ Module escape.
                     [ M.read (| start |); Value.Integer IntegerKind.Usize 0 ]
                   |)
                 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] [] []
               |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1061,7 +1067,7 @@ Module escape.
                     [ M.read (| start |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallU" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallU" [] [] []
               |)
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1075,7 +1081,7 @@ Module escape.
                     [ M.read (| start |); Value.Integer IntegerKind.Usize 2 ]
                   |)
                 |),
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" []
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" [] [] []
               |)
             |) in
           M.alloc (|
@@ -1084,6 +1090,8 @@ Module escape.
                 M.read (| output |);
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "u8" ]
                   [
                     ("start", M.cast (Ty.path "u8") (M.read (| start |)));
                     ("end_", M.cast (Ty.path "u8") N)
@@ -1125,6 +1133,8 @@ Module escape.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::escape::EscapeIterInner"
+            [ N ]
+            []
             [
               ("data",
                 M.call_closure (|
@@ -1323,6 +1333,8 @@ Module escape.
                     M.alloc (|
                       Value.StructRecord
                         "core::escape::EscapeIterInner"
+                        [ N ]
+                        []
                         [ ("data", M.read (| data |)); ("alive", M.read (| range |)) ]
                     |)))
               ]
@@ -1379,6 +1391,8 @@ Module escape.
                     M.alloc (|
                       Value.StructRecord
                         "core::escape::EscapeIterInner"
+                        [ N ]
+                        []
                         [ ("data", M.read (| data |)); ("alive", M.read (| range |)) ]
                     |)))
               ]
@@ -1435,6 +1449,8 @@ Module escape.
                     M.alloc (|
                       Value.StructRecord
                         "core::escape::EscapeIterInner"
+                        [ N ]
+                        []
                         [ ("data", M.read (| data |)); ("alive", M.read (| range |)) ]
                     |)))
               ]
@@ -1461,12 +1477,19 @@ Module escape.
         ltac:(M.monadic
           (Value.StructRecord
             "core::escape::EscapeIterInner"
+            [ N ]
+            []
             [
               ("data",
-                repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |));
+                repeat (|
+                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [] [] [],
+                  N
+                |));
               ("alive",
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "u8" ]
                   [
                     ("start", Value.Integer IntegerKind.U8 0);
                     ("end_", Value.Integer IntegerKind.U8 0)
@@ -1523,6 +1546,8 @@ Module escape.
                     |));
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start",
                         M.call_closure (|
@@ -1834,6 +1859,8 @@ Module escape.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "u8" ]
                     [
                       M.call_closure (|
                         Ty.path "u8",
@@ -2026,6 +2053,8 @@ Module escape.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "u8" ]
                     [
                       M.call_closure (|
                         Ty.path "u8",

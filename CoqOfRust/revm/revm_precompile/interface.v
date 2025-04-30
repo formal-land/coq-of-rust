@@ -32,6 +32,8 @@ Module interface.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_precompile::interface::PrecompileOutput"
+            []
+            []
             [
               ("gas_used",
                 M.call_closure (|
@@ -406,6 +408,8 @@ Module interface.
           let bytes := M.alloc (| bytes |) in
           Value.StructRecord
             "revm_precompile::interface::PrecompileOutput"
+            []
+            []
             [ ("gas_used", M.read (| gas_used |)); ("bytes", M.read (| bytes |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -478,6 +482,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileErrors::Error"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "revm_precompile::interface::PrecompileError",
@@ -507,6 +513,8 @@ Module interface.
                     M.alloc (|
                       Value.StructRecord
                         "revm_precompile::interface::PrecompileErrors::Fatal"
+                        []
+                        []
                         [
                           ("msg",
                             M.call_closure (|
@@ -998,6 +1006,8 @@ Module interface.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Precompile"
+            []
+            [ DB; TXERROR ]
             [
               M.call_closure (|
                 Ty.path "alloc::string::String",
@@ -1272,7 +1282,11 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::OutOfGas"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "revm_precompile::interface::PrecompileError::OutOfGas" []
+                      Value.StructTuple
+                        "revm_precompile::interface::PrecompileError::OutOfGas"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1285,6 +1299,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Blake2WrongLength"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1299,6 +1315,8 @@ Module interface.
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1311,6 +1329,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1325,6 +1345,8 @@ Module interface.
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1337,6 +1359,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::ModexpModOverflow"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1351,6 +1375,8 @@ Module interface.
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1363,6 +1389,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1377,6 +1405,8 @@ Module interface.
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Bn128PairLength"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1389,6 +1419,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1403,6 +1435,8 @@ Module interface.
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1415,6 +1449,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -1430,6 +1466,8 @@ Module interface.
                     M.alloc (|
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Other"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "alloc::string::String",
@@ -2136,6 +2174,8 @@ Module interface.
           (let err := M.alloc (| err |) in
           Value.StructTuple
             "revm_precompile::interface::PrecompileError::Other"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "alloc::string::String",
@@ -2209,6 +2249,8 @@ Module interface.
           (let err := M.alloc (| err |) in
           Value.StructTuple
             "revm_precompile::interface::PrecompileErrors::Error"
+            []
+            []
             [ M.read (| err |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

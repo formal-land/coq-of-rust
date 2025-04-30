@@ -269,6 +269,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Rectangle"
+              []
+              []
               [
                 ("length", M.read (| UnsupportedLiteral |));
                 ("height", M.read (| UnsupportedLiteral |))
@@ -278,6 +280,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Triangle"
+              []
+              []
               [
                 ("length", M.read (| UnsupportedLiteral |));
                 ("height", M.read (| UnsupportedLiteral |))

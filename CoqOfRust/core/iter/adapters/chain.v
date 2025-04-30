@@ -29,6 +29,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::chain::Chain"
+                []
+                [ A; B ]
                 [
                   ("a",
                     M.call_closure (|
@@ -196,9 +198,11 @@ Module iter.
               let b := M.alloc (| b |) in
               Value.StructRecord
                 "core::iter::adapters::chain::Chain"
+                []
+                [ A; B ]
                 [
-                  ("a", Value.StructTuple "core::option::Option::Some" [ M.read (| a |) ]);
-                  ("b", Value.StructTuple "core::option::Option::Some" [ M.read (| b |) ])
+                  ("a", Value.StructTuple "core::option::Option::Some" [] [ A ] [ M.read (| a |) ]);
+                  ("b", Value.StructTuple "core::option::Option::Some" [] [ B ] [ M.read (| b |) ])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -907,7 +911,7 @@ Module iter.
                                       "core::iter::adapters::chain::Chain",
                                       "a"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ A ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1295,6 +1299,14 @@ Module iter.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::result::Result::Ok"
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.apply
+                                                            (Ty.path "core::num::nonzero::NonZero")
+                                                            []
+                                                            [ Ty.path "usize" ]
+                                                        ]
                                                         [ Value.Tuple [] ]
                                                     |)
                                                   |)
@@ -1337,7 +1349,7 @@ Module iter.
                                       "core::iter::adapters::chain::Chain",
                                       "a"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ A ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1476,8 +1488,27 @@ Module iter.
                             |),
                             [ M.read (| n |) ]
                           |);
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                          M.constructor_as_closure "core::result::Result::Err"
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ];
+                          M.constructor_as_closure
+                            "core::result::Result::Err"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
                         ]
                       |)
                     |)
@@ -1682,7 +1713,7 @@ Module iter.
                                       "core::iter::adapters::chain::Chain",
                                       "a"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ A ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -2658,6 +2689,8 @@ Module iter.
                                                       Value.StructTuple
                                                         "core::option::Option::None"
                                                         []
+                                                        [ Ty.path "usize" ]
+                                                        []
                                                     |)))
                                               ]
                                             |)
@@ -2776,6 +2809,8 @@ Module iter.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)))
@@ -3286,6 +3321,14 @@ Module iter.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::result::Result::Ok"
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.apply
+                                                            (Ty.path "core::num::nonzero::NonZero")
+                                                            []
+                                                            [ Ty.path "usize" ]
+                                                        ]
                                                         [ Value.Tuple [] ]
                                                     |)
                                                   |)
@@ -3328,7 +3371,7 @@ Module iter.
                                       "core::iter::adapters::chain::Chain",
                                       "b"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ B ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -3467,8 +3510,27 @@ Module iter.
                             |),
                             [ M.read (| n |) ]
                           |);
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                          M.constructor_as_closure "core::result::Result::Err"
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ];
+                          M.constructor_as_closure
+                            "core::result::Result::Err"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
                         ]
                       |)
                     |)
@@ -3678,7 +3740,7 @@ Module iter.
                                       "core::iter::adapters::chain::Chain",
                                       "b"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ B ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -4378,7 +4440,7 @@ Module iter.
                                       "core::iter::adapters::chain::Chain",
                                       "b"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ B ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -4935,7 +4997,7 @@ Module iter.
                               M.alloc (|
                                 M.write (|
                                   M.deref (| M.read (| opt |) |),
-                                  Value.StructTuple "core::option::Option::None" []
+                                  Value.StructTuple "core::option::Option::None" [] [ T ] []
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));

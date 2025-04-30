@@ -9,7 +9,11 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::option::Option::None" []))
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -185,7 +189,7 @@ Module error.
                   |),
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                    Value.StructTuple "core::error::private::Internal" []
+                    Value.StructTuple "core::error::private::Internal" [] [] []
                   ]
                 |)
               |) in
@@ -256,6 +260,8 @@ Module error.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -283,7 +289,14 @@ Module error.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -343,6 +356,8 @@ Module error.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -370,7 +385,14 @@ Module error.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -405,10 +427,14 @@ Module error.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::error::Source"
+            []
+            []
             [
               ("current",
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
                   [
                     (* Unsize *)
                     M.pointer_coercion
@@ -720,6 +746,8 @@ Module error.
             M.alloc (|
               Value.StructRecord
                 "core::error::Tagged"
+                []
+                [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
                 [
                   ("tag_id",
                     M.call_closure (|
@@ -730,7 +758,15 @@ Module error.
                   ("value",
                     Value.StructTuple
                       "core::error::TaggedOption"
-                      [ Value.StructTuple "core::option::Option::None" [] ])
+                      []
+                      [ I ]
+                      [
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.associated_in_trait "core::error::tags::Type" [] [] I "Reified" ]
+                          []
+                      ])
                 ]
             |) in
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1077,6 +1113,15 @@ Module error.
                                 |),
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::error::tags::Type"
+                                      []
+                                      []
+                                      I
+                                      "Reified"
+                                  ]
                                   [ M.read (| value |) ]
                               |)
                             |) in
@@ -1181,6 +1226,15 @@ Module error.
                                 |),
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::error::tags::Type"
+                                      []
+                                      []
+                                      I
+                                      "Reified"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.associated_in_trait
@@ -1930,6 +1984,13 @@ Module error.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2006,7 +2067,19 @@ Module error.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2103,6 +2176,13 @@ Module error.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -2179,7 +2259,19 @@ Module error.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2218,6 +2310,8 @@ Module error.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::error::Source"
+            []
+            []
             [
               ("current",
                 M.call_closure (|
@@ -2493,7 +2587,7 @@ Module error.
                       Value.Tuple
                         [
                           Value.Integer IntegerKind.Usize 1;
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
                         ]
                     |)));
                 fun γ =>
@@ -2504,6 +2598,8 @@ Module error.
                           Value.Integer IntegerKind.Usize 0;
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "usize" ]
                             [ Value.Integer IntegerKind.Usize 0 ]
                         ]
                     |)))

@@ -637,7 +637,18 @@ Module utils.
                           "alloy_primitives::utils::units::UnitsError::InvalidUnit",
                           0
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -651,6 +662,13 @@ Module utils.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
                           [
                             (* Unsize *)
                             M.pointer_coercion
@@ -849,6 +867,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::UnitsError::ParseSigned"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "alloy_primitives::signed::errors::ParseSignedError",
@@ -891,6 +911,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::UnitsError::ParseSigned"
+              []
+              []
               [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1970,6 +1992,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2070,6 +2094,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2170,6 +2196,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2270,6 +2298,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2370,6 +2400,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2470,6 +2502,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2570,6 +2604,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2660,6 +2696,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2738,6 +2776,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2816,6 +2856,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2894,6 +2936,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -2972,6 +3016,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3050,6 +3096,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3128,6 +3176,8 @@ Module utils.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -3584,6 +3634,8 @@ Module utils.
                                             M.borrow (| Pointer.Kind.Ref, amount |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("start", M.read (| di |)) ]
                                           ]
                                         |)
@@ -3671,6 +3723,8 @@ Module utils.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("end_",
                                             M.call_closure (|
@@ -3776,9 +3830,17 @@ Module utils.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::result::Result::Ok"
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloy_primitives::utils::units::ParseUnits";
+                                                Ty.path "alloy_primitives::utils::units::UnitsError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "alloy_primitives::utils::units::ParseUnits::I256"
+                                                  []
+                                                  []
                                                   [
                                                     M.read (|
                                                       get_associated_constant (|
@@ -3809,9 +3871,17 @@ Module utils.
                                           (M.alloc (|
                                             Value.StructTuple
                                               "core::result::Result::Ok"
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloy_primitives::utils::units::ParseUnits";
+                                                Ty.path "alloy_primitives::utils::units::UnitsError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "alloy_primitives::utils::units::ParseUnits::I256"
+                                                  []
+                                                  []
                                                   [
                                                     M.read (|
                                                       M.match_operator (|
@@ -4017,9 +4087,16 @@ Module utils.
                                   (M.alloc (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.path "alloy_primitives::utils::units::ParseUnits";
+                                        Ty.path "alloy_primitives::utils::units::UnitsError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::utils::units::ParseUnits::U256"
+                                          []
+                                          []
                                           [
                                             M.read (|
                                               M.match_operator (|
@@ -4265,9 +4342,17 @@ Module utils.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::result::Result::Ok"
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloy_primitives::utils::units::ParseUnits";
+                                                Ty.path "alloy_primitives::utils::units::UnitsError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "alloy_primitives::utils::units::ParseUnits::I256"
+                                                  []
+                                                  []
                                                   [
                                                     M.read (|
                                                       get_associated_constant (|
@@ -4796,9 +4881,13 @@ Module utils.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "alloy_primitives::utils::units::UnitsError::ParseSigned"
+                                                                  []
+                                                                  []
                                                                   [
                                                                     Value.StructTuple
                                                                       "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                                                      []
+                                                                      []
                                                                       []
                                                                   ]
                                                               ]
@@ -4885,9 +4974,17 @@ Module utils.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::result::Result::Ok"
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloy_primitives::utils::units::ParseUnits";
+                                                Ty.path "alloy_primitives::utils::units::UnitsError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "alloy_primitives::utils::units::ParseUnits::I256"
+                                                  []
+                                                  []
                                                   [ M.read (| n |) ]
                                               ]
                                           |)))
@@ -5291,9 +5388,13 @@ Module utils.
                                                         |);
                                                         Value.StructTuple
                                                           "alloy_primitives::utils::units::UnitsError::ParseSigned"
+                                                          []
+                                                          []
                                                           [
                                                             Value.StructTuple
                                                               "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                       ]
@@ -5377,9 +5478,16 @@ Module utils.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.path "alloy_primitives::utils::units::ParseUnits";
+                                        Ty.path "alloy_primitives::utils::units::UnitsError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::utils::units::ParseUnits::U256"
+                                          []
+                                          []
                                           [ M.read (| a_uint |) ]
                                       ]
                                   |)))
@@ -5855,13 +5963,19 @@ Module utils.
                                                             Value.UnicodeChar 32;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Alignment::Unknown"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.Integer IntegerKind.U32 0;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                         |);
@@ -5878,13 +5992,19 @@ Module utils.
                                                             Value.UnicodeChar 48;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Alignment::Right"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.Integer IntegerKind.U32 0;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Param"
+                                                              []
+                                                              []
                                                               [ Value.Integer IntegerKind.Usize 2 ]
                                                           ]
                                                         |)
@@ -6341,13 +6461,19 @@ Module utils.
                                                             Value.UnicodeChar 32;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Alignment::Unknown"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.Integer IntegerKind.U32 0;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                         |);
@@ -6364,13 +6490,19 @@ Module utils.
                                                             Value.UnicodeChar 32;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Alignment::Unknown"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.Integer IntegerKind.U32 0;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                         |);
@@ -6387,13 +6519,19 @@ Module utils.
                                                             Value.UnicodeChar 48;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Alignment::Right"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.Integer IntegerKind.U32 0;
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Implied"
+                                                              []
+                                                              []
                                                               [];
                                                             Value.StructTuple
                                                               "core::fmt::rt::Count::Param"
+                                                              []
+                                                              []
                                                               [ Value.Integer IntegerKind.Usize 3 ]
                                                           ]
                                                         |)
@@ -7313,6 +7451,8 @@ Module utils.
                                 ltac:(M.monadic
                                   (Value.StructTuple
                                     "alloy_primitives::utils::units::UnitsError::InvalidUnit"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "alloc::string::String",
@@ -7692,6 +7832,8 @@ Module utils.
                                                         ltac:(M.monadic
                                                           (Value.StructTuple
                                                             "alloy_primitives::utils::units::UnitsError::InvalidUnit"
+                                                            []
+                                                            []
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path "alloc::string::String",
@@ -7728,6 +7870,11 @@ Module utils.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "alloy_primitives::utils::units::Unit";
+                        Ty.path "alloy_primitives::utils::units::UnitsError"
+                      ]
                       [
                         M.read (|
                           M.match_operator (|
@@ -8079,9 +8226,16 @@ Module utils.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "alloy_primitives::utils::units::Unit";
+                                              Ty.path "alloy_primitives::utils::units::UnitsError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "alloy_primitives::utils::units::UnitsError::InvalidUnit"
+                                                []
+                                                []
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "alloc::string::String",
@@ -8485,6 +8639,8 @@ Module utils.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "alloy_primitives::utils::units::Unit" ]
                           [
                             M.call_closure (|
                               Ty.path "alloy_primitives::utils::units::Unit",
@@ -8500,7 +8656,13 @@ Module utils.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "alloy_primitives::utils::units::Unit" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -8521,7 +8683,7 @@ Module utils.
         | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple "alloy_primitives::utils::units::Unit" [ M.read (| x |) ]))
+            Value.StructTuple "alloy_primitives::utils::units::Unit" [] [] [ M.read (| x |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

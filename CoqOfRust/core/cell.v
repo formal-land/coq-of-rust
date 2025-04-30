@@ -605,6 +605,8 @@ Module cell.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::cell::Cell"
+            []
+            [ T ]
             [
               ("value",
                 M.call_closure (|
@@ -1883,6 +1885,8 @@ Module cell.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::cell::RefCell"
+            []
+            [ T ]
             [
               ("value",
                 M.call_closure (|
@@ -2401,9 +2405,16 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ T ];
+                          Ty.path "core::cell::BorrowError"
+                        ]
                         [
                           Value.StructRecord
                             "core::cell::Ref"
+                            []
+                            [ T ]
                             [ ("value", M.read (| value |)); ("borrow", M.read (| b |)) ]
                         ]
                     |)));
@@ -2413,7 +2424,12 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
-                        [ Value.StructTuple "core::cell::BorrowError" [] ]
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ T ];
+                          Ty.path "core::cell::BorrowError"
+                        ]
+                        [ Value.StructTuple "core::cell::BorrowError" [] [] [] ]
                     |)))
               ]
             |)
@@ -2616,13 +2632,25 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ T ];
+                          Ty.path "core::cell::BorrowMutError"
+                        ]
                         [
                           Value.StructRecord
                             "core::cell::RefMut"
+                            []
+                            [ T ]
                             [
                               ("value", M.read (| value |));
                               ("borrow", M.read (| b |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("marker",
+                                Value.StructTuple
+                                  "core::marker::PhantomData"
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                  [])
                             ]
                         ]
                     |)));
@@ -2632,7 +2660,12 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
-                        [ Value.StructTuple "core::cell::BorrowMutError" [] ]
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ T ];
+                          Ty.path "core::cell::BorrowMutError"
+                        ]
+                        [ Value.StructTuple "core::cell::BorrowMutError" [] [] [] ]
                     |)))
               ]
             |)
@@ -2886,6 +2919,8 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; Ty.path "core::cell::BorrowError" ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2923,7 +2958,9 @@ Module cell.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
-                        [ Value.StructTuple "core::cell::BorrowError" [] ]
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; Ty.path "core::cell::BorrowError" ]
+                        [ Value.StructTuple "core::cell::BorrowError" [] [] [] ]
                     |)))
               ]
             |)
@@ -4035,7 +4072,13 @@ Module cell.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "core::cell::BorrowRef" ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -4057,9 +4100,13 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "core::cell::BorrowRef" ]
                         [
                           Value.StructRecord
                             "core::cell::BorrowRef"
+                            []
+                            []
                             [
                               ("borrow",
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrow |) |) |))
@@ -4382,6 +4429,8 @@ Module cell.
             M.alloc (|
               Value.StructRecord
                 "core::cell::BorrowRef"
+                []
+                []
                 [
                   ("borrow",
                     M.borrow (|
@@ -4508,6 +4557,8 @@ Module cell.
           (let orig := M.alloc (| orig |) in
           Value.StructRecord
             "core::cell::Ref"
+            []
+            [ T ]
             [
               ("value",
                 M.read (|
@@ -4567,6 +4618,8 @@ Module cell.
           let f := M.alloc (| f |) in
           Value.StructRecord
             "core::cell::Ref"
+            []
+            [ U ]
             [
               ("value",
                 M.call_closure (|
@@ -4726,9 +4779,16 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ U ];
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ T ]
+                        ]
                         [
                           Value.StructRecord
                             "core::cell::Ref"
+                            []
+                            [ U ]
                             [
                               ("value",
                                 M.call_closure (|
@@ -4759,7 +4819,14 @@ Module cell.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ U ];
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ T ]
+                        ]
+                        [ M.read (| orig |) ]
                     |)))
               ]
             |)
@@ -4885,6 +4952,8 @@ Module cell.
                         [
                           Value.StructRecord
                             "core::cell::Ref"
+                            []
+                            [ U ]
                             [
                               ("value",
                                 M.call_closure (|
@@ -4904,6 +4973,8 @@ Module cell.
                             ];
                           Value.StructRecord
                             "core::cell::Ref"
+                            []
+                            [ V ]
                             [
                               ("value",
                                 M.call_closure (|
@@ -5159,6 +5230,8 @@ Module cell.
             M.alloc (|
               Value.StructRecord
                 "core::cell::RefMut"
+                []
+                [ U ]
                 [
                   ("value", M.read (| value |));
                   ("borrow",
@@ -5169,7 +5242,12 @@ Module cell.
                         "borrow"
                       |)
                     |));
-                  ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                  ("marker",
+                    Value.StructTuple
+                      "core::marker::PhantomData"
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ U ] ]
+                      [])
                 ]
             |)
           |)))
@@ -5279,9 +5357,16 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ U ];
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ T ]
+                        ]
                         [
                           Value.StructRecord
                             "core::cell::RefMut"
+                            []
+                            [ U ]
                             [
                               ("value",
                                 M.call_closure (|
@@ -5305,7 +5390,12 @@ Module cell.
                                     "borrow"
                                   |)
                                 |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("marker",
+                                Value.StructTuple
+                                  "core::marker::PhantomData"
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ U ] ]
+                                  [])
                             ]
                         ]
                     |)));
@@ -5313,7 +5403,14 @@ Module cell.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ U ];
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ T ]
+                        ]
+                        [ M.read (| orig |) ]
                     |)))
               ]
             |)
@@ -5441,6 +5538,8 @@ Module cell.
                         [
                           Value.StructRecord
                             "core::cell::RefMut"
+                            []
+                            [ U ]
                             [
                               ("value",
                                 M.call_closure (|
@@ -5457,10 +5556,17 @@ Module cell.
                                   [ M.read (| a |) ]
                                 |));
                               ("borrow", M.read (| borrow |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("marker",
+                                Value.StructTuple
+                                  "core::marker::PhantomData"
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ U ] ]
+                                  [])
                             ];
                           Value.StructRecord
                             "core::cell::RefMut"
+                            []
+                            [ V ]
                             [
                               ("value",
                                 M.call_closure (|
@@ -5484,7 +5590,12 @@ Module cell.
                                     "borrow"
                                   |)
                                 |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                              ("marker",
+                                Value.StructTuple
+                                  "core::marker::PhantomData"
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ V ] ]
+                                  [])
                             ]
                         ]
                     |)))
@@ -5818,9 +5929,13 @@ Module cell.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "core::cell::BorrowRefMut" ]
                         [
                           Value.StructRecord
                             "core::cell::BorrowRefMut"
+                            []
+                            []
                             [
                               ("borrow",
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrow |) |) |))
@@ -5828,7 +5943,14 @@ Module cell.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "core::cell::BorrowRefMut" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -6003,6 +6125,8 @@ Module cell.
             M.alloc (|
               Value.StructRecord
                 "core::cell::BorrowRefMut"
+                []
+                []
                 [
                   ("borrow",
                     M.borrow (|
@@ -6280,7 +6404,7 @@ Module cell.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructRecord "core::cell::UnsafeCell" [ ("value", M.read (| value |)) ]))
+          Value.StructRecord "core::cell::UnsafeCell" [] [ T ] [ ("value", M.read (| value |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6608,9 +6732,15 @@ Module cell.
           (let value := M.alloc (| value |) in
           Value.StructRecord
             "core::cell::SyncUnsafeCell"
+            []
+            [ T ]
             [
               ("value",
-                Value.StructRecord "core::cell::UnsafeCell" [ ("value", M.read (| value |)) ])
+                Value.StructRecord
+                  "core::cell::UnsafeCell"
+                  []
+                  [ T ]
+                  [ ("value", M.read (| value |)) ])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

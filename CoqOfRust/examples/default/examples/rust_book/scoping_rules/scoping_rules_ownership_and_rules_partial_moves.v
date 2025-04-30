@@ -41,6 +41,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+              []
+              []
               [
                 ("name",
                   M.call_closure (|

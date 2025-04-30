@@ -256,6 +256,8 @@ Module signature.
             (let err := M.alloc (| err |) in
             Value.StructTuple
               "alloy_primitives::signature::error::SignatureError::FromHex"
+              []
+              []
               [ M.read (| err |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -313,6 +315,13 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
                           [
                             (* Unsize *)
                             M.pointer_coercion
@@ -321,7 +330,18 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))

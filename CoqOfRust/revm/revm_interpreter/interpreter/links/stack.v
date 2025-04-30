@@ -31,7 +31,7 @@ Module Stack.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";
     φ '{| data := data |} :=
-      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [("data", φ data)];
+      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [] [] [("data", φ data)];
   }.
 
   Definition of_ty : OfTy.t (Ty.path "revm_interpreter::interpreter::stack::Stack").
@@ -41,7 +41,7 @@ Module Stack.
   Lemma of_value_with
       (data : Vec.t aliases.U256.t Global.t) data' :
     data' = φ data ->
-    Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [
+    Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [] [] [
       ("data", data')
     ] = φ (Build_t data).
   Proof. now intros; subst. Qed.
@@ -49,7 +49,7 @@ Module Stack.
 
   Definition of_value (data : Vec.t aliases.U256.t Global.t) data' :
     data' = φ data ->
-    OfValue.t (Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [
+    OfValue.t (Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [] [] [
       ("data", data')
     ]).
   Proof. econstructor; apply of_value_with; eassumption. Defined.

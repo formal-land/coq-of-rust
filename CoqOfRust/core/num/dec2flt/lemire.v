@@ -610,6 +610,8 @@ Module num.
                                           M.return_ (|
                                             Value.StructRecord
                                               "core::num::dec2flt::common::BiasedFp"
+                                              []
+                                              []
                                               [
                                                 ("f", M.read (| mantissa |));
                                                 ("e", M.read (| power2 |))
@@ -935,6 +937,8 @@ Module num.
                           M.alloc (|
                             Value.StructRecord
                               "core::num::dec2flt::common::BiasedFp"
+                              []
+                              []
                               [ ("f", M.read (| mantissa |)); ("e", M.read (| power2 |)) ]
                           |)))
                     ]

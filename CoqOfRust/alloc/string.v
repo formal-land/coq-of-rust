@@ -505,6 +505,8 @@ Module string.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloc::string::FromUtf8Error"
+            []
+            []
             [
               ("bytes",
                 M.call_closure (|
@@ -661,6 +663,8 @@ Module string.
         ltac:(M.monadic
           (Value.StructRecord
             "alloc::string::String"
+            []
+            []
             [
               ("vec",
                 M.call_closure (|
@@ -699,6 +703,8 @@ Module string.
           (let capacity := M.alloc (| capacity |) in
           Value.StructRecord
             "alloc::string::String"
+            []
+            []
             [
               ("vec",
                 M.call_closure (|
@@ -744,9 +750,13 @@ Module string.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "alloc::collections::TryReserveError" ]
                 [
                   Value.StructRecord
                     "alloc::string::String"
+                    []
+                    []
                     [
                       ("vec",
                         M.read (|
@@ -971,7 +981,15 @@ Module string.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructRecord "alloc::string::String" [ ("vec", M.read (| vec |)) ] ]
+                        []
+                        [ Ty.path "alloc::string::String"; Ty.path "alloc::string::FromUtf8Error" ]
+                        [
+                          Value.StructRecord
+                            "alloc::string::String"
+                            []
+                            []
+                            [ ("vec", M.read (| vec |)) ]
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -981,9 +999,13 @@ Module string.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "alloc::string::String"; Ty.path "alloc::string::FromUtf8Error" ]
                         [
                           Value.StructRecord
                             "alloc::string::FromUtf8Error"
+                            []
+                            []
                             [ ("bytes", M.read (| vec |)); ("error", M.read (| e |)) ]
                         ]
                     |)))
@@ -1299,6 +1321,8 @@ Module string.
                                                                                   Value.StructTuple
                                                                                     "core::panicking::AssertKind::Eq"
                                                                                     []
+                                                                                    []
+                                                                                    []
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 M.call_closure (|
@@ -1346,6 +1370,11 @@ Module string.
                                                                                     Value.StructTuple
                                                                                       "core::option::Option::None"
                                                                                       []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::fmt::Arguments"
+                                                                                      ]
+                                                                                      []
                                                                                   ]
                                                                                 |)
                                                                               |)
@@ -1369,6 +1398,8 @@ Module string.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "alloc::borrow::Cow::Borrowed"
+                                                []
+                                                [ Ty.path "str" ]
                                                 [
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
@@ -1391,6 +1422,8 @@ Module string.
                                   M.return_ (|
                                     Value.StructTuple
                                       "alloc::borrow::Cow::Borrowed"
+                                      []
+                                      [ Ty.path "str" ]
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -1673,7 +1706,13 @@ Module string.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| res |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "alloc::borrow::Cow::Owned"
+                    []
+                    [ Ty.path "str" ]
+                    [ M.read (| res |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2066,9 +2105,17 @@ Module string.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "alloc::string::String";
+                                                              Ty.path
+                                                                "alloc::string::FromUtf16Error"
+                                                            ]
                                                             [
                                                               Value.StructTuple
                                                                 "alloc::string::FromUtf16Error"
+                                                                []
+                                                                []
                                                                 [ Value.Tuple [] ]
                                                             ]
                                                         |)
@@ -2083,7 +2130,13 @@ Module string.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| ret |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.path "alloc::string::String"; Ty.path "alloc::string::FromUtf16Error" ]
+                    [ M.read (| ret |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2395,9 +2448,16 @@ Module string.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "alloc::string::String";
+                                      Ty.path "alloc::string::FromUtf16Error"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "alloc::string::FromUtf16Error"
+                                        []
+                                        []
                                         [ Value.Tuple [] ]
                                     ]
                                 |)
@@ -2778,6 +2838,8 @@ Module string.
                                               ltac:(M.monadic
                                                 (Value.StructTuple
                                                   "alloc::string::FromUtf16Error"
+                                                  []
+                                                  []
                                                   [ Value.Tuple [] ]))
                                           ]
                                         |)))
@@ -3582,9 +3644,16 @@ Module string.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "alloc::string::String";
+                                      Ty.path "alloc::string::FromUtf16Error"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "alloc::string::FromUtf16Error"
+                                        []
+                                        []
                                         [ Value.Tuple [] ]
                                     ]
                                 |)
@@ -3965,6 +4034,8 @@ Module string.
                                               ltac:(M.monadic
                                                 (Value.StructTuple
                                                   "alloc::string::FromUtf16Error"
+                                                  []
+                                                  []
                                                   [ Value.Tuple [] ]))
                                           ]
                                         |)))
@@ -4746,6 +4817,8 @@ Module string.
           let capacity := M.alloc (| capacity |) in
           Value.StructRecord
             "alloc::string::String"
+            []
+            []
             [
               ("vec",
                 M.call_closure (|
@@ -4783,7 +4856,7 @@ Module string.
       | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
-          Value.StructRecord "alloc::string::String" [ ("vec", M.read (| bytes |)) ]))
+          Value.StructRecord "alloc::string::String" [] [] [ ("vec", M.read (| bytes |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -5024,6 +5097,8 @@ Module string.
                     M.read (| src |);
                     Value.StructRecord
                       "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("end_",
                           M.call_closure (|
@@ -6071,7 +6146,13 @@ Module string.
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "char" ]
+                    [ M.read (| ch |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6154,6 +6235,8 @@ Module string.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("start", M.read (| idx |)) ]
                                       ]
                                     |)
@@ -6777,6 +6860,11 @@ Module string.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
+                                                            []
+                                                            [
+                                                              Ty.tuple
+                                                                [ Ty.path "usize"; Ty.path "usize" ]
+                                                            ]
                                                             [
                                                               Value.Tuple
                                                                 [
@@ -7248,6 +7336,8 @@ Module string.
               M.alloc (|
                 Value.StructRecord
                   "alloc::string::retain::SetLenOnDrop"
+                  []
+                  []
                   [
                     ("s", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                     ("idx", Value.Integer IntegerKind.Usize 0);
@@ -7372,6 +7462,8 @@ Module string.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             M.read (|
@@ -8528,6 +8620,8 @@ Module string.
                     M.read (| range |);
                     Value.StructRecord
                       "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("end_",
                           M.call_closure (|
@@ -8746,6 +8840,8 @@ Module string.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
                                   ]
                                 |)
@@ -8757,6 +8853,8 @@ Module string.
                     M.alloc (|
                       Value.StructRecord
                         "alloc::string::Drain"
+                        []
+                        []
                         [
                           ("start", M.read (| start |));
                           ("end_", M.read (| end_ |));
@@ -9462,7 +9560,7 @@ Module string.
                           "bytes"
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -9618,6 +9716,8 @@ Module string.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.call_closure (|
@@ -9709,6 +9809,8 @@ Module string.
                             |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.call_closure (|
@@ -10157,6 +10259,8 @@ Module string.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloc::string::String"
+            []
+            []
             [
               ("vec",
                 M.call_closure (|
@@ -11941,7 +12045,7 @@ Module string.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -11991,7 +12095,7 @@ Module string.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12041,7 +12145,7 @@ Module string.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12094,7 +12198,7 @@ Module string.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12147,7 +12251,7 @@ Module string.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12203,7 +12307,7 @@ Module string.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12226,9 +12330,13 @@ Module string.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::option::Option::Some"
+            []
+            [ Ty.path "core::str::pattern::Utf8Pattern" ]
             [
               Value.StructTuple
                 "core::str::pattern::Utf8Pattern::StringPattern"
+                []
+                []
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -12322,7 +12430,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12348,7 +12456,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12402,7 +12510,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12428,7 +12536,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12494,7 +12602,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12520,7 +12628,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12574,7 +12682,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12600,7 +12708,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12666,7 +12774,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12695,7 +12803,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12749,7 +12857,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12778,7 +12886,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12847,7 +12955,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12873,7 +12981,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12930,7 +13038,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -12956,7 +13064,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13039,7 +13147,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13065,7 +13173,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13136,7 +13244,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13162,7 +13270,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13228,7 +13336,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13272,7 +13380,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13326,7 +13434,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13370,7 +13478,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13454,7 +13562,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13483,7 +13591,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13554,7 +13662,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13583,7 +13691,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13652,7 +13760,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13696,7 +13804,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13753,7 +13861,7 @@ Module string.
                             Pointer.Kind.Ref,
                             M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13797,7 +13905,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13881,7 +13989,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13907,7 +14015,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -13978,7 +14086,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -14004,7 +14112,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -14070,7 +14178,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -14114,7 +14222,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -14168,7 +14276,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -14212,7 +14320,7 @@ Module string.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -14798,6 +14906,8 @@ Module string.
           (let s := M.alloc (| s |) in
           Value.StructTuple
             "core::result::Result::Ok"
+            []
+            [ Ty.path "alloc::string::String"; Ty.path "core::convert::Infallible" ]
             [
               M.call_closure (|
                 Ty.path "alloc::string::String",
@@ -16633,7 +16743,7 @@ Module string.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -17087,6 +17197,8 @@ Module string.
           (let s := M.alloc (| s |) in
           Value.StructTuple
             "alloc::borrow::Cow::Borrowed"
+            []
+            [ Ty.path "str" ]
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -17113,7 +17225,7 @@ Module string.
       | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| s |) ]))
+          Value.StructTuple "alloc::borrow::Cow::Owned" [] [ Ty.path "str" ] [ M.read (| s |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -17141,6 +17253,8 @@ Module string.
           (let s := M.alloc (| s |) in
           Value.StructTuple
             "alloc::borrow::Cow::Borrowed"
+            []
+            [ Ty.path "str" ]
             [
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -17186,6 +17300,8 @@ Module string.
           (let it := M.alloc (| it |) in
           Value.StructTuple
             "alloc::borrow::Cow::Owned"
+            []
+            [ Ty.path "str" ]
             [
               M.call_closure (|
                 Ty.path "alloc::string::String",
@@ -17228,6 +17344,8 @@ Module string.
           (let it := M.alloc (| it |) in
           Value.StructTuple
             "alloc::borrow::Cow::Owned"
+            []
+            [ Ty.path "str" ]
             [
               M.call_closure (|
                 Ty.path "alloc::string::String",
@@ -17270,6 +17388,8 @@ Module string.
           (let it := M.alloc (| it |) in
           Value.StructTuple
             "alloc::borrow::Cow::Owned"
+            []
+            [ Ty.path "str" ]
             [
               M.call_closure (|
                 Ty.path "alloc::string::String",
@@ -17363,7 +17483,13 @@ Module string.
                   ]
                 |)
               |) in
-            M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+            M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                [ Value.Tuple [] ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -17392,7 +17518,13 @@ Module string.
                   ]
                 |)
               |) in
-            M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+            M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                [ Value.Tuple [] ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -17708,6 +17840,8 @@ Module string.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self_vec |) |) |);
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.read (|

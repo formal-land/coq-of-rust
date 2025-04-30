@@ -378,6 +378,8 @@ Module algorithms.
             (M.alloc (|
               Value.StructTuple
                 "ruint::algorithms::gcd::matrix::Matrix"
+                []
+                []
                 [
                   Value.Integer IntegerKind.U64 1;
                   Value.Integer IntegerKind.U64 0;
@@ -411,6 +413,8 @@ Module algorithms.
               let other := M.alloc (| other |) in
               Value.StructTuple
                 "ruint::algorithms::gcd::matrix::Matrix"
+                []
+                []
                 [
                   M.call_closure (|
                     Ty.path "u64",
@@ -2068,6 +2072,8 @@ Module algorithms.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "ruint::algorithms::gcd::matrix::Matrix"
+                                                  []
+                                                  []
                                                   [
                                                     M.read (| q10 |);
                                                     M.read (| q11 |);
@@ -2173,6 +2179,8 @@ Module algorithms.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "ruint::algorithms::gcd::matrix::Matrix"
+                                                []
+                                                []
                                                 [
                                                   M.read (| q00 |);
                                                   M.read (| q01 |);
@@ -2625,6 +2633,8 @@ Module algorithms.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "ruint::algorithms::gcd::matrix::Matrix"
+                                                []
+                                                []
                                                 [
                                                   Value.Integer IntegerKind.U64 0;
                                                   Value.Integer IntegerKind.U64 1;
@@ -3516,6 +3526,8 @@ Module algorithms.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "ruint::algorithms::gcd::matrix::Matrix"
+                                                []
+                                                []
                                                 [
                                                   M.read (| u2 |);
                                                   M.read (| v2 |);
@@ -3529,6 +3541,8 @@ Module algorithms.
                                             (M.alloc (|
                                               Value.StructTuple
                                                 "ruint::algorithms::gcd::matrix::Matrix"
+                                                []
+                                                []
                                                 [
                                                   M.read (| u1 |);
                                                   M.read (| v1 |);
@@ -3544,6 +3558,8 @@ Module algorithms.
                                     (M.alloc (|
                                       Value.StructTuple
                                         "ruint::algorithms::gcd::matrix::Matrix"
+                                        []
+                                        []
                                         [
                                           M.read (| u0 |);
                                           M.read (| v0 |);
@@ -3691,6 +3707,8 @@ Module algorithms.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "ruint::algorithms::gcd::matrix::Matrix"
+                                                []
+                                                []
                                                 [
                                                   M.read (| u2 |);
                                                   M.read (| v2 |);
@@ -3704,6 +3722,8 @@ Module algorithms.
                                             (M.alloc (|
                                               Value.StructTuple
                                                 "ruint::algorithms::gcd::matrix::Matrix"
+                                                []
+                                                []
                                                 [
                                                   M.read (| u1 |);
                                                   M.read (| v1 |);
@@ -3719,6 +3739,8 @@ Module algorithms.
                                     (M.alloc (|
                                       Value.StructTuple
                                         "ruint::algorithms::gcd::matrix::Matrix"
+                                        []
+                                        []
                                         [
                                           M.read (| u0 |);
                                           M.read (| v0 |);

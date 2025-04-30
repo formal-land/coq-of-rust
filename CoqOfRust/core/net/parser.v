@@ -921,6 +921,8 @@ Module net.
             (let input := M.alloc (| input |) in
             Value.StructRecord
               "core::net::parser::Parser"
+              []
+              []
               [ ("state", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1135,11 +1137,17 @@ Module net.
                               result));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (M.alloc (|
+                                Value.StructTuple "core::option::Option::None" [] [ T ] []
+                              |)))
                         ]
                       |)
                     |);
-                    Value.StructTuple "core::net::parser::AddrParseError" [ M.read (| kind |) ]
+                    Value.StructTuple
+                      "core::net::parser::AddrParseError"
+                      []
+                      []
+                      [ M.read (| kind |) ]
                   ]
                 |)
               |)
@@ -1572,6 +1580,8 @@ Module net.
                                                                   M.alloc (|
                                                                     Value.StructTuple
                                                                       "core::option::Option::Some"
+                                                                      []
+                                                                      [ Ty.tuple [] ]
                                                                       [ Value.Tuple [] ]
                                                                   |)));
                                                               fun γ =>
@@ -1579,6 +1589,8 @@ Module net.
                                                                   (M.alloc (|
                                                                     Value.StructTuple
                                                                       "core::option::Option::None"
+                                                                      []
+                                                                      [ Ty.tuple [] ]
                                                                       []
                                                                   |)))
                                                             ]
@@ -2018,6 +2030,8 @@ Module net.
                                               M.alloc (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.path "char" ]
                                                   [ Value.UnicodeChar 48 ]
                                               |)
                                             |)
@@ -2514,6 +2528,8 @@ Module net.
                                                                             M.return_ (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::None"
+                                                                                []
+                                                                                [ T ]
                                                                                 []
                                                                             |)
                                                                           |)
@@ -3224,6 +3240,8 @@ Module net.
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [ T ]
                                                     [ M.read (| result |) ]
                                                 |)))
                                           ]
@@ -3256,7 +3274,11 @@ Module net.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
-                                              Value.StructTuple "core::option::Option::None" []
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ T ]
+                                                []
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -3300,6 +3322,8 @@ Module net.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ T ]
                                                         []
                                                     |)));
                                                 fun γ => ltac:(M.monadic result)
@@ -3766,6 +3790,11 @@ Module net.
                                                                                                           10;
                                                                                                         Value.StructTuple
                                                                                                           "core::option::Option::Some"
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "usize"
+                                                                                                          ]
                                                                                                           [
                                                                                                             Value.Integer
                                                                                                               IntegerKind.Usize
@@ -3871,6 +3900,8 @@ Module net.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                                         [
                                           M.call_closure (|
                                             Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -4121,6 +4152,11 @@ Module net.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::net::ip_addr::Ipv6Addr"
+                                                                ]
                                                                 [
                                                                   M.call_closure (|
                                                                     Ty.path
@@ -4174,6 +4210,11 @@ Module net.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::option::Option::None"
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::net::ip_addr::Ipv6Addr"
+                                                                ]
                                                                 []
                                                             |)
                                                           |)
@@ -4517,6 +4558,8 @@ Module net.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::RangeTo"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [ ("end_", M.read (| limit |)) ]
                                                               ]
                                                             |)
@@ -4592,6 +4635,8 @@ Module net.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::Range"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [
                                                                         ("start",
                                                                           M.call_closure (|
@@ -4658,6 +4703,8 @@ Module net.
                                                                         |);
                                                                         Value.StructRecord
                                                                           "core::ops::range::RangeTo"
+                                                                          []
+                                                                          [ Ty.path "usize" ]
                                                                           [
                                                                             ("end_",
                                                                               M.read (|
@@ -4676,6 +4723,8 @@ Module net.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                                                         [
                                                           M.call_closure (|
                                                             Ty.path "core::net::ip_addr::Ipv6Addr",
@@ -4780,7 +4829,7 @@ Module net.
                       |),
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    M.constructor_as_closure "core::net::ip_addr::IpAddr::V4"
+                    M.constructor_as_closure "core::net::ip_addr::IpAddr::V4" [] []
                   ]
                 |);
                 M.closure
@@ -4843,7 +4892,10 @@ Module net.
                                           |)
                                         ]
                                       |);
-                                      M.constructor_as_closure "core::net::ip_addr::IpAddr::V6"
+                                      M.constructor_as_closure
+                                        "core::net::ip_addr::IpAddr::V6"
+                                        []
+                                        []
                                     ]
                                   |)))
                             ]
@@ -5043,7 +5095,11 @@ Module net.
                                             M.deref (| M.read (| p |) |)
                                           |);
                                           Value.Integer IntegerKind.U32 10;
-                                          Value.StructTuple "core::option::Option::None" [];
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "usize" ]
+                                            [];
                                           Value.Bool true
                                         ]
                                       |)
@@ -5246,7 +5302,11 @@ Module net.
                                             M.deref (| M.read (| p |) |)
                                           |);
                                           Value.Integer IntegerKind.U32 10;
-                                          Value.StructTuple "core::option::Option::None" [];
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "usize" ]
+                                            [];
                                           Value.Bool true
                                         ]
                                       |)
@@ -5574,6 +5634,8 @@ Module net.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "core::net::socket_addr::SocketAddrV4" ]
                                         [
                                           M.call_closure (|
                                             Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -6172,6 +6234,8 @@ Module net.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "core::net::socket_addr::SocketAddrV6" ]
                                         [
                                           M.call_closure (|
                                             Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -6272,7 +6336,7 @@ Module net.
                       |),
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    M.constructor_as_closure "core::net::socket_addr::SocketAddr::V4"
+                    M.constructor_as_closure "core::net::socket_addr::SocketAddr::V4" [] []
                   ]
                 |);
                 M.closure
@@ -6337,6 +6401,8 @@ Module net.
                                       |);
                                       M.constructor_as_closure
                                         "core::net::socket_addr::SocketAddr::V6"
+                                        []
+                                        []
                                     ]
                                   |)))
                             ]
@@ -6459,7 +6525,7 @@ Module net.
                           |)))
                       | _ => M.impossible "wrong number of arguments"
                       end));
-                Value.StructTuple "core::net::parser::AddrKind::Ip" []
+                Value.StructTuple "core::net::parser::AddrKind::Ip" [] [] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6586,10 +6652,17 @@ Module net.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.path "core::net::ip_addr::Ipv4Addr";
+                            Ty.path "core::net::parser::AddrParseError"
+                          ]
                           [
                             Value.StructTuple
                               "core::net::parser::AddrParseError"
-                              [ Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] ]
+                              []
+                              []
+                              [ Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] [] [] ]
                           ]
                       |)));
                   fun γ =>
@@ -6694,7 +6767,7 @@ Module net.
                                       |)))
                                   | _ => M.impossible "wrong number of arguments"
                                   end));
-                            Value.StructTuple "core::net::parser::AddrKind::Ipv4" []
+                            Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] [] []
                           ]
                         |)
                       |)))
@@ -6873,7 +6946,7 @@ Module net.
                           |)))
                       | _ => M.impossible "wrong number of arguments"
                       end));
-                Value.StructTuple "core::net::parser::AddrKind::Ipv6" []
+                Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] [] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7048,7 +7121,7 @@ Module net.
                           |)))
                       | _ => M.impossible "wrong number of arguments"
                       end));
-                Value.StructTuple "core::net::parser::AddrKind::SocketV4" []
+                Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] [] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7223,7 +7296,7 @@ Module net.
                           |)))
                       | _ => M.impossible "wrong number of arguments"
                       end));
-                Value.StructTuple "core::net::parser::AddrKind::SocketV6" []
+                Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] [] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7398,7 +7471,7 @@ Module net.
                           |)))
                       | _ => M.impossible "wrong number of arguments"
                       end));
-                Value.StructTuple "core::net::parser::AddrKind::Socket" []
+                Value.StructTuple "core::net::parser::AddrKind::Socket" [] [] []
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7613,32 +7686,42 @@ Module net.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] |)));
+                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] [] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Socket" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::net::parser::AddrKind::Socket" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] [] []
+                      |)))
                 ]
               |)
             |)))
@@ -7825,6 +7908,8 @@ Module net.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::net::parser::AddrParseError"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::net::parser::AddrKind",

@@ -904,6 +904,8 @@ Module field.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
@@ -1480,6 +1482,8 @@ Module field.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_", M.read (| power_log |))
@@ -1657,6 +1661,8 @@ Module field.
           let start := M.alloc (| start |) in
           Value.StructRecord
             "p3_field::field::Powers"
+            []
+            [ Self ]
             [
               ("base",
                 M.call_closure (|
@@ -1968,7 +1974,7 @@ Module field.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -1998,7 +2004,11 @@ Module field.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2416,6 +2426,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2469,6 +2481,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2545,6 +2559,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2598,6 +2614,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2674,6 +2692,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2727,6 +2747,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2803,6 +2825,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2856,6 +2880,8 @@ Module field.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 4) ]
                                         ]
                                       |)
@@ -2916,6 +2942,8 @@ Module field.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", Value.Integer IntegerKind.Usize 8) ]
                                       ]
                                     |)
@@ -3136,6 +3164,8 @@ Module field.
                                                                     |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::Range"
+                                                                      []
+                                                                      [ Ty.path "usize" ]
                                                                       [
                                                                         ("start",
                                                                           M.call_closure (|
@@ -3250,6 +3280,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -3342,6 +3374,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -3434,6 +3468,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -3526,6 +3562,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -3618,6 +3656,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -3710,6 +3750,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -3802,6 +3844,8 @@ Module field.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start",
                                                         M.call_closure (|
@@ -4306,7 +4350,7 @@ Module field.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -4336,7 +4380,11 @@ Module field.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -5265,6 +5313,8 @@ Module field.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::option::Option::Some"
+            []
+            [ F ]
             [ M.read (| M.deref (| M.read (| self |) |) |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5307,6 +5357,8 @@ Module field.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_field::field::Powers"
+            []
+            [ F ]
             [
               ("base",
                 M.call_closure (|
@@ -5515,7 +5567,9 @@ Module field.
                   ]
                 |)
               |) in
-            M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ] |)
+            M.alloc (|
+              Value.StructTuple "core::option::Option::Some" [] [ R ] [ M.read (| result |) ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

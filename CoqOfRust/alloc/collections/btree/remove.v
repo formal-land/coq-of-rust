@@ -978,6 +978,8 @@ Module collections.
                                                             M.read (| left_parent_kv |);
                                                             Value.StructTuple
                                                               "alloc::collections::btree::node::LeftOrRight::Right"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [ M.read (| idx |) ];
                                                             M.call_closure (|
                                                               A,
@@ -1369,6 +1371,8 @@ Module collections.
                                                             M.read (| right_parent_kv |);
                                                             Value.StructTuple
                                                               "alloc::collections::btree::node::LeftOrRight::Left"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [ M.read (| idx |) ];
                                                             M.call_closure (|
                                                               A,

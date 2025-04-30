@@ -88,8 +88,8 @@
 
 ## Host
 
-- [ ] `balance`
-- [ ] `selfbalance`
+- [x] `balance`
+- [x] `selfbalance`
 - [ ] `extcodesize`
 - [ ] `extcodehash`
 - [ ] `extcodecopy`
@@ -117,11 +117,11 @@
 
 ## Memory
 
-- [ ] `mload`
+- [x] `mload`
 - [ ] `mstore`
 - [ ] `mstore8`
 - [x] `msize`
-- [ ] `mcopy`
+- [x] `mcopy`
 
 ## Stack
 
@@ -164,6 +164,6 @@
 ## Summary
 
 - Total: 120
-- Admitted: 37
-- Defined: 83
-- Percentage: 69.17%
+- Admitted: 33
+- Defined: 87
+- Percentage: 72.50%

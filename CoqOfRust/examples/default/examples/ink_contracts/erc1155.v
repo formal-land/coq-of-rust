@@ -24,6 +24,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "erc1155::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -258,6 +260,8 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "erc1155::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -801,6 +805,8 @@ Module Impl_core_default_Default_for_erc1155_Contract.
       ltac:(M.monadic
         (Value.StructRecord
           "erc1155::Contract"
+          []
+          []
           [
             ("balances",
               M.call_closure (|
@@ -1075,13 +1081,26 @@ Module Impl_erc1155_Contract.
                   |);
                   Value.StructTuple
                     "erc1155::Event::TransferSingle"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "erc1155::TransferSingle"
+                        []
+                        []
                         [
                           ("operator",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| caller |) ]);
-                          ("from", Value.StructTuple "core::option::Option::None" []);
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ Ty.path "erc1155::AccountId" ]
+                              [ M.read (| caller |) ]);
+                          ("from",
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.path "erc1155::AccountId" ]
+                              []);
                           ("to",
                             M.read (|
                               M.match_operator (|
@@ -1114,13 +1133,19 @@ Module Impl_erc1155_Contract.
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "erc1155::AccountId" ]
+                                          []
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "erc1155::AccountId" ]
                                           [ M.read (| caller |) ]
                                       |)))
                                 ]
@@ -1220,6 +1245,8 @@ Module Impl_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -1232,7 +1259,8 @@ Module Impl_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::UnexistentToken" [] ]
+                                      [ Value.StructTuple "erc1155::Error::UnexistentToken" [] [] []
+                                      ]
                                     |)
                                   ]
                               |)
@@ -1321,18 +1349,31 @@ Module Impl_erc1155_Contract.
                       |);
                       Value.StructTuple
                         "erc1155::Event::TransferSingle"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "erc1155::TransferSingle"
+                            []
+                            []
                             [
                               ("operator",
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "erc1155::AccountId" ]
                                   [ M.read (| caller |) ]);
-                              ("from", Value.StructTuple "core::option::Option::None" []);
+                              ("from",
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [ Ty.path "erc1155::AccountId" ]
+                                  []);
                               ("to",
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "erc1155::AccountId" ]
                                   [ M.read (| caller |) ]);
                               ("token_id", M.read (| token_id |));
                               ("value", M.read (| value |))
@@ -1341,7 +1382,13 @@ Module Impl_erc1155_Contract.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1612,16 +1659,32 @@ Module Impl_erc1155_Contract.
                   |);
                   Value.StructTuple
                     "erc1155::Event::TransferSingle"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "erc1155::TransferSingle"
+                        []
+                        []
                         [
                           ("operator",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| caller |) ]);
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ Ty.path "erc1155::AccountId" ]
+                              [ M.read (| caller |) ]);
                           ("from",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| from |) ]);
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ Ty.path "erc1155::AccountId" ]
+                              [ M.read (| from |) ]);
                           ("to",
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| to |) ]);
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [ Ty.path "erc1155::AccountId" ]
+                              [ M.read (| to |) ]);
                           ("token_id", M.read (| token_id |));
                           ("value", M.read (| value |))
                         ]
@@ -1979,6 +2042,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "erc1155::Error",
@@ -1991,7 +2056,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                   [],
                                                   []
                                                 |),
-                                                [ Value.StructTuple "erc1155::Error::NotApproved" []
+                                                [
+                                                  Value.StructTuple
+                                                    "erc1155::Error::NotApproved"
+                                                    []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             ]
@@ -2051,6 +2121,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -2063,7 +2135,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
+                                      [
+                                        Value.StructTuple
+                                          "erc1155::Error::ZeroAddressTransfer"
+                                          []
+                                          []
+                                          []
+                                      ]
                                     |)
                                   ]
                               |)
@@ -2118,6 +2196,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -2130,7 +2210,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::InsufficientBalance" [] ]
+                                      [
+                                        Value.StructTuple
+                                          "erc1155::Error::InsufficientBalance"
+                                          []
+                                          []
+                                          []
+                                      ]
                                     |)
                                   ]
                               |)
@@ -2180,7 +2266,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2337,6 +2429,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "erc1155::Error",
@@ -2349,7 +2443,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                   [],
                                                   []
                                                 |),
-                                                [ Value.StructTuple "erc1155::Error::NotApproved" []
+                                                [
+                                                  Value.StructTuple
+                                                    "erc1155::Error::NotApproved"
+                                                    []
+                                                    []
+                                                    []
                                                 ]
                                               |)
                                             ]
@@ -2409,6 +2508,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -2421,7 +2522,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
+                                      [
+                                        Value.StructTuple
+                                          "erc1155::Error::ZeroAddressTransfer"
+                                          []
+                                          []
+                                          []
+                                      ]
                                     |)
                                   ]
                               |)
@@ -2466,6 +2573,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -2478,7 +2587,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
+                                      [
+                                        Value.StructTuple
+                                          "erc1155::Error::BatchTransferMismatch"
+                                          []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -2541,6 +2655,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -2553,7 +2669,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
+                                      [
+                                        Value.StructTuple
+                                          "erc1155::Error::BatchTransferMismatch"
+                                          []
+                                          []
+                                          []
                                       ]
                                     |)
                                   ]
@@ -2855,6 +2976,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [ Ty.tuple []; Ty.path "erc1155::Error"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path "erc1155::Error",
@@ -2870,6 +2994,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                 [
                                                                   Value.StructTuple
                                                                     "erc1155::Error::InsufficientBalance"
+                                                                    []
+                                                                    []
                                                                     []
                                                                 ]
                                                               |)
@@ -3087,7 +3213,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3496,6 +3628,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc1155::Error",
@@ -3508,7 +3642,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         [],
                                         []
                                       |),
-                                      [ Value.StructTuple "erc1155::Error::SelfApproval" [] ]
+                                      [ Value.StructTuple "erc1155::Error::SelfApproval" [] [] [] ]
                                     |)
                                   ]
                               |)
@@ -3623,9 +3757,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       |);
                       Value.StructTuple
                         "erc1155::Event::ApprovalForAll"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "erc1155::ApprovalForAll"
+                            []
+                            []
                             [
                               ("owner", M.read (| caller |));
                               ("operator", M.read (| operator |));
@@ -3635,7 +3773,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc1155::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

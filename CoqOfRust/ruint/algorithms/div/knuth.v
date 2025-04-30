@@ -780,6 +780,8 @@ Module algorithms.
                                                                           |);
                                                                           Value.StructRecord
                                                                             "core::ops::range::Range"
+                                                                            []
+                                                                            [ Ty.path "usize" ]
                                                                             [
                                                                               ("start",
                                                                                 M.read (| j |));
@@ -912,6 +914,8 @@ Module algorithms.
                                                                   |);
                                                                   Value.StructRecord
                                                                     "core::ops::range::Range"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("start", M.read (| j |));
                                                                       ("end_",
@@ -982,6 +986,8 @@ Module algorithms.
                                                                   |);
                                                                   Value.StructRecord
                                                                     "core::ops::range::RangeTo"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("end_",
                                                                         M.call_closure (|
@@ -1243,6 +1249,11 @@ Module algorithms.
                                                                                     |);
                                                                                     Value.StructRecord
                                                                                       "core::ops::range::Range"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ]
                                                                                       [
                                                                                         ("start",
                                                                                           M.read (|
@@ -1325,6 +1336,11 @@ Module algorithms.
                                                                                     |);
                                                                                     Value.StructRecord
                                                                                       "core::ops::range::RangeTo"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ]
                                                                                       [
                                                                                         ("end_",
                                                                                           M.read (|
@@ -1484,6 +1500,8 @@ Module algorithms.
                                                                                                       Value.StructTuple
                                                                                                         "core::panicking::AssertKind::Eq"
                                                                                                         []
+                                                                                                        []
+                                                                                                        []
                                                                                                     |) in
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
@@ -1531,6 +1549,11 @@ Module algorithms.
                                                                                                         |);
                                                                                                         Value.StructTuple
                                                                                                           "core::option::Option::None"
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Arguments"
+                                                                                                          ]
                                                                                                           []
                                                                                                       ]
                                                                                                     |)
@@ -3003,6 +3026,11 @@ Module algorithms.
                                                                                                                       |);
                                                                                                                       Value.StructRecord
                                                                                                                         "core::ops::range::Range"
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.path
+                                                                                                                            "usize"
+                                                                                                                        ]
                                                                                                                         [
                                                                                                                           ("start",
                                                                                                                             M.read (|
@@ -3096,6 +3124,11 @@ Module algorithms.
                                                                                                                       |);
                                                                                                                       Value.StructRecord
                                                                                                                         "core::ops::range::RangeTo"
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.path
+                                                                                                                            "usize"
+                                                                                                                        ]
                                                                                                                         [
                                                                                                                           ("end_",
                                                                                                                             M.call_closure (|
@@ -3419,6 +3452,11 @@ Module algorithms.
                                                                                                                       |);
                                                                                                                       Value.StructRecord
                                                                                                                         "core::ops::range::Range"
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.path
+                                                                                                                            "usize"
+                                                                                                                        ]
                                                                                                                         [
                                                                                                                           ("start",
                                                                                                                             M.read (|
@@ -3752,6 +3790,11 @@ Module algorithms.
                                                                                                                   |);
                                                                                                                   Value.StructRecord
                                                                                                                     "core::ops::range::Range"
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                     [
                                                                                                                       ("start",
                                                                                                                         M.read (|
@@ -3835,6 +3878,11 @@ Module algorithms.
                                                                                                                   |);
                                                                                                                   Value.StructRecord
                                                                                                                     "core::ops::range::RangeTo"
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "usize"
+                                                                                                                    ]
                                                                                                                     [
                                                                                                                       ("end_",
                                                                                                                         M.read (|
@@ -4029,6 +4077,8 @@ Module algorithms.
                                                                                                                                     Value.StructTuple
                                                                                                                                       "core::panicking::AssertKind::Eq"
                                                                                                                                       []
+                                                                                                                                      []
+                                                                                                                                      []
                                                                                                                                   |) in
                                                                                                                                 M.alloc (|
                                                                                                                                   M.call_closure (|
@@ -4076,6 +4126,11 @@ Module algorithms.
                                                                                                                                       |);
                                                                                                                                       Value.StructTuple
                                                                                                                                         "core::option::Option::None"
+                                                                                                                                        []
+                                                                                                                                        [
+                                                                                                                                          Ty.path
+                                                                                                                                            "core::fmt::Arguments"
+                                                                                                                                        ]
                                                                                                                                         []
                                                                                                                                     ]
                                                                                                                                   |)
@@ -4215,6 +4270,11 @@ Module algorithms.
                                                                                         |);
                                                                                         Value.StructRecord
                                                                                           "core::ops::range::Range"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ]
                                                                                           [
                                                                                             ("start",
                                                                                               M.read (|
@@ -4401,6 +4461,8 @@ Module algorithms.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| n |)) ]
                                         ]
                                       |)
@@ -4433,6 +4495,8 @@ Module algorithms.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", M.read (| n |)) ];
                               Value.Integer IntegerKind.Usize 0
                             ]
@@ -4488,6 +4552,8 @@ Module algorithms.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start",
                                             M.call_closure (|

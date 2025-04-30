@@ -35,7 +35,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ a : Ty.apply (Ty.path "*") [] [ Ty.path "if_let_challenge::Foo" ] :=
-          M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
+          M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] [] [] |) in
         M.match_operator (|
           Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
           M.alloc (| Value.Tuple [] |),

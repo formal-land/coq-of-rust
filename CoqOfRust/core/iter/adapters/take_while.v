@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::take_while::TakeWhile"
+                []
+                [ I; P ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -126,6 +128,8 @@ Module iter.
               let predicate := M.alloc (| predicate |) in
               Value.StructRecord
                 "core::iter::adapters::take_while::TakeWhile"
+                []
+                [ I; P ]
                 [
                   ("iter", M.read (| iter |));
                   ("flag", Value.Bool false);
@@ -345,7 +349,20 @@ Module iter.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item"
+                                ]
+                                []
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let~ x :
@@ -591,6 +608,15 @@ Module iter.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ]
                                         [ M.read (| x |) ]
                                     |)));
                                 fun γ =>
@@ -607,7 +633,18 @@ Module iter.
                                         |)
                                       |) in
                                     M.alloc (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ]
+                                        []
                                     |)))
                               ]
                             |)))
@@ -669,6 +706,8 @@ Module iter.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)));

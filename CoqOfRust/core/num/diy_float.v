@@ -389,6 +389,8 @@ Module num.
               M.alloc (|
                 Value.StructRecord
                   "core::num::diy_float::Fp"
+                  []
+                  []
                   [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
               |)
             |)))
@@ -886,6 +888,8 @@ Module num.
               M.alloc (|
                 Value.StructRecord
                   "core::num::diy_float::Fp"
+                  []
+                  []
                   [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
               |)
             |)))
@@ -1046,7 +1050,11 @@ Module num.
                                             []
                                             [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          Value.StructTuple
+                                            "core::panicking::AssertKind::Eq"
+                                            []
+                                            []
+                                            []
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -1076,7 +1084,11 @@ Module num.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
+                                              []
                                           ]
                                         |)
                                       |)
@@ -1091,6 +1103,8 @@ Module num.
               M.alloc (|
                 Value.StructRecord
                   "core::num::diy_float::Fp"
+                  []
+                  []
                   [
                     ("f",
                       M.call_closure (|

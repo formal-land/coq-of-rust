@@ -71,9 +71,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ status : Ty.apply (Ty.path "*") [] [ Ty.path "enums_use::Status" ] :=
-          M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] |) in
+          M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] [] [] |) in
         let~ work : Ty.apply (Ty.path "*") [] [ Ty.path "enums_use::Work" ] :=
-          M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
+          M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] [] [] |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.match_operator (|
             Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],

@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::cycle::Cycle"
+                []
+                [ I ]
                 [
                   ("orig",
                     M.call_closure (|
@@ -175,6 +177,8 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::cycle::Cycle"
+                []
+                [ I ]
                 [
                   ("orig",
                     M.call_closure (|
@@ -443,7 +447,11 @@ Module iter.
                           Value.Tuple
                             [
                               Value.Integer IntegerKind.Usize 0;
-                              Value.StructTuple "core::option::Option::None" []
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [ Ty.path "usize" ]
+                                []
                             ]
                         |)));
                     fun γ =>
@@ -458,7 +466,11 @@ Module iter.
                                   Ty.path "usize"
                                 |)
                               |);
-                              Value.StructTuple "core::option::Option::None" []
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [ Ty.path "usize" ]
+                                []
                             ]
                         |)))
                   ]
@@ -1178,6 +1190,14 @@ Module iter.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Ok"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ]
                                           [ Value.Tuple [] ]
                                       |)
                                     |)
@@ -1322,6 +1342,15 @@ Module iter.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::num::nonzero::NonZero")
+                                                                []
+                                                                [ Ty.path "usize" ]
+                                                            ]
                                                             [ Value.Tuple [] ]
                                                         |)
                                                       |)
@@ -1490,8 +1519,27 @@ Module iter.
                             |),
                             [ M.read (| n |) ]
                           |);
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                          M.constructor_as_closure "core::result::Result::Err"
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ];
+                          M.constructor_as_closure
+                            "core::result::Result::Err"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
                         ]
                       |)
                     |)
