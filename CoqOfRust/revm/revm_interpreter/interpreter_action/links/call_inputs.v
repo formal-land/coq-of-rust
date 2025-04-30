@@ -27,8 +27,8 @@ Module CallValue.
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue";
     φ x :=
       match x with
-      | Transfer x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [φ x]
-      | Apparent x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [φ x]
+      | Transfer x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [] [] [φ x]
+      | Apparent x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [] [] [φ x]
       end;
   }.
 
@@ -41,7 +41,7 @@ Module CallValue.
 
   Lemma of_value_with_Transfer x x' :
     x' = φ x ->
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [x'] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [] [] [x'] =
     φ (Transfer x).
   Proof.
     now intros; subst.
@@ -50,7 +50,7 @@ Module CallValue.
 
   Lemma of_value_with_Apparent x x' :
     x' = φ x ->
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [x'] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [] [] [x'] =
     φ (Apparent x).
   Proof.
     now intros; subst.
@@ -59,7 +59,7 @@ Module CallValue.
 
   Definition of_value_Transfer (x : aliases.U256.t) x' :
     x' = φ x ->
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [x']).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [] [] [x']).
   Proof.
     econstructor; apply of_value_with_Transfer; eassumption.
   Defined.
@@ -67,7 +67,7 @@ Module CallValue.
 
   Definition of_value_Apparent (x : aliases.U256.t) x' :
     x' = φ x ->
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [x']).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [] [] [x']).
   Proof.
     econstructor; apply of_value_with_Apparent; eassumption.
   Defined.
@@ -101,10 +101,10 @@ Module CallScheme.
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme";
     φ x :=
       match x with
-      | Call => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" []
-      | CallCode => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" []
-      | DelegateCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" []
-      | StaticCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" []
+      | Call => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" [] [] []
+      | CallCode => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" [] [] []
+      | DelegateCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" [] [] []
+      | StaticCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" [] [] []
       end;
   }.
 
@@ -116,7 +116,7 @@ Module CallScheme.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with_Call :
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" [] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" [] [] [] =
     φ Call.
   Proof.
     reflexivity.
@@ -124,7 +124,7 @@ Module CallScheme.
   Smpl Add apply of_value_with_Call : of_value.
 
   Lemma of_value_with_CallCode :
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" [] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" [] [] [] =
     φ CallCode.
   Proof.
     reflexivity.
@@ -132,7 +132,7 @@ Module CallScheme.
   Smpl Add apply of_value_with_CallCode : of_value.
 
   Lemma of_value_with_DelegateCall :
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" [] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" [] [] [] =
     φ DelegateCall.
   Proof.
     reflexivity.
@@ -140,7 +140,7 @@ Module CallScheme.
   Smpl Add apply of_value_with_DelegateCall : of_value.
 
   Lemma of_value_with_StaticCall :
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" [] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" [] [] [] =
     φ StaticCall.
   Proof.
     reflexivity.
@@ -148,28 +148,28 @@ Module CallScheme.
   Smpl Add apply of_value_with_StaticCall : of_value.
 
   Definition of_value_Call :
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" [] [] []).
   Proof.
     econstructor; apply of_value_with_Call.
   Defined.
   Smpl Add apply of_value_Call : of_value.
 
   Definition of_value_CallCode :
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" [] [] []).
   Proof.
     econstructor; apply of_value_with_CallCode.
   Defined.
   Smpl Add apply of_value_CallCode : of_value.
 
   Definition of_value_DelegateCall :
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" [] [] []).
   Proof.
     econstructor; apply of_value_with_DelegateCall.
   Defined.
   Smpl Add apply of_value_DelegateCall : of_value.
 
   Definition of_value_StaticCall :
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" []).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" [] [] []).
   Proof.
     econstructor; apply of_value_with_StaticCall.
   Defined.
@@ -207,7 +207,7 @@ Module CallInputs.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
     φ x :=
-      Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [
+      Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [] [] [
         ("input", φ x.(input));
         ("return_memory_offset", φ x.(return_memory_offset));
         ("gas_limit", φ x.(gas_limit));
@@ -249,7 +249,7 @@ Module CallInputs.
     scheme' = φ scheme ->
     is_static' = φ is_static ->
     is_eof' = φ is_eof ->
-    Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [
+    Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [] [] [
       ("input", input');
       ("return_memory_offset", return_memory_offset');
       ("gas_limit", gas_limit');
@@ -288,7 +288,7 @@ Module CallInputs.
     is_static' = φ is_static ->
     is_eof' = φ is_eof ->
     OfValue.t (
-      Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [
+      Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [] [] [
         ("input", input');
         ("return_memory_offset", return_memory_offset');
         ("gas_limit", gas_limit');

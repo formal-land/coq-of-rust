@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::copied::Copied"
+                []
+                [ I ]
                 [
                   ("it",
                     M.call_closure (|
@@ -139,6 +141,8 @@ Module iter.
               (let it := M.alloc (| it |) in
               Value.StructRecord
                 "core::iter::adapters::copied::Copied"
+                []
+                [ I ]
                 [ ("it", M.read (| it |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1490,6 +1494,18 @@ Module iter.
                                                             (M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [ N ]
+                                                                    [ T ];
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::array::iter::IntoIter")
+                                                                    [ N ]
+                                                                    [ T ]
+                                                                ]
                                                                 [
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -1511,6 +1527,8 @@ Module iter.
                                                                       M.read (| raw_array |);
                                                                       Value.StructRecord
                                                                         "core::ops::range::Range"
+                                                                        []
+                                                                        [ Ty.path "usize" ]
                                                                         [
                                                                           ("start",
                                                                             Value.Integer
@@ -1568,6 +1586,14 @@ Module iter.
                                             (M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Ok"
+                                                []
+                                                [
+                                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                                  Ty.apply
+                                                    (Ty.path "core::array::iter::IntoIter")
+                                                    [ N ]
+                                                    [ T ]
+                                                ]
                                                 [
                                                   M.call_closure (|
                                                     Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -1740,6 +1766,14 @@ Module iter.
                                             (M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                                  Ty.apply
+                                                    (Ty.path "core::array::iter::IntoIter")
+                                                    [ N ]
+                                                    [ T ]
+                                                ]
                                                 [
                                                   M.call_closure (|
                                                     Ty.apply
@@ -1759,6 +1793,8 @@ Module iter.
                                                       M.read (| raw_array |);
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             Value.Integer IntegerKind.Usize 0);
@@ -1895,6 +1931,11 @@ Module iter.
                             (M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                  Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
+                                ]
                                 [
                                   M.call_closure (|
                                     Ty.apply (Ty.path "array") [ N ] [ T ],

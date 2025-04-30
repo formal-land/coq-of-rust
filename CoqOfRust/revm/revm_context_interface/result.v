@@ -139,6 +139,8 @@ Module result.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_context_interface::result::ResultAndState"
+            []
+            [ HaltReasonT ]
             [
               ("result",
                 M.call_closure (|
@@ -530,6 +532,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::ExecutionResult::Success"
+                        []
+                        [ HaltReasonT ]
                         [
                           ("reason",
                             M.call_closure (|
@@ -646,6 +650,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::ExecutionResult::Revert"
+                        []
+                        [ HaltReasonT ]
                         [
                           ("gas_used",
                             M.call_closure (|
@@ -699,6 +705,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::ExecutionResult::Halt"
+                        []
+                        [ HaltReasonT ]
                         [
                           ("reason",
                             M.call_closure (|
@@ -1982,7 +1990,14 @@ Module result.
                       |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2084,6 +2099,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2119,10 +2136,19 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2180,6 +2206,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                         [
                           M.call_closure (|
                             Ty.path "alloy_primitives::bytes_::Bytes",
@@ -2203,10 +2231,21 @@ Module result.
                       |) in
                     let output := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| output |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                        [ M.read (| output |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2687,6 +2726,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::Output::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "alloy_primitives::bytes_::Bytes",
@@ -2723,6 +2764,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::Output::Create"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "alloy_primitives::bytes_::Bytes",
@@ -3361,7 +3404,18 @@ Module result.
                         "revm_context_interface::result::Output::Call",
                         0
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
@@ -3718,6 +3772,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Transaction"
+                        []
+                        [ DBError; TransactionError ]
                         [
                           M.call_closure (|
                             TransactionError,
@@ -3747,6 +3803,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Header"
+                        []
+                        [ DBError; TransactionError ]
                         [
                           M.call_closure (|
                             Ty.path "revm_context_interface::result::InvalidHeader",
@@ -3776,6 +3834,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Database"
+                        []
+                        [ DBError; TransactionError ]
                         [
                           M.call_closure (|
                             DBError,
@@ -3805,6 +3865,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Custom"
+                        []
+                        [ DBError; TransactionError ]
                         [
                           M.call_closure (|
                             Ty.path "alloc::string::String",
@@ -3834,6 +3896,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Precompile"
+                        []
+                        [ DBError; TransactionError ]
                         [
                           M.call_closure (|
                             Ty.path "alloc::string::String",
@@ -4269,6 +4333,8 @@ Module result.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Database"
+            []
+            [ DBError; TX ]
             [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4308,6 +4374,8 @@ Module result.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Custom"
+            []
+            [ DB; TX ]
             [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4342,6 +4410,8 @@ Module result.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Transaction"
+            []
+            [ DB; Ty.path "revm_context_interface::result::InvalidTransaction" ]
             [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4415,6 +4485,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Transaction"
+                        []
+                        [ E; TransactionValidationErrorT ]
                         [ M.read (| e |) ]
                     |)));
                 fun γ =>
@@ -4429,6 +4501,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Header"
+                        []
+                        [ E; TransactionValidationErrorT ]
                         [ M.read (| e |) ]
                     |)));
                 fun γ =>
@@ -4443,6 +4517,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Database"
+                        []
+                        [ E; TransactionValidationErrorT ]
                         [
                           M.call_closure (|
                             E,
@@ -4471,6 +4547,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Precompile"
+                        []
+                        [ E; TransactionValidationErrorT ]
                         [ M.read (| e |) ]
                     |)));
                 fun γ =>
@@ -4485,6 +4563,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Custom"
+                        []
+                        [ E; TransactionValidationErrorT ]
                         [ M.read (| e |) ]
                     |)))
               ]
@@ -4557,6 +4637,9 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
                         [
                           (* Unsize *)
                           M.pointer_coercion
@@ -4576,6 +4659,9 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
                         [
                           (* Unsize *)
                           M.pointer_coercion
@@ -4595,6 +4681,9 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
                         [
                           (* Unsize *)
                           M.pointer_coercion
@@ -4632,7 +4721,18 @@ Module result.
                           match γ with
                           | [] =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "core::option::Option::None"
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                                  ]
+                                  []
+                              |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)))
@@ -5062,6 +5162,8 @@ Module result.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Header"
+            []
+            [ DBError; TransactionValidationErrorT ]
             [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6314,6 +6416,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6326,6 +6430,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6340,6 +6446,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6353,6 +6461,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6365,6 +6475,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6387,6 +6499,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee"
+                        []
+                        []
                         [
                           ("fee",
                             M.call_closure (|
@@ -6480,6 +6594,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6492,6 +6608,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6514,6 +6632,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh"
+                        []
+                        []
                         [
                           ("tx",
                             M.call_closure (|
@@ -6567,6 +6687,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow"
+                        []
+                        []
                         [
                           ("tx",
                             M.call_closure (|
@@ -6612,6 +6734,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6624,6 +6748,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::InvalidChainId"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6638,6 +6764,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6650,6 +6778,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6664,6 +6794,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6676,6 +6808,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6690,6 +6824,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6702,6 +6838,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6724,6 +6862,8 @@ Module result.
                     M.alloc (|
                       Value.StructRecord
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs"
+                        []
+                        []
                         [
                           ("max",
                             M.call_closure (|
@@ -6769,6 +6909,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6781,6 +6923,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6795,6 +6939,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6808,6 +6954,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6820,6 +6968,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6835,6 +6985,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path
@@ -6865,6 +7017,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6877,6 +7031,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -6891,6 +7047,8 @@ Module result.
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6903,6 +7061,8 @@ Module result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
+                        []
+                        []
                         []
                     |)))
               ]
@@ -7837,6 +7997,8 @@ Module result.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
+            []
+            []
             [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

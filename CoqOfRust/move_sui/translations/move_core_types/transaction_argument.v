@@ -105,6 +105,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U8"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -134,6 +136,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U64"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u64",
@@ -163,6 +167,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U128"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u128",
@@ -192,6 +198,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::Address"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::account_address::AccountAddress",
@@ -221,6 +229,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U8Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -256,6 +266,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::Bool"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "bool",
@@ -285,6 +297,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U16"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -314,6 +328,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U32"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u32",
@@ -343,6 +359,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::transaction_argument::TransactionArgument::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
@@ -1486,6 +1504,8 @@ Module transaction_argument.
                                   M.alloc (|
                                     Value.StructRecord
                                       "move_core_types::transaction_argument::_::serialize::__SerializeWith"
+                                      []
+                                      []
                                       [
                                         ("values",
                                           Value.Tuple
@@ -1496,7 +1516,14 @@ Module transaction_argument.
                                               |)
                                             ]);
                                         ("phantom",
-                                          Value.StructTuple "core::marker::PhantomData" [])
+                                          Value.StructTuple
+                                            "core::marker::PhantomData"
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::transaction_argument::TransactionArgument"
+                                            ]
+                                            [])
                                       ]
                                   |)
                                 |)
@@ -1709,9 +1736,21 @@ Module transaction_argument.
                 |);
                 Value.StructRecord
                   "move_core_types::transaction_argument::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -1757,9 +1796,21 @@ Module transaction_argument.
                 mk_str (| "VecBytes" |);
                 Value.StructRecord
                   "move_core_types::transaction_argument::_'2::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::transaction_argument::VecBytes" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2618,6 +2669,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U8"
+                        []
+                        []
                         [ M.read (| i |) ]
                     |)));
                 fun γ =>
@@ -2632,6 +2685,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U64"
+                        []
+                        []
                         [ M.read (| i |) ]
                     |)));
                 fun γ =>
@@ -2646,6 +2701,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U128"
+                        []
+                        []
                         [ M.read (| i |) ]
                     |)));
                 fun γ =>
@@ -2660,6 +2717,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Address"
+                        []
+                        []
                         [ M.read (| a |) ]
                     |)));
                 fun γ =>
@@ -2674,6 +2733,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Bool"
+                        []
+                        []
                         [ M.read (| b |) ]
                     |)));
                 fun γ =>
@@ -2709,6 +2770,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U16"
+                        []
+                        []
                         [ M.read (| i |) ]
                     |)));
                 fun γ =>
@@ -2723,6 +2786,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U32"
+                        []
+                        []
                         [ M.read (| i |) ]
                     |)));
                 fun γ =>
@@ -2737,6 +2802,8 @@ Module transaction_argument.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U256"
+                        []
+                        []
                         [ M.read (| i |) ]
                     |)))
               ]
@@ -2805,6 +2872,11 @@ Module transaction_argument.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.path "move_core_types::transaction_argument::TransactionArgument";
+                  Ty.path "anyhow::Error"
+                ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -2826,6 +2898,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U8"
+                                []
+                                []
                                 [ M.read (| i |) ]
                             |)));
                         fun γ =>
@@ -2840,6 +2914,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U64"
+                                []
+                                []
                                 [ M.read (| i |) ]
                             |)));
                         fun γ =>
@@ -2854,6 +2930,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U128"
+                                []
+                                []
                                 [ M.read (| i |) ]
                             |)));
                         fun γ =>
@@ -2868,6 +2946,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::Address"
+                                []
+                                []
                                 [ M.read (| a |) ]
                             |)));
                         fun γ =>
@@ -2882,6 +2962,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::Bool"
+                                []
+                                []
                                 [ M.read (| b |) ]
                             |)));
                         fun γ =>
@@ -2896,6 +2978,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U8Vector"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -3161,6 +3245,12 @@ Module transaction_argument.
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Ok"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path "u8";
+                                                                                      Ty.path
+                                                                                        "anyhow::Error"
+                                                                                    ]
                                                                                     [
                                                                                       M.read (|
                                                                                         byte
@@ -3172,6 +3262,12 @@ Module transaction_argument.
                                                                                 (M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Err"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path "u8";
+                                                                                      Ty.path
+                                                                                        "anyhow::Error"
+                                                                                    ]
                                                                                     [
                                                                                       M.call_closure (|
                                                                                         Ty.path
@@ -3423,6 +3519,12 @@ Module transaction_argument.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::transaction_argument::TransactionArgument";
+                                                  Ty.path "anyhow::Error"
+                                                ]
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "anyhow::Error",
@@ -3560,6 +3662,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U16"
+                                []
+                                []
                                 [ M.read (| i |) ]
                             |)));
                         fun γ =>
@@ -3574,6 +3678,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U32"
+                                []
+                                []
                                 [ M.read (| i |) ]
                             |)));
                         fun γ =>
@@ -3588,6 +3694,8 @@ Module transaction_argument.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::transaction_argument::TransactionArgument::U256"
+                                []
+                                []
                                 [ M.read (| i |) ]
                             |)))
                       ]
@@ -3915,6 +4023,8 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_core_types::transaction_argument::VecBytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -4141,6 +4251,8 @@ Module transaction_argument.
           (let vec_bytes := M.alloc (| vec_bytes |) in
           Value.StructTuple
             "move_core_types::transaction_argument::VecBytes"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply

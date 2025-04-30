@@ -57,6 +57,8 @@ Module control_flow_v5.
                       M.read (| current_function_opt |);
                       Value.StructTuple
                         "move_binary_format::file_format::FunctionDefinitionIndex"
+                        []
+                        []
                         [ Value.Integer IntegerKind.U16 0 ]
                     ]
                   |)
@@ -201,6 +203,8 @@ Module control_flow_v5.
                     M.alloc (|
                       Value.StructRecord
                         "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier"
+                        []
+                        []
                         [
                           ("current_function", M.read (| current_function |));
                           ("code",
@@ -375,6 +379,8 @@ Module control_flow_v5.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -387,6 +393,8 @@ Module control_flow_v5.
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::EMPTY_CODE_UNIT"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -416,6 +424,8 @@ Module control_flow_v5.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -437,6 +447,8 @@ Module control_flow_v5.
                               [
                                 Value.StructTuple
                                   "move_core_types::vm_status::StatusCode::INVALID_FALL_THROUGH"
+                                  []
+                                  []
                                   []
                               ]
                             |);
@@ -479,7 +491,13 @@ Module control_flow_v5.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))
@@ -1269,6 +1287,8 @@ Module control_flow_v5.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_",
@@ -1323,6 +1343,8 @@ Module control_flow_v5.
                                       ltac:(M.monadic
                                         (Value.StructTuple
                                           "move_bytecode_verifier::control_flow_v5::Label::Code"
+                                          []
+                                          []
                                           []))
                                   ]
                                 |)))
@@ -1407,6 +1429,8 @@ Module control_flow_v5.
                                           |),
                                           Value.StructRecord
                                             "move_bytecode_verifier::control_flow_v5::Label::Loop"
+                                            []
+                                            []
                                             [ ("last_continue", M.read (| last_continue |)) ]
                                         |)))
                                   ]
@@ -2942,6 +2966,8 @@ Module control_flow_v5.
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                                   []
+                                                                                  []
+                                                                                  []
                                                                               ]
                                                                             |);
                                                                             M.call_closure (|
@@ -3180,6 +3206,12 @@ Module control_flow_v5.
                                                                                   M.return_ (|
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Err"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ]
                                                                                       [
                                                                                         M.read (|
                                                                                           err
@@ -3332,7 +3364,13 @@ Module control_flow_v5.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3839,6 +3877,8 @@ Module control_flow_v5.
                                                                                         Value.StructTuple
                                                                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                                           []
+                                                                                          []
+                                                                                          []
                                                                                       ]
                                                                                     |);
                                                                                     M.call_closure (|
@@ -4086,6 +4126,13 @@ Module control_flow_v5.
                                                                                           M.return_ (|
                                                                                             Value.StructTuple
                                                                                               "core::result::Result::Err"
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.tuple
+                                                                                                  [];
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ]
                                                                                               [
                                                                                                 M.read (|
                                                                                                   err
@@ -4193,6 +4240,12 @@ Module control_flow_v5.
                                                                                   M.alloc (|
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Err"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ]
                                                                                       [
                                                                                         M.call_closure (|
                                                                                           Ty.path
@@ -4215,6 +4268,8 @@ Module control_flow_v5.
                                                                                             |);
                                                                                             Value.StructTuple
                                                                                               "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
+                                                                                              []
+                                                                                              []
                                                                                               [];
                                                                                             M.read (|
                                                                                               cur_instr
@@ -4228,6 +4283,12 @@ Module control_flow_v5.
                                                                                   (M.alloc (|
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Ok"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ]
                                                                                       [
                                                                                         Value.Tuple
                                                                                           []
@@ -4247,6 +4308,12 @@ Module control_flow_v5.
                                                         (M.alloc (|
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [ Value.Tuple [] ]
                                                         |)))
                                                   ]
@@ -4808,6 +4875,12 @@ Module control_flow_v5.
                                                                           M.alloc (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [
                                                                                 M.call_closure (|
                                                                                   Ty.path
@@ -4830,6 +4903,8 @@ Module control_flow_v5.
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
+                                                                                      []
+                                                                                      []
                                                                                       [];
                                                                                     M.read (|
                                                                                       cur_instr
@@ -4843,6 +4918,12 @@ Module control_flow_v5.
                                                                           (M.alloc (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Ok"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [ Value.Tuple [] ]
                                                                           |)))
                                                                     ]
@@ -4857,6 +4938,12 @@ Module control_flow_v5.
                                                         (M.alloc (|
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [ Value.Tuple [] ]
                                                         |)))
                                                   ]
@@ -5667,6 +5754,12 @@ Module control_flow_v5.
                                                                               M.alloc (|
                                                                                 Value.StructTuple
                                                                                   "core::result::Result::Err"
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
                                                                                   [
                                                                                     M.call_closure (|
                                                                                       Ty.path
@@ -5689,6 +5782,8 @@ Module control_flow_v5.
                                                                                         |);
                                                                                         Value.StructTuple
                                                                                           "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
+                                                                                          []
+                                                                                          []
                                                                                           [];
                                                                                         M.read (|
                                                                                           i
@@ -5702,6 +5797,12 @@ Module control_flow_v5.
                                                                               (M.alloc (|
                                                                                 Value.StructTuple
                                                                                   "core::result::Result::Ok"
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
                                                                                   [ Value.Tuple [] ]
                                                                               |)))
                                                                         ]
@@ -5716,6 +5817,12 @@ Module control_flow_v5.
                                                             (M.alloc (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Ok"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ Value.Tuple [] ]
                                                             |)))
                                                       ]
@@ -5804,7 +5911,14 @@ Module control_flow_v5.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
+                                    [ Value.Tuple [] ]
                                 |)
                               |)
                             |)
@@ -6044,6 +6158,12 @@ Module control_flow_v5.
                                                                         M.return_ (|
                                                                           Value.StructTuple
                                                                             "core::result::Result::Err"
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
                                                                             [
                                                                               M.call_closure (|
                                                                                 Ty.path
@@ -6066,6 +6186,8 @@ Module control_flow_v5.
                                                                                   |);
                                                                                   Value.StructTuple
                                                                                     "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
+                                                                                    []
+                                                                                    []
                                                                                     [];
                                                                                   M.read (| i |)
                                                                                 ]
@@ -6083,6 +6205,12 @@ Module control_flow_v5.
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
                                                             [ Value.Tuple [] ]
                                                         |)
                                                       |)))
@@ -6309,6 +6437,8 @@ Module control_flow_v5.
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
+                                                      []
+                                                      [ Ty.path "u16" ]
                                                       [
                                                         M.read (|
                                                           M.deref (| M.read (| last_continue |) |)
@@ -6326,6 +6456,8 @@ Module control_flow_v5.
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "u16" ]
                                                       []
                                                   |)))
                                             ]

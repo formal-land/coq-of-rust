@@ -65,6 +65,8 @@ Module bytecode.
                     M.alloc (|
                       Value.StructTuple
                         "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
@@ -94,6 +96,8 @@ Module bytecode.
                     M.alloc (|
                       Value.StructTuple
                         "revm_bytecode::bytecode::Bytecode::Eof"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -130,6 +134,8 @@ Module bytecode.
                     M.alloc (|
                       Value.StructTuple
                         "revm_bytecode::bytecode::Bytecode::Eip7702"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "revm_bytecode::eip7702::Eip7702Bytecode",
@@ -1249,6 +1255,8 @@ Module bytecode.
         ltac:(M.monadic
           (Value.StructTuple
             "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
@@ -1316,6 +1324,13 @@ Module bytecode.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -1343,7 +1358,19 @@ Module bytecode.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -1501,10 +1528,41 @@ Module bytecode.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::sync::Arc")
+                                []
+                                [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                        ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| eof |) |) |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::sync::Arc")
+                                []
+                                [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -1600,6 +1658,8 @@ Module bytecode.
           (let raw := M.alloc (| raw |) in
           Value.StructTuple
             "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
@@ -1612,6 +1672,8 @@ Module bytecode.
                 [
                   Value.StructTuple
                     "revm_bytecode::legacy::raw::LegacyRawBytecode"
+                    []
+                    []
                     [ M.read (| raw |) ]
                 ]
               |)
@@ -1690,6 +1752,8 @@ Module bytecode.
           (let address := M.alloc (| address |) in
           Value.StructTuple
             "revm_bytecode::bytecode::Bytecode::Eip7702"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "revm_bytecode::eip7702::Eip7702Bytecode",
@@ -1816,6 +1880,8 @@ Module bytecode.
                         |);
                         Value.StructRecord
                           "core::ops::range::RangeTo"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("end_", Value.Integer IntegerKind.Usize 2) ]
                       ]
                     |)
@@ -2014,9 +2080,16 @@ Module bytecode.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "revm_bytecode::bytecode::Bytecode";
+                              Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError"
+                            ]
                             [
                               Value.StructTuple
                                 "revm_bytecode::bytecode::Bytecode::Eof"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.apply
@@ -2229,9 +2302,16 @@ Module bytecode.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "revm_bytecode::bytecode::Bytecode";
+                              Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError"
+                            ]
                             [
                               Value.StructTuple
                                 "revm_bytecode::bytecode::Bytecode::Eip7702"
+                                []
+                                []
                                 [ M.read (| eip7702 |) ]
                             ]
                         |)));
@@ -2240,6 +2320,11 @@ Module bytecode.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "revm_bytecode::bytecode::Bytecode";
+                              Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.path "revm_bytecode::bytecode::Bytecode",
@@ -2287,6 +2372,8 @@ Module bytecode.
           let jump_table := M.alloc (| jump_table |) in
           Value.StructTuple
             "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",

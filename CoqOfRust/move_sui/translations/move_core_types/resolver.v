@@ -34,6 +34,11 @@ Module resolver.
           let module_id := M.alloc (| module_id |) in
           Value.StructTuple
             "core::result::Result::Ok"
+            []
+            [
+              Ty.path "move_core_types::language_storage::ModuleId";
+              Ty.associated_in_trait "move_core_types::resolver::LinkageResolver" [] [] Self "Error"
+            ]
             [
               M.call_closure (|
                 Ty.path "move_core_types::language_storage::ModuleId",
@@ -68,6 +73,11 @@ Module resolver.
           let _struct := M.alloc (| _struct |) in
           Value.StructTuple
             "core::result::Result::Ok"
+            []
+            [
+              Ty.path "move_core_types::language_storage::ModuleId";
+              Ty.associated_in_trait "move_core_types::resolver::LinkageResolver" [] [] Self "Error"
+            ]
             [
               M.call_closure (|
                 Ty.path "move_core_types::language_storage::ModuleId",

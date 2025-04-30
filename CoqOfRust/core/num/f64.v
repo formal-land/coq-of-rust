@@ -776,7 +776,7 @@ Module f64.
                         M.read (| γ0_1 |),
                         Value.Integer IntegerKind.U64 9218868437227405312
                       |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] [] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -786,7 +786,7 @@ Module f64.
                         M.read (| γ0_1 |),
                         Value.Integer IntegerKind.U64 9218868437227405312
                       |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] [] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -801,7 +801,7 @@ Module f64.
                         M.read (| γ0_1 |),
                         Value.Integer IntegerKind.U64 0
                       |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] [] [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -811,10 +811,10 @@ Module f64.
                         M.read (| γ0_1 |),
                         Value.Integer IntegerKind.U64 0
                       |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] [] [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
+                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] [] [] |)))
               ]
             |)
           |)))

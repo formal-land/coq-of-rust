@@ -8694,10 +8694,14 @@ Module char.
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                       ]
                                     |);
                                     M.call_closure (|
@@ -8711,11 +8715,17 @@ Module char.
                                       [
                                         Value.Integer IntegerKind.Usize 1;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 8;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 4 ]
                                       ]
                                     |);
@@ -8730,10 +8740,14 @@ Module char.
                                       [
                                         Value.Integer IntegerKind.Usize 2;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                       ]
                                     |)
                                   ]
@@ -8979,10 +8993,14 @@ Module char.
                                       [
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                       ]
                                     |);
                                     M.call_closure (|
@@ -8996,11 +9014,17 @@ Module char.
                                       [
                                         Value.Integer IntegerKind.Usize 1;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 8;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                         Value.StructTuple
                                           "core::fmt::rt::Count::Is"
+                                          []
+                                          []
                                           [ Value.Integer IntegerKind.Usize 4 ]
                                       ]
                                     |);
@@ -9015,10 +9039,14 @@ Module char.
                                       [
                                         Value.Integer IntegerKind.Usize 2;
                                         Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Alignment::Unknown"
+                                          []
+                                          []
+                                          [];
                                         Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
                                       ]
                                     |)
                                   ]
@@ -9557,6 +9585,8 @@ Module slice.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| offset |)) ]
                                       ]
                                     |)
@@ -9603,6 +9633,8 @@ Module slice.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ M.read (| index |) ]
                                           |)
                                         |)
@@ -9917,6 +9949,8 @@ Module slice.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -9927,7 +9961,9 @@ Module slice.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                          (M.alloc (|
+                            Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                          |)))
                     ]
                   |)
                 |)))

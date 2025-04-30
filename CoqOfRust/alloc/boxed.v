@@ -71,7 +71,7 @@ Module boxed.
               [],
               []
             |),
-            [ Value.StructTuple "alloc::alloc::Global" [] ]
+            [ Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -106,7 +106,7 @@ Module boxed.
               [],
               []
             |),
-            [ Value.StructTuple "alloc::alloc::Global" [] ]
+            [ Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -195,7 +195,7 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| x |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| x |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -241,7 +241,7 @@ Module boxed.
               [],
               []
             |),
-            [ Value.StructTuple "alloc::alloc::Global" [] ]
+            [ Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -287,7 +287,7 @@ Module boxed.
               [],
               []
             |),
-            [ Value.StructTuple "alloc::alloc::Global" [] ]
+            [ Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -316,7 +316,7 @@ Module boxed.
               [],
               []
             |),
-            [ M.read (| raw |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| raw |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -687,6 +687,11 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
@@ -1137,6 +1142,14 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -1610,6 +1623,14 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -1835,6 +1856,8 @@ Module boxed.
           let alloc := M.alloc (| alloc |) in
           Value.StructTuple
             "alloc::boxed::Box"
+            []
+            [ T; A ]
             [
               M.call_closure (|
                 Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
@@ -2744,7 +2767,33 @@ Module boxed.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
-                                                  [ Value.StructTuple "core::alloc::AllocError" [] ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ T ]
+                                                          ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.path "core::alloc::AllocError"
+                                                  ]
+                                                  [
+                                                    Value.StructTuple
+                                                      "core::alloc::AllocError"
+                                                      []
+                                                      []
+                                                      []
+                                                  ]
                                               |)
                                             |)
                                           |)
@@ -2839,7 +2888,11 @@ Module boxed.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.StructTuple "alloc::alloc::Global" []
+                                                    Value.StructTuple
+                                                      "alloc::alloc::Global"
+                                                      []
+                                                      []
+                                                      []
                                                   |)
                                                 |);
                                                 M.read (| layout |)
@@ -2951,6 +3004,20 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -3000,7 +3067,7 @@ Module boxed.
                                 [ M.read (| ptr |) ]
                               |);
                               M.read (| len |);
-                              Value.StructTuple "alloc::alloc::Global" []
+                              Value.StructTuple "alloc::alloc::Global" [] [] []
                             ]
                           |);
                           M.read (| len |)
@@ -3171,7 +3238,33 @@ Module boxed.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
-                                                  [ Value.StructTuple "core::alloc::AllocError" [] ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ T ]
+                                                          ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.path "core::alloc::AllocError"
+                                                  ]
+                                                  [
+                                                    Value.StructTuple
+                                                      "core::alloc::AllocError"
+                                                      []
+                                                      []
+                                                      []
+                                                  ]
                                               |)
                                             |)
                                           |)
@@ -3266,7 +3359,11 @@ Module boxed.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.StructTuple "alloc::alloc::Global" []
+                                                    Value.StructTuple
+                                                      "alloc::alloc::Global"
+                                                      []
+                                                      []
+                                                      []
                                                   |)
                                                 |);
                                                 M.read (| layout |)
@@ -3378,6 +3475,20 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -3427,7 +3538,7 @@ Module boxed.
                                 [ M.read (| ptr |) ]
                               |);
                               M.read (| len |);
-                              Value.StructTuple "alloc::alloc::Global" []
+                              Value.StructTuple "alloc::alloc::Global" [] [] []
                             ]
                           |);
                           M.read (| len |)
@@ -3721,7 +3832,33 @@ Module boxed.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
-                                                  [ Value.StructTuple "core::alloc::AllocError" [] ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ T ]
+                                                          ];
+                                                        A
+                                                      ];
+                                                    Ty.path "core::alloc::AllocError"
+                                                  ]
+                                                  [
+                                                    Value.StructTuple
+                                                      "core::alloc::AllocError"
+                                                      []
+                                                      []
+                                                      []
+                                                  ]
                                               |)
                                             |)
                                           |)
@@ -3923,6 +4060,20 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -4138,7 +4289,33 @@ Module boxed.
                                               M.return_ (|
                                                 Value.StructTuple
                                                   "core::result::Result::Err"
-                                                  [ Value.StructTuple "core::alloc::AllocError" [] ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ T ]
+                                                          ];
+                                                        A
+                                                      ];
+                                                    Ty.path "core::alloc::AllocError"
+                                                  ]
+                                                  [
+                                                    Value.StructTuple
+                                                      "core::alloc::AllocError"
+                                                      []
+                                                      []
+                                                      []
+                                                  ]
                                               |)
                                             |)
                                           |)
@@ -4340,6 +4517,20 @@ Module boxed.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -4932,7 +5123,9 @@ Module boxed.
             M.alloc (|
               Value.StructTuple
                 "alloc::boxed::Box"
-                [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
+                [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5048,7 +5241,9 @@ Module boxed.
             M.alloc (|
               Value.StructTuple
                 "alloc::boxed::Box"
-                [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+                []
+                [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+                [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

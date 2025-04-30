@@ -94,7 +94,13 @@ Module signature.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "bool" ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -114,6 +120,8 @@ Module signature.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "bool" ]
                     [
                       M.call_closure (|
                         Ty.path "bool",

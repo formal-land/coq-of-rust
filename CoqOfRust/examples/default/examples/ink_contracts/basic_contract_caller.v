@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "basic_contract_caller::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -123,6 +125,8 @@ Module Impl_basic_contract_caller_OtherContract.
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord
           "basic_contract_caller::OtherContract"
+          []
+          []
           [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -238,6 +242,8 @@ Module Impl_basic_contract_caller_BasicContractCaller.
           M.alloc (|
             Value.StructRecord
               "basic_contract_caller::BasicContractCaller"
+              []
+              []
               [ ("other_contract", M.read (| other_contract |)) ]
           |)
         |)))

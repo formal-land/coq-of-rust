@@ -66,6 +66,8 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -87,7 +89,9 @@ Module task.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] []
+                      |)))
                 ]
               |)
             |)))
@@ -472,7 +476,9 @@ Module task.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                              (M.alloc (|
+                                Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
+                              |)))
                         ]
                       |)));
                   fun γ =>
@@ -758,6 +764,8 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [ U ]
                           [
                             M.call_closure (|
                               U,
@@ -777,7 +785,9 @@ Module task.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::task::poll::Poll::Pending" [] [ U ] []
+                      |)))
                 ]
               |)
             |)))
@@ -918,9 +928,13 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
                           [
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [ U; E ]
                               [
                                 M.call_closure (|
                                   U,
@@ -956,12 +970,26 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          [
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              []
+                              [ U; E ]
+                              [ M.read (| e |) ]
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::task::poll::Poll::Pending"
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1024,7 +1052,15 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          [
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              []
+                              [ T; U ]
+                              [ M.read (| t |) ]
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1044,9 +1080,13 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
                           [
                             Value.StructTuple
                               "core::result::Result::Err"
+                              []
+                              [ T; U ]
                               [
                                 M.call_closure (|
                                   U,
@@ -1067,7 +1107,13 @@ Module task.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::task::poll::Poll::Pending"
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1155,12 +1201,23 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
                               [
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [ U; E ]
                                   [
                                     M.call_closure (|
                                       U,
@@ -1203,10 +1260,25 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::option::Option::Some"
-                              [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                              [
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [ U; E ]
+                                  [ M.read (| e |) ]
+                              ]
                           ]
                       |)));
                   fun γ =>
@@ -1221,12 +1293,36 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::option::Option::None" [] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                              []
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::task::poll::Poll::Pending"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1301,10 +1397,25 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::option::Option::Some"
-                              [ Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] ]
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                              [
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [ T; U ]
+                                  [ M.read (| t |) ]
+                              ]
                           ]
                       |)));
                   fun γ =>
@@ -1331,12 +1442,23 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
                               [
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ T; U ]
                                   [
                                     M.call_closure (|
                                       U,
@@ -1367,12 +1489,36 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::option::Option::None" [] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                              []
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::task::poll::Poll::Pending"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1400,7 +1546,7 @@ Module task.
         | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
-            Value.StructTuple "core::task::poll::Poll::Ready" [ M.read (| t |) ]))
+            Value.StructTuple "core::task::poll::Poll::Ready" [] [ T ] [ M.read (| t |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1459,7 +1605,7 @@ Module task.
                   Ty.function [ T ] (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
                 ]
               |),
-              [ M.read (| c |); M.constructor_as_closure "core::result::Result::Ok" ]
+              [ M.read (| c |); M.constructor_as_closure "core::result::Result::Ok" [] [ T; E ] ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1516,7 +1662,21 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
-                          [ Value.StructTuple "core::task::poll::Poll::Ready" [ M.read (| x |) ] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::task::poll::Poll::Ready"
+                              []
+                              [ T ]
+                              [ M.read (| x |) ]
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1536,7 +1696,21 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
-                          [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ]
+                              [ M.read (| e |) ]
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1544,7 +1718,15 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
-                          [ Value.StructTuple "core::task::poll::Poll::Pending" [] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                          ]
+                          [ Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] [] ]
                       |)))
                 ]
               |)
@@ -1618,9 +1800,13 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
                           [
                             Value.StructTuple
                               "core::result::Result::Err"
+                              []
+                              [ T; F ]
                               [
                                 M.call_closure (|
                                   F,
@@ -1769,7 +1955,10 @@ Module task.
                                     |),
                                     [
                                       M.read (| x |);
-                                      M.constructor_as_closure "core::result::Result::Ok"
+                                      M.constructor_as_closure
+                                        "core::result::Result::Ok"
+                                        []
+                                        [ T; E ]
                                     ]
                                   |)))
                             ]
@@ -1843,10 +2032,29 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::task::poll::Poll::Ready"
-                              [ Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ] ]
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                              [
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [ T ]
+                                  [ M.read (| x |) ]
+                              ]
                           ]
                       |)));
                   fun γ =>
@@ -1873,7 +2081,24 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
-                          [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ]
+                              [ M.read (| e |) ]
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1887,10 +2112,23 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::task::poll::Poll::Ready"
-                              [ Value.StructTuple "core::option::Option::None" [] ]
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                              [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]
                           ]
                       |)));
                   fun γ =>
@@ -1899,7 +2137,24 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
-                          [ Value.StructTuple "core::task::poll::Poll::Pending" [] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ]
+                          [
+                            Value.StructTuple
+                              "core::task::poll::Poll::Pending"
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                              []
+                          ]
                       |)))
                 ]
               |)
@@ -1983,12 +2238,23 @@ Module task.
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                          ]
                           [
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
                               [
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ T; F ]
                                   [
                                     M.call_closure (|
                                       F,

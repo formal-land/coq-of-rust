@@ -655,6 +655,8 @@ Module array_serialization.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", N) ]
                           ]
                         |)
@@ -925,6 +927,19 @@ Module array_serialization.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ N ]
+                                                                [ T ];
+                                                              Ty.associated_in_trait
+                                                                "serde::de::SeqAccess"
+                                                                []
+                                                                []
+                                                                A
+                                                                "Error"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.associated_in_trait
@@ -1026,7 +1041,14 @@ Module array_serialization.
                           |) in
                         let arr := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| arr |) ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply (Ty.path "array") [ N ] [ T ];
+                              Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                            ]
+                            [ M.read (| arr |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1103,7 +1125,9 @@ Module array_serialization.
             N;
             Value.StructTuple
               "p3_util::array_serialization::ArrayVisitor"
-              [ Value.StructTuple "core::marker::PhantomData" [] ]
+              [ N ]
+              [ T ]
+              [ Value.StructTuple "core::marker::PhantomData" [] [ T ] [] ]
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

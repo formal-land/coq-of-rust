@@ -254,7 +254,13 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "usize" ]
+                                    []
+                                |)))
                           ]
                         |)
                       |)))

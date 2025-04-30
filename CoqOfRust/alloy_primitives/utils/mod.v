@@ -299,6 +299,11 @@ Module utils.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply
@@ -628,6 +633,17 @@ Module utils.
               M.alloc (|
                 Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ]
                   [
                     M.call_closure (|
                       Ty.apply
@@ -966,7 +982,16 @@ Module utils.
                     [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| iter |) ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vec |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ]
+                  [ M.read (| vec |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1252,7 +1277,16 @@ Module utils.
                     [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| n |); M.read (| elem |) ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vec |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ]
+                  [ M.read (| vec |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1903,6 +1937,8 @@ Module utils.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::utils::keccak256_state::State"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "tiny_keccak::keccak::Keccak",
@@ -1958,6 +1994,8 @@ Module utils.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::utils::keccak256_state::State"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "tiny_keccak::keccak::Keccak",
@@ -2094,6 +2132,8 @@ Module utils.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "alloy_primitives::utils::Keccak256"
+            []
+            []
             [
               ("state",
                 M.call_closure (|
@@ -2242,6 +2282,8 @@ Module utils.
         ltac:(M.monadic
           (Value.StructRecord
             "alloy_primitives::utils::Keccak256"
+            []
+            []
             [
               ("state",
                 M.call_closure (|

@@ -36,6 +36,8 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter::shared_memory::SharedMemory"
+              []
+              []
               [
                 ("buffer",
                   M.call_closure (|
@@ -467,6 +469,8 @@ Module interpreter.
         (M.alloc (|
           Value.StructRecord
             "revm_interpreter::interpreter::shared_memory::SharedMemory"
+            []
+            []
             [
               ("buffer",
                 M.call_closure (|
@@ -1669,6 +1673,8 @@ Module interpreter.
             (let capacity := M.alloc (| capacity |) in
             Value.StructRecord
               "revm_interpreter::interpreter::shared_memory::SharedMemory"
+              []
+              []
               [
                 ("buffer",
                   M.call_closure (|
@@ -2150,6 +2156,8 @@ Module interpreter.
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start", M.read (| offset |));
                         ("end_",
@@ -2618,6 +2626,8 @@ Module interpreter.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("start", M.read (| offset |)); ("end_", M.read (| end_ |)) ]
                                 ]
                               |)
@@ -3100,7 +3110,7 @@ Module interpreter.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |);
-                                  Value.StructTuple "core::ops::range::RangeFull" []
+                                  Value.StructTuple "core::ops::range::RangeFull" [] [] []
                                 ]
                               |)
                             |)
@@ -3574,6 +3584,8 @@ Module interpreter.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", M.read (| data_offset |)); ("end_", M.read (| data_end |)) ]
                         ]
                       |)
@@ -3724,6 +3736,8 @@ Module interpreter.
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", M.read (| src |));
                           ("end_",
@@ -3807,6 +3821,8 @@ Module interpreter.
                     |);
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start",
                           M.read (|
@@ -3952,6 +3968,8 @@ Module interpreter.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start",
                                       M.read (|

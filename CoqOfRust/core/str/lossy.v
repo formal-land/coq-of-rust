@@ -18,6 +18,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::lossy::Utf8Chunks"
+              []
+              []
               [ ("source", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -52,6 +54,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::lossy::Utf8Chunk"
+              []
+              []
               [
                 ("valid",
                   M.borrow (|
@@ -1008,6 +1012,11 @@ Module str.
                                                                                                           |);
                                                                                                           Value.StructRecord
                                                                                                             "core::ops::range::Range"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "usize"
+                                                                                                            ]
                                                                                                             [
                                                                                                               ("start",
                                                                                                                 M.read (|
@@ -1590,6 +1599,8 @@ Module str.
                                                                         |);
                                                                         Value.StructRecord
                                                                           "core::ops::range::RangeFrom"
+                                                                          []
+                                                                          [ Ty.path "usize" ]
                                                                           [
                                                                             ("start",
                                                                               M.read (| from |))
@@ -1965,15 +1976,21 @@ Module str.
                                                                                                           32;
                                                                                                         Value.StructTuple
                                                                                                           "core::fmt::rt::Alignment::Unknown"
+                                                                                                          []
+                                                                                                          []
                                                                                                           [];
                                                                                                         Value.Integer
                                                                                                           IntegerKind.U32
                                                                                                           8;
                                                                                                         Value.StructTuple
                                                                                                           "core::fmt::rt::Count::Implied"
+                                                                                                          []
+                                                                                                          []
                                                                                                           [];
                                                                                                         Value.StructTuple
                                                                                                           "core::fmt::rt::Count::Is"
+                                                                                                          []
+                                                                                                          []
                                                                                                           [
                                                                                                             Value.Integer
                                                                                                               IntegerKind.Usize
@@ -2152,6 +2169,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::str::lossy::Utf8Chunks"
+              []
+              []
               [
                 ("source",
                   M.borrow (|
@@ -2220,6 +2239,8 @@ Module str.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::str::lossy::Debug"
+              []
+              []
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -2394,7 +2415,13 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "core::str::lossy::Utf8Chunk" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -3308,9 +3335,13 @@ Module str.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "core::str::lossy::Utf8Chunk" ]
                                       [
                                         Value.StructRecord
                                           "core::str::lossy::Utf8Chunk"
+                                          []
+                                          []
                                           [
                                             ("valid",
                                               M.borrow (|

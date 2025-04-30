@@ -64,13 +64,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ a : Ty.apply (Ty.path "*") [] [ Ty.path "if_let_match_enum_values::Foo" ] :=
-          M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Bar" [] |) in
+          M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Bar" [] [] [] |) in
         let~ b : Ty.apply (Ty.path "*") [] [ Ty.path "if_let_match_enum_values::Foo" ] :=
-          M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] |) in
+          M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] [] [] |) in
         let~ c : Ty.apply (Ty.path "*") [] [ Ty.path "if_let_match_enum_values::Foo" ] :=
           M.alloc (|
             Value.StructTuple
               "if_let_match_enum_values::Foo::Qux"
+              []
+              []
               [ Value.Integer IntegerKind.U32 100 ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

@@ -220,6 +220,8 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_core_types::runtime_value::MoveStruct"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -1491,6 +1493,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U8"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -1520,6 +1524,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U64"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u64",
@@ -1549,6 +1555,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U128"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u128",
@@ -1578,6 +1586,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Bool"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "bool",
@@ -1607,6 +1617,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Address"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::account_address::AccountAddress",
@@ -1636,6 +1648,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -1677,6 +1691,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::runtime_value::MoveStruct",
@@ -1706,6 +1722,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Signer"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::account_address::AccountAddress",
@@ -1735,6 +1753,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U16"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -1764,6 +1784,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U32"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u32",
@@ -1793,6 +1815,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
@@ -1910,6 +1934,8 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_core_types::runtime_value::MoveStructLayout"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -2059,9 +2085,21 @@ Module runtime_value.
                 mk_str (| "MoveStructLayout" |);
                 Value.StructRecord
                   "move_core_types::runtime_value::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::runtime_value::MoveStructLayout" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2538,9 +2576,21 @@ Module runtime_value.
                 |);
                 Value.StructRecord
                   "move_core_types::runtime_value::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -3012,7 +3062,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::Bool" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::Bool"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3023,7 +3077,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::U8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::U8" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::U8"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3034,7 +3092,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::U64" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::U64"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3045,7 +3107,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::U128" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::U128"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3056,7 +3122,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::Address"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::Address" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::Address"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3071,6 +3141,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveTypeLayout::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -3112,6 +3184,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveTypeLayout::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::runtime_value::MoveStructLayout",
@@ -3137,7 +3211,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::Signer"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::Signer" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::Signer"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3148,7 +3226,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::U16" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::U16"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3159,7 +3241,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::U32" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::U32"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3170,7 +3256,11 @@ Module runtime_value.
                         "move_core_types::runtime_value::MoveTypeLayout::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::runtime_value::MoveTypeLayout::U256" []
+                      Value.StructTuple
+                        "move_core_types::runtime_value::MoveTypeLayout::U256"
+                        []
+                        []
+                        []
                     |)))
               ]
             |)
@@ -3211,6 +3301,8 @@ Module runtime_value.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "move_core_types::runtime_value::MoveValue"; Ty.path "anyhow::Error" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -3423,6 +3515,8 @@ Module runtime_value.
           (let v := M.alloc (| v |) in
           Value.StructTuple
             "move_core_types::runtime_value::MoveValue::Vector"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -3511,7 +3605,7 @@ Module runtime_value.
                         |),
                         [ M.read (| v |) ]
                       |);
-                      M.constructor_as_closure "move_core_types::runtime_value::MoveValue::U8"
+                      M.constructor_as_closure "move_core_types::runtime_value::MoveValue::U8" [] []
                     ]
                   |)
                 ]
@@ -3746,6 +3840,17 @@ Module runtime_value.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ];
+                                                              Ty.path "anyhow::Error"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.path "anyhow::Error",
@@ -3873,7 +3978,19 @@ Module runtime_value.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vec_u8 |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                      Ty.path "anyhow::Error"
+                    ]
+                    [ M.read (| vec_u8 |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3896,6 +4013,8 @@ Module runtime_value.
           (let v := M.alloc (| v |) in
           Value.StructTuple
             "move_core_types::runtime_value::MoveValue::Vector"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -3999,7 +4118,10 @@ Module runtime_value.
                         |),
                         [ M.read (| v |) ]
                       |);
-                      M.constructor_as_closure "move_core_types::runtime_value::MoveValue::Address"
+                      M.constructor_as_closure
+                        "move_core_types::runtime_value::MoveValue::Address"
+                        []
+                        []
                     ]
                   |)
                 ]
@@ -4068,6 +4190,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::annotated_value::MoveStruct",
@@ -4106,6 +4230,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -4291,6 +4417,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U8"
+                        []
+                        []
                         [ M.read (| a |) ]
                     |)));
                 fun γ =>
@@ -4307,6 +4435,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U64"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4323,6 +4453,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U128"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4339,6 +4471,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Bool"
+                        []
+                        []
                         [ M.read (| b |) ]
                     |)));
                 fun γ =>
@@ -4355,6 +4489,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Address"
+                        []
+                        []
                         [ M.read (| a |) ]
                     |)));
                 fun γ =>
@@ -4371,6 +4507,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Signer"
+                        []
+                        []
                         [ M.read (| a |) ]
                     |)));
                 fun γ =>
@@ -4387,6 +4525,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U16"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4403,6 +4543,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U32"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4419,6 +4561,8 @@ Module runtime_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U256"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4727,7 +4871,11 @@ Module runtime_value.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructTuple "move_core_types::runtime_value::MoveStruct" [ M.read (| value |) ]))
+          Value.StructTuple
+            "move_core_types::runtime_value::MoveStruct"
+            []
+            []
+            [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -4754,6 +4902,8 @@ Module runtime_value.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "move_core_types::runtime_value::MoveStruct"; Ty.path "anyhow::Error" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -4951,6 +5101,8 @@ Module runtime_value.
                             M.alloc (|
                               Value.StructRecord
                                 "move_core_types::annotated_value::MoveStruct"
+                                []
+                                []
                                 [
                                   ("type_",
                                     M.call_closure (|
@@ -5486,6 +5638,8 @@ Module runtime_value.
           (let types := M.alloc (| types |) in
           Value.StructTuple
             "move_core_types::runtime_value::MoveStructLayout"
+            []
+            []
             [ M.read (| types |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5711,6 +5865,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::Bool"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -5770,6 +5926,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::U8"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -5829,6 +5987,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::U16"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -5888,6 +6048,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::U32"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -5947,6 +6109,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::U64"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6006,6 +6170,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::U128"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6065,6 +6231,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::U256"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6124,6 +6292,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::Address"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6183,6 +6353,8 @@ Module runtime_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::runtime_value::MoveValue::Signer"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6199,9 +6371,16 @@ Module runtime_value.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_core_types::runtime_value::MoveValue";
+                              Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                            ]
                             [
                               Value.StructTuple
                                 "move_core_types::runtime_value::MoveValue::Struct"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -6388,9 +6567,16 @@ Module runtime_value.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_core_types::runtime_value::MoveValue";
+                              Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                            ]
                             [
                               Value.StructTuple
                                 "move_core_types::runtime_value::MoveValue::Vector"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -6497,6 +6683,8 @@ Module runtime_value.
                                                 M.read (| deserializer |);
                                                 Value.StructTuple
                                                   "move_core_types::runtime_value::VectorElementVisitor"
+                                                  []
+                                                  []
                                                   [
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
@@ -6979,7 +7167,22 @@ Module runtime_value.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vals |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_core_types::runtime_value::MoveValue";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                    ]
+                    [ M.read (| vals |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7546,6 +7749,23 @@ Module runtime_value.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::runtime_value::MoveValue";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ];
+                                                              Ty.associated_in_trait
+                                                                "serde::de::SeqAccess"
+                                                                []
+                                                                []
+                                                                A
+                                                                "Error"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.associated_in_trait
@@ -7596,7 +7816,22 @@ Module runtime_value.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_core_types::runtime_value::MoveValue";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                    ]
+                    [ M.read (| val |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7659,9 +7894,16 @@ Module runtime_value.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.path "move_core_types::runtime_value::MoveStruct";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                ]
                 [
                   Value.StructTuple
                     "move_core_types::runtime_value::MoveStruct"
+                    []
+                    []
                     [
                       M.read (|
                         M.match_operator (|
@@ -7783,6 +8025,8 @@ Module runtime_value.
                                     |);
                                     Value.StructTuple
                                       "move_core_types::runtime_value::StructFieldVisitor"
+                                      []
+                                      []
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -8432,6 +8676,8 @@ Module runtime_value.
                                         M.read (| serializer |);
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             M.call_closure (|
                                               Ty.path "usize",
@@ -10045,12 +10291,20 @@ Module runtime_value.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 4;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
-                                                Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -10284,12 +10538,20 @@ Module runtime_value.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 4;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
-                                                Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -10565,12 +10827,20 @@ Module runtime_value.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 4;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
-                                                Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -11095,6 +11365,16 @@ Module runtime_value.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_core_types::runtime_value::DebugAsDisplay"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_core_types::runtime_value::MoveTypeLayout"
+                                                                  ]
+                                                              ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,

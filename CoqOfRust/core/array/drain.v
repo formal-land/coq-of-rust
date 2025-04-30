@@ -57,6 +57,8 @@ Module array.
               M.alloc (|
                 Value.StructTuple
                   "core::array::drain::Drain"
+                  []
+                  [ T ]
                   [
                     M.call_closure (|
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -327,6 +329,8 @@ Module array.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ T ]
                       [
                         M.call_closure (|
                           T,
@@ -378,7 +382,11 @@ Module array.
                 Value.Tuple
                   [
                     M.read (| n |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| n |) ]
                   ]
               |)
             |)))

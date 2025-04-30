@@ -8,6 +8,8 @@ Module bls12_381.
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "alloy_primitives::bits::address::Address",
@@ -132,6 +134,11 @@ Module bls12_381.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -148,6 +155,8 @@ Module bls12_381.
                                         [
                                           Value.StructTuple
                                             "revm_precompile::interface::PrecompileError::OutOfGas"
+                                            []
+                                            []
                                             []
                                         ]
                                       |)
@@ -227,6 +236,11 @@ Module bls12_381.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -243,6 +257,8 @@ Module bls12_381.
                                         [
                                           Value.StructTuple
                                             "revm_precompile::interface::PrecompileError::Other"
+                                            []
+                                            []
                                             [
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
@@ -900,6 +916,11 @@ Module bls12_381.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]
                     [
                       M.call_closure (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",

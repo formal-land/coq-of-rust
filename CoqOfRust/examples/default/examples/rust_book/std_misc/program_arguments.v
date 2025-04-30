@@ -298,6 +298,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.borrow (| Pointer.Kind.Ref, args |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeFrom"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             Value.Integer IntegerKind.Usize 1)

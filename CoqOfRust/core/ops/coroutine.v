@@ -59,6 +59,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::coroutine::CoroutineState::Yielded"
+                          []
+                          [ Y; R ]
                           [
                             M.call_closure (|
                               Y,
@@ -89,6 +91,8 @@ Module ops.
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::coroutine::CoroutineState::Complete"
+                          []
+                          [ Y; R ]
                           [
                             M.call_closure (|
                               R,

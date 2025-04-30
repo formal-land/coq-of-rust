@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "conditional_compilation::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -299,6 +301,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
+          []
+          []
           [
             ("value",
               M.call_closure (|
@@ -334,6 +338,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
+          []
+          []
           [ ("value", M.read (| value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -354,6 +360,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
+          []
+          []
           [ ("value", M.read (| value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -374,6 +382,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
+          []
+          []
           [ ("value", M.read (| value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -476,9 +486,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   |);
                   Value.StructTuple
                     "conditional_compilation::Event::Changes"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "conditional_compilation::Changes"
+                        []
+                        []
                         [
                           ("new_value",
                             M.read (|
@@ -628,9 +642,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   |);
                   Value.StructTuple
                     "conditional_compilation::Event::ChangesDated"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "conditional_compilation::ChangesDated"
+                        []
+                        []
                         [
                           ("new_value",
                             M.read (|
@@ -791,9 +809,13 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                   |);
                   Value.StructTuple
                     "conditional_compilation::Event::Changes"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "conditional_compilation::Changes"
+                        []
+                        []
                         [ ("new_value", M.read (| value |)); ("by_", M.read (| caller |)) ]
                     ]
                 ]

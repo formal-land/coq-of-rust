@@ -431,6 +431,8 @@ Module num.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::num::error::ParseIntError"
+              []
+              []
               [
                 ("kind",
                   M.call_closure (|
@@ -728,14 +730,16 @@ Module num.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
-                      M.alloc (| Value.StructTuple "core::num::error::IntErrorKind::Empty" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::num::error::IntErrorKind::Empty" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" []
+                        Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -743,7 +747,7 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" []
+                        Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -751,13 +755,15 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" []
+                        Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
-                      M.alloc (| Value.StructTuple "core::num::error::IntErrorKind::Zero" [] |)))
+                      M.alloc (|
+                        Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] []
+                      |)))
                 ]
               |)
             |)))

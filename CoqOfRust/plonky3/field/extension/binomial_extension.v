@@ -54,6 +54,8 @@ Module extension.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "p3_field::extension::binomial_extension::BinomialExtensionField"
+              [ D ]
+              [ F; A ]
               [
                 ("value",
                   M.call_closure (|
@@ -817,6 +819,8 @@ Module extension.
                                         M.alloc (|
                                           Value.StructRecord
                                             "p3_field::extension::binomial_extension::_::serialize::__SerializeWith"
+                                            [ D ]
+                                            [ F; A ]
                                             [
                                               ("values",
                                                 Value.Tuple
@@ -836,7 +840,17 @@ Module extension.
                                                     |)
                                                   ]);
                                               ("phantom",
-                                                Value.StructTuple "core::marker::PhantomData" [])
+                                                Value.StructTuple
+                                                  "core::marker::PhantomData"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                                      [ D ]
+                                                      [ F; A ]
+                                                  ]
+                                                  [])
                                             ]
                                         |)
                                       |)
@@ -1218,9 +1232,27 @@ Module extension.
                   |);
                   Value.StructRecord
                     "p3_field::extension::binomial_extension::_'1::deserialize::__Visitor"
+                    [ D ]
+                    [ F; A ]
                     [
-                      ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                      ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                      ("marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path
+                                "p3_field::extension::binomial_extension::BinomialExtensionField")
+                              [ D ]
+                              [ F; A ]
+                          ]
+                          []);
+                      ("lifetime",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                          [])
                     ]
                 ]
               |)))
@@ -1551,9 +1583,11 @@ Module extension.
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "p3_field::extension::binomial_extension::BinomialExtensionField"
+              [ D ]
+              [ F; A ]
               [
                 ("value", M.read (| value |));
-                ("_phantom", Value.StructTuple "core::marker::PhantomData" [])
+                ("_phantom", Value.StructTuple "core::marker::PhantomData" [] [ F ] [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2201,6 +2235,8 @@ Module extension.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ ("start", Value.Integer IntegerKind.Usize 1) ]
                               ]
                             |)
@@ -2820,6 +2856,8 @@ Module extension.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", Value.Integer IntegerKind.Usize 1); ("end_", D) ]
                         ]
                       |)
@@ -2987,6 +3025,8 @@ Module extension.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", Value.Integer IntegerKind.Usize 1); ("end_", D) ]
                         ]
                       |)
@@ -3304,6 +3344,8 @@ Module extension.
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
                                                       []
+                                                      []
+                                                      []
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -3346,6 +3388,8 @@ Module extension.
                                                       |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
+                                                        []
+                                                        [ Ty.path "core::fmt::Arguments" ]
                                                         []
                                                     ]
                                                   |)
@@ -4414,7 +4458,19 @@ Module extension.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path
+                                            "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                          [ D ]
+                                          [ F; F ]
+                                      ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -4593,7 +4649,19 @@ Module extension.
                             |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| res |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path
+                            "p3_field::extension::binomial_extension::BinomialExtensionField")
+                          [ D ]
+                          [ F; F ]
+                      ]
+                      [ M.read (| res |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6397,6 +6465,8 @@ Module extension.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", D) ]
                       ]
                     |)
@@ -7084,6 +7154,8 @@ Module extension.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", D) ]
                       ]
                     |)
@@ -8957,6 +9029,8 @@ Module extension.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", D) ]
                             ]
                           |)
@@ -9041,6 +9115,8 @@ Module extension.
                                                     [
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             Value.Integer IntegerKind.Usize 0);
@@ -9507,7 +9583,7 @@ Module extension.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -9537,7 +9613,11 @@ Module extension.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -9772,7 +9852,7 @@ Module extension.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -9802,7 +9882,11 @@ Module extension.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -10362,7 +10446,7 @@ Module extension.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -10392,7 +10476,11 @@ Module extension.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -11201,7 +11289,7 @@ Module extension.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -11231,7 +11319,11 @@ Module extension.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)

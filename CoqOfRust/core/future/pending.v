@@ -23,7 +23,10 @@ Module future.
         ltac:(M.monadic
           (Value.StructRecord
             "core::future::pending::Pending"
-            [ ("_data", Value.StructTuple "core::marker::PhantomData" []) ]))
+            []
+            [ T ]
+            [ ("_data", Value.StructTuple "core::marker::PhantomData" [] [ Ty.function [] T ] [])
+            ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -54,7 +57,10 @@ Module future.
             M.match_operator (|
               Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
               β1,
-              [ fun γ => ltac:(M.monadic (Value.StructTuple "core::task::poll::Poll::Pending" [])) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic (Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

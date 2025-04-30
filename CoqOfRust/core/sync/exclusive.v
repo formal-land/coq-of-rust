@@ -23,6 +23,8 @@ Module sync.
           ltac:(M.monadic
             (Value.StructRecord
               "core::sync::exclusive::Exclusive"
+              []
+              [ T ]
               [
                 ("inner",
                   M.call_closure (|
@@ -134,7 +136,11 @@ Module sync.
         | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
-            Value.StructRecord "core::sync::exclusive::Exclusive" [ ("inner", M.read (| t |)) ]))
+            Value.StructRecord
+              "core::sync::exclusive::Exclusive"
+              []
+              [ T ]
+              [ ("inner", M.read (| t |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

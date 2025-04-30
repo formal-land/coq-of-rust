@@ -45,6 +45,8 @@ Module type_safety.
           let locals := M.alloc (| locals |) in
           Value.StructRecord
             "move_bytecode_verifier::type_safety::Locals"
+            []
+            []
             [
               ("param_count",
                 M.call_closure (|
@@ -363,6 +365,8 @@ Module type_safety.
             M.alloc (|
               Value.StructRecord
                 "move_bytecode_verifier::type_safety::TypeSafetyChecker"
+                []
+                []
                 [
                   ("module", M.read (| module |));
                   ("function_context", M.read (| function_context |));
@@ -602,6 +606,8 @@ Module type_safety.
                   |);
                   Value.StructTuple
                     "move_binary_format::file_format::FunctionDefinitionIndex"
+                    []
+                    []
                     [ Value.Integer IntegerKind.U16 0 ]
                 ]
               |);
@@ -835,6 +841,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -950,15 +958,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -1078,6 +1092,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -1087,7 +1106,13 @@ Module type_safety.
                           |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1320,6 +1345,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -1435,15 +1462,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -1563,6 +1596,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -1572,7 +1610,13 @@ Module type_safety.
                           |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1662,7 +1706,7 @@ Module type_safety.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
-              Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
+              Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [] [] [];
               M.read (|
                 get_constant (|
                   "move_bytecode_verifier::type_safety::TYPE_NODE_COST",
@@ -1977,7 +2021,13 @@ Module type_safety.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2613,7 +2663,13 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2780,6 +2836,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -2895,15 +2953,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -3026,6 +3090,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -3070,6 +3139,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -3087,6 +3161,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -3296,6 +3372,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -3313,6 +3394,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -3370,6 +3453,11 @@ Module type_safety.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -3387,6 +3475,8 @@ Module type_safety.
                                           |);
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::BORROWFIELD_BAD_FIELD_ERROR"
+                                            []
+                                            []
                                             [];
                                           M.read (| offset |)
                                         ]
@@ -3582,6 +3672,8 @@ Module type_safety.
                                       M.alloc (|
                                         Value.StructTuple
                                           "move_binary_format::file_format::SignatureToken::MutableReference"
+                                          []
+                                          []
                                           [ M.read (| field_type |) ]
                                       |)));
                                   fun γ =>
@@ -3589,6 +3681,8 @@ Module type_safety.
                                       (M.alloc (|
                                         Value.StructTuple
                                           "move_binary_format::file_format::SignatureToken::Reference"
+                                          []
+                                          []
                                           [ M.read (| field_type |) ]
                                       |)))
                                 ]
@@ -3662,7 +3756,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3784,6 +3884,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -3801,6 +3906,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::BORROWLOC_REFERENCE_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -3877,6 +3984,8 @@ Module type_safety.
                                       M.alloc (|
                                         Value.StructTuple
                                           "move_binary_format::file_format::SignatureToken::MutableReference"
+                                          []
+                                          []
                                           [
                                             M.call_closure (|
                                               Ty.apply
@@ -3909,6 +4018,8 @@ Module type_safety.
                                       (M.alloc (|
                                         Value.StructTuple
                                           "move_binary_format::file_format::SignatureToken::Reference"
+                                          []
+                                          []
                                           [
                                             M.call_closure (|
                                               Ty.apply
@@ -4007,7 +4118,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4156,6 +4273,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -4271,15 +4390,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -4402,6 +4527,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -4441,6 +4571,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::Address"
                                         []
+                                        []
+                                        []
                                     |)
                                   |)
                                 ]
@@ -4453,6 +4585,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -4470,6 +4607,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::BORROWGLOBAL_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -4718,6 +4857,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -4735,6 +4879,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::BORROWGLOBAL_WITHOUT_KEY_ABILITY"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -4836,6 +4982,8 @@ Module type_safety.
                                       M.alloc (|
                                         Value.StructTuple
                                           "move_binary_format::file_format::SignatureToken::MutableReference"
+                                          []
+                                          []
                                           [
                                             M.call_closure (|
                                               Ty.apply
@@ -4868,6 +5016,8 @@ Module type_safety.
                                       (M.alloc (|
                                         Value.StructTuple
                                           "move_binary_format::file_format::SignatureToken::Reference"
+                                          []
+                                          []
                                           [
                                             M.call_closure (|
                                               Ty.apply
@@ -4966,7 +5116,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5360,6 +5516,8 @@ Module type_safety.
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                   []
+                                                                  []
+                                                                  []
                                                               ]
                                                             |);
                                                             M.call_closure (|
@@ -5486,15 +5644,21 @@ Module type_safety.
                                                                                                   32;
                                                                                                 Value.StructTuple
                                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                                  []
+                                                                                                  []
                                                                                                   [];
                                                                                                 Value.Integer
                                                                                                   IntegerKind.U32
                                                                                                   4;
                                                                                                 Value.StructTuple
                                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                                  []
+                                                                                                  []
                                                                                                   [];
                                                                                                 Value.StructTuple
                                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                                  []
+                                                                                                  []
                                                                                                   []
                                                                                               ]
                                                                                             |)
@@ -5640,6 +5804,12 @@ Module type_safety.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [ M.read (| err |) ]
                                                                   |)
                                                                 |)
@@ -5811,6 +5981,12 @@ Module type_safety.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -5831,6 +6007,8 @@ Module type_safety.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::CALL_TYPE_MISMATCH_ERROR"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 M.read (| offset |)
                                                               ]
@@ -6146,7 +6324,13 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6225,6 +6409,11 @@ Module type_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::Signature";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -6238,6 +6427,8 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| verifier |) |) |);
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::PACK_TYPE_MISMATCH_ERROR"
+                              []
+                              []
                               [];
                             M.read (| offset |)
                           ]
@@ -6508,9 +6699,16 @@ Module type_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::Signature";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_binary_format::file_format::Signature"
+                          []
+                          []
                           [ M.read (| field_sig |) ]
                       ]
                   |)))
@@ -7022,6 +7220,8 @@ Module type_safety.
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                   []
+                                                                  []
+                                                                  []
                                                               ]
                                                             |);
                                                             M.call_closure (|
@@ -7148,15 +7348,21 @@ Module type_safety.
                                                                                                   32;
                                                                                                 Value.StructTuple
                                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                                  []
+                                                                                                  []
                                                                                                   [];
                                                                                                 Value.Integer
                                                                                                   IntegerKind.U32
                                                                                                   4;
                                                                                                 Value.StructTuple
                                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                                  []
+                                                                                                  []
                                                                                                   [];
                                                                                                 Value.StructTuple
                                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                                  []
+                                                                                                  []
                                                                                                   []
                                                                                               ]
                                                                                             |)
@@ -7302,6 +7508,12 @@ Module type_safety.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [ M.read (| err |) ]
                                                                   |)
                                                                 |)
@@ -7368,6 +7580,12 @@ Module type_safety.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
                                                           [
                                                             M.call_closure (|
                                                               Ty.path
@@ -7388,6 +7606,8 @@ Module type_safety.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "move_core_types::vm_status::StatusCode::PACK_TYPE_MISMATCH_ERROR"
+                                                                  []
+                                                                  []
                                                                   [];
                                                                 M.read (| offset |)
                                                               ]
@@ -7520,7 +7740,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -7684,6 +7910,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -7799,15 +8027,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -7930,6 +8164,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -7974,6 +8213,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -7991,6 +8235,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::UNPACK_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -8375,7 +8621,13 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8628,6 +8880,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -8645,6 +8902,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -8744,6 +9003,8 @@ Module type_safety.
                                     [
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                        []
+                                        []
                                         []
                                     ]
                                   |);
@@ -8860,15 +9121,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -8991,6 +9258,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -9030,6 +9302,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::Address"
                                         []
+                                        []
+                                        []
                                     |)
                                   |)
                                 ]
@@ -9042,6 +9316,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -9059,6 +9338,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -9118,6 +9399,8 @@ Module type_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Bool"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -9187,7 +9470,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9434,6 +9723,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -9451,6 +9745,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::MOVEFROM_WITHOUT_KEY_ABILITY"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -9576,6 +9872,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -9691,15 +9989,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -9822,6 +10126,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -9861,6 +10170,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::Address"
                                         []
+                                        []
+                                        []
                                     |)
                                   |)
                                 ]
@@ -9873,6 +10184,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -9890,6 +10206,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::MOVEFROM_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -10016,7 +10334,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -10266,6 +10590,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -10283,6 +10612,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::MOVETO_WITHOUT_KEY_ABILITY"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -10408,6 +10739,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -10523,15 +10856,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -10654,6 +10993,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -10751,6 +11095,8 @@ Module type_safety.
                                     [
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                        []
+                                        []
                                         []
                                     ]
                                   |);
@@ -10867,15 +11213,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -10998,6 +11350,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -11042,6 +11399,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -11059,6 +11421,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -11112,13 +11476,25 @@ Module type_safety.
                                   "move_binary_format::file_format::SignatureToken::Signer"
                                 |) in
                               M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
+                                  [ Value.Tuple [] ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -11136,6 +11512,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -11149,6 +11527,8 @@ Module type_safety.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                           [
                             M.call_closure (|
                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -11165,6 +11545,8 @@ Module type_safety.
                                 |);
                                 Value.StructTuple
                                   "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR"
+                                  []
+                                  []
                                   [];
                                 M.read (| offset |)
                               ]
@@ -11320,6 +11702,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                         []
+                                        []
+                                        []
                                     ]
                                   |);
                                   M.call_closure (|
@@ -11435,15 +11819,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -11566,6 +11956,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -11663,6 +12058,8 @@ Module type_safety.
                                     [
                                       Value.StructTuple
                                         "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                        []
+                                        []
                                         []
                                     ]
                                   |);
@@ -11779,15 +12176,21 @@ Module type_safety.
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.Integer
                                                                         IntegerKind.U32
                                                                         4;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                   |)
@@ -11910,6 +12313,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [ M.read (| err |) ]
                                         |)
                                       |)
@@ -11949,6 +12357,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U64"
                                         []
+                                        []
+                                        []
                                     |)
                                   |)
                                 ]
@@ -11961,6 +12371,11 @@ Module type_safety.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
@@ -11978,6 +12393,8 @@ Module type_safety.
                                         |);
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                          []
+                                          []
                                           [];
                                         M.read (| offset |)
                                       ]
@@ -12066,6 +12483,11 @@ Module type_safety.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ]
                                     [
                                       M.call_closure (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
@@ -12083,6 +12505,8 @@ Module type_safety.
                                           |);
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                            []
+                                            []
                                             [];
                                           M.read (| offset |)
                                         ]
@@ -12116,6 +12540,8 @@ Module type_safety.
                           M.alloc (|
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::MutableReference"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -12146,6 +12572,8 @@ Module type_safety.
                           (M.alloc (|
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Reference"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -12288,7 +12716,13 @@ Module type_safety.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -12908,6 +13342,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -13028,15 +13464,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -13169,6 +13611,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -13414,6 +13862,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -13431,6 +13884,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::POP_WITHOUT_DROP_ABILITY"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -13577,6 +14032,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -13700,15 +14157,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -13850,6 +14313,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -13892,6 +14361,8 @@ Module type_safety.
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::SignatureToken::Bool"
                                                           []
+                                                          []
+                                                          []
                                                       |)
                                                     |)
                                                   ]
@@ -13908,6 +14379,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -13926,6 +14403,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::BR_TYPE_MISMATCH_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -14040,6 +14519,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -14161,15 +14642,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -14302,6 +14789,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -14393,6 +14886,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -14410,6 +14908,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::STLOC_TYPE_MISMATCH_ERROR"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -14519,6 +15019,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -14640,15 +15142,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -14781,6 +15289,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -14822,6 +15336,8 @@ Module type_safety.
                                               Value.StructTuple
                                                 "move_binary_format::file_format::SignatureToken::U64"
                                                 []
+                                                []
+                                                []
                                             |)
                                           |)
                                         ]
@@ -14838,6 +15354,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -14855,6 +15376,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::ABORT_TYPE_MISMATCH_ERROR"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -15240,6 +15763,8 @@ Module type_safety.
                                                                         Value.StructTuple
                                                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       ]
                                                                     |);
                                                                     M.call_closure (|
@@ -15370,15 +15895,21 @@ Module type_safety.
                                                                                                           32;
                                                                                                         Value.StructTuple
                                                                                                           "core::fmt::rt::Alignment::Unknown"
+                                                                                                          []
+                                                                                                          []
                                                                                                           [];
                                                                                                         Value.Integer
                                                                                                           IntegerKind.U32
                                                                                                           4;
                                                                                                         Value.StructTuple
                                                                                                           "core::fmt::rt::Count::Implied"
+                                                                                                          []
+                                                                                                          []
                                                                                                           [];
                                                                                                         Value.StructTuple
                                                                                                           "core::fmt::rt::Count::Implied"
+                                                                                                          []
+                                                                                                          []
                                                                                                           []
                                                                                                       ]
                                                                                                     |)
@@ -15529,6 +16060,12 @@ Module type_safety.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ]
                                                                               [ M.read (| err |) ]
                                                                           |)
                                                                         |)
@@ -15601,6 +16138,12 @@ Module type_safety.
                                                               M.return_ (|
                                                                 Value.StructTuple
                                                                   "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ]
                                                                   [
                                                                     M.call_closure (|
                                                                       Ty.path
@@ -15621,6 +16164,8 @@ Module type_safety.
                                                                         |);
                                                                         Value.StructTuple
                                                                           "move_core_types::vm_status::StatusCode::RET_TYPE_MISMATCH_ERROR"
+                                                                          []
+                                                                          []
                                                                           [];
                                                                         M.read (| offset |)
                                                                       ]
@@ -15771,6 +16316,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -15891,15 +16438,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -16032,6 +16585,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -16114,6 +16673,8 @@ Module type_safety.
                                             |);
                                             Value.StructTuple
                                               "move_binary_format::file_format::SignatureToken::Reference"
+                                              []
+                                              []
                                               [ M.read (| inner |) ]
                                           ]
                                         |)
@@ -16194,6 +16755,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -16211,6 +16777,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -16298,6 +16866,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -16882,6 +17452,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -17460,6 +18032,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U8"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 ]
@@ -17600,6 +18174,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U16"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -17742,6 +18318,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U32"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 ]
@@ -17882,6 +18460,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U64"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -18024,6 +18604,8 @@ Module type_safety.
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U128"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 ]
@@ -18164,6 +18746,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U256"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -18524,6 +19108,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_binary_format::file_format::SignatureToken::Bool"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |)
@@ -18895,6 +19481,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -18913,6 +19504,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::COPYLOC_WITHOUT_COPY_ABILITY"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -19627,6 +20220,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -20311,6 +20906,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -20981,6 +21578,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -21632,6 +22231,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -21752,15 +22353,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -21893,6 +22500,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -22155,6 +22768,12 @@ Module type_safety.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -22175,6 +22794,8 @@ Module type_safety.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::READREF_WITHOUT_COPY_ABILITY"
+                                                                      []
+                                                                      []
                                                                       [];
                                                                     M.read (| offset |)
                                                                   ]
@@ -22336,6 +22957,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -22353,6 +22979,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::READREF_TYPE_MISMATCH_ERROR"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -22461,6 +23089,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -22582,15 +23212,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -22723,6 +23359,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -22822,6 +23464,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -22943,15 +23587,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -23084,6 +23734,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -23125,6 +23781,11 @@ Module type_safety.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ]
                                               [
                                                 M.call_closure (|
                                                   Ty.path
@@ -23143,6 +23804,8 @@ Module type_safety.
                                                     |);
                                                     Value.StructTuple
                                                       "move_core_types::vm_status::StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR"
+                                                      []
+                                                      []
                                                       [];
                                                     M.read (| offset |)
                                                   ]
@@ -23341,6 +24004,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -23359,6 +24027,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::WRITEREF_WITHOUT_DROP_ABILITY"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -23411,6 +24081,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -23428,6 +24103,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::WRITEREF_TYPE_MISMATCH_ERROR"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -23537,6 +24214,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -23658,15 +24337,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -23799,6 +24484,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -23844,6 +24535,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -23862,6 +24558,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -23934,6 +24632,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U8"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -24104,6 +24804,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -24224,15 +24926,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -24365,6 +25073,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -24410,6 +25124,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -24428,6 +25147,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -24500,6 +25221,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U64"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -24670,6 +25393,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -24790,15 +25515,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -24931,6 +25662,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -24976,6 +25713,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -24994,6 +25736,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -25066,6 +25810,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U128"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -25324,6 +26070,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -25447,15 +26195,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -25597,6 +26351,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -25709,6 +26469,8 @@ Module type_safety.
                                                         [
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |);
@@ -25833,15 +26595,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -25983,6 +26751,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -26185,6 +26959,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -26203,6 +26983,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -26349,6 +27131,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -26472,15 +27256,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -26622,6 +27412,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -26734,6 +27530,8 @@ Module type_safety.
                                                         [
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |);
@@ -26858,15 +27656,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -27008,6 +27812,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -27062,6 +27872,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_binary_format::file_format::SignatureToken::U8"
+                                                              []
+                                                              []
                                                               []
                                                           |)
                                                         |)
@@ -27217,6 +28029,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -27235,6 +28053,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -27381,6 +28201,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -27504,15 +28326,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -27654,6 +28482,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -27766,6 +28600,8 @@ Module type_safety.
                                                         [
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |);
@@ -27890,15 +28726,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -28040,6 +28882,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -28083,6 +28931,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_binary_format::file_format::SignatureToken::Bool"
                                                             []
+                                                            []
+                                                            []
                                                         |)
                                                       |)
                                                     ]
@@ -28110,6 +28960,8 @@ Module type_safety.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_binary_format::file_format::SignatureToken::Bool"
+                                                              []
+                                                              []
                                                               []
                                                           |)
                                                         |)
@@ -28185,6 +29037,8 @@ Module type_safety.
                                                         |);
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::SignatureToken::Bool"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |)
@@ -28267,6 +29121,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -28285,6 +29145,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -28396,6 +29258,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -28517,15 +29381,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -28658,6 +29528,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -28698,6 +29574,8 @@ Module type_safety.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "move_binary_format::file_format::SignatureToken::Bool"
+                                                []
+                                                []
                                                 []
                                             |)
                                           |)
@@ -28769,6 +29647,8 @@ Module type_safety.
                                               |);
                                               Value.StructTuple
                                                 "move_binary_format::file_format::SignatureToken::Bool"
+                                                []
+                                                []
                                                 []
                                             ]
                                           |)
@@ -28850,6 +29730,11 @@ Module type_safety.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -28867,6 +29752,8 @@ Module type_safety.
                                                 |);
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR"
+                                                  []
+                                                  []
                                                   [];
                                                 M.read (| offset |)
                                               ]
@@ -29010,6 +29897,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -29133,15 +30022,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -29283,6 +30178,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -29395,6 +30296,8 @@ Module type_safety.
                                                         [
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |);
@@ -29519,15 +30422,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -29669,6 +30578,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -29948,6 +30863,8 @@ Module type_safety.
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::SignatureToken::Bool"
                                                           []
+                                                          []
+                                                          []
                                                       ]
                                                     |)
                                                   ]
@@ -30029,6 +30946,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -30047,6 +30970,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -30211,6 +31136,8 @@ Module type_safety.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -30334,15 +31261,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -30484,6 +31417,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -30596,6 +31535,8 @@ Module type_safety.
                                                         [
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |);
@@ -30720,15 +31661,21 @@ Module type_safety.
                                                                                             32;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Alignment::Unknown"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
                                                                                             4;
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             [];
                                                                                           Value.StructTuple
                                                                                             "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                            []
                                                                                             []
                                                                                         ]
                                                                                       |)
@@ -30870,6 +31817,12 @@ Module type_safety.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::result::Result::Err"
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ]
                                                                 [ M.read (| err |) ]
                                                             |)
                                                           |)
@@ -30992,6 +31945,8 @@ Module type_safety.
                                                       Value.StructTuple
                                                         "move_binary_format::file_format::SignatureToken::Bool"
                                                         []
+                                                        []
+                                                        []
                                                     ]
                                                   |)
                                                 ]
@@ -31072,6 +32027,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -31090,6 +32051,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -31180,6 +32143,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -31768,6 +32733,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -32397,6 +33364,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -33067,6 +34036,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -33733,6 +34704,8 @@ Module type_safety.
                                           M.alloc (|
                                             Value.StructTuple
                                               "move_binary_format::file_format::Signature"
+                                              []
+                                              []
                                               [
                                                 M.call_closure (|
                                                   Ty.apply
@@ -34595,6 +35568,12 @@ Module type_safety.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ]
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -34613,6 +35592,8 @@ Module type_safety.
                                                           |);
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                            []
+                                                            []
                                                             [];
                                                           M.read (| offset |)
                                                         ]
@@ -34688,6 +35669,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::Vector"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.apply
@@ -34906,6 +35889,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -35026,15 +36011,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -35167,6 +36158,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -35389,6 +36386,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_binary_format::file_format::SignatureToken::U64"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -35469,6 +36468,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -35487,6 +36491,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -36037,6 +37043,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -36157,15 +37165,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -36298,6 +37312,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -36397,6 +37417,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -36518,15 +37540,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -36659,6 +37687,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -36805,6 +37839,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -36823,6 +37862,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -36914,6 +37955,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -36932,6 +37978,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -37043,6 +38091,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -37164,15 +38214,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -37305,6 +38361,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -37605,6 +38667,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -37623,6 +38690,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -37741,6 +38810,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -37862,15 +38933,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -38003,6 +39080,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -38124,6 +39207,8 @@ Module type_safety.
                                               M.alloc (|
                                                 Value.StructTuple
                                                   "move_binary_format::file_format::SignatureToken::Vector"
+                                                  []
+                                                  []
                                                   [
                                                     M.call_closure (|
                                                       Ty.apply
@@ -38189,6 +39274,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -38207,6 +39297,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -38467,6 +39559,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -38587,15 +39681,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -38728,6 +39828,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -38827,6 +39933,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -38948,15 +40056,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -39089,6 +40203,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -39188,6 +40308,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -39309,15 +40431,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -39450,6 +40578,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -39494,6 +40628,8 @@ Module type_safety.
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::SignatureToken::U64"
                                                     []
+                                                    []
+                                                    []
                                                 |)
                                               |)
                                             ]
@@ -39522,6 +40658,8 @@ Module type_safety.
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::SignatureToken::U64"
                                                       []
+                                                      []
+                                                      []
                                                   |)
                                                 |)
                                               ]
@@ -39539,6 +40677,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -39557,6 +40700,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -39727,6 +40872,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -39745,6 +40895,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -39854,6 +41006,8 @@ Module type_safety.
                                               [
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |);
@@ -39975,15 +41129,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -40116,6 +41276,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -40161,6 +41327,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -40179,6 +41350,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -40251,6 +41424,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U16"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -40421,6 +41596,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -40541,15 +41718,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -40682,6 +41865,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -40727,6 +41916,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -40745,6 +41939,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -40817,6 +42013,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U32"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -40987,6 +42185,8 @@ Module type_safety.
                                                 Value.StructTuple
                                                   "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             M.call_closure (|
@@ -41107,15 +42307,21 @@ Module type_safety.
                                                                                   32;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Alignment::Unknown"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.Integer
                                                                                   IntegerKind.U32
                                                                                   4;
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 Value.StructTuple
                                                                                   "core::fmt::rt::Count::Implied"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                             |)
@@ -41248,6 +42454,12 @@ Module type_safety.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ]
                                                       [ M.read (| err |) ]
                                                   |)
                                                 |)
@@ -41293,6 +42505,11 @@ Module type_safety.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ]
                                             [
                                               M.call_closure (|
                                                 Ty.path
@@ -41311,6 +42528,8 @@ Module type_safety.
                                                   |);
                                                   Value.StructTuple
                                                     "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                                                    []
+                                                    []
                                                     [];
                                                   M.read (| offset |)
                                                 ]
@@ -41383,6 +42602,8 @@ Module type_safety.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::file_format::SignatureToken::U256"
+                                        []
+                                        []
                                         []
                                     ]
                                   |)
@@ -41457,7 +42678,13 @@ Module type_safety.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -41508,6 +42735,8 @@ Module type_safety.
                   M.alloc (|
                     Value.StructTuple
                       "move_binary_format::file_format::SignatureToken::Struct"
+                      []
+                      []
                       [ M.read (| struct_handle |) ]
                   |)));
               fun γ =>
@@ -41515,6 +42744,8 @@ Module type_safety.
                   (M.alloc (|
                     Value.StructTuple
                       "move_binary_format::file_format::SignatureToken::StructInstantiation"
+                      []
+                      []
                       [
                         M.call_closure (|
                           Ty.apply
@@ -41742,7 +42973,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::Bool"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::Bool" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::Bool"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41753,7 +42988,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::U8"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::U8" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::U8"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41764,7 +43003,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::U16"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::U16" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::U16"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41775,7 +43018,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::U32"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::U32" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::U32"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41786,7 +43033,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::U64"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::U64" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::U64"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41797,7 +43048,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::U128"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::U128" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::U128"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41808,7 +43063,11 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::U256"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "move_binary_format::file_format::SignatureToken::U256" []
+                        Value.StructTuple
+                          "move_binary_format::file_format::SignatureToken::U256"
+                          []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41822,6 +43081,8 @@ Module type_safety.
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureToken::Address"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -41834,6 +43095,8 @@ Module type_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureToken::Signer"
+                          []
+                          []
                           []
                       |)));
                   fun γ =>
@@ -41849,6 +43112,8 @@ Module type_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureToken::Vector"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -41906,6 +43171,8 @@ Module type_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureToken::Struct"
+                          []
+                          []
                           [ M.read (| M.deref (| M.read (| idx |) |) |) ]
                       |)));
                   fun γ =>
@@ -41940,6 +43207,8 @@ Module type_safety.
                               M.alloc (|
                                 Value.StructTuple
                                   "move_binary_format::file_format::SignatureToken::StructInstantiation"
+                                  []
+                                  []
                                   [
                                     M.call_closure (|
                                       Ty.apply
@@ -42255,6 +43524,8 @@ Module type_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureToken::Reference"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -42312,6 +43583,8 @@ Module type_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_binary_format::file_format::SignatureToken::MutableReference"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -42587,7 +43860,13 @@ Module type_safety.
                           (let γ := M.use mut_ref_only in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                          M.alloc (|
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              []
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -42615,11 +43894,19 @@ Module type_safety.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                       [ M.read (| M.deref (| M.read (| element_type |) |) |) ]
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                  (M.alloc (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                      []
+                                  |)))
                             ]
                           |)))
                     ]
@@ -42658,15 +43945,30 @@ Module type_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               [ M.read (| M.deref (| M.read (| element_type |) |) |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                          (M.alloc (|
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              []
+                          |)))
                     ]
                   |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                      []
+                  |)))
             ]
           |)
         |)))

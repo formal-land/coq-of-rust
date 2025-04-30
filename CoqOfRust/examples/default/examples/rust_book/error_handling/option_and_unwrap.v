@@ -350,7 +350,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ mk_str (| "water" |) ] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              [ mk_str (| "water" |) ]
+          |) in
         let~ lemonade :
             Ty.apply
               (Ty.path "*")
@@ -362,7 +368,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               ] :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ mk_str (| "lemonade" |) ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              [ mk_str (| "lemonade" |) ]
           |) in
         let~ void :
             Ty.apply
@@ -374,7 +384,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              []
+          |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|
@@ -409,7 +425,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ mk_str (| "coffee" |) ] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              [ mk_str (| "coffee" |) ]
+          |) in
         let~ nothing :
             Ty.apply
               (Ty.path "*")
@@ -420,7 +442,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (|
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              []
+          |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|

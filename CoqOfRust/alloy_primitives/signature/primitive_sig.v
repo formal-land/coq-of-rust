@@ -591,9 +591,17 @@ Module signature.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "alloy_primitives::signature::primitive_sig::PrimitiveSignature";
+                                        Ty.path "alloy_primitives::signature::error::SignatureError"
+                                      ]
                                       [
                                         Value.StructTuple
                                           "alloy_primitives::signature::error::SignatureError::FromBytes"
+                                          []
+                                          []
                                           [ mk_str (| "expected exactly 65 bytes" |) ]
                                       ]
                                   |)
@@ -673,6 +681,8 @@ Module signature.
                                   |);
                                   Value.StructTuple
                                     "alloy_primitives::signature::error::SignatureError::InvalidParity"
+                                    []
+                                    []
                                     [
                                       M.cast
                                         (Ty.path "u64")
@@ -760,6 +770,11 @@ Module signature.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature";
+                        Ty.path "alloy_primitives::signature::error::SignatureError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature",
@@ -803,6 +818,8 @@ Module signature.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", Value.Integer IntegerKind.Usize 64) ]
                                       ]
                                     |)
@@ -1057,7 +1074,7 @@ Module signature.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, bytes |);
-                                Value.StructTuple "core::ops::range::RangeFull" []
+                                Value.StructTuple "core::ops::range::RangeFull" [] [] []
                               ]
                             |)
                           |)
@@ -1389,6 +1406,8 @@ Module signature.
             let v := M.alloc (| v |) in
             Value.StructRecord
               "alloy_primitives::signature::primitive_sig::PrimitiveSignature"
+              []
+              []
               [ ("r", M.read (| r |)); ("s", M.read (| s |)); ("y_parity", M.read (| v |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1652,9 +1671,14 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature"
+                          ]
                           [
                             Value.StructRecord
                               "alloy_primitives::signature::primitive_sig::PrimitiveSignature"
+                              []
+                              []
                               [
                                 ("y_parity",
                                   UnOp.not (|
@@ -1727,7 +1751,14 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "alloy_primitives::signature::primitive_sig::PrimitiveSignature"
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -1808,6 +1839,8 @@ Module signature.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                                 ]
                               |)
@@ -1873,6 +1906,8 @@ Module signature.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 32);
                                       ("end_", Value.Integer IntegerKind.Usize 64)
@@ -2047,6 +2082,8 @@ Module signature.
                               M.borrow (| Pointer.Kind.MutRef, sig |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                             ]
                           |)
@@ -2131,6 +2168,8 @@ Module signature.
                               M.borrow (| Pointer.Kind.MutRef, sig |);
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 32);
                                   ("end_", Value.Integer IntegerKind.Usize 64)
@@ -2227,6 +2266,8 @@ Module signature.
             let v := M.alloc (| v |) in
             Value.StructRecord
               "alloy_primitives::signature::primitive_sig::PrimitiveSignature"
+              []
+              []
               [
                 ("y_parity", M.read (| v |));
                 ("r",

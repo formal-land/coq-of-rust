@@ -125,6 +125,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -336,6 +338,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -477,6 +481,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -700,6 +706,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -802,6 +810,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::CANCUN"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -840,6 +850,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -950,6 +962,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1383,6 +1397,8 @@ Module instructions.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
+                                                        []
+                                                        []
                                                         []
                                                     |)
                                                   |)

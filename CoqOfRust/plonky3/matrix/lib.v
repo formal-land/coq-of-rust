@@ -396,6 +396,8 @@ Module Matrix.
         (let self := M.alloc (| self |) in
         Value.StructRecord
           "p3_matrix::Dimensions"
+          []
+          []
           [
             ("width",
               M.call_closure (|
@@ -500,6 +502,8 @@ Module Matrix.
           [
             Value.StructRecord
               "core::ops::range::Range"
+              []
+              [ Ty.path "usize" ]
               [
                 ("start", Value.Integer IntegerKind.Usize 0);
                 ("end_",
@@ -601,6 +605,8 @@ Module Matrix.
               [
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
@@ -822,6 +828,8 @@ Module Matrix.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start", Value.Integer IntegerKind.Usize 0);
                         ("end_",
@@ -966,6 +974,8 @@ Module Matrix.
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_", M.read (| num_packed |))
@@ -1104,6 +1114,8 @@ Module Matrix.
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start",
                         M.call_closure (|
@@ -1247,6 +1259,8 @@ Module Matrix.
               [
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
                   [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| num_elems |))
                   ];
                 M.closure
@@ -1416,6 +1430,8 @@ Module Matrix.
               [
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
@@ -1563,6 +1579,8 @@ Module Matrix.
               [
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
@@ -1732,6 +1750,8 @@ Module Matrix.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_",
@@ -1849,6 +1869,8 @@ Module Matrix.
               [
                 Value.StructRecord
                   "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
                   [
                     ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
@@ -2102,6 +2124,8 @@ Module Matrix.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_",
@@ -2275,6 +2299,8 @@ Module Matrix.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("start", Value.Integer IntegerKind.Usize 0);
                           ("end_",
@@ -2473,6 +2499,8 @@ Module Matrix.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
@@ -2652,6 +2680,8 @@ Module Matrix.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
@@ -3454,6 +3484,19 @@ Module Matrix.
                                                                           |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.dyn
+                                                                                    [
+                                                                                      ("tracing_core::field::Value::Trait",
+                                                                                        [])
+                                                                                    ]
+                                                                                ]
+                                                                            ]
                                                                             [
                                                                               M.read (|
                                                                                 M.use
@@ -5392,6 +5435,8 @@ Module Matrix.
                                                 [
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",

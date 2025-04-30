@@ -225,7 +225,7 @@ Module vec.
                             "src_cap"
                           |)
                         |);
-                        Value.StructTuple "alloc::alloc::Global" []
+                        Value.StructTuple "alloc::alloc::Global" [] [] []
                       ]
                     |)
                   |) in

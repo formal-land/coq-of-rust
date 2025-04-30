@@ -319,6 +319,8 @@ Module convert.
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "core::result::Result::Ok"
+            []
+            [ T; Ty.path "core::convert::Infallible" ]
             [
               M.call_closure (|
                 T,

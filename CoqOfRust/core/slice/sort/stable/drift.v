@@ -560,6 +560,8 @@ Module slice.
                                                                   |);
                                                                   Value.StructRecord
                                                                     "core::ops::range::RangeFrom"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
                                                                     [
                                                                       ("start",
                                                                         M.read (| scan_idx |))
@@ -867,6 +869,8 @@ Module slice.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::Range"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("start",
                                                                 M.read (| merge_start_idx |));
@@ -1619,6 +1623,8 @@ Module slice.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeTo"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("end_",
                                                             M.call_closure (|
@@ -1725,6 +1731,8 @@ Module slice.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::RangeFrom"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start",
                                                             M.call_closure (|
@@ -2048,6 +2056,8 @@ Module slice.
                                                                               |);
                                                                               Value.StructRecord
                                                                                 "core::ops::range::RangeTo"
+                                                                                []
+                                                                                [ Ty.path "usize" ]
                                                                                 [
                                                                                   ("end_",
                                                                                     M.read (|
@@ -2169,6 +2179,8 @@ Module slice.
                                                 |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeTo"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [ ("end_", M.read (| eager_run_len |)) ]
                                               ]
                                             |)
@@ -2181,7 +2193,11 @@ Module slice.
                                       M.deref (| M.read (| scratch |) |)
                                     |);
                                     Value.Integer IntegerKind.U32 0;
-                                    Value.StructTuple "core::option::Option::None" [];
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                      [];
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| is_less |) |)
@@ -2299,7 +2315,11 @@ Module slice.
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |);
                         M.read (| limit |);
-                        Value.StructTuple "core::option::Option::None" [];
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          [];
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
@@ -2380,6 +2400,8 @@ Module slice.
                 (let length := M.alloc (| length |) in
                 Value.StructTuple
                   "core::slice::sort::stable::drift::DriftsortRun"
+                  []
+                  []
                   [
                     M.call_closure (|
                       Ty.path "usize",
@@ -2414,6 +2436,8 @@ Module slice.
                 (let length := M.alloc (| length |) in
                 Value.StructTuple
                   "core::slice::sort::stable::drift::DriftsortRun"
+                  []
+                  []
                   [
                     M.call_closure (|
                       Ty.path "usize",

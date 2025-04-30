@@ -14,7 +14,16 @@ Module air.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::option::Option::None" []))
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ F; Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ] ]
+            ]
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -91,6 +100,8 @@ Module air.
           let condition := M.alloc (| condition |) in
           Value.StructRecord
             "p3_air::air::FilteredAirBuilder"
+            []
+            [ Self ]
             [
               ("inner", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
               ("condition",

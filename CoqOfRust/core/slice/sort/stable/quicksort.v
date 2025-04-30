@@ -775,6 +775,8 @@ Module slice.
                                                             |);
                                                             Value.StructRecord
                                                               "core::ops::range::RangeFrom"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [ ("start", M.read (| mid_eq |)) ]
                                                           ]
                                                         |)
@@ -788,7 +790,11 @@ Module slice.
                                             M.alloc (|
                                               M.write (|
                                                 left_ancestor_pivot,
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                  []
                                               |)
                                             |) in
                                           M.continue (||)
@@ -1857,6 +1863,8 @@ Module slice.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
@@ -2070,6 +2078,8 @@ Module slice.
                 let len := M.alloc (| len |) in
                 Value.StructRecord
                   "core::slice::sort::stable::quicksort::PartitionState"
+                  []
+                  [ T ]
                   [
                     ("scratch_base", M.read (| scratch |));
                     ("scan", M.read (| scan |));

@@ -44,7 +44,7 @@ Module iter.
           M.read (|
             let~ residual :
                 Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ R ] ] :=
-              M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+              M.alloc (| Value.StructTuple "core::option::Option::None" [] [ R ] [] |) in
             let~ shunt :
                 Ty.apply
                   (Ty.path "*")
@@ -53,6 +53,8 @@ Module iter.
               M.alloc (|
                 Value.StructRecord
                   "core::iter::adapters::GenericShunt"
+                  []
+                  [ I; R ]
                   [
                     ("iter", M.read (| iter |));
                     ("residual",
@@ -298,7 +300,23 @@ Module iter.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                    M.constructor_as_closure "core::ops::control_flow::ControlFlow::Break"
+                    M.constructor_as_closure
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::ops::try_trait::Try"
+                          []
+                          []
+                          (Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item")
+                          "Output";
+                        Ty.tuple []
+                      ]
                   ]
                 |)
               ]
@@ -372,6 +390,8 @@ Module iter.
                             Value.Integer IntegerKind.Usize 0;
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
                               [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
@@ -725,12 +745,16 @@ Module iter.
                                                               |),
                                                               Value.StructTuple
                                                                 "core::option::Option::Some"
+                                                                []
+                                                                [ R ]
                                                                 [ M.read (| r |) ]
                                                             |)
                                                           |) in
                                                         M.alloc (|
                                                           Value.StructTuple
                                                             "core::ops::control_flow::ControlFlow::Break"
+                                                            []
+                                                            [ T; B ]
                                                             [
                                                               M.call_closure (|
                                                                 T,

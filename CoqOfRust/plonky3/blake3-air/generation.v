@@ -1127,6 +1127,8 @@ Module generation.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -1158,6 +1160,8 @@ Module generation.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -3463,6 +3467,8 @@ Module generation.
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_", Value.Integer IntegerKind.Usize 4)
@@ -3668,6 +3674,8 @@ Module generation.
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_", Value.Integer IntegerKind.Usize 4)
@@ -3880,6 +3888,8 @@ Module generation.
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_", Value.Integer IntegerKind.Usize 4)
@@ -4176,6 +4186,8 @@ Module generation.
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_", Value.Integer IntegerKind.Usize 4)

@@ -110,6 +110,8 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+              []
+              []
               [
                 ("inner",
                   M.call_closure (|
@@ -442,6 +444,8 @@ Module eip7702.
             let authority := M.alloc (| authority |) in
             Value.StructRecord
               "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+              []
+              []
               [ ("inner", M.read (| inner |)); ("authority", M.read (| authority |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

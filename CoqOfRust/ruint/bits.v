@@ -2014,10 +2014,21 @@ Module bits.
                     let value := M.copy (| γ0_0 |) in
                     let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        [ M.read (| value |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -2325,6 +2336,8 @@ Module bits.
                                                   [
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [
                                                         ("start",
                                                           M.call_closure (|
@@ -2575,6 +2588,8 @@ Module bits.
                                                       [
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start", M.read (| limbs |));
                                                             ("end_", LIMBS)
@@ -2993,6 +3008,8 @@ Module bits.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeTo"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [ ("end_", M.read (| limbs |)) ]
                                                       ]
                                                     |)
@@ -3074,6 +3091,8 @@ Module bits.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start",
                                           M.call_closure (|
@@ -3368,6 +3387,8 @@ Module bits.
                                       [
                                         Value.StructRecord
                                           "core::ops::range::Range"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.call_closure (|
@@ -3849,6 +3870,8 @@ Module bits.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| limbs |)) ]
                                       ]
                                     |)
@@ -3999,10 +4022,21 @@ Module bits.
                     let value := M.copy (| γ0_0 |) in
                     let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        [ M.read (| value |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -4233,6 +4267,8 @@ Module bits.
                                                   [
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [
                                                         ("start",
                                                           Value.Integer IntegerKind.Usize 0);
@@ -4381,6 +4417,8 @@ Module bits.
                                                   [
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [
                                                         ("start",
                                                           Value.Integer IntegerKind.Usize 0);
@@ -4558,6 +4596,8 @@ Module bits.
                                                         |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
+                                                          []
+                                                          [ Ty.path "usize" ]
                                                           [
                                                             ("start",
                                                               M.call_closure (|
@@ -4657,6 +4697,8 @@ Module bits.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
@@ -5150,6 +5192,8 @@ Module bits.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             ("start",
                                               M.call_closure (|
@@ -6016,6 +6060,8 @@ Module bits.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", LIMBS) ]
                     ]
                   |)
@@ -6504,6 +6550,8 @@ Module bits.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", LIMBS) ]
                     ]
                   |)
@@ -6992,6 +7040,8 @@ Module bits.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
+                        []
+                        [ Ty.path "usize" ]
                         [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", LIMBS) ]
                     ]
                   |)

@@ -847,7 +847,13 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       val))
                 ]
               |) in
-            M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+            M.alloc (|
+              Value.StructTuple
+                "core::result::Result::Ok"
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                [ Value.Tuple [] ]
+            |)
           |)))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

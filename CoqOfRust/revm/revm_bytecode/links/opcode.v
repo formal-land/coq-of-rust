@@ -10,7 +10,7 @@ Module OpCode.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_bytecode::opcode::OpCode";
-    φ x := Value.StructTuple "revm_bytecode::opcode::OpCode" [φ x.(value)];
+    φ x := Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [φ x.(value)];
   }.
 
   Definition of_ty : OfTy.t (Ty.path "revm_bytecode::opcode::OpCode").
@@ -19,13 +19,13 @@ Module OpCode.
 
   Lemma of_value_with value value' :
     value' = φ value ->
-    Value.StructTuple "revm_bytecode::opcode::OpCode" [value'] = φ (Build_t value).
+    Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [value'] = φ (Build_t value).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
 
   Definition of_value (value : U8.t) value' :
     value' = φ value ->
-    OfValue.t (Value.StructTuple "revm_bytecode::opcode::OpCode" [value']).
+    OfValue.t (Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [value']).
   Proof. econstructor; apply of_value_with; eassumption. Defined.
   Smpl Add eapply of_value : of_value.
 

@@ -88,6 +88,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "u32" ]
                       [
                         ("start", Value.Integer IntegerKind.U32 0);
                         ("end_", M.read (| get_constant (| "threads::NTHREADS", Ty.path "u32" |) |))

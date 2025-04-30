@@ -254,7 +254,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
-              [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
+              []
+              [ Ty.path "char"; Ty.path "f32" ]
+              [
+                Value.UnicodeChar 81;
+                Value.StructTuple "core::marker::PhantomData" [] [ Ty.path "f32" ] []
+              ]
           |) in
         let~ _tuple2 :
             Ty.apply
@@ -269,7 +274,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
-              [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
+              []
+              [ Ty.path "char"; Ty.path "f64" ]
+              [
+                Value.UnicodeChar 81;
+                Value.StructTuple "core::marker::PhantomData" [] [ Ty.path "f64" ] []
+              ]
           |) in
         let~ _struct1 :
             Ty.apply
@@ -284,9 +294,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"
+              []
+              [ Ty.path "char"; Ty.path "f32" ]
               [
                 ("first", Value.UnicodeChar 81);
-                ("phantom", Value.StructTuple "core::marker::PhantomData" [])
+                ("phantom", Value.StructTuple "core::marker::PhantomData" [] [ Ty.path "f32" ] [])
               ]
           |) in
         let~ _struct2 :
@@ -302,9 +314,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"
+              []
+              [ Ty.path "char"; Ty.path "f64" ]
               [
                 ("first", Value.UnicodeChar 81);
-                ("phantom", Value.StructTuple "core::marker::PhantomData" [])
+                ("phantom", Value.StructTuple "core::marker::PhantomData" [] [ Ty.path "f64" ] [])
               ]
           |) in
         M.alloc (| Value.Tuple [] |)

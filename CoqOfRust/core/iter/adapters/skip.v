@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::skip::Skip"
+                []
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -184,6 +186,8 @@ Module iter.
               let n := M.alloc (| n |) in
               Value.StructRecord
                 "core::iter::adapters::skip::Skip"
+                []
+                [ I ]
                 [ ("iter", M.read (| iter |)); ("n", M.read (| n |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1312,6 +1316,8 @@ Module iter.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -1339,7 +1345,11 @@ Module iter.
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                     M.alloc (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "usize" ]
+                                        []
                                     |)))
                               ]
                             |)
@@ -2089,8 +2099,21 @@ Module iter.
                         |),
                         [ M.read (| n |) ]
                       |);
-                      Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                      M.constructor_as_closure "core::result::Result::Err"
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ];
+                      M.constructor_as_closure
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
                     ]
                   |)
                 |)
@@ -2188,6 +2211,8 @@ Module iter.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
@@ -2503,7 +2528,20 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -2700,7 +2738,20 @@ Module iter.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -3151,8 +3202,21 @@ Module iter.
                           |)
                         ]
                       |);
-                      Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                      M.constructor_as_closure "core::result::Result::Err"
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ];
+                      M.constructor_as_closure
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
                     ]
                   |)
                 |)

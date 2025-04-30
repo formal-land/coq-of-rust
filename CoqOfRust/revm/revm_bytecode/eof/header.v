@@ -38,6 +38,8 @@ Module eof.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_bytecode::eof::header::EofHeader"
+              []
+              []
               [
                 ("types_size",
                   M.call_closure (|
@@ -471,6 +473,8 @@ Module eof.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_bytecode::eof::header::EofHeader"
+              []
+              []
               [
                 ("types_size",
                   M.call_closure (|
@@ -2179,9 +2183,29 @@ Module eof.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
+                                                    ];
+                                                  Ty.path "usize"
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "revm_bytecode::eof::EofDecodeError::NonSizes"
+                                                []
+                                                []
                                                 []
                                             ]
                                         |)
@@ -2245,9 +2269,29 @@ Module eof.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
+                                                    ];
+                                                  Ty.path "usize"
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "revm_bytecode::eof::EofDecodeError::ShortInputForSizes"
+                                                []
+                                                []
                                                 []
                                             ]
                                         |)
@@ -2312,6 +2356,8 @@ Module eof.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_", M.read (| num_sections |))
@@ -2467,9 +2513,38 @@ Module eof.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [ Ty.path "u8" ]
+                                                                              ];
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.path "u16";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ];
+                                                                            Ty.path "usize"
+                                                                          ];
+                                                                        Ty.path
+                                                                          "revm_bytecode::eof::EofDecodeError"
+                                                                      ]
                                                                       [
                                                                         Value.StructTuple
                                                                           "revm_bytecode::eof::EofDecodeError::ZeroSize"
+                                                                          []
+                                                                          []
                                                                           []
                                                                       ]
                                                                   |)
@@ -2532,6 +2607,22 @@ Module eof.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                                  Ty.path "usize"
+                                ];
+                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                            ]
                             [
                               Value.Tuple
                                 [
@@ -2567,6 +2658,8 @@ Module eof.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("start", M.read (| byte_size |)) ]
                                             ]
                                           |)
@@ -4162,9 +4255,28 @@ Module eof.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "revm_bytecode::eof::header::EofHeader";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                  ];
+                                                Ty.path "revm_bytecode::eof::EofDecodeError"
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "revm_bytecode::eof::EofDecodeError::InvalidEOFMagicNumber"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                           |)
@@ -4409,9 +4521,29 @@ Module eof.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path
+                                                              "revm_bytecode::eof::header::EofHeader";
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]
+                                                          ];
+                                                        Ty.path "revm_bytecode::eof::EofDecodeError"
+                                                      ]
                                                       [
                                                         Value.StructTuple
                                                           "revm_bytecode::eof::EofDecodeError::InvalidEOFVersion"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                   |)
@@ -4675,9 +4807,30 @@ Module eof.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.path
+                                                                      "revm_bytecode::eof::header::EofHeader";
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ];
+                                                                Ty.path
+                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                              ]
                                                               [
                                                                 Value.StructTuple
                                                                   "revm_bytecode::eof::EofDecodeError::InvalidTypesKind"
+                                                                  []
+                                                                  []
                                                                   []
                                                               ]
                                                           |)
@@ -4987,9 +5140,30 @@ Module eof.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_bytecode::eof::header::EofHeader";
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [ Ty.path "u8" ]
+                                                                              ]
+                                                                          ];
+                                                                        Ty.path
+                                                                          "revm_bytecode::eof::EofDecodeError"
+                                                                      ]
                                                                       [
                                                                         Value.StructTuple
                                                                           "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
+                                                                          []
+                                                                          []
                                                                           []
                                                                       ]
                                                                   |)
@@ -5300,9 +5474,34 @@ Module eof.
                                                                           M.return_ (|
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "revm_bytecode::eof::header::EofHeader";
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                                              ]
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "revm_bytecode::eof::EofDecodeError::InvalidCodeKind"
+                                                                                  []
+                                                                                  []
                                                                                   []
                                                                               ]
                                                                           |)
@@ -5691,9 +5890,35 @@ Module eof.
                                                                                   M.return_ (|
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Err"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "revm_bytecode::eof::header::EofHeader";
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u8"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ];
+                                                                                        Ty.path
+                                                                                          "revm_bytecode::eof::EofDecodeError"
+                                                                                      ]
                                                                                       [
                                                                                         Value.StructTuple
                                                                                           "revm_bytecode::eof::EofDecodeError::TooManyCodeSections"
+                                                                                          []
+                                                                                          []
                                                                                           []
                                                                                       ]
                                                                                   |)
@@ -5760,9 +5985,35 @@ Module eof.
                                                                                   M.return_ (|
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Err"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "revm_bytecode::eof::header::EofHeader";
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u8"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ];
+                                                                                        Ty.path
+                                                                                          "revm_bytecode::eof::EofDecodeError"
+                                                                                      ]
                                                                                       [
                                                                                         Value.StructTuple
                                                                                           "revm_bytecode::eof::EofDecodeError::ZeroCodeSections"
+                                                                                          []
+                                                                                          []
                                                                                           []
                                                                                       ]
                                                                                   |)
@@ -5852,9 +6103,35 @@ Module eof.
                                                                                   M.return_ (|
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Err"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "revm_bytecode::eof::header::EofHeader";
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u8"
+                                                                                                  ]
+                                                                                              ]
+                                                                                          ];
+                                                                                        Ty.path
+                                                                                          "revm_bytecode::eof::EofDecodeError"
+                                                                                      ]
                                                                                       [
                                                                                         Value.StructTuple
                                                                                           "revm_bytecode::eof::EofDecodeError::MismatchCodeAndTypesSize"
+                                                                                          []
+                                                                                          []
                                                                                           []
                                                                                       ]
                                                                                   |)
@@ -6690,9 +6967,35 @@ Module eof.
                                                                                                               M.return_ (|
                                                                                                                 Value.StructTuple
                                                                                                                   "core::result::Result::Err"
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.tuple
+                                                                                                                      [
+                                                                                                                        Ty.path
+                                                                                                                          "revm_bytecode::eof::header::EofHeader";
+                                                                                                                        Ty.apply
+                                                                                                                          (Ty.path
+                                                                                                                            "&")
+                                                                                                                          []
+                                                                                                                          [
+                                                                                                                            Ty.apply
+                                                                                                                              (Ty.path
+                                                                                                                                "slice")
+                                                                                                                              []
+                                                                                                                              [
+                                                                                                                                Ty.path
+                                                                                                                                  "u8"
+                                                                                                                              ]
+                                                                                                                          ]
+                                                                                                                      ];
+                                                                                                                    Ty.path
+                                                                                                                      "revm_bytecode::eof::EofDecodeError"
+                                                                                                                  ]
                                                                                                                   [
                                                                                                                     Value.StructTuple
                                                                                                                       "revm_bytecode::eof::EofDecodeError::TooManyContainerSections"
+                                                                                                                      []
+                                                                                                                      []
                                                                                                                       []
                                                                                                                   ]
                                                                                                               |)
@@ -7131,9 +7434,35 @@ Module eof.
                                                                                                                       M.return_ (|
                                                                                                                         Value.StructTuple
                                                                                                                           "core::result::Result::Err"
+                                                                                                                          []
+                                                                                                                          [
+                                                                                                                            Ty.tuple
+                                                                                                                              [
+                                                                                                                                Ty.path
+                                                                                                                                  "revm_bytecode::eof::header::EofHeader";
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "&")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.apply
+                                                                                                                                      (Ty.path
+                                                                                                                                        "slice")
+                                                                                                                                      []
+                                                                                                                                      [
+                                                                                                                                        Ty.path
+                                                                                                                                          "u8"
+                                                                                                                                      ]
+                                                                                                                                  ]
+                                                                                                                              ];
+                                                                                                                            Ty.path
+                                                                                                                              "revm_bytecode::eof::EofDecodeError"
+                                                                                                                          ]
                                                                                                                           [
                                                                                                                             Value.StructTuple
                                                                                                                               "revm_bytecode::eof::EofDecodeError::InvalidDataKind"
+                                                                                                                              []
+                                                                                                                              []
                                                                                                                               []
                                                                                                                           ]
                                                                                                                       |)
@@ -7183,9 +7512,35 @@ Module eof.
                                                                                             M.return_ (|
                                                                                               Value.StructTuple
                                                                                                 "core::result::Result::Err"
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.tuple
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "revm_bytecode::eof::header::EofHeader";
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "&")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "slice")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "u8"
+                                                                                                            ]
+                                                                                                        ]
+                                                                                                    ];
+                                                                                                  Ty.path
+                                                                                                    "revm_bytecode::eof::EofDecodeError"
+                                                                                                ]
                                                                                                 [
                                                                                                   Value.StructTuple
                                                                                                     "revm_bytecode::eof::EofDecodeError::InvalidKindAfterCode"
+                                                                                                    []
+                                                                                                    []
                                                                                                     []
                                                                                                 ]
                                                                                             |)
@@ -7917,9 +8272,35 @@ Module eof.
                                                                                                           M.return_ (|
                                                                                                             Value.StructTuple
                                                                                                               "core::result::Result::Err"
+                                                                                                              []
+                                                                                                              [
+                                                                                                                Ty.tuple
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "revm_bytecode::eof::header::EofHeader";
+                                                                                                                    Ty.apply
+                                                                                                                      (Ty.path
+                                                                                                                        "&")
+                                                                                                                      []
+                                                                                                                      [
+                                                                                                                        Ty.apply
+                                                                                                                          (Ty.path
+                                                                                                                            "slice")
+                                                                                                                          []
+                                                                                                                          [
+                                                                                                                            Ty.path
+                                                                                                                              "u8"
+                                                                                                                          ]
+                                                                                                                      ]
+                                                                                                                  ];
+                                                                                                                Ty.path
+                                                                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                                                                              ]
                                                                                                               [
                                                                                                                 Value.StructTuple
                                                                                                                   "revm_bytecode::eof::EofDecodeError::InvalidTerminalByte"
+                                                                                                                  []
+                                                                                                                  []
                                                                                                                   []
                                                                                                               ]
                                                                                                           |)
@@ -7938,6 +8319,30 @@ Module eof.
                                                                                           M.alloc (|
                                                                                             Value.StructTuple
                                                                                               "core::result::Result::Ok"
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.tuple
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "revm_bytecode::eof::header::EofHeader";
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "&")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "slice")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "u8"
+                                                                                                          ]
+                                                                                                      ]
+                                                                                                  ];
+                                                                                                Ty.path
+                                                                                                  "revm_bytecode::eof::EofDecodeError"
+                                                                                              ]
                                                                                               [
                                                                                                 Value.Tuple
                                                                                                   [

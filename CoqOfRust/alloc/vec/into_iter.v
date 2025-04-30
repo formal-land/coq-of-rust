@@ -748,6 +748,8 @@ Module vec.
                           M.alloc (|
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
@@ -809,6 +811,8 @@ Module vec.
                           (M.alloc (|
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start",
                                   M.call_closure (|
@@ -1247,7 +1251,11 @@ Module vec.
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [ T ]
+                                                  []
                                               |)
                                             |)
                                           |)
@@ -1365,7 +1373,11 @@ Module vec.
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [ T ]
+                                                  []
                                               |)
                                             |)
                                           |)
@@ -1413,6 +1425,8 @@ Module vec.
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
+                      []
+                      [ T ]
                       [
                         M.call_closure (|
                           T,
@@ -1571,7 +1585,11 @@ Module vec.
                 Value.Tuple
                   [
                     M.read (| exact |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| exact |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| exact |) ]
                   ]
               |)
             |)))
@@ -1822,8 +1840,21 @@ Module vec.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -2024,6 +2055,14 @@ Module vec.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.apply (Ty.path "array") [ N ] [ T ];
+                                                        Ty.apply
+                                                          (Ty.path "core::array::iter::IntoIter")
+                                                          [ N ]
+                                                          [ T ]
+                                                      ]
                                                       [
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2044,6 +2083,8 @@ Module vec.
                                                             M.read (| raw_ary |);
                                                             Value.StructRecord
                                                               "core::ops::range::Range"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [
                                                                 ("start",
                                                                   Value.Integer
@@ -2093,6 +2134,11 @@ Module vec.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "array") [ N ] [ T ];
+                                        Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -2253,6 +2299,11 @@ Module vec.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "array") [ N ] [ T ];
+                                        Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.apply
@@ -2272,6 +2323,8 @@ Module vec.
                                             M.read (| raw_ary |);
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_", M.read (| len |))
@@ -2375,6 +2428,11 @@ Module vec.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply (Ty.path "array") [ N ] [ T ];
+                        Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
+                      ]
                       [
                         M.call_closure (|
                           Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -3564,7 +3622,11 @@ Module vec.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ T ]
+                                              []
                                           |)
                                         |)
                                       |)
@@ -3604,6 +3666,8 @@ Module vec.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ T ]
                               [
                                 M.call_closure (|
                                   T,
@@ -3711,7 +3775,11 @@ Module vec.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ T ]
+                                              []
                                           |)
                                         |)
                                       |)
@@ -3751,6 +3819,8 @@ Module vec.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ T ]
                               [
                                 M.call_closure (|
                                   T,
@@ -4009,8 +4079,21 @@ Module vec.
                         |)
                       ]
                     |);
-                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                    M.constructor_as_closure "core::result::Result::Err"
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
+                      [ Value.Tuple [] ];
+                    M.constructor_as_closure
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]
                   ]
                 |)
               |)
@@ -4455,6 +4538,8 @@ Module vec.
                 M.alloc (|
                   Value.StructTuple
                     "alloc::vec::into_iter::drop::DropGuard"
+                    []
+                    [ T; A ]
                     [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |) in
               let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

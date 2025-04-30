@@ -723,6 +723,8 @@ Module bytes_mut.
                                                           Value.StructTuple
                                                             "core::panicking::AssertKind::Eq"
                                                             []
+                                                            []
+                                                            []
                                                         |) in
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -758,6 +760,8 @@ Module bytes_mut.
                                                             |);
                                                             Value.StructTuple
                                                               "core::option::Option::None"
+                                                              []
+                                                              [ Ty.path "core::fmt::Arguments" ]
                                                               []
                                                           ]
                                                         |)
@@ -3159,6 +3163,8 @@ Module bytes_mut.
                                                                                   Value.StructTuple
                                                                                     "core::panicking::AssertKind::Eq"
                                                                                     []
+                                                                                    []
+                                                                                    []
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 M.call_closure (|
@@ -3205,6 +3211,11 @@ Module bytes_mut.
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "core::option::Option::None"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::fmt::Arguments"
+                                                                                      ]
                                                                                       []
                                                                                   ]
                                                                                 |)
@@ -3311,6 +3322,8 @@ Module bytes_mut.
                                                         Value.StructTuple
                                                           "core::panicking::AssertKind::Eq"
                                                           []
+                                                          []
+                                                          []
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -3342,6 +3355,8 @@ Module bytes_mut.
                                                           |);
                                                           Value.StructTuple
                                                             "core::option::Option::None"
+                                                            []
+                                                            [ Ty.path "core::fmt::Arguments" ]
                                                             []
                                                         ]
                                                       |)
@@ -4767,6 +4782,8 @@ Module bytes_mut.
                                                         Value.StructTuple
                                                           "core::panicking::AssertKind::Eq"
                                                           []
+                                                          []
+                                                          []
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -4798,6 +4815,8 @@ Module bytes_mut.
                                                           |);
                                                           Value.StructTuple
                                                             "core::option::Option::None"
+                                                            []
+                                                            [ Ty.path "core::fmt::Arguments" ]
                                                             []
                                                         ]
                                                       |)
@@ -5612,6 +5631,8 @@ Module bytes_mut.
             M.alloc (|
               Value.StructRecord
                 "bytes::bytes_mut::BytesMut"
+                []
+                []
                 [
                   ("ptr", M.read (| ptr |));
                   ("len", M.read (| len |));
@@ -6211,7 +6232,11 @@ Module bytes_mut.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [ Ty.tuple []; Ty.path "bytes::bytes_mut::BytesMut" ]
+                                    [ Value.Tuple [] ]
                                 |)
                               |)
                             |)
@@ -6437,12 +6462,20 @@ Module bytes_mut.
                             |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.tuple []; Ty.path "bytes::bytes_mut::BytesMut" ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Err" [ M.read (| other |) ]
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            []
+                            [ Ty.tuple []; Ty.path "bytes::bytes_mut::BytesMut" ]
+                            [ M.read (| other |) ]
                         |)))
                   ]
                 |)
@@ -6619,6 +6652,8 @@ Module bytes_mut.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -6650,6 +6685,8 @@ Module bytes_mut.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -6817,6 +6854,8 @@ Module bytes_mut.
                   [
                     Value.StructRecord
                       "bytes::bytes_mut::Shared"
+                      []
+                      []
                       [
                         ("vec",
                           M.call_closure (|
@@ -6987,6 +7026,8 @@ Module bytes_mut.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -7018,6 +7059,8 @@ Module bytes_mut.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -7273,6 +7316,8 @@ Module bytes_mut.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -7304,6 +7349,8 @@ Module bytes_mut.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -7453,6 +7500,8 @@ Module bytes_mut.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -7484,6 +7533,8 @@ Module bytes_mut.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -9790,13 +9841,21 @@ Module bytes_mut.
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                        [ Value.Tuple [] ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
-                        [ Value.StructTuple "core::fmt::Error" [] ]
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                        [ Value.StructTuple "core::fmt::Error" [] [] [] ]
                     |)))
               ]
             |)
@@ -9905,7 +9964,7 @@ Module bytes_mut.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -10731,7 +10790,7 @@ Module bytes_mut.
                     |)
                   |);
                   Value.Integer IntegerKind.Usize 1;
-                  Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                  Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                 ]
               |)
             |) in
@@ -10850,7 +10909,11 @@ Module bytes_mut.
                                         |)
                                       |);
                                       Value.Integer IntegerKind.Usize 1;
-                                      Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                      Value.StructTuple
+                                        "core::sync::atomic::Ordering::Release"
+                                        []
+                                        []
+                                        []
                                     ]
                                   |);
                                   Value.Integer IntegerKind.Usize 1
@@ -10883,7 +10946,7 @@ Module bytes_mut.
                           "ref_count"
                         |)
                       |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                     ]
                   |)
                 |) in
@@ -10976,7 +11039,7 @@ Module bytes_mut.
                       "ref_count"
                     |)
                   |);
-                  Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                  Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                 ]
               |);
               Value.Integer IntegerKind.Usize 1
@@ -11709,7 +11772,7 @@ Module bytes_mut.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -11798,7 +11861,7 @@ Module bytes_mut.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -11959,7 +12022,7 @@ Module bytes_mut.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12512,7 +12575,7 @@ Module bytes_mut.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12553,7 +12616,7 @@ Module bytes_mut.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12634,7 +12697,7 @@ Module bytes_mut.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -12675,7 +12738,7 @@ Module bytes_mut.
                           |)
                         |)
                       |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -13520,6 +13583,8 @@ Module bytes_mut.
                                                 Value.StructTuple
                                                   "core::panicking::AssertKind::Eq"
                                                   []
+                                                  []
+                                                  []
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
@@ -13549,7 +13614,11 @@ Module bytes_mut.
                                                       |)
                                                     |)
                                                   |);
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [ Ty.path "core::fmt::Arguments" ]
+                                                    []
                                                 ]
                                               |)
                                             |)
@@ -13674,6 +13743,8 @@ Module bytes_mut.
         M.alloc (|
           Value.StructRecord
             "bytes::bytes::Vtable"
+            []
+            []
             [
               ("clone",
                 (* ReifyFnPointer *)
@@ -13738,7 +13809,7 @@ Module bytes_mut.
                   |),
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                   ]
                 |))
             |) in
@@ -13859,7 +13930,7 @@ Module bytes_mut.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                     ]
                   |)
                 ]
@@ -14139,7 +14210,7 @@ Module bytes_mut.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                     ]
                   |)
                 ]
@@ -14271,6 +14342,8 @@ Module bytes_mut.
                   M.alloc (|
                     Value.StructRecord
                       "bytes::bytes_mut::BytesMut"
+                      []
+                      []
                       [
                         ("ptr", M.read (| ptr |));
                         ("len", M.read (| len |));
@@ -14381,7 +14454,7 @@ Module bytes_mut.
                 |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                  Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                  Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                 ]
               |)
             |) in
@@ -14415,7 +14488,7 @@ Module bytes_mut.
                       "ref_count"
                     |)
                   |);
-                  Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                  Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                 ]
               |)
             |) in

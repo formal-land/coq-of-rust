@@ -816,6 +816,8 @@ Module str.
                         |);
                         Value.StructRecord
                           "core::ops::range::RangeTo"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("end_",
                               M.call_closure (|
@@ -5502,7 +5504,7 @@ Module str.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -5556,7 +5558,7 @@ Module str.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                          Value.StructTuple "core::ops::range::RangeFull" []
+                          Value.StructTuple "core::ops::range::RangeFull" [] [] []
                         ]
                       |)
                     |)
@@ -5829,6 +5831,8 @@ Module str.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "u8" ]
                                         [ M.read (| M.deref (| M.read (| from_byte |) |) |) ]
                                     |)));
                                 fun γ =>
@@ -5930,7 +5934,11 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "u8" ]
+                                        []
                                     |)))
                               ]
                             |) in
@@ -6311,6 +6319,8 @@ Module str.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::Range"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("start", M.read (| last_end |));
                                                               ("end_", M.read (| start |))
@@ -6408,6 +6418,8 @@ Module str.
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("start", M.read (| last_end |));
                                     ("end_",
@@ -6641,6 +6653,8 @@ Module str.
                                                       |);
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
+                                                        []
+                                                        [ Ty.path "usize" ]
                                                         [
                                                           ("start", M.read (| last_end |));
                                                           ("end_", M.read (| start |))
@@ -6733,6 +6747,8 @@ Module str.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", M.read (| last_end |));
                                 ("end_",
@@ -8218,6 +8234,8 @@ Module str.
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
                                 Value.StructRecord
                                   "core::ops::range::RangeTo"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     ("end_",
                                       M.read (|
@@ -8295,6 +8313,8 @@ Module str.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("end_",
                                           M.read (|
@@ -8334,6 +8354,8 @@ Module str.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
@@ -8640,6 +8662,8 @@ Module str.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
@@ -8817,6 +8841,8 @@ Module str.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("start",
                                             M.read (|
@@ -8883,6 +8909,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.read (|
@@ -9094,6 +9122,8 @@ Module str.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                     ]
                                   |)
@@ -9152,6 +9182,8 @@ Module str.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                         ]
                                       |)

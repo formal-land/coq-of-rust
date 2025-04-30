@@ -1430,6 +1430,8 @@ Module bits.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "i32" ]
                           [
                             ("start", Value.Integer IntegerKind.I32 0);
                             ("end_", Value.Integer IntegerKind.I32 3)
@@ -1513,6 +1515,8 @@ Module bits.
                                                 [
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",

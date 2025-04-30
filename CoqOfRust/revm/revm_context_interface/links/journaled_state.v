@@ -19,7 +19,7 @@ Module StateLoad.
   Global Instance IsLink {T : Set} `{Link T} : Link (t T) := {
     Φ := Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [Φ T];
     φ x :=
-      Value.StructRecord "revm_context_interface::journaled_state::StateLoad" [
+      Value.StructRecord "revm_context_interface::journaled_state::StateLoad" [] [] [
         ("data", φ x.(data));
         ("is_cold", φ x.(is_cold))
       ];
@@ -40,7 +40,7 @@ Module StateLoad.
       (is_cold : bool) is_cold' :
     data' = φ data ->
     is_cold' = φ is_cold ->
-    Value.StructRecord "revm_context_interface::journaled_state::StateLoad" [
+    Value.StructRecord "revm_context_interface::journaled_state::StateLoad" [] [] [
       ("data", data');
       ("is_cold", is_cold')
     ] = φ (Build_t _ data is_cold).
@@ -97,7 +97,7 @@ Module Eip7702CodeLoad.
   {
     Φ := Ty.apply (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad") [] [Φ T];
     φ x :=
-      Value.StructRecord "revm_context_interface::journaled_state::Eip7702CodeLoad" [
+      Value.StructRecord "revm_context_interface::journaled_state::Eip7702CodeLoad" [] [] [
         ("state_load", φ x.(state_load));
         ("is_delegate_account_cold", φ x.(is_delegate_account_cold))
       ];
@@ -116,7 +116,7 @@ Module Eip7702CodeLoad.
   Lemma of_value_with state_load state_load' is_delegate_account_cold is_delegate_account_cold' :
     state_load' = φ state_load ->
     is_delegate_account_cold' = φ is_delegate_account_cold ->
-    Value.StructRecord "revm_context_interface::journaled_state::Eip7702CodeLoad" [
+    Value.StructRecord "revm_context_interface::journaled_state::Eip7702CodeLoad" [] [] [
       ("state_load", state_load');
       ("is_delegate_account_cold", is_delegate_account_cold')
     ] = φ (Build_t _ state_load is_delegate_account_cold).
@@ -188,7 +188,7 @@ Module AccountLoad.
   {
     Φ := Ty.path "revm_context_interface::journaled_state::AccountLoad";
     φ x :=
-      Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [
+      Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [] [] [
         ("load", φ x.(load));
         ("is_empty", φ x.(is_empty))
       ];
@@ -204,7 +204,7 @@ Module AccountLoad.
   Lemma of_value_with load load' is_empty is_empty' :
     load' = φ load ->
     is_empty' = φ is_empty ->
-    Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [
+    Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [] [] [
       ("load", load');
       ("is_empty", is_empty')
     ] = φ (Build_t load is_empty).
@@ -217,7 +217,7 @@ Module AccountLoad.
     load' = φ load ->
     is_empty' = φ is_empty ->
     OfValue.t (
-      Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [
+      Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [] [] [
         ("load", load');
         ("is_empty", is_empty')
       ]

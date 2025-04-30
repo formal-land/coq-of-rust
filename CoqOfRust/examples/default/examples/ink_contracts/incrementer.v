@@ -22,7 +22,7 @@ Module Impl_incrementer_Incrementer.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord "incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
+        Value.StructRecord "incrementer::Incrementer" [] [] [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

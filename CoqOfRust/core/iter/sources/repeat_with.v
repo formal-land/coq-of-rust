@@ -16,6 +16,8 @@ Module iter.
             (let repeater := M.alloc (| repeater |) in
             Value.StructRecord
               "core::iter::sources::repeat_with::RepeatWith"
+              []
+              [ F ]
               [ ("repeater", M.read (| repeater |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -60,6 +62,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::sources::repeat_with::RepeatWith"
+                []
+                [ F ]
                 [
                   ("repeater",
                     M.call_closure (|
@@ -176,6 +180,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "core::option::Option::Some"
+                []
+                [ A ]
                 [
                   M.call_closure (|
                     A,
@@ -225,7 +231,7 @@ Module iter.
                   M.read (|
                     get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
                   |);
-                  Value.StructTuple "core::option::Option::None" []
+                  Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

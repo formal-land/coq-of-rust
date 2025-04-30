@@ -138,7 +138,7 @@ Module sync.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -168,7 +168,7 @@ Module sync.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -234,6 +234,8 @@ Module sync.
                   [
                     Value.StructRecord
                       "alloc::sync::ArcInner"
+                      []
+                      [ T ]
                       [
                         ("strong",
                           M.call_closure (|
@@ -356,7 +358,7 @@ Module sync.
               [],
               [ F ]
             |),
-            [ M.read (| data_fn |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| data_fn |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -513,7 +515,9 @@ Module sync.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                          M.alloc (|
+                                            Value.StructTuple "alloc::alloc::Global" [] [] []
+                                          |)
                                         |);
                                         M.read (| layout |)
                                       ]
@@ -692,7 +696,9 @@ Module sync.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                          M.alloc (|
+                                            Value.StructTuple "alloc::alloc::Global" [] [] []
+                                          |)
                                         |);
                                         M.read (| layout |)
                                       ]
@@ -798,6 +804,15 @@ Module sync.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::pin::Pin")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1117,6 +1132,8 @@ Module sync.
                               [
                                 Value.StructRecord
                                   "alloc::sync::ArcInner"
+                                  []
+                                  [ T ]
                                   [
                                     ("strong",
                                       M.call_closure (|
@@ -1220,6 +1237,14 @@ Module sync.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::sync::Arc")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -1338,6 +1363,17 @@ Module sync.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::sync::Arc")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1584,6 +1620,8 @@ Module sync.
                                                               Value.StructTuple
                                                                 "alloc::alloc::Global"
                                                                 []
+                                                                []
+                                                                []
                                                             |)
                                                           |);
                                                           M.read (| layout |)
@@ -1748,6 +1786,17 @@ Module sync.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::sync::Arc")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -1994,6 +2043,8 @@ Module sync.
                                                               Value.StructTuple
                                                                 "alloc::alloc::Global"
                                                                 []
+                                                                []
+                                                                []
                                                             |)
                                                           |);
                                                           M.read (| layout |)
@@ -2138,7 +2189,7 @@ Module sync.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2173,7 +2224,7 @@ Module sync.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2208,7 +2259,7 @@ Module sync.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2620,7 +2671,19 @@ Module sync.
                       [ M.read (| ptr |); M.read (| layout |); M.read (| mem_to_arcinner |) ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| inner |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [ M.read (| inner |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2814,6 +2877,8 @@ Module sync.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -2848,6 +2913,8 @@ Module sync.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -3094,9 +3161,16 @@ Module sync.
           let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::sync::Arc"
+            []
+            [ T; A ]
             [
               ("ptr", M.read (| ptr |));
-              ("phantom", Value.StructTuple "core::marker::PhantomData" []);
+              ("phantom",
+                Value.StructTuple
+                  "core::marker::PhantomData"
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
+                  []);
               ("alloc", M.read (| alloc |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3208,6 +3282,8 @@ Module sync.
                   [
                     Value.StructRecord
                       "alloc::sync::ArcInner"
+                      []
+                      [ T ]
                       [
                         ("strong",
                           M.call_closure (|
@@ -3811,6 +3887,8 @@ Module sync.
                       [
                         Value.StructRecord
                           "alloc::sync::ArcInner"
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                           [
                             ("strong",
                               M.call_closure (|
@@ -3990,6 +4068,8 @@ Module sync.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::sync::Weak"
+                          []
+                          [ T; A ]
                           [ ("ptr", M.read (| init_ptr |)); ("alloc", M.read (| alloc |)) ]
                       |) in
                     let~ data : Ty.apply (Ty.path "*") [] [ T ] :=
@@ -4097,7 +4177,7 @@ Module sync.
                                   |)
                                 |);
                                 Value.Integer IntegerKind.Usize 1;
-                                Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                Value.StructTuple "core::sync::atomic::Ordering::Release" [] [] []
                               ]
                             |)
                           |) in
@@ -4182,6 +4262,8 @@ Module sync.
                                                               Value.StructTuple
                                                                 "core::panicking::AssertKind::Eq"
                                                                 []
+                                                                []
+                                                                []
                                                             |) in
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -4217,6 +4299,8 @@ Module sync.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "core::option::Option::Some"
+                                                                  []
+                                                                  [ Ty.path "core::fmt::Arguments" ]
                                                                   [
                                                                     M.call_closure (|
                                                                       Ty.path
@@ -4392,6 +4476,14 @@ Module sync.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::pin::Pin")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -4665,6 +4757,8 @@ Module sync.
                               [
                                 Value.StructRecord
                                   "alloc::sync::ArcInner"
+                                  []
+                                  [ T ]
                                   [
                                     ("strong",
                                       M.call_closure (|
@@ -4805,6 +4899,11 @@ Module sync.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ];
+                              Ty.path "core::alloc::AllocError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
@@ -4896,6 +4995,14 @@ Module sync.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::sync::Arc")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -5295,6 +5402,14 @@ Module sync.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::sync::Arc")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                  Ty.path "core::alloc::AllocError"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply
@@ -5757,9 +5872,13 @@ Module sync.
                                             Value.Integer IntegerKind.Usize 0;
                                             Value.StructTuple
                                               "core::sync::atomic::Ordering::Relaxed"
+                                              []
+                                              []
                                               [];
                                             Value.StructTuple
                                               "core::sync::atomic::Ordering::Relaxed"
+                                              []
+                                              []
                                               []
                                           ]
                                         |)
@@ -5776,6 +5895,8 @@ Module sync.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [ T; Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ]
                                     [ M.read (| this |) ]
                                 |)
                               |)
@@ -5789,7 +5910,7 @@ Module sync.
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (| "core::sync::atomic::fence", [], [] |),
-                      [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] ]
+                      [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] [] ]
                     |)
                   |) in
                 let~ this :
@@ -5944,6 +6065,8 @@ Module sync.
                   M.alloc (|
                     Value.StructRecord
                       "alloc::sync::Weak"
+                      []
+                      [ T; A ]
                       [
                         ("ptr",
                           M.read (|
@@ -5976,7 +6099,13 @@ Module sync.
                         ("alloc", M.read (| alloc |))
                       ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| elem |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ T; Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ]
+                    [ M.read (| elem |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6140,7 +6269,11 @@ Module sync.
                                           |)
                                         |);
                                         Value.Integer IntegerKind.Usize 1;
-                                        Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                        Value.StructTuple
+                                          "core::sync::atomic::Ordering::Release"
+                                          []
+                                          []
+                                          []
                                       ]
                                     |);
                                     Value.Integer IntegerKind.Usize 1
@@ -6152,7 +6285,9 @@ Module sync.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple "core::option::Option::None" [] [ T ] []
+                                |)
                               |)
                             |)
                           |)));
@@ -6164,7 +6299,7 @@ Module sync.
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (| "core::sync::atomic::fence", [], [] |),
-                      [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] ]
+                      [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] [] ]
                     |)
                   |) in
                 let~ inner : Ty.apply (Ty.path "*") [] [ T ] :=
@@ -6275,6 +6410,8 @@ Module sync.
                       [
                         Value.StructRecord
                           "alloc::sync::Weak"
+                          []
+                          [ T; A ]
                           [
                             ("ptr",
                               M.read (|
@@ -6309,7 +6446,9 @@ Module sync.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| inner |) ] |)
+                M.alloc (|
+                  Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| inner |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6823,7 +6962,7 @@ Module sync.
                             "weak"
                           |)
                         |);
-                        Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                        Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                       ]
                     |)
                   |) in
@@ -6928,6 +7067,8 @@ Module sync.
                                                     |);
                                                     Value.StructTuple
                                                       "core::sync::atomic::Ordering::Relaxed"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -7049,8 +7190,12 @@ Module sync.
                                     BinOp.Wrap.add,
                                     [ M.read (| cur |); Value.Integer IntegerKind.Usize 1 ]
                                   |);
-                                  Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
-                                  Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                                  Value.StructTuple
+                                    "core::sync::atomic::Ordering::Acquire"
+                                    []
+                                    []
+                                    [];
+                                  Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                                 ]
                               |)
                             |),
@@ -7189,6 +7334,8 @@ Module sync.
                                         M.return_ (|
                                           Value.StructRecord
                                             "alloc::sync::Weak"
+                                            []
+                                            [ T; A ]
                                             [
                                               ("ptr",
                                                 M.read (|
@@ -7301,7 +7448,7 @@ Module sync.
                         "weak"
                       |)
                     |);
-                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                   ]
                 |)
               |) in
@@ -7399,7 +7546,7 @@ Module sync.
                   "strong"
                 |)
               |);
-              Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+              Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7657,6 +7804,8 @@ Module sync.
               M.alloc (|
                 Value.StructRecord
                   "alloc::sync::Weak"
+                  []
+                  [ T; Ty.apply (Ty.path "&") [] [ A ] ]
                   [
                     ("ptr",
                       M.read (|
@@ -8448,9 +8597,13 @@ Module sync.
                                             Value.Integer IntegerKind.Usize 0;
                                             Value.StructTuple
                                               "core::sync::atomic::Ordering::Acquire"
+                                              []
+                                              []
                                               [];
                                             Value.StructTuple
                                               "core::sync::atomic::Ordering::Relaxed"
+                                              []
+                                              []
                                               []
                                           ]
                                         |)
@@ -8671,6 +8824,8 @@ Module sync.
                                                 Value.StructTuple
                                                   "core::sync::atomic::Ordering::Relaxed"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |);
                                             Value.Integer IntegerKind.Usize 1
@@ -8690,6 +8845,8 @@ Module sync.
                                     M.alloc (|
                                       Value.StructRecord
                                         "alloc::sync::Weak"
+                                        []
+                                        [ T; A ]
                                         [
                                           ("ptr",
                                             M.read (|
@@ -8979,6 +9136,8 @@ Module sync.
                                           Value.StructTuple
                                             "core::sync::atomic::Ordering::Release"
                                             []
+                                            []
+                                            []
                                         ]
                                       |)
                                     |) in
@@ -9180,6 +9339,8 @@ Module sync.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -9204,7 +9365,14 @@ Module sync.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -9400,8 +9568,16 @@ Module sync.
                                           Ty.path "usize"
                                         |)
                                       |);
-                                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
-                                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                                      Value.StructTuple
+                                        "core::sync::atomic::Ordering::Acquire"
+                                        []
+                                        []
+                                        [];
+                                      Value.StructTuple
+                                        "core::sync::atomic::Ordering::Relaxed"
+                                        []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -9452,7 +9628,7 @@ Module sync.
                                     "strong"
                                   |)
                                 |);
-                                Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                               ]
                             |);
                             Value.Integer IntegerKind.Usize 1
@@ -9498,7 +9674,7 @@ Module sync.
                               |)
                             |);
                             Value.Integer IntegerKind.Usize 1;
-                            Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Release" [] [] []
                           ]
                         |)
                       |) in
@@ -10072,7 +10248,9 @@ Module sync.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                          M.alloc (|
+                                            Value.StructTuple "alloc::alloc::Global" [] [] []
+                                          |)
                                         |);
                                         M.read (| layout |)
                                       ]
@@ -10323,7 +10501,9 @@ Module sync.
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                                      M.alloc (|
+                                        Value.StructTuple "alloc::alloc::Global" [] [] []
+                                      |)
                                     |);
                                     M.read (| layout |)
                                   ]
@@ -10701,6 +10881,8 @@ Module sync.
               M.alloc (|
                 Value.StructRecord
                   "alloc::sync::from_iter_exact::Guard"
+                  []
+                  [ T ]
                   [
                     ("mem",
                       M.call_closure (|
@@ -12045,7 +12227,7 @@ Module sync.
                       |)
                     |);
                     Value.Integer IntegerKind.Usize 1;
-                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                   ]
                 |)
               |) in
@@ -12365,7 +12547,11 @@ Module sync.
                                           |)
                                         |);
                                         Value.Integer IntegerKind.Usize 1;
-                                        Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                        Value.StructTuple
+                                          "core::sync::atomic::Ordering::Release"
+                                          []
+                                          []
+                                          []
                                       ]
                                     |);
                                     Value.Integer IntegerKind.Usize 1
@@ -12385,7 +12571,7 @@ Module sync.
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (| "core::sync::atomic::fence", [], [] |),
-                      [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] ]
+                      [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] [] ]
                     |)
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -12778,6 +12964,22 @@ Module sync.
                             M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ];
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::Arc")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("core::any::Any::Trait", []);
+                                          ("core::marker::Sync::AutoTrait", []);
+                                          ("core::marker::Send::AutoTrait", [])
+                                        ];
+                                      A
+                                    ]
+                                ]
                                 [
                                   M.call_closure (|
                                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
@@ -12828,6 +13030,22 @@ Module sync.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ];
+                          Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ];
+                              A
+                            ]
+                        ]
                         [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
                     |)))
               ]
@@ -12992,6 +13210,8 @@ Module sync.
         ltac:(M.monadic
           (Value.StructRecord
             "alloc::sync::Weak"
+            []
+            [ T; Ty.path "alloc::alloc::Global" ]
             [
               ("ptr",
                 M.call_closure (|
@@ -13027,7 +13247,7 @@ Module sync.
                     |)
                   ]
                 |));
-              ("alloc", Value.StructTuple "alloc::alloc::Global" [])
+              ("alloc", Value.StructTuple "alloc::alloc::Global" [] [] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13056,7 +13276,7 @@ Module sync.
               [],
               []
             |),
-            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
+            [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13089,6 +13309,8 @@ Module sync.
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
             "alloc::sync::Weak"
+            []
+            [ T; A ]
             [
               ("ptr",
                 M.call_closure (|
@@ -13596,6 +13818,8 @@ Module sync.
             M.alloc (|
               Value.StructRecord
                 "alloc::sync::Weak"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.call_closure (|
@@ -13863,9 +14087,13 @@ Module sync.
                                           |);
                                           Value.StructTuple
                                             "core::sync::atomic::Ordering::Acquire"
+                                            []
+                                            []
                                             [];
                                           Value.StructTuple
                                             "core::sync::atomic::Ordering::Relaxed"
+                                            []
+                                            []
                                             [];
                                           M.get_associated_function (|
                                             Self,
@@ -13884,6 +14112,8 @@ Module sync.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
@@ -13929,7 +14159,13 @@ Module sync.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -14011,7 +14247,7 @@ Module sync.
                               |)
                             |)
                           |);
-                          Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                          Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                         ]
                       |)
                     |)));
@@ -14107,7 +14343,7 @@ Module sync.
                                 |)
                               |)
                             |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                           ]
                         |)
                       |) in
@@ -14134,7 +14370,7 @@ Module sync.
                                 |)
                               |)
                             |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |) in
@@ -14260,15 +14496,25 @@ Module sync.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "alloc::sync::WeakInner" ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "alloc::sync::WeakInner" ]
                         [
                           Value.StructRecord
                             "alloc::sync::WeakInner"
+                            []
+                            []
                             [
                               ("strong",
                                 M.borrow (|
@@ -14497,7 +14743,7 @@ Module sync.
                                 |)
                               |);
                               Value.Integer IntegerKind.Usize 1;
-                              Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                              Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                             ]
                           |)
                         |) in
@@ -14544,6 +14790,8 @@ Module sync.
             M.alloc (|
               Value.StructRecord
                 "alloc::sync::Weak"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.read (|
@@ -14738,7 +14986,11 @@ Module sync.
                                         |)
                                       |);
                                       Value.Integer IntegerKind.Usize 1;
-                                      Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                      Value.StructTuple
+                                        "core::sync::atomic::Ordering::Release"
+                                        []
+                                        []
+                                        []
                                     ]
                                   |);
                                   Value.Integer IntegerKind.Usize 1
@@ -14751,7 +15003,7 @@ Module sync.
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_function (| "core::sync::atomic::fence", [], [] |),
-                              [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] ]
+                              [ Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] [] ]
                             |)
                           |) in
                         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -16121,6 +16373,8 @@ Module sync.
                               |);
                               Value.StructRecord
                                 "alloc::sync::ArcInner"
+                                []
+                                [ T ]
                                 [
                                   ("strong",
                                     M.call_closure (|
@@ -16217,10 +16471,19 @@ Module sync.
         M.alloc (|
           Value.StructRecord
             "alloc::sync::SliceArcInnerForStatic"
+            []
+            []
             [
               ("inner",
                 Value.StructRecord
                   "alloc::sync::ArcInner"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 1 ]
+                      [ Ty.path "u8" ]
+                  ]
                   [
                     ("strong",
                       M.call_closure (|
@@ -17770,7 +18033,7 @@ Module sync.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, v |);
-                      Value.StructTuple "core::ops::range::RangeFull" []
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
                     ]
                   |)
                 |)
@@ -18343,6 +18606,17 @@ Module sync.
                             M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::Arc")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ];
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::Arc")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                                ]
                                 [
                                   M.call_closure (|
                                     Ty.apply
@@ -18400,7 +18674,20 @@ Module sync.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| boxed_slice |) ]
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ];
+                          Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+                        ]
+                        [ M.read (| boxed_slice |) ]
                     |)))
               ]
             |)
@@ -18737,6 +19024,8 @@ Module sync.
                                                                   Value.StructTuple
                                                                     "core::panicking::AssertKind::Eq"
                                                                     []
+                                                                    []
+                                                                    []
                                                                 |) in
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -18775,6 +19064,11 @@ Module sync.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "core::option::Option::Some"
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments"
+                                                                      ]
                                                                       [
                                                                         M.call_closure (|
                                                                           Ty.path
@@ -19389,6 +19683,8 @@ Module sync.
             M.alloc (|
               Value.StructRecord
                 "alloc::sync::UniqueArcUninit"
+                []
+                [ T; A ]
                 [
                   ("ptr",
                     M.call_closure (|
@@ -19435,7 +19731,8 @@ Module sync.
                       ]
                     |));
                   ("layout_for_value", M.read (| layout |));
-                  ("alloc", Value.StructTuple "core::option::Option::Some" [ M.read (| alloc |) ])
+                  ("alloc",
+                    Value.StructTuple "core::option::Option::Some" [] [ A ] [ M.read (| alloc |) ])
                 ]
             |)
           |)))

@@ -143,7 +143,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                               [],
                               []
                             |),
-                            [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ]
+                            [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] [] [] ]
                           |)))
                     |)));
                 fun γ =>
@@ -171,7 +171,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                             [],
                             []
                           |),
-                          [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ]
+                          [ Value.StructTuple "returning_traits_with_dyn::Cow" [] [] [] ]
                         |))
                     |)))
               ]

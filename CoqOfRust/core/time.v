@@ -375,7 +375,7 @@ Module time.
     Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "core::time::Nanoseconds" [ Value.Integer IntegerKind.U32 0 ]
+          Value.StructTuple "core::time::Nanoseconds" [] [] [ Value.Integer IntegerKind.U32 0 ]
         |))).
     
     Global Instance AssociatedConstant_value_ZERO : M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
@@ -937,6 +937,8 @@ Module time.
         ltac:(M.monadic
           (Value.StructRecord
             "core::time::Duration"
+            []
+            []
             [
               ("secs",
                 M.call_closure (|
@@ -1138,10 +1140,16 @@ Module time.
                     M.alloc (|
                       Value.StructRecord
                         "core::time::Duration"
+                        []
+                        []
                         [
                           ("secs", M.read (| secs |));
                           ("nanos",
-                            Value.StructTuple "core::time::Nanoseconds" [ M.read (| nanos |) ])
+                            Value.StructTuple
+                              "core::time::Nanoseconds"
+                              []
+                              []
+                              [ M.read (| nanos |) ])
                         ]
                     |)));
                 fun γ =>
@@ -1202,10 +1210,16 @@ Module time.
                     M.alloc (|
                       Value.StructRecord
                         "core::time::Duration"
+                        []
+                        []
                         [
                           ("secs", M.read (| secs |));
                           ("nanos",
-                            Value.StructTuple "core::time::Nanoseconds" [ M.read (| nanos |) ])
+                            Value.StructTuple
+                              "core::time::Nanoseconds"
+                              []
+                              []
+                              [ M.read (| nanos |) ])
                         ]
                     |)))
               ]
@@ -1230,6 +1244,8 @@ Module time.
           (let secs := M.alloc (| secs |) in
           Value.StructRecord
             "core::time::Duration"
+            []
+            []
             [
               ("secs", M.read (| secs |));
               ("nanos",
@@ -1294,6 +1310,8 @@ Module time.
               M.alloc (|
                 Value.StructTuple
                   "core::time::Nanoseconds"
+                  []
+                  []
                   [
                     M.call_closure (|
                       Ty.path "u32",
@@ -1308,6 +1326,8 @@ Module time.
             M.alloc (|
               Value.StructRecord
                 "core::time::Duration"
+                []
+                []
                 [ ("secs", M.read (| secs |)); ("nanos", M.read (| subsec_nanos |)) ]
             |)
           |)))
@@ -1364,6 +1384,8 @@ Module time.
               M.alloc (|
                 Value.StructTuple
                   "core::time::Nanoseconds"
+                  []
+                  []
                   [
                     M.call_closure (|
                       Ty.path "u32",
@@ -1378,6 +1400,8 @@ Module time.
             M.alloc (|
               Value.StructRecord
                 "core::time::Duration"
+                []
+                []
                 [ ("secs", M.read (| secs |)); ("nanos", M.read (| subsec_nanos |)) ]
             |)
           |)))
@@ -1436,11 +1460,13 @@ Module time.
               |) in
             let~ subsec_nanos : Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Nanoseconds" ] :=
               M.alloc (|
-                Value.StructTuple "core::time::Nanoseconds" [ M.read (| subsec_nanos |) ]
+                Value.StructTuple "core::time::Nanoseconds" [] [] [ M.read (| subsec_nanos |) ]
               |) in
             M.alloc (|
               Value.StructRecord
                 "core::time::Duration"
+                []
+                []
                 [ ("secs", M.read (| secs |)); ("nanos", M.read (| subsec_nanos |)) ]
             |)
           |)))
@@ -2662,7 +2688,11 @@ Module time.
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [ Ty.path "core::time::Duration" ]
+                                                    []
                                                 |)
                                               |)
                                             |)
@@ -2743,6 +2773,8 @@ Module time.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "core::time::Duration" ]
                             [
                               M.call_closure (|
                                 Ty.path "core::time::Duration",
@@ -2758,7 +2790,13 @@ Module time.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.path "core::time::Duration" ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -3066,6 +3104,8 @@ Module time.
                                                     Value.StructTuple
                                                       "core::option::Option::None"
                                                       []
+                                                      [ Ty.path "core::time::Duration" ]
+                                                      []
                                                   |)
                                                 |)
                                               |)
@@ -3146,6 +3186,8 @@ Module time.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "core::time::Duration" ]
                             [
                               M.call_closure (|
                                 Ty.path "core::time::Duration",
@@ -3161,7 +3203,13 @@ Module time.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [ Ty.path "core::time::Duration" ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -3457,6 +3505,8 @@ Module time.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "core::time::Duration" ]
                                             [
                                               M.call_closure (|
                                                 Ty.path "core::time::Duration",
@@ -3479,7 +3529,13 @@ Module time.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "core::time::Duration" ]
+                    []
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3817,6 +3873,8 @@ Module time.
                                     M.alloc (|
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "core::time::Duration" ]
                                         [
                                           M.call_closure (|
                                             Ty.path "core::time::Duration",
@@ -3835,7 +3893,14 @@ Module time.
                       ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "core::time::Duration" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -4704,13 +4769,22 @@ Module time.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "core::time::Duration";
+                                      Ty.path "core::time::TryFromFloatSecsError"
+                                    ]
                                     [
                                       Value.StructRecord
                                         "core::time::TryFromFloatSecsError"
+                                        []
+                                        []
                                         [
                                           ("kind",
                                             Value.StructTuple
                                               "core::time::TryFromFloatSecsErrorKind::Negative"
+                                              []
+                                              []
                                               [])
                                         ]
                                     ]
@@ -5505,13 +5579,23 @@ Module time.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "core::time::Duration";
+                                                              Ty.path
+                                                                "core::time::TryFromFloatSecsError"
+                                                            ]
                                                             [
                                                               Value.StructRecord
                                                                 "core::time::TryFromFloatSecsError"
+                                                                []
+                                                                []
                                                                 [
                                                                   ("kind",
                                                                     Value.StructTuple
                                                                       "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                                                                      []
+                                                                      []
                                                                       [])
                                                                 ]
                                                             ]
@@ -5537,6 +5621,11 @@ Module time.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "core::time::Duration";
+                              Ty.path "core::time::TryFromFloatSecsError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.path "core::time::Duration",
@@ -5610,13 +5699,22 @@ Module time.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "core::time::Duration";
+                                      Ty.path "core::time::TryFromFloatSecsError"
+                                    ]
                                     [
                                       Value.StructRecord
                                         "core::time::TryFromFloatSecsError"
+                                        []
+                                        []
                                         [
                                           ("kind",
                                             Value.StructTuple
                                               "core::time::TryFromFloatSecsErrorKind::Negative"
+                                              []
+                                              []
                                               [])
                                         ]
                                     ]
@@ -6411,13 +6509,23 @@ Module time.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "core::time::Duration";
+                                                              Ty.path
+                                                                "core::time::TryFromFloatSecsError"
+                                                            ]
                                                             [
                                                               Value.StructRecord
                                                                 "core::time::TryFromFloatSecsError"
+                                                                []
+                                                                []
                                                                 [
                                                                   ("kind",
                                                                     Value.StructTuple
                                                                       "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                                                                      []
+                                                                      []
                                                                       [])
                                                                 ]
                                                             ]
@@ -6443,6 +6551,11 @@ Module time.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "core::time::Duration";
+                              Ty.path "core::time::TryFromFloatSecsError"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.path "core::time::Duration",
@@ -8388,6 +8501,8 @@ Module time.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::time::TryFromFloatSecsError"
+            []
+            []
             [
               ("kind",
                 M.call_closure (|
@@ -8753,7 +8868,7 @@ Module time.
                         "core::time::TryFromFloatSecsErrorKind::Negative"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::time::TryFromFloatSecsErrorKind::Negative" []
+                      Value.StructTuple "core::time::TryFromFloatSecsErrorKind::Negative" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8764,7 +8879,11 @@ Module time.
                         "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::time::TryFromFloatSecsErrorKind::OverflowOrNan" []
+                      Value.StructTuple
+                        "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                        []
+                        []
+                        []
                     |)))
               ]
             |)

@@ -86,10 +86,12 @@ Module horizontally_truncated.
             M.alloc (|
               Value.StructRecord
                 "p3_matrix::horizontally_truncated::HorizontallyTruncated"
+                []
+                [ T; Inner ]
                 [
                   ("inner", M.read (| inner |));
                   ("truncated_width", M.read (| truncated_width |));
-                  ("_phantom", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_phantom", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                 ]
             |)
           |)))

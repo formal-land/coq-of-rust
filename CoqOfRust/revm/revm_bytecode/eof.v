@@ -96,6 +96,8 @@ Module eof.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_bytecode::eof::Eof"
+            []
+            []
             [
               ("header",
                 M.call_closure (|
@@ -984,6 +986,8 @@ Module eof.
               M.alloc (|
                 Value.StructRecord
                   "revm_bytecode::eof::body::EofBody"
+                  []
+                  []
                   [
                     ("types_section",
                       M.call_closure (|
@@ -1267,7 +1271,11 @@ Module eof.
             M.get_function (| "revm_bytecode::eof::verification::validate_eof_inner", [], [] |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-              Value.StructTuple "core::option::Option::Some" [ M.read (| mode |) ]
+              Value.StructTuple
+                "core::option::Option::Some"
+                []
+                [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
+                [ M.read (| mode |) ]
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1546,6 +1554,8 @@ Module eof.
                           |);
                           Value.StructRecord
                             "core::ops::range::RangeFrom"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("start", M.read (| offset |)) ]
                         ]
                       |);
@@ -1613,6 +1623,8 @@ Module eof.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("end_",
                                                   M.call_closure (|
@@ -2221,9 +2233,20 @@ Module eof.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "revm_bytecode::eof::Eof";
+                                                  Ty.path "alloy_primitives::bytes_::Bytes"
+                                                ];
+                                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "revm_bytecode::eof::EofDecodeError::MissingInput"
+                                                []
+                                                []
                                                 []
                                             ]
                                         |)
@@ -2395,11 +2418,22 @@ Module eof.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "revm_bytecode::eof::Eof";
+                                  Ty.path "alloy_primitives::bytes_::Bytes"
+                                ];
+                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                            ]
                             [
                               Value.Tuple
                                 [
                                   Value.StructRecord
                                     "revm_bytecode::eof::Eof"
+                                    []
+                                    []
                                     [
                                       ("header", M.read (| header |));
                                       ("body", M.read (| body |));
@@ -2794,9 +2828,16 @@ Module eof.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "revm_bytecode::eof::Eof";
+                              Ty.path "revm_bytecode::eof::EofDecodeError"
+                            ]
                             [
                               Value.StructRecord
                                 "revm_bytecode::eof::Eof"
+                                []
+                                []
                                 [
                                   ("header", M.read (| header |));
                                   ("body", M.read (| body |));

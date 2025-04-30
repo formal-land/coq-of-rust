@@ -590,12 +590,16 @@ Module fmt.
                       ltac:(M.monadic
                         (let _ :=
                           is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
+                        M.alloc (|
+                          Value.StructTuple "core::num::flt2dec::Sign::Minus" [] [] []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
                           is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
+                        M.alloc (|
+                          Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] [] []
+                        |)))
                   ]
                 |)
               |) in
@@ -1141,12 +1145,16 @@ Module fmt.
                       ltac:(M.monadic
                         (let _ :=
                           is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
+                        M.alloc (|
+                          Value.StructTuple "core::num::flt2dec::Sign::Minus" [] [] []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
                           is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
+                        M.alloc (|
+                          Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] [] []
+                        |)))
                   ]
                 |)
               |) in
@@ -1289,12 +1297,16 @@ Module fmt.
                       ltac:(M.monadic
                         (let _ :=
                           is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
+                        M.alloc (|
+                          Value.StructTuple "core::num::flt2dec::Sign::Minus" [] [] []
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
                           is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
+                        M.alloc (|
+                          Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] [] []
+                        |)))
                   ]
                 |)
               |) in
@@ -1888,11 +1900,17 @@ Module fmt.
                                     [
                                       Value.Integer IntegerKind.Usize 0;
                                       Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.StructTuple
+                                        "core::fmt::rt::Alignment::Unknown"
+                                        []
+                                        []
+                                        [];
                                       Value.Integer IntegerKind.U32 12;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                       Value.StructTuple
                                         "core::fmt::rt::Count::Is"
+                                        []
+                                        []
                                         [ Value.Integer IntegerKind.Usize 6 ]
                                     ]
                                   |)
@@ -2036,11 +2054,17 @@ Module fmt.
                                     [
                                       Value.Integer IntegerKind.Usize 0;
                                       Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.StructTuple
+                                        "core::fmt::rt::Alignment::Unknown"
+                                        []
+                                        []
+                                        [];
                                       Value.Integer IntegerKind.U32 12;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                       Value.StructTuple
                                         "core::fmt::rt::Count::Is"
+                                        []
+                                        []
                                         [ Value.Integer IntegerKind.Usize 34 ]
                                     ]
                                   |)

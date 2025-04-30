@@ -379,6 +379,8 @@ Module instantiation_loops.
           (let module := M.alloc (| module |) in
           Value.StructRecord
             "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker"
+            []
+            []
             [
               ("module", M.read (| module |));
               ("graph",
@@ -811,6 +813,8 @@ Module instantiation_loops.
                                     M.read (| e |);
                                     Value.StructTuple
                                       "move_binary_format::errors::Location::Module"
+                                      []
+                                      []
                                       [
                                         M.call_closure (|
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -1071,7 +1075,13 @@ Module instantiation_loops.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                        [ Value.Tuple [] ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -1425,6 +1435,11 @@ Module instantiation_loops.
                                                                             M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::Some"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "alloc::string::String"
+                                                                                ]
                                                                                 [
                                                                                   M.call_closure (|
                                                                                     Ty.path
@@ -1453,6 +1468,11 @@ Module instantiation_loops.
                                                                             (M.alloc (|
                                                                               Value.StructTuple
                                                                                 "core::option::Option::None"
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "alloc::string::String"
+                                                                                ]
                                                                                 []
                                                                             |)))
                                                                       ]
@@ -1843,6 +1863,8 @@ Module instantiation_loops.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_binary_format::errors::PartialVMError",
@@ -1864,6 +1886,8 @@ Module instantiation_loops.
                                 [
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusCode::LOOP_IN_INSTANTIATION_GRAPH"
+                                    []
+                                    []
                                     []
                                 ]
                               |);
@@ -2595,6 +2619,8 @@ Module instantiation_loops.
                                                   |);
                                                   Value.StructTuple
                                                     "move_bytecode_verifier::instantiation_loops::Node"
+                                                    []
+                                                    []
                                                     [
                                                       M.read (| caller_idx |);
                                                       M.read (|
@@ -2603,12 +2629,16 @@ Module instantiation_loops.
                                                     ];
                                                   Value.StructTuple
                                                     "move_bytecode_verifier::instantiation_loops::Node"
+                                                    []
+                                                    []
                                                     [
                                                       M.read (| callee_idx |);
                                                       M.read (| formal_idx |)
                                                     ];
                                                   Value.StructTuple
                                                     "move_bytecode_verifier::instantiation_loops::Edge::Identity"
+                                                    []
+                                                    []
                                                     []
                                                 ]
                                               |)
@@ -2768,6 +2798,8 @@ Module instantiation_loops.
                                                                             |);
                                                                             Value.StructTuple
                                                                               "move_bytecode_verifier::instantiation_loops::Node"
+                                                                              []
+                                                                              []
                                                                               [
                                                                                 M.read (|
                                                                                   caller_idx
@@ -2778,6 +2810,8 @@ Module instantiation_loops.
                                                                               ];
                                                                             Value.StructTuple
                                                                               "move_bytecode_verifier::instantiation_loops::Node"
+                                                                              []
+                                                                              []
                                                                               [
                                                                                 M.read (|
                                                                                   callee_idx
@@ -2788,6 +2822,8 @@ Module instantiation_loops.
                                                                               ];
                                                                             Value.StructTuple
                                                                               "move_bytecode_verifier::instantiation_loops::Edge::TyConApp"
+                                                                              []
+                                                                              []
                                                                               [
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
@@ -5207,6 +5243,17 @@ Module instantiation_loops.
                                                                                                     M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "petgraph::graph_impl::EdgeIndex")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "u32"
+                                                                                                            ]
+                                                                                                        ]
                                                                                                         [
                                                                                                           M.call_closure (|
                                                                                                             Ty.apply
@@ -5250,6 +5297,17 @@ Module instantiation_loops.
                                                                                                     (M.alloc (|
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::None"
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "petgraph::graph_impl::EdgeIndex")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "u32"
+                                                                                                            ]
+                                                                                                        ]
                                                                                                         []
                                                                                                     |)))
                                                                                               ]
@@ -5622,6 +5680,34 @@ Module instantiation_loops.
                                               M.alloc (|
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::NodeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ];
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ]
                                                   [
                                                     Value.Tuple
                                                       [ M.read (| nodes |); M.read (| edges |) ]
@@ -5630,7 +5716,37 @@ Module instantiation_loops.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::NodeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ];
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ]
+                                                  []
                                               |)))
                                         ]
                                       |)

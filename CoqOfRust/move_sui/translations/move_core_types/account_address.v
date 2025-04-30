@@ -350,6 +350,8 @@ Module account_address.
           (let address := M.alloc (| address |) in
           Value.StructTuple
             "move_core_types::account_address::AccountAddress"
+            []
+            []
             [ M.read (| address |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -375,6 +377,8 @@ Module account_address.
         (M.alloc (|
           Value.StructTuple
             "move_core_types::account_address::AccountAddress"
+            []
+            []
             [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
         |))).
     
@@ -475,6 +479,8 @@ Module account_address.
             M.alloc (|
               Value.StructTuple
                 "move_core_types::account_address::AccountAddress"
+                []
+                []
                 [ M.read (| addr |) ]
             |)
           |)))
@@ -537,6 +543,8 @@ Module account_address.
             M.alloc (|
               Value.StructTuple
                 "move_core_types::account_address::AccountAddress"
+                []
+                []
                 [ M.read (| addr |) ]
             |)
           |)))
@@ -561,7 +569,7 @@ Module account_address.
         ltac:(M.monadic
           (M.read (|
             let~ rng : Ty.apply (Ty.path "*") [] [ Ty.path "rand_core::os::OsRng" ] :=
-              M.alloc (| Value.StructTuple "rand_core::os::OsRng" [] |) in
+              M.alloc (| Value.StructTuple "rand_core::os::OsRng" [] [] [] |) in
             let~ buf :
                 Ty.apply
                   (Ty.path "*")
@@ -598,6 +606,8 @@ Module account_address.
             M.alloc (|
               Value.StructTuple
                 "move_core_types::account_address::AccountAddress"
+                []
+                []
                 [ M.read (| buf |) ]
             |)
           |)))
@@ -689,6 +699,8 @@ Module account_address.
           let with_prefix := M.alloc (| with_prefix |) in
           Value.StructRecord
             "move_core_types::account_address::to_canonical_display::HexDisplay"
+            []
+            []
             [
               ("data",
                 (* Unsize *)
@@ -999,9 +1011,17 @@ Module account_address.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "move_core_types::account_address::AccountAddress";
+                                      Ty.path
+                                        "move_core_types::account_address::AccountAddressParseError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "move_core_types::account_address::AccountAddressParseError"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -1124,6 +1144,8 @@ Module account_address.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
@@ -1278,6 +1300,8 @@ Module account_address.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                           ]
                                         |)
@@ -1350,6 +1374,8 @@ Module account_address.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                     ]
                                   |)
@@ -1607,6 +1633,8 @@ Module account_address.
                                   ltac:(M.monadic
                                     (Value.StructTuple
                                       "move_core_types::account_address::AccountAddressParseError"
+                                      []
+                                      []
                                       []))
                               ]
                             |)))
@@ -1614,7 +1642,7 @@ Module account_address.
                         end))
                 ]
               |);
-              M.constructor_as_closure "move_core_types::account_address::AccountAddress"
+              M.constructor_as_closure "move_core_types::account_address::AccountAddress" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1864,6 +1892,8 @@ Module account_address.
                                   ltac:(M.monadic
                                     (Value.StructTuple
                                       "move_core_types::account_address::AccountAddressParseError"
+                                      []
+                                      []
                                       []))
                               ]
                             |)))
@@ -1871,7 +1901,7 @@ Module account_address.
                         end))
                 ]
               |);
-              M.constructor_as_closure "move_core_types::account_address::AccountAddress"
+              M.constructor_as_closure "move_core_types::account_address::AccountAddress" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2605,15 +2635,21 @@ Module account_address.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Is"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -2714,7 +2750,13 @@ Module account_address.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3145,15 +3187,21 @@ Module account_address.
                                                                               Value.UnicodeChar 32;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Alignment::Unknown"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.Integer
                                                                                 IntegerKind.U32
                                                                                 8;
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Implied"
+                                                                                []
+                                                                                []
                                                                                 [];
                                                                               Value.StructTuple
                                                                                 "core::fmt::rt::Count::Is"
+                                                                                []
+                                                                                []
                                                                                 [
                                                                                   Value.Integer
                                                                                     IntegerKind.Usize
@@ -3254,7 +3302,13 @@ Module account_address.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3740,7 +3794,14 @@ Module account_address.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let address := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Ok" [ M.read (| address |) ]
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::account_address::AccountAddress";
+                          Ty.path "move_core_types::account_address::AccountAddressParseError"
+                        ]
+                        [ M.read (| address |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4263,6 +4324,11 @@ Module account_address.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_core_types::account_address::AccountAddress";
+                              Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.path "move_core_types::account_address::AccountAddress",

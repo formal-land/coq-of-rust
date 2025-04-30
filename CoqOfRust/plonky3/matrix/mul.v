@@ -114,7 +114,7 @@ Module mul.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -146,6 +146,8 @@ Module mul.
                                         |);
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
                                           [
                                             M.call_closure (|
                                               Ty.path "core::fmt::Arguments",
@@ -276,6 +278,8 @@ Module mul.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",

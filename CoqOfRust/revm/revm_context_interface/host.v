@@ -958,6 +958,8 @@ Module host.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_context_interface::host::SStoreResult"
+            []
+            []
             [
               ("original_value",
                 M.call_closure (|
@@ -1175,6 +1177,8 @@ Module host.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_context_interface::host::SStoreResult"
+            []
+            []
             [
               ("original_value",
                 M.call_closure (|
@@ -1752,6 +1756,8 @@ Module host.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_context_interface::host::SelfDestructResult"
+            []
+            []
             [
               ("had_value",
                 M.call_closure (|
@@ -1951,6 +1957,8 @@ Module host.
         ltac:(M.monadic
           (Value.StructRecord
             "revm_context_interface::host::SelfDestructResult"
+            []
+            []
             [
               ("had_value",
                 M.call_closure (|

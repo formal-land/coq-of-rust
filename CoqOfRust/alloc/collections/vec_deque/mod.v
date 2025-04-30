@@ -324,6 +324,8 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::vec_deque::drop::Dropper"
+                            []
+                            [ T ]
                             [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| back |) |) |) ]
                         |) in
                       let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3892,6 +3894,8 @@ Module collections.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::collections::vec_deque::write_iter_wrapping::Guard"
+                    []
+                    [ T; A ]
                     [
                       ("deque",
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
@@ -4025,6 +4029,8 @@ Module collections.
                                     [
                                       Value.StructTuple
                                         "core::iter::adapters::by_ref_sized::ByRefSized"
+                                        []
+                                        [ impl_Iterator_Item___T_ ]
                                         [
                                           M.borrow (|
                                             Pointer.Kind.MutRef,
@@ -4569,6 +4575,8 @@ Module collections.
             (let alloc := M.alloc (| alloc |) in
             Value.StructRecord
               "alloc::collections::vec_deque::VecDeque"
+              []
+              [ T; A ]
               [
                 ("head", Value.Integer IntegerKind.Usize 0);
                 ("len", Value.Integer IntegerKind.Usize 0);
@@ -4612,6 +4620,8 @@ Module collections.
             let alloc := M.alloc (| alloc |) in
             Value.StructRecord
               "alloc::collections::vec_deque::VecDeque"
+              []
+              [ T; A ]
               [
                 ("head", Value.Integer IntegerKind.Usize 0);
                 ("len", Value.Integer IntegerKind.Usize 0);
@@ -4803,6 +4813,8 @@ Module collections.
               M.alloc (|
                 Value.StructRecord
                   "alloc::collections::vec_deque::VecDeque"
+                  []
+                  [ T; A ]
                   [
                     ("head",
                       M.read (|
@@ -4928,6 +4940,8 @@ Module collections.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -4973,7 +4987,13 @@ Module collections.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -5059,6 +5079,8 @@ Module collections.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                           [
                             M.borrow (|
                               Pointer.Kind.MutRef,
@@ -5104,7 +5126,13 @@ Module collections.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -5802,6 +5830,8 @@ Module collections.
                                   Value.StructTuple
                                     "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                                     []
+                                    []
+                                    []
                                 ]
                               |)
                             ]
@@ -6060,7 +6090,13 @@ Module collections.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6178,6 +6214,8 @@ Module collections.
                                   |);
                                   Value.StructTuple
                                     "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                    []
+                                    []
                                     []
                                 ]
                               |)
@@ -6437,7 +6475,13 @@ Module collections.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7163,6 +7207,8 @@ Module collections.
                     M.alloc (|
                       Value.StructRecord
                         "alloc::collections::vec_deque::shrink_to::Guard"
+                        []
+                        [ T; A ]
                         [
                           ("deque",
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
@@ -7901,6 +7947,8 @@ Module collections.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("start", M.read (| begin |)) ]
                                                 ]
                                               |)
@@ -7992,6 +8040,8 @@ Module collections.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeFrom"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("start", M.read (| len |)) ]
                                                 ]
                                               |)
@@ -8024,6 +8074,8 @@ Module collections.
                                     M.alloc (|
                                       Value.StructTuple
                                         "alloc::collections::vec_deque::truncate::Dropper"
+                                        []
+                                        [ T ]
                                         [
                                           M.borrow (|
                                             Pointer.Kind.MutRef,
@@ -8328,7 +8380,7 @@ Module collections.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" [];
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] [];
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
@@ -8473,7 +8525,7 @@ Module collections.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      Value.StructTuple "core::ops::range::RangeFull" [];
+                      Value.StructTuple "core::ops::range::RangeFull" [] [] [];
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
@@ -8696,7 +8748,11 @@ Module collections.
                     M.get_function (| "core::slice::index::range", [], [ R ] |),
                     [
                       M.read (| range |);
-                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        []
+                        [ Ty.path "usize" ]
+                        [ ("end_", M.read (| len |)) ]
                     ]
                   |)
                 |),
@@ -8756,12 +8812,16 @@ Module collections.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_", Value.Integer IntegerKind.Usize 0)
                                       ];
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_", Value.Integer IntegerKind.Usize 0)
@@ -8860,6 +8920,8 @@ Module collections.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", M.read (| wrapped_start |));
                                                 ("end_",
@@ -8871,6 +8933,8 @@ Module collections.
                                               ];
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_", Value.Integer IntegerKind.Usize 0)
@@ -8893,6 +8957,8 @@ Module collections.
                                           [
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", M.read (| wrapped_start |));
                                                 ("end_",
@@ -8918,6 +8984,8 @@ Module collections.
                                               ];
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_", M.read (| tail_len |))
@@ -9363,6 +9431,8 @@ Module collections.
                       M.read (| range |);
                       Value.StructRecord
                         "core::ops::range::RangeTo"
+                        []
+                        [ Ty.path "usize" ]
                         [
                           ("end_",
                             M.read (|
@@ -9778,7 +9848,7 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ old_head : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
@@ -9875,6 +9945,8 @@ Module collections.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -9950,7 +10022,7 @@ Module collections.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -10013,6 +10085,8 @@ Module collections.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ T ]
                           [
                             M.call_closure (|
                               T,
@@ -10521,7 +10595,11 @@ Module collections.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ T ]
+                                              []
                                           |)
                                         |)
                                       |)
@@ -10676,7 +10754,11 @@ Module collections.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ T ]
+                                              []
                                           |)
                                         |)
                                       |)
@@ -11210,7 +11292,9 @@ Module collections.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple "core::option::Option::None" [] [ T ] []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -11241,6 +11325,8 @@ Module collections.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             T,
@@ -13876,6 +13962,8 @@ Module collections.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::Range"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start", M.read (| free |));
                                                                     ("end_",
@@ -14055,6 +14143,8 @@ Module collections.
                                                                 |);
                                                                 Value.StructRecord
                                                                   "core::ops::range::Range"
+                                                                  []
+                                                                  [ Ty.path "usize" ]
                                                                   [
                                                                     ("start",
                                                                       Value.Integer
@@ -15120,6 +15210,8 @@ Module collections.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [ Ty.path "usize"; Ty.path "usize" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "usize",
@@ -15877,6 +15969,8 @@ Module collections.
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::vec_deque::VecDeque"
+              []
+              [ T; Ty.path "alloc::alloc::Global" ]
               [
                 ("head", Value.Integer IntegerKind.Usize 0);
                 ("len", Value.Integer IntegerKind.Usize 0);
@@ -15937,7 +16031,7 @@ Module collections.
                 [],
                 []
               |),
-              [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
+              [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] [] [] ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15978,9 +16072,19 @@ Module collections.
               ltac:(M.monadic
                 (Value.StructTuple
                   "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                      []
+                      [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ]
                   [
                     Value.StructRecord
                       "alloc::collections::vec_deque::VecDeque"
+                      []
+                      [ T; Ty.path "alloc::alloc::Global" ]
                       [
                         ("head", Value.Integer IntegerKind.Usize 0);
                         ("len", Value.Integer IntegerKind.Usize 0);
@@ -16055,7 +16159,7 @@ Module collections.
                                       |),
                                       [
                                         M.read (| capacity |);
-                                        Value.StructTuple "alloc::alloc::Global" []
+                                        Value.StructTuple "alloc::alloc::Global" [] [] []
                                       ]
                                     |)
                                   ]
@@ -16964,6 +17068,8 @@ Module collections.
                                                                                                         Value.StructTuple
                                                                                                           "core::panicking::AssertKind::Eq"
                                                                                                           []
+                                                                                                          []
+                                                                                                          []
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
@@ -17011,6 +17117,11 @@ Module collections.
                                                                                                           |);
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::None"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments"
+                                                                                                            ]
                                                                                                             []
                                                                                                         ]
                                                                                                       |)
@@ -17230,6 +17341,8 @@ Module collections.
                                                                                                         Value.StructTuple
                                                                                                           "core::panicking::AssertKind::Eq"
                                                                                                           []
+                                                                                                          []
+                                                                                                          []
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
@@ -17277,6 +17390,11 @@ Module collections.
                                                                                                           |);
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::None"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments"
+                                                                                                            ]
                                                                                                             []
                                                                                                         ]
                                                                                                       |)
@@ -17496,6 +17614,8 @@ Module collections.
                                                                                                         Value.StructTuple
                                                                                                           "core::panicking::AssertKind::Eq"
                                                                                                           []
+                                                                                                          []
+                                                                                                          []
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
@@ -17543,6 +17663,11 @@ Module collections.
                                                                                                           |);
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::None"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments"
+                                                                                                            ]
                                                                                                             []
                                                                                                         ]
                                                                                                       |)
@@ -18060,6 +18185,8 @@ Module collections.
                                                                                                         Value.StructTuple
                                                                                                           "core::panicking::AssertKind::Eq"
                                                                                                           []
+                                                                                                          []
+                                                                                                          []
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
@@ -18107,6 +18234,11 @@ Module collections.
                                                                                                           |);
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::None"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments"
+                                                                                                            ]
                                                                                                             []
                                                                                                         ]
                                                                                                       |)
@@ -18326,6 +18458,8 @@ Module collections.
                                                                                                         Value.StructTuple
                                                                                                           "core::panicking::AssertKind::Eq"
                                                                                                           []
+                                                                                                          []
+                                                                                                          []
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
@@ -18373,6 +18507,11 @@ Module collections.
                                                                                                           |);
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::None"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments"
+                                                                                                            ]
                                                                                                             []
                                                                                                         ]
                                                                                                       |)
@@ -18592,6 +18731,8 @@ Module collections.
                                                                                                         Value.StructTuple
                                                                                                           "core::panicking::AssertKind::Eq"
                                                                                                           []
+                                                                                                          []
+                                                                                                          []
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
@@ -18639,6 +18780,11 @@ Module collections.
                                                                                                           |);
                                                                                                           Value.StructTuple
                                                                                                             "core::option::Option::None"
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments"
+                                                                                                            ]
                                                                                                             []
                                                                                                         ]
                                                                                                       |)
@@ -20060,6 +20206,8 @@ Module collections.
                       M.alloc (|
                         Value.StructRecord
                           "alloc::collections::vec_deque::VecDeque"
+                          []
+                          [ T; A ]
                           [
                             ("head", Value.Integer IntegerKind.Usize 0);
                             ("len", M.read (| len |));

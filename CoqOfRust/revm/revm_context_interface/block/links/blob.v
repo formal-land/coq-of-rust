@@ -16,7 +16,7 @@ Module BlobExcessGasAndPrice.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_context_interface::block::BlobExcessGasAndPrice";
     φ '(Build_t excess_blob_gas blob_gasprice) :=
-      Value.StructRecord "revm_context_interface::block::BlobExcessGasAndPrice" [
+      Value.StructRecord "revm_context_interface::block::BlobExcessGasAndPrice" [] [] [
         ("excess_blob_gas", φ excess_blob_gas);
         ("blob_gasprice", φ blob_gasprice)
       ]
@@ -31,7 +31,7 @@ Module BlobExcessGasAndPrice.
       blob_gasprice blob_gasprice' :
     excess_blob_gas' = φ excess_blob_gas ->
     blob_gasprice' = φ blob_gasprice ->
-    Value.StructRecord "revm_context_interface::block::BlobExcessGasAndPrice" [
+    Value.StructRecord "revm_context_interface::block::BlobExcessGasAndPrice" [] [] [
       ("excess_blob_gas", excess_blob_gas');
       ("blob_gasprice", blob_gasprice')
     ] =
@@ -45,7 +45,7 @@ Module BlobExcessGasAndPrice.
     excess_blob_gas' = φ excess_blob_gas ->
     blob_gasprice' = φ blob_gasprice ->
     OfValue.t (
-      Value.StructRecord "revm_context_interface::block::BlobExcessGasAndPrice" [
+      Value.StructRecord "revm_context_interface::block::BlobExcessGasAndPrice" [] [] [
         ("excess_blob_gas", excess_blob_gas');
         ("blob_gasprice", blob_gasprice')
       ]

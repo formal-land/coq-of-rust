@@ -428,6 +428,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
         (let name := M.alloc (| name |) in
         Value.StructRecord
           "traits::Sheep"
+          []
+          []
           [ ("name", M.read (| name |)); ("naked", Value.Bool false) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

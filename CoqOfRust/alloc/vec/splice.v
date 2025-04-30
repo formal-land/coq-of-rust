@@ -1342,6 +1342,8 @@ Module vec.
                                                                         Value.StructTuple
                                                                           "core::panicking::AssertKind::Eq"
                                                                           []
+                                                                          []
+                                                                          []
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
@@ -1384,6 +1386,11 @@ Module vec.
                                                                           |);
                                                                           Value.StructTuple
                                                                             "core::option::Option::None"
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments"
+                                                                            ]
                                                                             []
                                                                         ]
                                                                       |)

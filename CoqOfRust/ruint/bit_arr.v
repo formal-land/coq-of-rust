@@ -146,6 +146,8 @@ Module bit_arr.
         ltac:(M.monadic
           (Value.StructTuple
             "ruint::bit_arr::Bits"
+            [ BITS; LIMBS ]
+            []
             [
               M.call_closure (|
                 Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -367,7 +369,7 @@ Module bit_arr.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructTuple "ruint::bit_arr::Bits" [ M.read (| value |) ]))
+          Value.StructTuple "ruint::bit_arr::Bits" [ BITS; LIMBS ] [] [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -487,7 +489,7 @@ Module bit_arr.
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
               |);
-              M.constructor_as_closure "ruint::bit_arr::Bits"
+              M.constructor_as_closure "ruint::bit_arr::Bits" [ BITS; LIMBS ] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -590,6 +592,8 @@ Module bit_arr.
         (M.alloc (|
           Value.StructTuple
             "ruint::bit_arr::Bits"
+            [ BITS; LIMBS ]
+            []
             [
               M.read (|
                 get_associated_constant (|
@@ -2255,6 +2259,8 @@ Module bit_arr.
           (let limbs := M.alloc (| limbs |) in
           Value.StructTuple
             "ruint::bit_arr::Bits"
+            [ BITS; LIMBS ]
+            []
             [
               M.call_closure (|
                 Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],

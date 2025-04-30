@@ -67,6 +67,8 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "ruint::from::ToUintError::ValueTooLarge"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             Ty.path "usize",
@@ -116,6 +118,8 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "ruint::from::ToUintError::ValueNegative"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             Ty.path "usize",
@@ -158,6 +162,8 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "ruint::from::ToUintError::NotANumber"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             Ty.path "usize",
@@ -1266,6 +1272,8 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "ruint::from::FromUintError::Overflow"
+                        []
+                        [ T ]
                         [
                           M.call_closure (|
                             Ty.path "usize",
@@ -3096,16 +3104,36 @@ Module from.
                             M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                  Ty.apply
+                                    (Ty.path "ruint::from::ToUintError")
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                ]
                                 [
                                   Value.StructTuple
                                     "ruint::from::ToUintError::ValueTooLarge"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                     [ BITS; M.read (| n |) ]
                                 ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "core::result::Result::Ok" [ M.read (| n |) ]
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                  Ty.apply
+                                    (Ty.path "ruint::from::ToUintError")
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                ]
+                                [ M.read (| n |) ]
                             |)))
                       ]
                     |)))
@@ -3291,9 +3319,19 @@ Module from.
                             M.alloc (|
                               Value.StructTuple
                                 "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [];
+                                  Ty.apply
+                                    (Ty.path "ruint::from::FromUintError")
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [] ]
+                                ]
                                 [
                                   Value.StructTuple
                                     "ruint::from::FromUintError::Overflow"
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [] ]
                                     [
                                       BITS_DST;
                                       M.read (| n |);
@@ -3316,7 +3354,17 @@ Module from.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "core::result::Result::Ok" [ M.read (| n |) ]
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [];
+                                  Ty.apply
+                                    (Ty.path "ruint::from::FromUintError")
+                                    []
+                                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS_DST; LIMBS_DST ] [] ]
+                                ]
+                                [ M.read (| n |) ]
                             |)))
                       ]
                     |)))
@@ -3521,9 +3569,29 @@ Module from.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::ToUintError")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
+                                              ]
                                               [
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueTooLarge"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [
                                                     BITS;
                                                     M.call_closure (|
@@ -3577,6 +3645,19 @@ Module from.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Ok"
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                              Ty.apply
+                                                (Ty.path "ruint::from::ToUintError")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                ]
+                                            ]
                                             [
                                               M.read (|
                                                 get_associated_constant (|
@@ -3618,6 +3699,14 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                      Ty.apply
+                        (Ty.path "ruint::from::ToUintError")
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -3920,9 +4009,32 @@ Module from.
                                                         (let n := M.copy (| γ |) in
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ BITS; LIMBS ]
+                                                              [];
+                                                            Ty.apply
+                                                              (Ty.path "ruint::from::ToUintError")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  []
+                                                              ]
+                                                          ]
                                                           [
                                                             Value.StructTuple
                                                               "ruint::from::ToUintError::ValueTooLarge"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [ BITS; LIMBS ]
+                                                                  []
+                                                              ]
                                                               [ BITS; M.read (| n |) ]
                                                           ]))
                                                   ]
@@ -4053,9 +4165,19 @@ Module from.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                              Ty.apply
+                                (Ty.path "ruint::from::ToUintError")
+                                []
+                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                            ]
                             [
                               Value.StructTuple
                                 "ruint::from::ToUintError::ValueTooLarge"
+                                []
+                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                 [
                                   BITS;
                                   M.call_closure (|
@@ -4076,6 +4198,14 @@ Module from.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                              Ty.apply
+                                (Ty.path "ruint::from::ToUintError")
+                                []
+                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -4510,6 +4640,14 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply
+                            (Ty.path "ruint::from::ToUintError")
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        ]
                         [
                           M.read (|
                             M.match_operator (|
@@ -4595,6 +4733,13 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
@@ -4733,6 +4878,14 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply
+                            (Ty.path "ruint::from::ToUintError")
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        ]
                         [
                           M.read (|
                             M.match_operator (|
@@ -4818,6 +4971,13 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
@@ -4956,6 +5116,14 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply
+                            (Ty.path "ruint::from::ToUintError")
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        ]
                         [
                           M.read (|
                             M.match_operator (|
@@ -5041,6 +5209,13 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
@@ -5179,6 +5354,14 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply
+                            (Ty.path "ruint::from::ToUintError")
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        ]
                         [
                           M.read (|
                             M.match_operator (|
@@ -5264,6 +5447,13 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
@@ -5402,6 +5592,14 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply
+                            (Ty.path "ruint::from::ToUintError")
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        ]
                         [
                           M.read (|
                             M.match_operator (|
@@ -5487,6 +5685,13 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
@@ -5625,6 +5830,14 @@ Module from.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply
+                            (Ty.path "ruint::from::ToUintError")
+                            []
+                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                        ]
                         [
                           M.read (|
                             M.match_operator (|
@@ -5710,6 +5923,13 @@ Module from.
                                               (M.alloc (|
                                                 Value.StructTuple
                                                   "ruint::from::ToUintError::ValueNegative"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      []
+                                                  ]
                                                   [ BITS; M.read (| n |) ]
                                               |)))
                                           | _ => M.impossible "wrong number of arguments"
@@ -5903,9 +6123,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.apply
+                                        (Ty.path "ruint::from::ToUintError")
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::NotANumber"
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                         [ BITS ]
                                     ]
                                 |)
@@ -6080,9 +6310,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.apply
+                                        (Ty.path "ruint::from::ToUintError")
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::ValueNegative"
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                         [ BITS; M.read (| wrapped |) ]
                                     ]
                                 |)
@@ -6243,9 +6483,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.apply
+                                        (Ty.path "ruint::from::ToUintError")
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::ValueTooLarge"
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                         [ BITS; M.read (| wrapped |) ]
                                     ]
                                 |)
@@ -6279,6 +6529,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.apply
+                                        (Ty.path "ruint::from::ToUintError")
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    ]
                                     [
                                       M.read (|
                                         get_associated_constant (|
@@ -6502,9 +6760,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.apply
+                                        (Ty.path "ruint::from::ToUintError")
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::ToUintError::ValueTooLarge"
+                                        []
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                         [
                                           BITS;
                                           M.read (|
@@ -6838,9 +7106,29 @@ Module from.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                              Ty.apply
+                                                (Ty.path "ruint::from::ToUintError")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                ]
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "ruint::from::ToUintError::ValueTooLarge"
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                ]
                                                 [ BITS; M.read (| n |) ]
                                             ]
                                         |)));
@@ -6849,6 +7137,19 @@ Module from.
                                         (M.alloc (|
                                           Value.StructTuple
                                             "core::result::Result::Ok"
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                              Ty.apply
+                                                (Ty.path "ruint::from::ToUintError")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    []
+                                                ]
+                                            ]
                                             [ M.read (| n |) ]
                                         |)))
                                   ]
@@ -7073,7 +7374,17 @@ Module from.
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Bool false ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "bool";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "bool" ]
+                                    ]
+                                    [ Value.Bool false ]
                                 |)
                               |)
                             |)
@@ -7122,9 +7433,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "bool";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "bool" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "bool" ]
                                         [
                                           BITS;
                                           M.call_closure (|
@@ -7156,6 +7477,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "bool";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "bool" ]
+                    ]
                     [
                       M.call_closure (|
                         Ty.path "bool",
@@ -7346,6 +7672,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "i8";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i8" ]
+                                    ]
                                     [ Value.Integer IntegerKind.I8 0 ]
                                 |)
                               |)
@@ -7400,9 +7734,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "i8";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i8" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "i8" ]
                                         [
                                           BITS;
                                           M.cast
@@ -7436,6 +7780,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "i8";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "i8" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "i8")
@@ -7617,6 +7966,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "u8";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ]
                                     [ Value.Integer IntegerKind.U8 0 ]
                                 |)
                               |)
@@ -7671,9 +8028,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "u8";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "u8" ]
                                         [
                                           BITS;
                                           M.cast
@@ -7707,6 +8074,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "u8";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u8" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "u8")
@@ -7889,6 +8261,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "i16";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i16" ]
+                                    ]
                                     [ Value.Integer IntegerKind.I16 0 ]
                                 |)
                               |)
@@ -7943,9 +8323,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "i16";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i16" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "i16" ]
                                         [
                                           BITS;
                                           M.cast
@@ -7979,6 +8369,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "i16";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "i16" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "i16")
@@ -8161,6 +8556,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "u16";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u16" ]
+                                    ]
                                     [ Value.Integer IntegerKind.U16 0 ]
                                 |)
                               |)
@@ -8215,9 +8618,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "u16";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u16" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "u16" ]
                                         [
                                           BITS;
                                           M.cast
@@ -8251,6 +8664,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "u16";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u16" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "u16")
@@ -8433,6 +8851,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "i32";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i32" ]
+                                    ]
                                     [ Value.Integer IntegerKind.I32 0 ]
                                 |)
                               |)
@@ -8487,9 +8913,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "i32";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i32" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "i32" ]
                                         [
                                           BITS;
                                           M.cast
@@ -8523,6 +8959,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "i32";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "i32" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "i32")
@@ -8705,6 +9146,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "u32";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u32" ]
+                                    ]
                                     [ Value.Integer IntegerKind.U32 0 ]
                                 |)
                               |)
@@ -8759,9 +9208,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "u32";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u32" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "u32" ]
                                         [
                                           BITS;
                                           M.cast
@@ -8795,6 +9254,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "u32";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u32" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "u32")
@@ -8977,6 +9441,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "i64";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i64" ]
+                                    ]
                                     [ Value.Integer IntegerKind.I64 0 ]
                                 |)
                               |)
@@ -9031,9 +9503,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "i64";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i64" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "i64" ]
                                         [
                                           BITS;
                                           M.cast
@@ -9067,6 +9549,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "i64";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "i64" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "i64")
@@ -9249,6 +9736,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "u64";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u64" ]
+                                    ]
                                     [ Value.Integer IntegerKind.U64 0 ]
                                 |)
                               |)
@@ -9303,9 +9798,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "u64";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u64" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "u64" ]
                                         [
                                           BITS;
                                           M.read (|
@@ -9338,6 +9843,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "u64";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u64" ]
+                    ]
                     [
                       M.read (|
                         M.use
@@ -9521,6 +10031,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "isize";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "isize" ]
+                                    ]
                                     [ Value.Integer IntegerKind.Isize 0 ]
                                 |)
                               |)
@@ -9575,9 +10093,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "isize";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "isize" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "isize" ]
                                         [
                                           BITS;
                                           M.cast
@@ -9611,6 +10139,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "isize";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "isize" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "isize")
@@ -9795,6 +10328,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "usize";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
                                     [ Value.Integer IntegerKind.Usize 0 ]
                                 |)
                               |)
@@ -9849,9 +10390,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "usize";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           BITS;
                                           M.cast
@@ -9885,6 +10436,11 @@ Module from.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "usize" ]
+                    ]
                     [
                       M.cast
                         (Ty.path "usize")
@@ -10068,6 +10624,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "i128";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i128" ]
+                                    ]
                                     [ Value.Integer IntegerKind.I128 0 ]
                                 |)
                               |)
@@ -10115,6 +10679,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "i128";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i128" ]
+                                    ]
                                     [ M.read (| result |) ]
                                 |)
                               |)
@@ -10197,9 +10769,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "i128";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "i128" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "i128" ]
                                         [
                                           BITS;
                                           M.read (| result |);
@@ -10219,7 +10801,16 @@ Module from.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "i128";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "i128" ]
+                    ]
+                    [ M.read (| result |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10377,6 +10968,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "u128";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u128" ]
+                                    ]
                                     [ Value.Integer IntegerKind.U128 0 ]
                                 |)
                               |)
@@ -10424,6 +11023,14 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "u128";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u128" ]
+                                    ]
                                     [ M.read (| result |) ]
                                 |)
                               |)
@@ -10506,9 +11113,19 @@ Module from.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "u128";
+                                      Ty.apply
+                                        (Ty.path "ruint::from::FromUintError")
+                                        []
+                                        [ Ty.path "u128" ]
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::from::FromUintError::Overflow"
+                                        []
+                                        [ Ty.path "u128" ]
                                         [
                                           BITS;
                                           M.read (| result |);
@@ -10528,7 +11145,16 @@ Module from.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "u128";
+                      Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u128" ]
+                    ]
+                    [ M.read (| result |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

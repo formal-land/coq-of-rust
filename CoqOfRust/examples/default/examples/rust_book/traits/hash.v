@@ -224,6 +224,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "hash::Person"
+              []
+              []
               [
                 ("id", Value.Integer IntegerKind.U32 5);
                 ("name",
@@ -247,6 +249,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "hash::Person"
+              []
+              []
               [
                 ("id", Value.Integer IntegerKind.U32 5);
                 ("name",

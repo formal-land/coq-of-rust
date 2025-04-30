@@ -27,7 +27,7 @@ Module CreateInputs.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
     φ x :=
-      Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [
+      Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [] [] [
         ("caller", φ x.(caller));
         ("scheme", φ x.(scheme));
         ("value", φ x.(value));
@@ -52,7 +52,7 @@ Module CreateInputs.
     value' = φ value ->
     init_code' = φ init_code ->
     gas_limit' = φ gas_limit ->
-    Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [
+    Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [] [] [
       ("caller", caller');
       ("scheme", scheme');
       ("value", value');
@@ -73,7 +73,7 @@ Module CreateInputs.
     value' = φ value ->
     init_code' = φ init_code ->
     gas_limit' = φ gas_limit ->
-    OfValue.t (Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [
+    OfValue.t (Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [] [] [
       ("caller", caller');
       ("scheme", scheme');
       ("value", value');

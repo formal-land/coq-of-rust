@@ -539,6 +539,9 @@ Module string.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
                         [
                           (* Unsize *)
                           M.pointer_coercion
@@ -546,7 +549,15 @@ Module string.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -575,7 +586,11 @@ Module string.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructTuple "ruint::string::ParseError::BaseConvertError" [ M.read (| value |) ]))
+          Value.StructTuple
+            "ruint::string::ParseError::BaseConvertError"
+            []
+            []
+            [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -916,9 +931,16 @@ Module string.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                                      Ty.path "ruint::string::ParseError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "ruint::string::ParseError::InvalidRadix"
+                                        []
+                                        []
                                         [ M.read (| radix |) ]
                                     ]
                                 |)
@@ -938,7 +960,13 @@ Module string.
                           []
                           [ Ty.path "ruint::string::ParseError" ]
                       ] :=
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "ruint::string::ParseError" ]
+                      []
+                  |) in
                 let~ digits :
                     Ty.apply
                       (Ty.path "*")
@@ -1048,6 +1076,8 @@ Module string.
                                                             M.return_ (|
                                                               Value.StructTuple
                                                                 "core::option::Option::None"
+                                                                []
+                                                                [ Ty.path "u64" ]
                                                                 []
                                                             |)
                                                           |)
@@ -1230,6 +1260,8 @@ Module string.
                                                                         Value.StructTuple
                                                                           "core::option::Option::None"
                                                                           []
+                                                                          [ Ty.path "u64" ]
+                                                                          []
                                                                       |)
                                                                     |)
                                                                   |)
@@ -1249,9 +1281,16 @@ Module string.
                                                                             err,
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "ruint::string::ParseError"
+                                                                              ]
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "ruint::string::ParseError::InvalidDigit"
+                                                                                  []
+                                                                                  []
                                                                                   [ M.read (| c |) ]
                                                                               ]
                                                                           |)
@@ -1259,6 +1298,8 @@ Module string.
                                                                       M.return_ (|
                                                                         Value.StructTuple
                                                                           "core::option::Option::None"
+                                                                          []
+                                                                          [ Ty.path "u64" ]
                                                                           []
                                                                       |)
                                                                     |)
@@ -1525,6 +1566,9 @@ Module string.
                                                                                   Value.StructTuple
                                                                                     "core::option::Option::None"
                                                                                     []
+                                                                                    [ Ty.path "u64"
+                                                                                    ]
+                                                                                    []
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -1549,9 +1593,16 @@ Module string.
                                                                             err,
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "ruint::string::ParseError"
+                                                                              ]
                                                                               [
                                                                                 Value.StructTuple
                                                                                   "ruint::string::ParseError::InvalidDigit"
+                                                                                  []
+                                                                                  []
                                                                                   [ M.read (| c |) ]
                                                                               ]
                                                                           |)
@@ -1559,6 +1610,8 @@ Module string.
                                                                       M.return_ (|
                                                                         Value.StructTuple
                                                                           "core::option::Option::None"
+                                                                          []
+                                                                          [ Ty.path "u64" ]
                                                                           []
                                                                       |)
                                                                     |)
@@ -1572,6 +1625,8 @@ Module string.
                                             M.alloc (|
                                               Value.StructTuple
                                                 "core::option::Option::Some"
+                                                []
+                                                [ Ty.path "u64" ]
                                                 [ M.read (| digit |) ]
                                             |)
                                           |)))
@@ -1757,8 +1812,21 @@ Module string.
                     |),
                     [
                       M.read (| err |);
-                      Value.StructTuple "core::result::Result::Ok" [ M.read (| value |) ];
-                      M.constructor_as_closure "core::result::Result::Err"
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.path "ruint::string::ParseError"
+                        ]
+                        [ M.read (| value |) ];
+                      M.constructor_as_closure
+                        "core::result::Result::Err"
+                        []
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.path "ruint::string::ParseError"
+                        ]
                     ]
                   |)
                 |)

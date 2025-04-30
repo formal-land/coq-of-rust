@@ -303,7 +303,7 @@ Module fmt.
     (* Default *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::fmt::Error" []))
+      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::fmt::Error" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -376,7 +376,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          Value.StructTuple "core::cmp::Ordering::Equal" []))
+          Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -436,7 +436,9 @@ Module fmt.
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
-            [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
+            []
+            [ Ty.path "core::cmp::Ordering" ]
+            [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -671,12 +673,15 @@ Module fmt.
           (let buf := M.alloc (| buf |) in
           Value.StructRecord
             "core::fmt::Formatter"
+            []
+            []
             [
               ("flags", Value.Integer IntegerKind.U32 0);
               ("fill", Value.UnicodeChar 32);
-              ("align", Value.StructTuple "core::fmt::rt::Alignment::Unknown" []);
-              ("width", Value.StructTuple "core::option::Option::None" []);
-              ("precision", Value.StructTuple "core::option::Option::None" []);
+              ("align", Value.StructTuple "core::fmt::rt::Alignment::Unknown" [] [] []);
+              ("width", Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []);
+              ("precision",
+                Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []);
               ("buf",
                 (* Unsize *)
                 M.pointer_coercion
@@ -715,6 +720,8 @@ Module fmt.
           let wrap := M.alloc (| wrap |) in
           Value.StructRecord
             "core::fmt::Formatter"
+            []
+            []
             [
               ("buf",
                 (* Unsize *)
@@ -906,7 +913,9 @@ Module fmt.
                       (Ty.path "*")
                       []
                       [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] ] :=
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+                  M.alloc (|
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "char" ] []
+                  |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
                   M.match_operator (|
                     Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
@@ -924,6 +933,8 @@ Module fmt.
                                 sign,
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "char" ]
                                   [ Value.UnicodeChar 45 ]
                               |)
                             |) in
@@ -978,6 +989,8 @@ Module fmt.
                                         sign,
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "char" ]
                                           [ Value.UnicodeChar 43 ]
                                       |)
                                     |) in
@@ -1089,11 +1102,21 @@ Module fmt.
                                 |)
                               |) in
                             M.alloc (|
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| prefix |) ]
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                [ M.read (| prefix |) ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                            (M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                []
+                            |)))
                       ]
                     |)
                   |) in
@@ -1490,7 +1513,7 @@ Module fmt.
                                     |)
                                   |)
                                 |);
-                                Value.StructTuple "core::fmt::rt::Alignment::Right" []
+                                Value.StructTuple "core::fmt::rt::Alignment::Right" [] [] []
                               ]
                             |)
                           |) in
@@ -1663,7 +1686,7 @@ Module fmt.
                                           BinOp.Wrap.sub,
                                           [ M.read (| min |); M.read (| width |) ]
                                         |);
-                                        Value.StructTuple "core::fmt::Alignment::Right" []
+                                        Value.StructTuple "core::fmt::Alignment::Right" [] [] []
                                       ]
                                     |)
                                   ]
@@ -1984,7 +2007,11 @@ Module fmt.
                             |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                            [ Value.Tuple [] ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2053,7 +2080,7 @@ Module fmt.
                                           BinOp.Wrap.sub,
                                           [ M.read (| min |); M.read (| width |) ]
                                         |);
-                                        Value.StructTuple "core::fmt::Alignment::Right" []
+                                        Value.StructTuple "core::fmt::Alignment::Right" [] [] []
                                       ]
                                     |)
                                   ]
@@ -2661,6 +2688,8 @@ Module fmt.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("end_", M.read (| i |)) ]
                                             ]
                                           |);
@@ -2844,7 +2873,9 @@ Module fmt.
                               ltac:(M.monadic
                                 (let~ align :
                                     Ty.apply (Ty.path "*") [] [ Ty.path "core::fmt::Alignment" ] :=
-                                  M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] |) in
+                                  M.alloc (|
+                                    Value.StructTuple "core::fmt::Alignment::Left" [] [] []
+                                  |) in
                                 let~ post_padding :
                                     Ty.apply
                                       (Ty.path "*")
@@ -3192,17 +3223,21 @@ Module fmt.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Left" |) in
-                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] |)));
+                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] [] [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
                               M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Right" |) in
-                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Right" [] |)));
+                            M.alloc (|
+                              Value.StructTuple "core::fmt::Alignment::Right" [] [] []
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
                               M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Center" |) in
-                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Center" [] |)))
+                            M.alloc (|
+                              Value.StructTuple "core::fmt::Alignment::Center" [] [] []
+                            |)))
                       ]
                     |)
                   |) in
@@ -3291,6 +3326,8 @@ Module fmt.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_", M.read (| pre_pad |))
@@ -3519,6 +3556,8 @@ Module fmt.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error" ]
                             [
                               M.call_closure (|
                                 Ty.path "core::fmt::PostPadding",
@@ -3906,7 +3945,7 @@ Module fmt.
                                           "core::fmt::Formatter",
                                           "align"
                                         |),
-                                        Value.StructTuple "core::fmt::rt::Alignment::Right" []
+                                        Value.StructTuple "core::fmt::rt::Alignment::Right" [] [] []
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -4059,6 +4098,8 @@ Module fmt.
                                                     |);
                                                     Value.StructTuple
                                                       "core::fmt::Alignment::Right"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -5147,6 +5188,11 @@ Module fmt.
                                                                                     |);
                                                                                     Value.StructRecord
                                                                                       "core::ops::range::RangeTo"
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ]
                                                                                       [
                                                                                         ("end_",
                                                                                           M.read (|
@@ -5415,6 +5461,8 @@ Module fmt.
                                                                               |);
                                                                               Value.StructRecord
                                                                                 "core::ops::range::RangeTo"
+                                                                                []
+                                                                                [ Ty.path "usize" ]
                                                                                 [
                                                                                   ("end_",
                                                                                     M.read (|
@@ -5703,6 +5751,8 @@ Module fmt.
                                                                             |);
                                                                             Value.StructRecord
                                                                               "core::ops::range::RangeTo"
+                                                                              []
+                                                                              [ Ty.path "usize" ]
                                                                               [
                                                                                 ("end_",
                                                                                   M.read (| len |))
@@ -5952,7 +6002,13 @@ Module fmt.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6217,7 +6273,9 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "core::fmt::Alignment::Left" [] ]
+                        []
+                        [ Ty.path "core::fmt::Alignment" ]
+                        [ Value.StructTuple "core::fmt::Alignment::Left" [] [] [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6225,7 +6283,9 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "core::fmt::Alignment::Right" [] ]
+                        []
+                        [ Ty.path "core::fmt::Alignment" ]
+                        [ Value.StructTuple "core::fmt::Alignment::Right" [] [] [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6233,12 +6293,20 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "core::fmt::Alignment::Center" [] ]
+                        []
+                        [ Ty.path "core::fmt::Alignment" ]
+                        [ Value.StructTuple "core::fmt::Alignment::Center" [] [] [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Unknown" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "core::fmt::Alignment" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -7419,7 +7487,7 @@ Module fmt.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -7449,7 +7517,11 @@ Module fmt.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -8793,12 +8865,24 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
+                []
+                []
                 [
                   ("pieces",
                     (* Unsize *)
                     M.pointer_coercion
                       (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |)));
-                  ("fmt", Value.StructTuple "core::option::Option::None" []);
+                  ("fmt",
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ] ]
+                      ]
+                      []);
                   ("args",
                     (* Unsize *)
                     M.pointer_coercion
@@ -8838,12 +8922,24 @@ Module fmt.
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
+                []
+                []
                 [
                   ("pieces",
                     (* Unsize *)
                     M.pointer_coercion
                       (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |)));
-                  ("fmt", Value.StructTuple "core::option::Option::None" []);
+                  ("fmt",
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ] ]
+                      ]
+                      []);
                   ("args",
                     (* Unsize *)
                     M.pointer_coercion
@@ -8878,11 +8974,20 @@ Module fmt.
           let _unsafe_arg := M.alloc (| _unsafe_arg |) in
           Value.StructRecord
             "core::fmt::Arguments"
+            []
+            []
             [
               ("pieces", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |));
               ("fmt",
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ] ]
+                  ]
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]);
               ("args", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |))
             ]))
@@ -9300,6 +9405,8 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |) ]
                     |)));
                 fun γ =>
@@ -9313,6 +9420,8 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -9321,7 +9430,14 @@ Module fmt.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -9408,7 +9524,14 @@ Module fmt.
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     s));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -11052,7 +11175,13 @@ Module fmt.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -11357,11 +11486,19 @@ Module fmt.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::fmt::rt::Count::Is", 0 |) in
                   let n := M.copy (| γ0_0 |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ] |)));
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| n |) ]
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Count::Implied" |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  M.alloc (|
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                  |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -11501,6 +11638,8 @@ Module fmt.
           let padding := M.alloc (| padding |) in
           Value.StructRecord
             "core::fmt::PostPadding"
+            []
+            []
             [ ("fill", M.read (| fill |)); ("padding", M.read (| padding |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11549,6 +11688,8 @@ Module fmt.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
                               [
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
@@ -11759,7 +11900,13 @@ Module fmt.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -13079,6 +13226,8 @@ Module fmt.
                   M.alloc (|
                     Value.StructRecord
                       "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
                       [
                         ("start", Value.Integer IntegerKind.Usize 0);
                         ("end_", Value.Integer IntegerKind.Usize 0)
@@ -13298,6 +13447,8 @@ Module fmt.
                                                     |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeFrom"
+                                                      []
+                                                      [ Ty.path "usize" ]
                                                       [ ("start", M.read (| non_printable_start |))
                                                       ]
                                                   ]
@@ -13379,6 +13530,8 @@ Module fmt.
                                                         M.read (| c |);
                                                         Value.StructRecord
                                                           "core::char::methods::EscapeDebugExtArgs"
+                                                          []
+                                                          []
                                                           [
                                                             ("escape_grapheme_extended",
                                                               Value.Bool true);
@@ -14289,6 +14442,8 @@ Module fmt.
                         M.read (| M.deref (| M.read (| self |) |) |);
                         Value.StructRecord
                           "core::char::methods::EscapeDebugExtArgs"
+                          []
+                          []
                           [
                             ("escape_grapheme_extended", Value.Bool true);
                             ("escape_single_quote", Value.Bool true);
@@ -14803,6 +14958,8 @@ Module fmt.
                                   |),
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "usize",

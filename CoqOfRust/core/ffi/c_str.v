@@ -177,6 +177,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ffi::c_str::FromBytesWithNulError"
+              []
+              []
               [
                 ("kind",
                   M.call_closure (|
@@ -426,6 +428,8 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "usize",
@@ -454,6 +458,8 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                          []
+                          []
                           []
                       |)))
                 ]
@@ -740,10 +746,14 @@ Module ffi.
             (let pos := M.alloc (| pos |) in
             Value.StructRecord
               "core::ffi::c_str::FromBytesWithNulError"
+              []
+              []
               [
                 ("kind",
                   Value.StructTuple
                     "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul"
+                    []
+                    []
                     [ M.read (| pos |) ])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -765,10 +775,14 @@ Module ffi.
           ltac:(M.monadic
             (Value.StructRecord
               "core::ffi::c_str::FromBytesWithNulError"
+              []
+              []
               [
                 ("kind",
                   Value.StructTuple
                     "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                    []
+                    []
                     [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -867,6 +881,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::ffi::c_str::FromBytesUntilNulError"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.tuple [],
@@ -1662,7 +1678,13 @@ Module ffi.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1874,6 +1896,11 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                            Ty.path "core::ffi::c_str::FromBytesUntilNulError"
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1903,9 +1930,16 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                            Ty.path "core::ffi::c_str::FromBytesUntilNulError"
+                          ]
                           [
                             Value.StructTuple
                               "core::ffi::c_str::FromBytesUntilNulError"
+                              []
+                              []
                               [ Value.Tuple [] ]
                           ]
                       |)))
@@ -2008,6 +2042,11 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                            Ty.path "core::ffi::c_str::FromBytesWithNulError"
+                          ]
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -2043,6 +2082,11 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                            Ty.path "core::ffi::c_str::FromBytesWithNulError"
+                          ]
                           [
                             M.call_closure (|
                               Ty.path "core::ffi::c_str::FromBytesWithNulError",
@@ -2062,6 +2106,11 @@ Module ffi.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ];
+                            Ty.path "core::ffi::c_str::FromBytesWithNulError"
+                          ]
                           [
                             M.call_closure (|
                               Ty.path "core::ffi::c_str::FromBytesWithNulError",
@@ -2888,6 +2937,8 @@ Module ffi.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start",
                                                   M.read (|
@@ -3161,6 +3212,8 @@ Module ffi.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ffi::c_str::Bytes"
+              []
+              []
               [
                 ("ptr",
                   M.call_closure (|
@@ -3357,6 +3410,8 @@ Module ffi.
             (let s := M.alloc (| s |) in
             Value.StructRecord
               "core::ffi::c_str::Bytes"
+              []
+              []
               [
                 ("ptr",
                   M.call_closure (|
@@ -3380,7 +3435,12 @@ Module ffi.
                       |)
                     ]
                   |));
-                ("phantom", Value.StructTuple "core::marker::PhantomData" [])
+                ("phantom",
+                  Value.StructTuple
+                    "core::marker::PhantomData"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ] ]
+                    [])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3507,7 +3567,9 @@ Module ffi.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u8" ] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3543,7 +3605,11 @@ Module ffi.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ Ty.path "u8" ]
+                          [ M.read (| ret |) ]
                       |)))
                 ]
               |)
@@ -3598,6 +3664,8 @@ Module ffi.
                             Value.Integer IntegerKind.Usize 0;
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [ Ty.path "usize" ]
                               [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
@@ -3607,7 +3675,7 @@ Module ffi.
                         Value.Tuple
                           [
                             Value.Integer IntegerKind.Usize 1;
-                            Value.StructTuple "core::option::Option::None" []
+                            Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
                           ]
                       |)))
                 ]

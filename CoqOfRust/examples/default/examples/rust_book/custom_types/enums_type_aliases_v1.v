@@ -50,6 +50,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructTuple
               "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
               []
+              []
+              []
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

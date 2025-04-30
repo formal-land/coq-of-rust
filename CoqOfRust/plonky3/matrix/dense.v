@@ -42,6 +42,8 @@ Module dense.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_matrix::dense::DenseMatrix"
+            []
+            [ T; V ]
             [
               ("values",
                 M.call_closure (|
@@ -1229,9 +1231,21 @@ Module dense.
                 |);
                 Value.StructRecord
                   "p3_matrix::dense::_'1::deserialize::__Visitor"
+                  []
+                  [ T; V ]
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -1514,6 +1528,8 @@ Module dense.
             [
               Value.StructTuple
                 "alloc::borrow::Cow::Owned"
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ] ]
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -1642,7 +1658,7 @@ Module dense.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |);
-                            Value.StructTuple "rand::distr::StandardUniform" []
+                            Value.StructTuple "rand::distr::StandardUniform" [] [] []
                           ]
                         |);
                         M.call_closure (|
@@ -1855,7 +1871,7 @@ Module dense.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |);
-                                Value.StructTuple "rand::distr::StandardUniform" []
+                                Value.StructTuple "rand::distr::StandardUniform" [] [] []
                               ]
                             |);
                             M.closure
@@ -2454,7 +2470,7 @@ Module dense.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2484,7 +2500,11 @@ Module dense.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2596,7 +2616,7 @@ Module dense.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -2626,7 +2646,11 @@ Module dense.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2915,10 +2939,12 @@ Module dense.
             M.alloc (|
               Value.StructRecord
                 "p3_matrix::dense::DenseMatrix"
+                []
+                [ T; S ]
                 [
                   ("values", M.read (| values |));
                   ("width", M.read (| width |));
-                  ("_phantom", Value.StructTuple "core::marker::PhantomData" [])
+                  ("_phantom", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                 ]
             |)
           |)))
@@ -3294,7 +3320,7 @@ Module dense.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -3327,7 +3353,11 @@ Module dense.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -3986,6 +4016,8 @@ Module dense.
                           |);
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start",
                                 M.call_closure (|
@@ -5884,6 +5916,8 @@ Module dense.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Ne"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -5915,6 +5949,8 @@ Module dense.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -6086,6 +6122,8 @@ Module dense.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeFrom"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("start", M.read (| start_1 |)) ]
                                             ]
                                           |)
@@ -6093,6 +6131,8 @@ Module dense.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("end_",
                                             M.read (|
@@ -6141,6 +6181,8 @@ Module dense.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [
                                           ("end_",
                                             M.read (|
@@ -7620,6 +7662,8 @@ Module dense.
                           |);
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start",
                                 M.call_closure (|
@@ -7723,6 +7767,8 @@ Module dense.
                   |);
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start",
                         M.call_closure (|
@@ -7915,6 +7961,8 @@ Module dense.
                         |);
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start",
                               M.call_closure (|
@@ -8144,6 +8192,8 @@ Module dense.
                         |);
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [
                             ("start",
                               M.call_closure (|
@@ -8444,6 +8494,8 @@ Module dense.
             [
               Value.StructTuple
                 "alloc::borrow::Cow::Borrowed"
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ] ]
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,

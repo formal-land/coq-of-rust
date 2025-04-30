@@ -85,6 +85,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "match_destructuring_enums::Color::RGB"
+              []
+              []
               [
                 Value.Integer IntegerKind.U32 122;
                 Value.Integer IntegerKind.U32 17;

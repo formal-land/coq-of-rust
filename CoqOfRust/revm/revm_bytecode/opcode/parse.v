@@ -262,7 +262,11 @@ Module opcode.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                 |);
-                Value.StructTuple "revm_bytecode::opcode::parse::OpCodeError" [ Value.Tuple [] ]
+                Value.StructTuple
+                  "revm_bytecode::opcode::parse::OpCodeError"
+                  []
+                  []
+                  [ Value.Tuple [] ]
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

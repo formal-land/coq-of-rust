@@ -192,6 +192,8 @@ Module algorithms.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| divisor |) |) |);
                             Value.StructRecord
                               "core::ops::range::RangeToInclusive"
+                              []
+                              [ Ty.path "usize" ]
                               [ ("end_", M.read (| i |)) ]
                           ]
                         |)
@@ -336,6 +338,9 @@ Module algorithms.
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
+                                                      []
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                      ]
                                                       [
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
@@ -530,6 +535,8 @@ Module algorithms.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::RangeToInclusive"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ ("end_", M.read (| i |)) ]
                                     ]
                                   |)

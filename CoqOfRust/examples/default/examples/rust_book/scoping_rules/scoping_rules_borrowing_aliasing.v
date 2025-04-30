@@ -76,6 +76,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_aliasing::Point"
+              []
+              []
               [
                 ("x", Value.Integer IntegerKind.I32 0);
                 ("y", Value.Integer IntegerKind.I32 0);

@@ -125,19 +125,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "*")
               []
               [ Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" ] :=
-          M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] |) in
+          M.alloc (|
+            Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] [] []
+          |) in
         let~ blue_jay :
             Ty.apply
               (Ty.path "*")
               []
               [ Ty.path "generics_bounds_test_case_empty_bounds::BlueJay" ] :=
-          M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] |) in
+          M.alloc (|
+            Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] [] []
+          |) in
         let~ _turkey :
             Ty.apply
               (Ty.path "*")
               []
               [ Ty.path "generics_bounds_test_case_empty_bounds::Turkey" ] :=
-          M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] |) in
+          M.alloc (|
+            Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] [] []
+          |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
             M.alloc (|

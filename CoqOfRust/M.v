@@ -180,8 +180,8 @@ Module Value.
   | String : string -> t
   | Tuple : list t -> t
   | Array : list t -> t
-  | StructRecord : string -> list (string * t) -> t
-  | StructTuple : string -> list t -> t
+  | StructRecord : string -> list t -> list Ty.t ->list (string * t) -> t
+  | StructTuple : string -> list t -> list Ty.t -> list t -> t
   | Pointer : Pointer.t t -> t
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
@@ -214,7 +214,7 @@ Module Value.
       end
     | Pointer.Index.StructRecord constructor field =>
       match value with
-      | StructRecord c fields =>
+      | StructRecord c _ _ fields =>
         if String.eqb c constructor then
           List.assoc fields field
         else
@@ -223,7 +223,7 @@ Module Value.
       end
     | Pointer.Index.StructTuple constructor index =>
       match value with
-      | StructTuple c fields =>
+      | StructTuple c _ _ fields =>
         if String.eqb c constructor then
           List.nth_error fields (Z.to_nat index)
         else
@@ -254,18 +254,18 @@ Module Value.
       end
     | Pointer.Index.StructRecord constructor field =>
       match value with
-      | StructRecord c fields =>
+      | StructRecord c consts tys fields =>
         if String.eqb c constructor then
-          Some (StructRecord c (List.assoc_replace fields field update))
+          Some (StructRecord c consts tys (List.assoc_replace fields field update))
         else
           None
       | _ => None
       end
     | Pointer.Index.StructTuple constructor index =>
       match value with
-      | StructTuple c fields =>
+      | StructTuple c consts tys fields =>
         if String.eqb c constructor then
-          Some (StructTuple c (List.replace_at fields (Z.to_nat index) update))
+          Some (StructTuple c consts tys (List.replace_at fields (Z.to_nat index) update))
         else
           None
       | _ => None
@@ -860,7 +860,7 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   let* value := deref value in
   let* value := read value in
   match value with
-  | Value.StructTuple current_constructor _ =>
+  | Value.StructTuple current_constructor _ _ _ =>
     if String.eqb current_constructor constructor then
       pure (Value.Tuple [])
     else
@@ -882,9 +882,10 @@ Parameter cast : Ty.t -> Value.t -> Value.t.
 Definition closure (f : list Value.t -> M) : Value.t :=
   Value.Closure (existS (_, _) f).
 
-Definition constructor_as_closure (constructor : string) : Value.t :=
+Definition constructor_as_closure (constructor : string) (consts : list Value.t) (tys : list Ty.t) :
+    Value.t :=
   closure (fun args =>
-    pure (Value.StructTuple constructor args)).
+    pure (Value.StructTuple constructor consts tys args)).
 
 Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
 

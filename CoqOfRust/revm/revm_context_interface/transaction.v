@@ -2014,6 +2014,8 @@ Module transaction.
                     M.alloc (|
                       Value.StructTuple
                         "alloy_primitives::common::TxKind::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "alloy_primitives::bits::address::Address",
@@ -2079,6 +2081,8 @@ Module transaction.
                     M.alloc (|
                       Value.StructTuple
                         "alloy_primitives::common::TxKind::Call"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "alloy_primitives::bits::address::Address",
@@ -2299,7 +2303,25 @@ Module transaction.
                         γ,
                         "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -2310,6 +2332,20 @@ Module transaction.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2390,6 +2426,20 @@ Module transaction.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2470,6 +2520,20 @@ Module transaction.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -2550,6 +2614,20 @@ Module transaction.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,

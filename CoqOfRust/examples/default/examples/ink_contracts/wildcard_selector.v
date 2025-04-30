@@ -43,7 +43,8 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
+    | [], [], [] =>
+      ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

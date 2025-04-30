@@ -122,6 +122,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -402,6 +404,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -684,6 +688,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -833,7 +839,7 @@ Module instructions.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.StructTuple "core::cmp::Ordering::Less" []
+                                          Value.StructTuple "core::cmp::Ordering::Less" [] [] []
                                         |)
                                       |)
                                     ]
@@ -975,6 +981,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -1124,7 +1132,7 @@ Module instructions.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.StructTuple "core::cmp::Ordering::Greater" []
+                                          Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
                                         |)
                                       |)
                                     ]
@@ -1265,6 +1273,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1546,6 +1556,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -1812,6 +1824,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -2069,6 +2083,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -2328,6 +2344,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -2586,6 +2604,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -2839,6 +2859,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3305,6 +3327,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -3343,6 +3367,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3453,6 +3479,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3893,6 +3921,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -3931,6 +3961,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -4041,6 +4073,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -4483,6 +4517,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -4521,6 +4557,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -4631,6 +4669,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)

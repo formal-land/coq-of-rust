@@ -38,12 +38,16 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                M.alloc (|
+                  Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] []
+                |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "i32" ]
                     [
                       M.call_closure (|
                         Ty.path "i32",
@@ -344,20 +348,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "*")
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] |) in
         let~ _equivalent_none :
             Ty.apply
               (Ty.path "*")
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] [] |) in
         let~ optional_float :
             Ty.apply
               (Ty.path "*")
               []
               [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "f32" ] ] :=
           M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ M.read (| UnsupportedLiteral |) ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "f32" ]
+              [ M.read (| UnsupportedLiteral |) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

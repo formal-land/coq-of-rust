@@ -400,11 +400,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ pressed : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
-          M.alloc (| Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ] |) in
+          M.alloc (|
+            Value.StructTuple "enums::WebEvent::KeyPress" [] [] [ Value.UnicodeChar 120 ]
+          |) in
         let~ pasted : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
           M.alloc (|
             Value.StructTuple
               "enums::WebEvent::Paste"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "alloc::string::String",
@@ -425,12 +429,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "enums::WebEvent::Click"
+              []
+              []
               [ ("x", Value.Integer IntegerKind.I64 20); ("y", Value.Integer IntegerKind.I64 80) ]
           |) in
         let~ load : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
-          M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
+          M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] [] [] |) in
         let~ unload : Ty.apply (Ty.path "*") [] [ Ty.path "enums::WebEvent" ] :=
-          M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
+          M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] [] [] |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
           M.alloc (|
             M.call_closure (|

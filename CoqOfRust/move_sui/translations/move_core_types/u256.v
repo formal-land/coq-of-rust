@@ -547,6 +547,8 @@ Module u256.
           let kind := M.alloc (| kind |) in
           Value.StructRecord
             "move_core_types::u256::U256CastError"
+            []
+            []
             [
               ("kind", M.read (| kind |));
               ("val",
@@ -1378,6 +1380,8 @@ Module u256.
         ltac:(M.monadic
           (Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -1648,6 +1652,11 @@ Module u256.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.path "move_core_types::u256::U256";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                ]
                 [
                   M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
@@ -1953,6 +1962,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::u256::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "primitive_types::U256",
@@ -2019,6 +2030,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::u256::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "primitive_types::U256",
@@ -2085,6 +2098,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::u256::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "primitive_types::U256",
@@ -2165,6 +2180,8 @@ Module u256.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::u256::U256"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.path "primitive_types::U256",
@@ -2248,6 +2265,8 @@ Module u256.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::u256::U256"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.path "primitive_types::U256",
@@ -2331,6 +2350,8 @@ Module u256.
                             M.alloc (|
                               Value.StructTuple
                                 "move_core_types::u256::U256"
+                                []
+                                []
                                 [
                                   M.call_closure (|
                                     Ty.path "primitive_types::U256",
@@ -2693,6 +2714,8 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -2794,6 +2817,8 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -2849,6 +2874,8 @@ Module u256.
                   M.deref (| M.read (| self |) |),
                   Value.StructTuple
                     "move_core_types::u256::U256"
+                    []
+                    []
                     [
                       M.call_closure (|
                         Ty.path "primitive_types::U256",
@@ -2909,6 +2936,8 @@ Module u256.
         ltac:(M.monadic
           (Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -2934,6 +2963,8 @@ Module u256.
         ltac:(M.monadic
           (Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -2959,6 +2990,8 @@ Module u256.
         ltac:(M.monadic
           (Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -3068,10 +3101,10 @@ Module u256.
                       M.read (| radix |)
                     ]
                   |);
-                  M.constructor_as_closure "move_core_types::u256::U256"
+                  M.constructor_as_closure "move_core_types::u256::U256" [] []
                 ]
               |);
-              M.constructor_as_closure "move_core_types::u256::U256FromStrError"
+              M.constructor_as_closure "move_core_types::u256::U256FromStrError" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3094,6 +3127,8 @@ Module u256.
           (let slice := M.alloc (| slice |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -3429,7 +3464,7 @@ Module u256.
                   |)
                 ]
               |);
-              M.constructor_as_closure "move_core_types::u256::U256"
+              M.constructor_as_closure "move_core_types::u256::U256" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3482,7 +3517,7 @@ Module u256.
                   |)
                 ]
               |);
-              M.constructor_as_closure "move_core_types::u256::U256"
+              M.constructor_as_closure "move_core_types::u256::U256" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3535,7 +3570,7 @@ Module u256.
                   |)
                 ]
               |);
-              M.constructor_as_closure "move_core_types::u256::U256"
+              M.constructor_as_closure "move_core_types::u256::U256" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3588,7 +3623,7 @@ Module u256.
                   |)
                 ]
               |);
-              M.constructor_as_closure "move_core_types::u256::U256"
+              M.constructor_as_closure "move_core_types::u256::U256" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3641,7 +3676,7 @@ Module u256.
                   |)
                 ]
               |);
-              M.constructor_as_closure "move_core_types::u256::U256"
+              M.constructor_as_closure "move_core_types::u256::U256" [] []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3704,7 +3739,13 @@ Module u256.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "move_core_types::u256::U256" ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -3714,9 +3755,13 @@ Module u256.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "move_core_types::u256::U256" ]
                     [
                       Value.StructTuple
                         "move_core_types::u256::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "primitive_types::U256",
@@ -3805,7 +3850,13 @@ Module u256.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "move_core_types::u256::U256" ]
+                                    []
+                                |)
                               |)
                             |)
                           |)));
@@ -3815,9 +3866,13 @@ Module u256.
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
+                    []
+                    [ Ty.path "move_core_types::u256::U256" ]
                     [
                       Value.StructTuple
                         "move_core_types::u256::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "primitive_types::U256",
@@ -4060,6 +4115,8 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.read (|
                 M.SubPointer.get_tuple_field (|
@@ -4115,6 +4172,8 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.read (|
                 M.SubPointer.get_tuple_field (|
@@ -4170,6 +4229,8 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.read (|
                 M.SubPointer.get_tuple_field (|
@@ -4708,6 +4769,8 @@ Module u256.
           (let n := M.alloc (| n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -4750,6 +4813,8 @@ Module u256.
           (let n := M.alloc (| n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -4792,6 +4857,8 @@ Module u256.
           (let n := M.alloc (| n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -4834,6 +4901,8 @@ Module u256.
           (let n := M.alloc (| n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -4876,6 +4945,8 @@ Module u256.
           (let n := M.alloc (| n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "primitive_types::U256",
@@ -4925,7 +4996,7 @@ Module u256.
               []
             |),
             [
-              Value.StructTuple "num_bigint::bigint::Sign::Plus" [];
+              Value.StructTuple "num_bigint::bigint::Sign::Plus" [] [] [];
               (* Unsize *)
               M.pointer_coercion
                 (M.borrow (|
@@ -5215,6 +5286,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256CastError",
@@ -5229,6 +5302,8 @@ Module u256.
                               Value.StructTuple
                                 "move_core_types::u256::U256CastErrorKind::TooLargeForU8"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -5238,6 +5313,8 @@ Module u256.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ]
                         [ M.cast (Ty.path "u8") (M.read (| n |)) ]
                     |)))
               ]
@@ -5330,6 +5407,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256CastError",
@@ -5344,6 +5423,8 @@ Module u256.
                               Value.StructTuple
                                 "move_core_types::u256::U256CastErrorKind::TooLargeForU16"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -5353,6 +5434,8 @@ Module u256.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ]
                         [ M.cast (Ty.path "u16") (M.read (| n |)) ]
                     |)))
               ]
@@ -5445,6 +5528,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256CastError",
@@ -5459,6 +5544,8 @@ Module u256.
                               Value.StructTuple
                                 "move_core_types::u256::U256CastErrorKind::TooLargeForU32"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -5468,6 +5555,8 @@ Module u256.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ]
                         [ M.cast (Ty.path "u32") (M.read (| n |)) ]
                     |)))
               ]
@@ -5560,6 +5649,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256CastError",
@@ -5574,6 +5665,8 @@ Module u256.
                               Value.StructTuple
                                 "move_core_types::u256::U256CastErrorKind::TooLargeForU64"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -5583,6 +5676,8 @@ Module u256.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ]
                         [ M.cast (Ty.path "u64") (M.read (| n |)) ]
                     |)))
               ]
@@ -5685,6 +5780,8 @@ Module u256.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ]
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256CastError",
@@ -5699,6 +5796,8 @@ Module u256.
                               Value.StructTuple
                                 "move_core_types::u256::U256CastErrorKind::TooLargeForU128"
                                 []
+                                []
+                                []
                             ]
                           |)
                         ]
@@ -5708,6 +5807,8 @@ Module u256.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ]
                         [
                           M.call_closure (|
                             Ty.path "u128",
@@ -6626,6 +6727,8 @@ Module u256.
             M.alloc (|
               Value.StructRecord
                 "move_core_types::u256::UniformU256"
+                []
+                []
                 [
                   ("low", M.read (| low |));
                   ("range", M.read (| range |));

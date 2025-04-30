@@ -23,6 +23,8 @@ Module iter.
             let succ := M.alloc (| succ |) in
             Value.StructRecord
               "core::iter::sources::successors::Successors"
+              []
+              [ T; F ]
               [ ("next", M.read (| first |)); ("succ", M.read (| succ |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -53,6 +55,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::sources::successors::Successors"
+                []
+                [ T; F ]
                 [
                   ("next",
                     M.call_closure (|
@@ -287,7 +291,7 @@ Module iter.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
+                      Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| item |) ]
                     |)
                   |)))
               |)))
@@ -354,7 +358,11 @@ Module iter.
                           Value.Tuple
                             [
                               Value.Integer IntegerKind.Usize 1;
-                              Value.StructTuple "core::option::Option::None" []
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [ Ty.path "usize" ]
+                                []
                             ]
                         |)));
                     fun γ =>
@@ -365,6 +373,8 @@ Module iter.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)))

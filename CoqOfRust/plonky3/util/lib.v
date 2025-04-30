@@ -170,7 +170,7 @@ Definition log2_strict_usize (ε : list Value.t) (τ : list Ty.t) (α : list Val
                                       []
                                       [ Ty.path "core::panicking::AssertKind" ] :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -202,6 +202,8 @@ Definition log2_strict_usize (ε : list Value.t) (τ : list Ty.t) (α : list Val
                                       |);
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "core::fmt::Arguments" ]
                                         [
                                           M.call_closure (|
                                             Ty.path "core::fmt::Arguments",
@@ -973,6 +975,8 @@ Definition reverse_slice_index_bits (ε : list Value.t) (τ : list Ty.t) (α : l
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start",
                                                 M.call_closure (|
@@ -1130,6 +1134,8 @@ Definition reverse_slice_index_bits_small
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
@@ -1337,6 +1343,8 @@ Definition reverse_slice_index_bits_small
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
+                            []
+                            [ Ty.path "usize" ]
                             [
                               ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
@@ -1481,6 +1489,8 @@ Definition reverse_slice_index_bits_small
                                                 [
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",
@@ -1778,6 +1788,8 @@ Definition reverse_slice_index_bits_chunks
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
+                    []
+                    [ Ty.path "usize" ]
                     [
                       ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_",
@@ -2857,6 +2869,8 @@ Definition apply_to_chunks (ε : list Value.t) (τ : list Ty.t) (α : list Value
                                         M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |));
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("end_", M.read (| n |)) ]
                                       ]
                                     |)
@@ -2998,7 +3012,11 @@ Definition flatten_to_base (ε : list Value.t) (τ : list Ty.t) (α : list Value
                                                 []
                                                 [ Ty.path "core::panicking::AssertKind" ] :=
                                             M.alloc (|
-                                              Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                              Value.StructTuple
+                                                "core::panicking::AssertKind::Eq"
+                                                []
+                                                []
+                                                []
                                             |) in
                                           M.alloc (|
                                             M.call_closure (|
@@ -3028,7 +3046,11 @@ Definition flatten_to_base (ε : list Value.t) (τ : list Ty.t) (α : list Value
                                                     |)
                                                   |)
                                                 |);
-                                                Value.StructTuple "core::option::Option::None" []
+                                                Value.StructTuple
+                                                  "core::option::Option::None"
+                                                  []
+                                                  [ Ty.path "core::fmt::Arguments" ]
+                                                  []
                                               ]
                                             |)
                                           |)

@@ -35,6 +35,8 @@ Module pin.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::pin::Pin"
+            []
+            [ Ptr ]
             [
               ("__pointer",
                 M.call_closure (|
@@ -846,7 +848,7 @@ Module pin.
       | [], [], [ pointer ] =>
         ltac:(M.monadic
           (let pointer := M.alloc (| pointer |) in
-          Value.StructRecord "core::pin::Pin" [ ("__pointer", M.read (| pointer |)) ]))
+          Value.StructRecord "core::pin::Pin" [] [ Ptr ] [ ("__pointer", M.read (| pointer |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1354,6 +1356,8 @@ Module pin.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::pin::Pin"
+            []
+            [ Ty.apply (Ty.path "&") [] [ T ] ]
             [
               ("__pointer",
                 M.borrow (|

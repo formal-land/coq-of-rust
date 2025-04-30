@@ -25,6 +25,8 @@ Module char.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::char::decode::DecodeUtf16"
+              []
+              [ I ]
               [
                 ("iter",
                   M.call_closure (|
@@ -244,6 +246,8 @@ Module char.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::char::decode::DecodeUtf16Error"
+              []
+              []
               [
                 ("code",
                   M.call_closure (|
@@ -385,6 +389,9 @@ Module char.
           (let iter := M.alloc (| iter |) in
           Value.StructRecord
             "core::char::decode::DecodeUtf16"
+            []
+            [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"
+            ]
             [
               ("iter",
                 M.call_closure (|
@@ -405,7 +412,7 @@ Module char.
                   |),
                   [ M.read (| iter |) ]
                 |));
-              ("buf", Value.StructTuple "core::option::Option::None" [])
+              ("buf", Value.StructTuple "core::option::Option::None" [] [ Ty.path "u16" ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -686,9 +693,18 @@ Module char.
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
+                              ]
                               [
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "char",
@@ -744,12 +760,29 @@ Module char.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::decode::DecodeUtf16Error"
+                                          ]
+                                      ]
                                       [
                                         Value.StructTuple
                                           "core::result::Result::Err"
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::decode::DecodeUtf16Error"
+                                          ]
                                           [
                                             Value.StructRecord
                                               "core::char::decode::DecodeUtf16Error"
+                                              []
+                                              []
                                               [ ("code", M.read (| u |)) ]
                                           ]
                                       ]
@@ -811,12 +844,31 @@ Module char.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "char";
+                                                              Ty.path
+                                                                "core::char::decode::DecodeUtf16Error"
+                                                            ]
+                                                        ]
                                                         [
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.path "char";
+                                                              Ty.path
+                                                                "core::char::decode::DecodeUtf16Error"
+                                                            ]
                                                             [
                                                               Value.StructRecord
                                                                 "core::char::decode::DecodeUtf16Error"
+                                                                []
+                                                                []
                                                                 [ ("code", M.read (| u |)) ]
                                                             ]
                                                         ]
@@ -876,18 +928,39 @@ Module char.
                                                         |),
                                                         Value.StructTuple
                                                           "core::option::Option::Some"
+                                                          []
+                                                          [ Ty.path "u16" ]
                                                           [ M.read (| u2 |) ]
                                                       |)
                                                     |) in
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::option::Option::Some"
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "char";
+                                                            Ty.path
+                                                              "core::char::decode::DecodeUtf16Error"
+                                                          ]
+                                                      ]
                                                       [
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.path "char";
+                                                            Ty.path
+                                                              "core::char::decode::DecodeUtf16Error"
+                                                          ]
                                                           [
                                                             Value.StructRecord
                                                               "core::char::decode::DecodeUtf16Error"
+                                                              []
+                                                              []
                                                               [ ("code", M.read (| u |)) ]
                                                           ]
                                                       ]
@@ -944,9 +1017,24 @@ Module char.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::decode::DecodeUtf16Error"
+                                          ]
+                                      ]
                                       [
                                         Value.StructTuple
                                           "core::result::Result::Ok"
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::decode::DecodeUtf16Error"
+                                          ]
                                           [
                                             M.call_closure (|
                                               Ty.path "char",
@@ -1161,6 +1249,8 @@ Module char.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ Value.Integer IntegerKind.Usize 0 ]
                                           |)
                                         |)

@@ -245,6 +245,8 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
         (let self := M.alloc (| self |) in
         Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
+          []
+          [ Unit ]
           [
             M.call_closure (|
               Ty.path "f64",
@@ -343,6 +345,8 @@ Module Impl_core_ops_arith_Add_generics_phantom_type_test_case_unit_clarificatio
         let rhs := M.alloc (| rhs |) in
         Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
+          []
+          [ Unit ]
           [
             M.call_closure (|
               Ty.path "f64",
@@ -364,7 +368,7 @@ Module Impl_core_ops_arith_Add_generics_phantom_type_test_case_unit_clarificatio
                 |)
               ]
             |);
-            Value.StructTuple "core::marker::PhantomData" []
+            Value.StructTuple "core::marker::PhantomData" [] [ Unit ] []
           ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -423,7 +427,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
-              [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+              [
+                M.read (| UnsupportedLiteral |);
+                Value.StructTuple
+                  "core::marker::PhantomData"
+                  []
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+                  []
+              ]
           |) in
         let~ one_meter :
             Ty.apply
@@ -438,7 +451,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
-              [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+              [
+                M.read (| UnsupportedLiteral |);
+                Value.StructTuple
+                  "core::marker::PhantomData"
+                  []
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+                  []
+              ]
           |) in
         let~ two_feet :
             Ty.apply

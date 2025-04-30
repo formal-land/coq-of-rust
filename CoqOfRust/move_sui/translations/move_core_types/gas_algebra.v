@@ -211,6 +211,21 @@ Module gas_algebra.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -293,6 +308,21 @@ Module gas_algebra.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -374,6 +404,21 @@ Module gas_algebra.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -468,9 +513,21 @@ Module gas_algebra.
                 |);
                 Value.StructRecord
                   "move_core_types::gas_algebra::_'1::deserialize::__Visitor"
+                  []
+                  [ U ]
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -640,9 +697,11 @@ Module gas_algebra.
           (let val := M.alloc (| val |) in
           Value.StructRecord
             "move_core_types::gas_algebra::GasQuantity"
+            []
+            [ U ]
             [
               ("val", M.read (| val |));
-              ("phantom", Value.StructTuple "core::marker::PhantomData" [])
+              ("phantom", Value.StructTuple "core::marker::PhantomData" [] [ U ] [])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -985,7 +1044,7 @@ Module gas_algebra.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                        Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -1015,7 +1074,11 @@ Module gas_algebra.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -1288,7 +1351,7 @@ Module gas_algebra.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                        Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -1318,7 +1381,11 @@ Module gas_algebra.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -2006,6 +2073,8 @@ Module gas_algebra.
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
+            []
+            [ Ty.path "core::cmp::Ordering" ]
             [
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
@@ -2398,7 +2467,7 @@ Module gas_algebra.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -2428,7 +2497,11 @@ Module gas_algebra.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -2486,7 +2559,7 @@ Module gas_algebra.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -2516,7 +2589,11 @@ Module gas_algebra.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -2652,7 +2729,7 @@ Module gas_algebra.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -2682,7 +2759,11 @@ Module gas_algebra.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -2740,7 +2821,7 @@ Module gas_algebra.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -2770,7 +2851,11 @@ Module gas_algebra.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)

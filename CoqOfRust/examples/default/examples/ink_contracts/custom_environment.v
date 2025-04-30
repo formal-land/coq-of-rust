@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "custom_environment::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -110,7 +112,7 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   (* Default *)
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "custom_environment::Topics" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "custom_environment::Topics" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -148,6 +150,8 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       ltac:(M.monadic
         (Value.StructRecord
           "custom_environment::EventWithTopics"
+          []
+          []
           [
             ("first_topic",
               M.call_closure (|
@@ -421,6 +425,8 @@ Module Impl_custom_environment_Topics.
                   |);
                   Value.StructTuple
                     "custom_environment::Event::EventWithTopics"
+                    []
+                    []
                     [
                       M.call_closure (|
                         Ty.path "custom_environment::EventWithTopics",

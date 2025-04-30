@@ -367,6 +367,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_mutablity::Book"
+              []
+              []
               [
                 ("author", mk_str (| "Douglas Hofstadter" |));
                 ("title", mk_str (| String.append "G" (String.String "246" "del, Escher, Bach") |));

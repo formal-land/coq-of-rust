@@ -889,6 +889,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructTuple
                       "tuples::Matrix"
+                      []
+                      []
                       [
                         M.read (| UnsupportedLiteral |);
                         M.read (| UnsupportedLiteral |);

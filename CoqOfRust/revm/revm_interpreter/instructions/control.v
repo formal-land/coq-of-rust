@@ -100,6 +100,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -209,6 +211,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -400,6 +404,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -509,6 +515,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -810,6 +818,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -919,6 +929,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -1461,6 +1473,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -1681,6 +1695,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -2002,6 +2018,8 @@ Module instructions.
                                                     Value.StructTuple
                                                       "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                                                       []
+                                                      []
+                                                      []
                                                   ]
                                                 |)
                                               |) in
@@ -2100,6 +2118,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -2270,6 +2290,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -2417,6 +2439,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -2526,6 +2550,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -2732,6 +2758,8 @@ Module instructions.
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                                                   []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           |) in
@@ -2854,6 +2882,8 @@ Module instructions.
                                                 |);
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
+                                                  []
+                                                  []
                                                   []
                                               ]
                                             |)
@@ -3054,6 +3084,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -3163,6 +3195,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3375,6 +3409,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -3484,6 +3520,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3710,6 +3748,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -3959,6 +3999,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -4100,6 +4142,8 @@ Module instructions.
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                                          []
+                                          []
                                           []
                                       ]
                                     |)
@@ -4395,6 +4439,8 @@ Module instructions.
                                                             Value.StructTuple
                                                               "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                               []
+                                                              []
+                                                              []
                                                           ]
                                                         |)
                                                       |) in
@@ -4648,6 +4694,8 @@ Module instructions.
                                                                       Value.StructTuple
                                                                         "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                                                         []
+                                                                        []
+                                                                        []
                                                                     ]
                                                                   |)
                                                                 |) in
@@ -4837,6 +4885,8 @@ Module instructions.
                                                           |);
                                                           Value.StructTuple
                                                             "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                                                            []
+                                                            []
                                                             []
                                                         ]
                                                       |)
@@ -5042,10 +5092,14 @@ Module instructions.
                                 |);
                                 Value.StructRecord
                                   "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                                  []
+                                  []
                                   [
                                     ("result",
                                       Value.StructRecord
                                         "revm_interpreter::interpreter::InterpreterResult"
+                                        []
+                                        []
                                         [
                                           ("output", M.read (| output |));
                                           ("gas", M.read (| gas |));
@@ -5097,6 +5151,8 @@ Module instructions.
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::Return"
+                      []
+                      []
                       []
                   ]
                 |)
@@ -5179,6 +5235,8 @@ Module instructions.
                                       Value.StructTuple
                                         "revm_specification::hardfork::SpecId::BYZANTIUM"
                                         []
+                                        []
+                                        []
                                     ]
                                   |)
                                 |)
@@ -5218,6 +5276,8 @@ Module instructions.
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                                           []
+                                          []
+                                          []
                                       ]
                                     |)
                                   |) in
@@ -5241,6 +5301,8 @@ Module instructions.
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
                         Value.StructTuple
                           "revm_interpreter::instruction_result::InstructionResult::Revert"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -5303,6 +5365,8 @@ Module instructions.
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::Stop"
                       []
+                      []
+                      []
                   ]
                 |)
               |) in
@@ -5363,6 +5427,8 @@ Module instructions.
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                       []
+                      []
+                      []
                   ]
                 |)
               |) in
@@ -5422,6 +5488,8 @@ Module instructions.
                     |);
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
+                      []
+                      []
                       []
                   ]
                 |)

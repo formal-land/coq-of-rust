@@ -16,6 +16,8 @@ Module iter.
             (let coroutine := M.alloc (| coroutine |) in
             Value.StructTuple
               "core::iter::sources::from_coroutine::FromCoroutine"
+              []
+              [ G ]
               [ M.read (| coroutine |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -46,6 +48,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "core::iter::sources::from_coroutine::FromCoroutine"
+                []
+                [ G ]
                 [
                   M.call_closure (|
                     G,
@@ -184,7 +188,18 @@ Module iter.
                           |) in
                         let n := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::ops::coroutine::Coroutine"
+                                []
+                                [ Ty.tuple [] ]
+                                G
+                                "Yield"
+                            ]
+                            [ M.read (| n |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -194,7 +209,20 @@ Module iter.
                             "core::ops::coroutine::CoroutineState::Complete",
                             0
                           |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::ops::coroutine::Coroutine"
+                                []
+                                [ Ty.tuple [] ]
+                                G
+                                "Yield"
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |)))

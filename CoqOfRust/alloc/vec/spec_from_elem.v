@@ -123,6 +123,8 @@ Module vec.
                                   M.return_ (|
                                     Value.StructRecord
                                       "alloc::vec::Vec"
+                                      []
+                                      [ T; A ]
                                       [
                                         ("buf",
                                           M.call_closure (|
@@ -243,6 +245,8 @@ Module vec.
                                   M.return_ (|
                                     Value.StructRecord
                                       "alloc::vec::Vec"
+                                      []
+                                      [ Ty.path "i8"; A ]
                                       [
                                         ("buf",
                                           M.call_closure (|
@@ -392,6 +396,8 @@ Module vec.
                                   M.return_ (|
                                     Value.StructRecord
                                       "alloc::vec::Vec"
+                                      []
+                                      [ Ty.path "u8"; A ]
                                       [
                                         ("buf",
                                           M.call_closure (|

@@ -45,6 +45,8 @@ Module iter.
               let f := M.alloc (| f |) in
               Value.StructRecord
                 "core::iter::adapters::flatten::FlatMap"
+                []
+                [ I; U; F ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -228,6 +230,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::flatten::FlatMap"
+                []
+                [ I; U; F ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -1644,6 +1648,8 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::flatten::Flatten"
+                []
+                [ I ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -1812,6 +1818,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::flatten::Flatten"
+                []
+                [ I ]
                 [
                   ("inner",
                     M.call_closure (|
@@ -2644,6 +2652,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::flatten::FlattenCompat"
+                []
+                [ I; U ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -2854,6 +2864,8 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::flatten::FlattenCompat"
+                []
+                [ I; U ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -2869,8 +2881,8 @@ Module iter.
                       |),
                       [ M.read (| iter |) ]
                     |));
-                  ("frontiter", Value.StructTuple "core::option::Option::None" []);
-                  ("backiter", Value.StructTuple "core::option::Option::None" [])
+                  ("frontiter", Value.StructTuple "core::option::Option::None" [] [ U ] []);
+                  ("backiter", Value.StructTuple "core::option::Option::None" [] [ U ] [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3257,7 +3269,7 @@ Module iter.
                             "core::iter::adapters::flatten::FlattenCompat",
                             "frontiter"
                           |),
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ U ] []
                         |)
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3409,7 +3421,7 @@ Module iter.
                             "core::iter::adapters::flatten::FlattenCompat",
                             "frontiter"
                           |),
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ U ] []
                         |)
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -3563,7 +3575,7 @@ Module iter.
                             "core::iter::adapters::flatten::FlattenCompat",
                             "backiter"
                           |),
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ U ] []
                         |)
                       |) in
                     M.alloc (|
@@ -3968,7 +3980,7 @@ Module iter.
                             "core::iter::adapters::flatten::FlattenCompat",
                             "backiter"
                           |),
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ U ] []
                         |)
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -4120,7 +4132,7 @@ Module iter.
                             "core::iter::adapters::flatten::FlattenCompat",
                             "backiter"
                           |),
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ U ] []
                         |)
                       |) in
                     let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -4274,7 +4286,7 @@ Module iter.
                             "core::iter::adapters::flatten::FlattenCompat",
                             "frontiter"
                           |),
-                          Value.StructTuple "core::option::Option::None" []
+                          Value.StructTuple "core::option::Option::None" [] [ U ] []
                         |)
                       |) in
                     M.alloc (|
@@ -4563,6 +4575,8 @@ Module iter.
                                       |),
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ U ]
                                         [
                                           M.call_closure (|
                                             U,
@@ -4703,6 +4717,8 @@ Module iter.
                                 Value.Integer IntegerKind.Usize 0;
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [ Value.Integer IntegerKind.Usize 0 ]
                               ];
                             M.get_trait_method (|
@@ -4804,6 +4820,8 @@ Module iter.
                                         Value.Integer IntegerKind.Usize 0;
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ Value.Integer IntegerKind.Usize 0 ]
                                       ];
                                     M.get_trait_method (|
@@ -5714,7 +5732,11 @@ Module iter.
                                               Value.Tuple
                                                 [
                                                   M.read (| lo |);
-                                                  Value.StructTuple "core::option::Option::None" []
+                                                  Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                    []
                                                 ]
                                             |)))
                                       ]
@@ -5986,15 +6008,44 @@ Module iter.
                                 |),
                                 [ M.read (| remaining |) ]
                               |);
-                              Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                              M.constructor_as_closure "core::result::Result::Err"
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                [ Value.Tuple [] ];
+                              M.constructor_as_closure
+                                "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                             ]
                           |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ]
                         |)))
                   ]
                 |)
@@ -6104,7 +6155,12 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.StructTuple "core::option::Option::None" [];
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item"
+                    ]
+                    [];
                   M.get_associated_function (| Self, "last.last", [], [] |)
                 ]
               |)))
@@ -6512,6 +6568,8 @@ Module iter.
                                       |),
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ U ]
                                         [
                                           M.call_closure (|
                                             U,
@@ -6801,15 +6859,44 @@ Module iter.
                                 |),
                                 [ M.read (| remaining |) ]
                               |);
-                              Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                              M.constructor_as_closure "core::result::Result::Err"
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                [ Value.Tuple [] ];
+                              M.constructor_as_closure
+                                "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                             ]
                           |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
+                            [ Value.Tuple [] ]
                         |)))
                   ]
                 |)
@@ -6922,7 +7009,9 @@ Module iter.
         Definition size (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
           match ε, τ, α with
-          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" []))
+          | [], [], [] =>
+            ltac:(M.monadic
+              (Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6953,7 +7042,9 @@ Module iter.
             : M :=
           let Self : Ty.t := Self N T in
           match ε, τ, α with
-          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ N ]))
+          | [], [], [] =>
+            ltac:(M.monadic
+              (Value.StructTuple "core::option::Option::Some" [] [ Ty.path "usize" ] [ N ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6985,7 +7076,9 @@ Module iter.
             : M :=
           let Self : Ty.t := Self N T in
           match ε, τ, α with
-          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ N ]))
+          | [], [], [] =>
+            ltac:(M.monadic
+              (Value.StructTuple "core::option::Option::Some" [] [ Ty.path "usize" ] [ N ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7017,7 +7110,9 @@ Module iter.
             : M :=
           let Self : Ty.t := Self N T in
           match ε, τ, α with
-          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ N ]))
+          | [], [], [] =>
+            ltac:(M.monadic
+              (Value.StructTuple "core::option::Option::Some" [] [ Ty.path "usize" ] [ N ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7218,7 +7313,7 @@ Module iter.
                               M.alloc (|
                                 M.write (|
                                   M.deref (| M.read (| opt |) |),
-                                  Value.StructTuple "core::option::Option::None" []
+                                  Value.StructTuple "core::option::Option::None" [] [ T ] []
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -8010,7 +8105,12 @@ Module iter.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          [ M.read (| n |) ]
                       |)))
                 ]
               |)
@@ -8193,7 +8293,20 @@ Module iter.
                             ]
                           |)))
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            U
+                            "Item"
+                        ]
+                        []
+                    |)
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -8318,6 +8431,8 @@ Module iter.
                                       Value.Integer IntegerKind.Usize 0;
                                       Value.StructTuple
                                         "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "usize" ]
                                         [ Value.Integer IntegerKind.Usize 0 ]
                                     ]
                                 |)));
@@ -8683,8 +8798,27 @@ Module iter.
                                   |)
                                 ]
                               |);
-                              Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                              M.constructor_as_closure "core::result::Result::Err"
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                [ Value.Tuple [] ];
+                              M.constructor_as_closure
+                                "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                             ]
                           |)
                         |)));
@@ -9234,7 +9368,20 @@ Module iter.
                             ]
                           |)))
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            U
+                            "Item"
+                        ]
+                        []
+                    |)
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -9572,8 +9719,27 @@ Module iter.
                                   |)
                                 ]
                               |);
-                              Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
-                              M.constructor_as_closure "core::result::Result::Err"
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                                [ Value.Tuple [] ];
+                              M.constructor_as_closure
+                                "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                             ]
                           |)
                         |)));

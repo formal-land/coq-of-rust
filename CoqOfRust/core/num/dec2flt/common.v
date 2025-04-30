@@ -80,6 +80,8 @@ Module num.
                                     |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [ ("end_", Value.Integer IntegerKind.Usize 8) ]
                                   ]
                                 |)
@@ -142,6 +144,8 @@ Module num.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", Value.Integer IntegerKind.Usize 8) ]
                         ]
                       |)
@@ -723,6 +727,8 @@ Module num.
             ltac:(M.monadic
               (Value.StructRecord
                 "core::num::dec2flt::common::BiasedFp"
+                []
+                []
                 [
                   ("f",
                     M.call_closure (|
@@ -780,6 +786,8 @@ Module num.
               (let e := M.alloc (| e |) in
               Value.StructRecord
                 "core::num::dec2flt::common::BiasedFp"
+                []
+                []
                 [ ("f", Value.Integer IntegerKind.U64 0); ("e", M.read (| e |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

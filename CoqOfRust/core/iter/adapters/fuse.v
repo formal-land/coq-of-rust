@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::fuse::Fuse"
+                []
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -147,7 +149,12 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::fuse::Fuse"
-                [ ("iter", Value.StructTuple "core::option::Option::Some" [ M.read (| iter |) ]) ]))
+                []
+                [ I ]
+                [
+                  ("iter",
+                    Value.StructTuple "core::option::Option::Some" [] [ I ] [ M.read (| iter |) ])
+                ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -367,7 +374,20 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::None"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                            []
+                        |)))
                   ]
                 |)
               |)))
@@ -500,6 +520,8 @@ Module iter.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [ Ty.path "usize" ]
                                 [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)))
@@ -1137,6 +1159,8 @@ Module iter.
             ltac:(M.monadic
               (Value.StructRecord
                 "core::iter::adapters::fuse::Fuse"
+                []
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -1582,7 +1606,7 @@ Module iter.
                                       "core::iter::adapters::fuse::Fuse",
                                       "iter"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ I ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -2140,7 +2164,7 @@ Module iter.
                                       "core::iter::adapters::fuse::Fuse",
                                       "iter"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    Value.StructTuple "core::option::Option::None" [] [ I ] []
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -4065,7 +4089,7 @@ Module iter.
                               M.alloc (|
                                 M.write (|
                                   M.deref (| M.read (| opt |) |),
-                                  Value.StructTuple "core::option::Option::None" []
+                                  Value.StructTuple "core::option::Option::None" [] [ T ] []
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));

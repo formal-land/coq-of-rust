@@ -26,7 +26,14 @@ Module eof.
               M.read (| raw |);
               Value.StructTuple
                 "core::option::Option::Some"
-                [ Value.StructTuple "revm_bytecode::eof::verification::CodeType::ReturnContract" []
+                []
+                [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
+                [
+                  Value.StructTuple
+                    "revm_bytecode::eof::verification::CodeType::ReturnContract"
+                    []
+                    []
+                    []
                 ]
             ]
           |)))
@@ -130,12 +137,21 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_bytecode::eof::Eof";
+                                      Ty.path "revm_bytecode::eof::verification::EofError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofError::Decode"
+                                        []
+                                        []
                                         [
                                           Value.StructTuple
                                             "revm_bytecode::eof::EofDecodeError::InvalidEOFSize"
+                                            []
+                                            []
                                             []
                                         ]
                                     ]
@@ -379,7 +395,16 @@ Module eof.
                           val))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| eof |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "revm_bytecode::eof::Eof";
+                      Ty.path "revm_bytecode::eof::verification::EofError"
+                    ]
+                    [ M.read (| eof |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -412,7 +437,14 @@ Module eof.
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| eof |) |) |);
               Value.StructTuple
                 "core::option::Option::Some"
-                [ Value.StructTuple "revm_bytecode::eof::verification::CodeType::ReturnContract" []
+                []
+                [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
+                [
+                  Value.StructTuple
+                    "revm_bytecode::eof::verification::CodeType::ReturnContract"
+                    []
+                    []
+                    []
                 ]
             ]
           |)))
@@ -500,12 +532,21 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "revm_bytecode::eof::verification::EofError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofError::Validation"
+                                        []
+                                        []
                                         [
                                           Value.StructTuple
                                             "revm_bytecode::eof::verification::EofValidationError::DataNotFilled"
+                                            []
+                                            []
                                             []
                                         ]
                                     ]
@@ -733,7 +774,14 @@ Module eof.
                                     ]
                                   |) in
                                 M.return_ (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "revm_bytecode::eof::verification::EofError"
+                                    ]
+                                    [ Value.Tuple [] ]
                                 |)
                               |)
                             |)
@@ -840,6 +888,8 @@ Module eof.
                           [
                             Value.StructTuple
                               "alloc::borrow::Cow::Borrowed"
+                              []
+                              [ Ty.path "revm_bytecode::eof::Eof" ]
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| eof |) |) |) ];
                             M.read (| first_code_type |)
                           ]
@@ -1478,6 +1528,11 @@ Module eof.
                                                                 [
                                                                   Value.StructTuple
                                                                     "alloc::borrow::Cow::Owned"
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_bytecode::eof::Eof"
+                                                                    ]
                                                                     [
                                                                       M.read (|
                                                                         M.match_operator (|
@@ -1661,6 +1716,11 @@ Module eof.
                                                                     ];
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_bytecode::eof::verification::CodeType"
+                                                                    ]
                                                                     [ M.read (| code_type |) ]
                                                                 ]
                                                             ]
@@ -1689,7 +1749,13 @@ Module eof.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "revm_bytecode::eof::verification::EofError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1866,9 +1932,22 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::InvalidTypesSection"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -1923,9 +2002,22 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::NoCodeSections"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -2041,9 +2133,22 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::InvalidTypesSection"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -2602,9 +2707,22 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::CodeSectionNotAccessed"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -2831,9 +2949,22 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::SubContainerNotAccessed"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -2887,9 +3018,13 @@ Module eof.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
                                             [
                                               Value.StructTuple
                                                 "revm_bytecode::eof::verification::CodeType::ReturnContract"
+                                                []
+                                                []
                                                 []
                                             ]
                                         |)
@@ -2920,9 +3055,22 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::DataNotFilled"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -2935,6 +3083,17 @@ Module eof.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "revm_bytecode::eof::verification::CodeType";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
@@ -4059,6 +4218,8 @@ Module eof.
             (let err := M.alloc (| err |) in
             Value.StructTuple
               "revm_bytecode::eof::verification::EofError::Decode"
+              []
+              []
               [ M.read (| err |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4087,6 +4248,8 @@ Module eof.
             (let err := M.alloc (| err |) in
             Value.StructTuple
               "revm_bytecode::eof::verification::EofError::Validation"
+              []
+              []
               [ M.read (| err |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5477,6 +5640,8 @@ Module eof.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_bytecode::eof::verification::AccessTracker"
+              []
+              []
               [
                 ("this_container_code_type",
                   M.call_closure (|
@@ -6110,6 +6275,8 @@ Module eof.
                 M.alloc (|
                   Value.StructRecord
                     "revm_bytecode::eof::verification::AccessTracker"
+                    []
+                    []
                     [
                       ("this_container_code_type", M.read (| this_container_code_type |));
                       ("codes",
@@ -6161,7 +6328,11 @@ Module eof.
                             ]
                           |),
                           [
-                            Value.StructTuple "core::option::Option::None" [];
+                            Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
+                              [];
                             M.read (| subcontainers_size |)
                           ]
                         |))
@@ -6556,9 +6727,17 @@ Module eof.
                                                   M.return_ (|
                                                     Value.StructTuple
                                                       "core::result::Result::Err"
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "revm_bytecode::eof::verification::EofValidationError"
+                                                      ]
                                                       [
                                                         Value.StructTuple
                                                           "revm_bytecode::eof::verification::EofValidationError::SubContainerCalledInTwoModes"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                   |)
@@ -6569,7 +6748,15 @@ Module eof.
                                       ]
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                    Value.StructTuple
+                                      "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path
+                                          "revm_bytecode::eof::verification::EofValidationError"
+                                      ]
+                                      [ Value.Tuple [] ]
                                   |)))
                             ]
                           |)))
@@ -7890,9 +8077,17 @@ Module eof.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "revm_bytecode::eof::verification::EofValidationError"
+                                                          ]
                                                           [
                                                             Value.StructTuple
                                                               "revm_bytecode::eof::verification::EofValidationError::OpcodeDisabled"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                       |)
@@ -8080,9 +8275,17 @@ Module eof.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "revm_bytecode::eof::verification::EofValidationError"
+                                                          ]
                                                           [
                                                             Value.StructTuple
                                                               "revm_bytecode::eof::verification::EofValidationError::InstructionNotForwardAccessed"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                       |)
@@ -8230,9 +8433,17 @@ Module eof.
                                                                 M.return_ (|
                                                                   Value.StructTuple
                                                                     "core::result::Result::Err"
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "revm_bytecode::eof::verification::EofValidationError"
+                                                                    ]
                                                                     [
                                                                       Value.StructTuple
                                                                         "revm_bytecode::eof::verification::EofValidationError::MissingImmediateBytes"
+                                                                        []
+                                                                        []
                                                                         []
                                                                     ]
                                                                 |)
@@ -8268,6 +8479,8 @@ Module eof.
                                                         [
                                                           Value.StructRecord
                                                             "core::ops::range::Range"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [
                                                               ("start",
                                                                 Value.Integer IntegerKind.Usize 1);
@@ -8711,9 +8924,17 @@ Module eof.
                                                       M.return_ (|
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "revm_bytecode::eof::verification::EofValidationError"
+                                                          ]
                                                           [
                                                             Value.StructTuple
                                                               "revm_bytecode::eof::verification::EofValidationError::StackUnderflow"
+                                                              []
+                                                              []
                                                               []
                                                           ]
                                                       |)
@@ -8905,9 +9126,17 @@ Module eof.
                                                                                 M.return_ (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Err"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "revm_bytecode::eof::verification::EofValidationError"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "revm_bytecode::eof::verification::EofValidationError::JumpUnderflow"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -8989,9 +9218,17 @@ Module eof.
                                                                                 M.return_ (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Err"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "revm_bytecode::eof::verification::EofValidationError"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "revm_bytecode::eof::verification::EofValidationError::JumpOverflow"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -9107,9 +9344,17 @@ Module eof.
                                                                                 M.return_ (|
                                                                                   Value.StructTuple
                                                                                     "core::result::Result::Err"
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "revm_bytecode::eof::verification::EofValidationError"
+                                                                                    ]
                                                                                     [
                                                                                       Value.StructTuple
                                                                                         "revm_bytecode::eof::verification::EofValidationError::BackwardJumpToImmediateBytes"
+                                                                                        []
+                                                                                        []
                                                                                         []
                                                                                     ]
                                                                                 |)
@@ -9223,9 +9468,18 @@ Module eof.
                                                                                         M.return_ (|
                                                                                           Value.StructTuple
                                                                                             "core::result::Result::Err"
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [];
+                                                                                              Ty.path
+                                                                                                "revm_bytecode::eof::verification::EofValidationError"
+                                                                                            ]
                                                                                             [
                                                                                               Value.StructTuple
                                                                                                 "revm_bytecode::eof::verification::EofValidationError::BackwardJumpBiggestNumMismatch"
+                                                                                                []
+                                                                                                []
                                                                                                 []
                                                                                             ]
                                                                                         |)
@@ -9286,9 +9540,18 @@ Module eof.
                                                                                       M.return_ (|
                                                                                         Value.StructTuple
                                                                                           "core::result::Result::Err"
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "revm_bytecode::eof::verification::EofValidationError"
+                                                                                          ]
                                                                                           [
                                                                                             Value.StructTuple
                                                                                               "revm_bytecode::eof::verification::EofValidationError::BackwardJumpSmallestNumMismatch"
+                                                                                              []
+                                                                                              []
                                                                                               []
                                                                                           ]
                                                                                       |)
@@ -9505,9 +9768,16 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::NonReturningSectionIsReturning"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -9535,9 +9805,16 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::LastInstructionNotTerminating"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -9714,9 +9991,16 @@ Module eof.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_bytecode::eof::verification::EofValidationError::MaxStackMismatch"
+                                        []
+                                        []
                                         []
                                     ]
                                 |)
@@ -9726,7 +10010,13 @@ Module eof.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "revm_bytecode::eof::verification::EofValidationError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9969,9 +10259,17 @@ Module eof.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.tuple [];
+                                          Ty.path
+                                            "revm_bytecode::eof::verification::EofValidationError"
+                                        ]
                                         [
                                           Value.StructTuple
                                             "revm_bytecode::eof::verification::EofValidationError::JumpToImmediateBytes"
+                                            []
+                                            []
                                             []
                                         ]
                                     |)
@@ -9992,7 +10290,16 @@ Module eof.
                           Value.Bool true
                         |)
                       |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.path "revm_bytecode::eof::verification::EofValidationError"
+                        ]
+                        [ Value.Tuple [] ]
+                    |)
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -10024,6 +10331,8 @@ Module eof.
             ltac:(M.monadic
               (Value.StructRecord
                 "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo"
+                []
+                []
                 [
                   ("is_immediate", Value.Bool false);
                   ("is_jumpdest", Value.Bool false);

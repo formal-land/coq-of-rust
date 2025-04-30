@@ -268,7 +268,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |)
                       ]
                     |);
-                    M.constructor_as_closure "constructor_as_function::Constructor"
+                    M.constructor_as_closure "constructor_as_function::Constructor" [] []
                   ]
                 |)
               ]

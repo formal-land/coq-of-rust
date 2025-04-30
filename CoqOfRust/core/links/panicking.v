@@ -37,9 +37,9 @@ Module AssertKind.
     Φ := Ty.path "core::panicking::AssertKind";
     φ x :=
       match x with
-      | Eq => Value.StructTuple "core::panicking::AssertKind::Eq" []
-      | Ne => Value.StructTuple "core::panicking::AssertKind::Ne" []
-      | Match => Value.StructTuple "core::panicking::AssertKind::Match" []
+      | Eq => Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
+      | Ne => Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []
+      | Match => Value.StructTuple "core::panicking::AssertKind::Match" [] [] []
       end;
   }.
 
@@ -48,32 +48,32 @@ Module AssertKind.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with_Eq :
-    Value.StructTuple "core::panicking::AssertKind::Eq" [] = φ Eq.
+    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] = φ Eq.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Eq : of_value.
 
   Lemma of_value_with_Ne :
-    Value.StructTuple "core::panicking::AssertKind::Ne" [] = φ Ne.
+    Value.StructTuple "core::panicking::AssertKind::Ne" [] [] [] = φ Ne.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Ne : of_value.
 
   Lemma of_value_with_Match :
-    Value.StructTuple "core::panicking::AssertKind::Match" [] = φ Match.
+    Value.StructTuple "core::panicking::AssertKind::Match" [] [] [] = φ Match.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with_Match : of_value.
 
   Definition of_value_Eq :
-    OfValue.t (Value.StructTuple "core::panicking::AssertKind::Eq" []).
+    OfValue.t (Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []).
   Proof. econstructor; apply of_value_with_Eq. Defined.
   Smpl Add apply of_value_Eq : of_value.
 
   Definition of_value_Ne :
-    OfValue.t (Value.StructTuple "core::panicking::AssertKind::Ne" []).
+    OfValue.t (Value.StructTuple "core::panicking::AssertKind::Ne" [] [] []).
   Proof. econstructor; apply of_value_with_Ne. Defined.
   Smpl Add apply of_value_Ne : of_value.
 
   Definition of_value_Match :
-    OfValue.t (Value.StructTuple "core::panicking::AssertKind::Match" []).
+    OfValue.t (Value.StructTuple "core::panicking::AssertKind::Match" [] [] []).
   Proof. econstructor; apply of_value_with_Match. Defined.
   Smpl Add apply of_value_Match : of_value.
 End AssertKind.

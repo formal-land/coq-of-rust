@@ -162,6 +162,19 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "std::io::Lines")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "std::io::buffered::bufreader::BufReader")
+                        []
+                        [ Ty.path "std::fs::File" ]
+                    ];
+                  Ty.path "std::io::error::Error"
+                ]
                 [
                   M.call_closure (|
                     Ty.apply

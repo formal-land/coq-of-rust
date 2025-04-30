@@ -146,6 +146,8 @@ Module absint.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_bytecode_verifier::absint::BlockInvariant"
+            []
+            [ State ]
             [
               ("pre",
                 M.call_closure (|
@@ -309,7 +311,11 @@ Module absint.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
-                              Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
+                              Value.StructTuple
+                                "move_bytecode_verifier_meter::Scope::Function"
+                                []
+                                []
+                                [];
                               M.read (|
                                 get_constant (|
                                   "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST",
@@ -503,7 +509,11 @@ Module absint.
                       []
                       [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ] ] :=
                   M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| entry_block_id |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "u16" ]
+                      [ M.read (| entry_block_id |) ]
                   |) in
                 let~ _ :
                     Ty.apply
@@ -573,6 +583,15 @@ Module absint.
                         M.read (| entry_block_id |);
                         Value.StructRecord
                           "move_bytecode_verifier::absint::BlockInvariant"
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "move_bytecode_verifier::absint::TransferFunctions"
+                              []
+                              []
+                              Self
+                              "State"
+                          ]
                           [ ("pre", M.read (| initial_state |)) ]
                       ]
                     |)
@@ -1260,6 +1279,8 @@ Module absint.
                                                                       |);
                                                                       Value.StructTuple
                                                                         "move_bytecode_verifier_meter::Scope::Function"
+                                                                        []
+                                                                        []
                                                                         [];
                                                                       M.read (|
                                                                         get_constant (|
@@ -1842,6 +1863,8 @@ Module absint.
                                                                                                     |);
                                                                                                     Value.StructTuple
                                                                                                       "move_bytecode_verifier_meter::Scope::Function"
+                                                                                                      []
+                                                                                                      []
                                                                                                       [];
                                                                                                     M.read (|
                                                                                                       get_constant (|
@@ -1955,6 +1978,11 @@ Module absint.
                                                                                             next_block_candidate,
                                                                                             Value.StructTuple
                                                                                               "core::option::Option::Some"
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u16"
+                                                                                              ]
                                                                                               [
                                                                                                 M.read (|
                                                                                                   M.deref (|
@@ -2070,6 +2098,15 @@ Module absint.
                                                                         |);
                                                                         Value.StructRecord
                                                                           "move_bytecode_verifier::absint::BlockInvariant"
+                                                                          []
+                                                                          [
+                                                                            Ty.associated_in_trait
+                                                                              "move_bytecode_verifier::absint::TransferFunctions"
+                                                                              []
+                                                                              []
+                                                                              Self
+                                                                              "State"
+                                                                          ]
                                                                           [
                                                                             ("pre",
                                                                               M.call_closure (|
@@ -2134,7 +2171,13 @@ Module absint.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2221,7 +2264,11 @@ Module absint.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
-                              Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
+                              Value.StructTuple
+                                "move_bytecode_verifier_meter::Scope::Function"
+                                []
+                                []
+                                [];
                               M.read (|
                                 get_constant (|
                                   "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST",
@@ -2777,7 +2824,19 @@ Module absint.
                       ]
                     |)) in
                 M.alloc (|
-                  Value.StructTuple "core::result::Result::Ok" [ M.read (| state_acc |) ]
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "move_bytecode_verifier::absint::TransferFunctions"
+                        []
+                        []
+                        Self
+                        "State";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ]
+                    [ M.read (| state_acc |) ]
                 |)
               |)))
           |)))
@@ -2822,8 +2881,15 @@ Module absint.
           let function_handle := M.alloc (| function_handle |) in
           Value.StructRecord
             "move_bytecode_verifier::absint::FunctionContext"
+            []
+            []
             [
-              ("index", Value.StructTuple "core::option::Option::Some" [ M.read (| index |) ]);
+              ("index",
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  []
+                  [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
+                  [ M.read (| index |) ]);
               ("code", M.read (| code |));
               ("parameters",
                 M.borrow (|

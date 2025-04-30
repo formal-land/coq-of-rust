@@ -500,6 +500,8 @@ Module collections.
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
                                                                         []
+                                                                        []
+                                                                        []
                                                                     |) in
                                                                   M.alloc (|
                                                                     M.call_closure (|
@@ -542,6 +544,11 @@ Module collections.
                                                                         |);
                                                                         Value.StructTuple
                                                                           "core::option::Option::Some"
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments"
+                                                                          ]
                                                                           [
                                                                             M.call_closure (|
                                                                               Ty.path
@@ -806,6 +813,8 @@ Module collections.
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
                                                                         []
+                                                                        []
+                                                                        []
                                                                     |) in
                                                                   M.alloc (|
                                                                     M.call_closure (|
@@ -848,6 +857,11 @@ Module collections.
                                                                         |);
                                                                         Value.StructTuple
                                                                           "core::option::Option::Some"
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments"
+                                                                          ]
                                                                           [
                                                                             M.call_closure (|
                                                                               Ty.path

@@ -13,7 +13,7 @@ Module TypesSection.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_bytecode::eof::types_section::TypesSection";
     φ '(Build_t inputs outputs max_stack_size) :=
-      Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [
+      Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [] [] [
         ("inputs", φ inputs);
         ("outputs", φ outputs);
         ("max_stack_size", φ max_stack_size)
@@ -28,7 +28,7 @@ Module TypesSection.
     inputs' = φ inputs ->
     outputs' = φ outputs ->
     max_stack_size' = φ max_stack_size ->
-    Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [
+    Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [] [] [
       ("inputs", inputs');
       ("outputs", outputs');
       ("max_stack_size", max_stack_size')
@@ -43,7 +43,7 @@ Module TypesSection.
     inputs' = φ inputs ->
     outputs' = φ outputs ->
     max_stack_size' = φ max_stack_size ->
-    OfValue.t (Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [
+    OfValue.t (Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [] [] [
       ("inputs", inputs');
       ("outputs", outputs');
       ("max_stack_size", max_stack_size')

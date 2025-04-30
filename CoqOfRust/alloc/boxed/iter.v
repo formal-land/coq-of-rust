@@ -237,7 +237,11 @@ Module boxed.
               |),
               [
                 M.read (| self |);
-                Value.StructTuple "core::option::Option::None" [];
+                Value.StructTuple
+                  "core::option::Option::None"
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ]
+                  [];
                 M.get_associated_function (| Self, "some.last", [], [] |)
               ]
             |)))

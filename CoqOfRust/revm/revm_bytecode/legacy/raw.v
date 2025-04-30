@@ -22,6 +22,8 @@ Module legacy.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "revm_bytecode::legacy::raw::LegacyRawBytecode"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -725,6 +727,8 @@ Module legacy.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "revm_bytecode::legacy::raw::LegacyRawBytecode"
+              []
+              []
               [ M.read (| bytes |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -755,6 +759,8 @@ Module legacy.
             (let bytes := M.alloc (| bytes |) in
             Value.StructTuple
               "revm_bytecode::legacy::raw::LegacyRawBytecode"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -885,6 +891,8 @@ Module legacy.
             M.alloc (|
               Value.StructTuple
                 "revm_bytecode::legacy::jump_map::JumpTable"
+                []
+                []
                 [
                   M.call_closure (|
                     Ty.apply

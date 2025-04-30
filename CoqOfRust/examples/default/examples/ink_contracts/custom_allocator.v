@@ -33,6 +33,8 @@ Module Impl_custom_allocator_CustomAllocator.
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord
           "custom_allocator::CustomAllocator"
+          []
+          []
           [
             ("value",
               M.call_closure (|

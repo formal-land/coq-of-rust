@@ -180,13 +180,25 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| s |) ] |)));
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ]
+                        [ M.read (| s |) ]
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ]
+                        [ M.read (| e |) ]
+                    |)))
               ]
             |)
           |)))
@@ -459,13 +471,25 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+                    [ Value.Tuple [] ]
+                |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Err"
+                    []
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ]
+                    [ M.read (| e |) ]
+                |)))
           ]
         |)
       |)))

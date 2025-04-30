@@ -73,7 +73,7 @@ Module errors.
                         "move_binary_format::errors::Location::Undefined"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_binary_format::errors::Location::Undefined" []
+                      Value.StructTuple "move_binary_format::errors::Location::Undefined" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -88,6 +88,8 @@ Module errors.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::errors::Location::Module"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::language_storage::ModuleId",
@@ -357,7 +359,7 @@ Module errors.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
                       ]
                     |)));
                 fun γ =>
@@ -665,6 +667,8 @@ Module errors.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::errors::ExecutionState"
+            []
+            []
             [
               ("stack_trace",
                 M.call_closure (|
@@ -1083,6 +1087,8 @@ Module errors.
           (let stack_trace := M.alloc (| stack_trace |) in
           Value.StructRecord
             "move_binary_format::errors::ExecutionState"
+            []
+            []
             [ ("stack_trace", M.read (| stack_trace |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1148,6 +1154,8 @@ Module errors.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_binary_format::errors::VMError"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -1488,6 +1496,8 @@ Module errors.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::errors::VMError_"
+            []
+            []
             [
               ("major_status",
                 M.call_closure (|
@@ -3356,7 +3366,11 @@ Module errors.
                     "move_binary_format::errors::VMError_",
                     "exec_state"
                   |),
-                  Value.StructTuple "core::option::Option::None" []
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "move_binary_format::errors::ExecutionState" ]
+                    []
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -3772,6 +3786,8 @@ Module errors.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::errors::PartialVMError"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -3796,6 +3812,8 @@ Module errors.
                             [
                               Value.StructRecord
                                 "move_binary_format::errors::PartialVMError_"
+                                []
+                                []
                                 [
                                   ("major_status", M.read (| major_status |));
                                   ("sub_status", M.read (| sub_status |));
@@ -4318,6 +4336,8 @@ Module errors.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_binary_format::errors::PartialVMError"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -4421,6 +4441,8 @@ Module errors.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_binary_format::errors::PartialVMError_"
+            []
+            []
             [
               ("major_status",
                 M.call_closure (|
@@ -4881,6 +4903,8 @@ Module errors.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::errors::VMError"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -4905,6 +4929,8 @@ Module errors.
                             [
                               Value.StructRecord
                                 "move_binary_format::errors::VMError_"
+                                []
+                                []
                                 [
                                   ("major_status", M.read (| major_status |));
                                   ("sub_status", M.read (| sub_status |));
@@ -4947,6 +4973,8 @@ Module errors.
           (let major_status := M.alloc (| major_status |) in
           Value.StructTuple
             "move_binary_format::errors::PartialVMError"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -4971,11 +4999,24 @@ Module errors.
                 [
                   Value.StructRecord
                     "move_binary_format::errors::PartialVMError_"
+                    []
+                    []
                     [
                       ("major_status", M.read (| major_status |));
-                      ("sub_status", Value.StructTuple "core::option::Option::None" []);
-                      ("message", Value.StructTuple "core::option::Option::None" []);
-                      ("exec_state", Value.StructTuple "core::option::Option::None" []);
+                      ("sub_status",
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []);
+                      ("message",
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "alloc::string::String" ]
+                          []);
+                      ("exec_state",
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "move_binary_format::errors::ExecutionState" ]
+                          []);
                       ("indices",
                         M.call_closure (|
                           Ty.apply
@@ -5180,7 +5221,11 @@ Module errors.
                     "move_binary_format::errors::PartialVMError_",
                     "sub_status"
                   |),
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| sub_status |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "u64" ]
+                    [ M.read (| sub_status |) ]
                 |)
               |) in
             self
@@ -5296,7 +5341,11 @@ Module errors.
                     "move_binary_format::errors::PartialVMError_",
                     "message"
                   |),
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| message |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "alloc::string::String" ]
+                    [ M.read (| message |) ]
                 |)
               |) in
             self
@@ -5414,7 +5463,11 @@ Module errors.
                     "move_binary_format::errors::PartialVMError_",
                     "exec_state"
                   |),
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| exec_state |) ]
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "move_binary_format::errors::ExecutionState" ]
+                    [ M.read (| exec_state |) ]
                 |)
               |) in
             self
@@ -5906,6 +5959,8 @@ Module errors.
                           |),
                           Value.StructTuple
                             "core::option::Option::Some"
+                            []
+                            [ Ty.path "alloc::string::String" ]
                             [ M.read (| additional_message |) ]
                         |)
                       |)))
@@ -6244,13 +6299,19 @@ Module errors.
                                                     Value.UnicodeChar 32;
                                                     Value.StructTuple
                                                       "core::fmt::rt::Alignment::Unknown"
+                                                      []
+                                                      []
                                                       [];
                                                     Value.Integer IntegerKind.U32 4;
                                                     Value.StructTuple
                                                       "core::fmt::rt::Count::Implied"
+                                                      []
+                                                      []
                                                       [];
                                                     Value.StructTuple
                                                       "core::fmt::rt::Count::Implied"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -7404,13 +7465,19 @@ Module errors.
                                                     Value.UnicodeChar 32;
                                                     Value.StructTuple
                                                       "core::fmt::rt::Alignment::Unknown"
+                                                      []
+                                                      []
                                                       [];
                                                     Value.Integer IntegerKind.U32 4;
                                                     Value.StructTuple
                                                       "core::fmt::rt::Count::Implied"
+                                                      []
+                                                      []
                                                       [];
                                                     Value.StructTuple
                                                       "core::fmt::rt::Count::Implied"
+                                                      []
+                                                      []
                                                       []
                                                   ]
                                                 |)
@@ -9421,7 +9488,11 @@ Module errors.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructTuple "core::option::Option::None" []))
+          Value.StructTuple
+            "core::option::Option::None"
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+            []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

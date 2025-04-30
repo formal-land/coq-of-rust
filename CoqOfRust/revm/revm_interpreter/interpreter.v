@@ -358,6 +358,8 @@ Module interpreter.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_interpreter::interpreter::Interpreter"
+            []
+            [ WIRE ]
             [
               ("bytecode",
                 M.call_closure (|
@@ -772,6 +774,8 @@ Module interpreter.
               M.alloc (|
                 Value.StructRecord
                   "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
+                  []
+                  []
                   [
                     ("spec_id", M.read (| spec_id |));
                     ("is_static", M.read (| is_static |));
@@ -792,6 +796,9 @@ Module interpreter.
             M.alloc (|
               Value.StructRecord
                 "revm_interpreter::interpreter::Interpreter"
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::interpreter::EthInterpreter") [] [ EXT; MG ]
+                ]
                 [
                   ("bytecode",
                     M.call_closure (|
@@ -1020,6 +1027,8 @@ Module interpreter.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_interpreter::interpreter::EthInstructionProvider"
+            []
+            [ WIRE; HOST ]
             [
               ("instruction_table",
                 M.call_closure (|
@@ -1131,6 +1140,8 @@ Module interpreter.
           (let _context := M.alloc (| _context |) in
           Value.StructRecord
             "revm_interpreter::interpreter::EthInstructionProvider"
+            []
+            [ WIRE; HOST ]
             [
               ("instruction_table",
                 M.call_closure (|
@@ -1630,9 +1641,13 @@ Module interpreter.
                         |);
                         Value.StructTuple
                           "revm_interpreter::interpreter_action::InterpreterAction::None"
+                          []
+                          []
                           [];
                         Value.StructTuple
                           "revm_interpreter::instruction_result::InstructionResult::Continue"
+                          []
+                          []
                           []
                       ]
                     |)
@@ -1806,10 +1821,14 @@ Module interpreter.
                 M.alloc (|
                   Value.StructRecord
                     "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                    []
+                    []
                     [
                       ("result",
                         Value.StructRecord
                           "revm_interpreter::interpreter::InterpreterResult"
+                          []
+                          []
                           [
                             ("result",
                               M.call_closure (|
@@ -1924,6 +1943,8 @@ Module interpreter.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "revm_interpreter::interpreter::InterpreterResult"
+            []
+            []
             [
               ("result",
                 M.call_closure (|
@@ -2313,6 +2334,8 @@ Module interpreter.
           let gas := M.alloc (| gas |) in
           Value.StructRecord
             "revm_interpreter::interpreter::InterpreterResult"
+            []
+            []
             [
               ("result", M.read (| result |));
               ("output", M.read (| output |));

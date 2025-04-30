@@ -489,6 +489,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicBool"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -1228,7 +1230,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::SeqCst"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::SeqCst"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1240,7 +1246,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::SeqCst"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::SeqCst"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1252,7 +1262,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::AcqRel"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::AcqRel"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1315,7 +1329,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::Acquire"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::AcqRel"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1327,7 +1345,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::Acquire"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::Acquire"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1339,7 +1361,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::Acquire"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::Acquire"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1356,7 +1382,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::Relaxed"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::Release"
+                                      []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1419,7 +1449,11 @@ Module sync.
                                       "core::sync::atomic::Ordering::Relaxed"
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                                    Value.StructTuple
+                                      "core::sync::atomic::Ordering::Relaxed"
+                                      []
+                                      []
+                                      []
                                   |)))
                             ]
                           |)
@@ -1515,12 +1549,20 @@ Module sync.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ M.read (| old |) ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ]
+                                  [ M.read (| old |) ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "core::result::Result::Err" [ M.read (| old |) ]
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ]
+                                  [ M.read (| old |) ]
                               |)))
                         ]
                       |)));
@@ -1587,6 +1629,8 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -1607,6 +1651,8 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -1768,6 +1814,8 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [ Ty.path "bool"; Ty.path "bool" ]
                               [
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -1788,6 +1836,8 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
+                              []
+                              [ Ty.path "bool"; Ty.path "bool" ]
                               [
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -2287,7 +2337,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "bool"; Ty.path "bool" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2316,6 +2372,8 @@ Module sync.
             (let p := M.alloc (| p |) in
             Value.StructRecord
               "core::sync::atomic::AtomicPtr"
+              []
+              [ T ]
               [
                 ("p",
                   M.call_closure (|
@@ -3285,7 +3343,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3976,7 +4040,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -4025,6 +4089,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicI8"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -5163,7 +5229,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "i8"; Ty.path "i8" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5421,7 +5493,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -5470,6 +5542,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicU8"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -6608,7 +6682,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "u8"; Ty.path "u8" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6876,7 +6956,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -6925,6 +7005,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicI16"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -8070,7 +8152,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "i16"; Ty.path "i16" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8338,7 +8426,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -8387,6 +8475,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicU16"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -9532,7 +9622,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "u16"; Ty.path "u16" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -9800,7 +9896,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -9849,6 +9945,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicI32"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -10994,7 +11092,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "i32"; Ty.path "i32" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11262,7 +11366,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -11311,6 +11415,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicU32"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -12456,7 +12562,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "u32"; Ty.path "u32" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12724,7 +12836,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -12773,6 +12885,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicI64"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -13918,7 +14032,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "i64"; Ty.path "i64" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14186,7 +14306,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -14235,6 +14355,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicU64"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -15380,7 +15502,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "u64"; Ty.path "u64" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -15648,7 +15776,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -15697,6 +15825,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicIsize"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -16850,7 +16980,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "isize"; Ty.path "isize" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -17118,7 +17254,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -17167,6 +17303,8 @@ Module sync.
             (let v := M.alloc (| v |) in
             Value.StructRecord
               "core::sync::atomic::AtomicUsize"
+              []
+              []
               [
                 ("v",
                   M.call_closure (|
@@ -18320,7 +18458,13 @@ Module sync.
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [ Ty.path "usize"; Ty.path "usize" ]
+                      [ M.read (| prev |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -18532,23 +18676,33 @@ Module sync.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
-                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
-                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
-                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
-                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)));
+                    M.alloc (|
+                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
-                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)))
+                    M.alloc (|
+                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
+                    |)))
               ]
             |)
           |)))
@@ -19553,12 +19707,20 @@ Module sync.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [ T; T ]
+                                [ M.read (| val |) ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "core::result::Result::Err" [ M.read (| val |) ]
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ T; T ]
+                                [ M.read (| val |) ]
                             |)))
                       ]
                     |)))
@@ -20019,12 +20181,20 @@ Module sync.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [ T; T ]
+                                [ M.read (| val |) ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "core::result::Result::Err" [ M.read (| val |) ]
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ T; T ]
+                                [ M.read (| val |) ]
                             |)))
                       ]
                     |)))
@@ -21016,7 +21186,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -21085,7 +21255,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)
@@ -21155,7 +21325,7 @@ Module sync.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                            Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                           ]
                         |)
                       |)

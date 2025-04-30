@@ -36,6 +36,8 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::call_inputs::CallInputs"
+              []
+              []
               [
                 ("input",
                   M.call_closure (|
@@ -2298,6 +2300,8 @@ Module interpreter_action.
                       M.alloc (|
                         Value.StructTuple
                           "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -2340,6 +2344,8 @@ Module interpreter_action.
                       M.alloc (|
                         Value.StructTuple
                           "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -2889,6 +2895,8 @@ Module interpreter_action.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
+              []
+              []
               [
                 M.read (|
                   get_associated_constant (|
@@ -3039,7 +3047,19 @@ Module interpreter_action.
                         |) in
                       let transfer := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| transfer |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                          [ M.read (| transfer |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3049,7 +3069,21 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent",
                           0
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -3137,7 +3171,21 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer",
                           0
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3148,7 +3196,19 @@ Module interpreter_action.
                         |) in
                       let apparent := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| apparent |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                          [ M.read (| apparent |) ]
                       |)))
                 ]
               |)

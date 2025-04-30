@@ -118,6 +118,8 @@ Module opcode.
         ltac:(M.monadic
           (Value.StructTuple
             "revm_bytecode::opcode::OpCode"
+            []
+            []
             [
               M.call_closure (|
                 Ty.path "u8",
@@ -583,13 +585,19 @@ Module opcode.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 8;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Is"
+                                                  []
+                                                  []
                                                   [ Value.Integer IntegerKind.Usize 2 ]
                                               ]
                                             |)
@@ -682,13 +690,26 @@ Module opcode.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ Value.StructTuple "revm_bytecode::opcode::OpCode" [ M.read (| opcode |) ]
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCode" ]
+                        [
+                          Value.StructTuple
+                            "revm_bytecode::opcode::OpCode"
+                            []
+                            []
+                            [ M.read (| opcode |) ]
                         ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCode" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -968,7 +989,7 @@ Module opcode.
       | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
-          Value.StructTuple "revm_bytecode::opcode::OpCode" [ M.read (| opcode |) ]))
+          Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [ M.read (| opcode |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1272,6 +1293,8 @@ Module opcode.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
                         [
                           M.call_closure (|
                             Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -1286,7 +1309,14 @@ Module opcode.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -1515,7 +1545,7 @@ Module opcode.
     Definition value_STOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 0 ]
+          Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [ Value.Integer IntegerKind.U8 0 ]
         |))).
     
     Global Instance AssociatedConstant_value_STOP : M.IsAssociatedFunction.C Self "STOP" value_STOP.
@@ -1527,7 +1557,7 @@ Module opcode.
     Definition value_ADD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 1 ]
+          Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [ Value.Integer IntegerKind.U8 1 ]
         |))).
     
     Global Instance AssociatedConstant_value_ADD : M.IsAssociatedFunction.C Self "ADD" value_ADD.
@@ -1539,7 +1569,11 @@ Module opcode.
     Definition value_BALANCE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 49 ]
+          Value.StructTuple
+            "revm_bytecode::opcode::OpCode"
+            []
+            []
+            [ Value.Integer IntegerKind.U8 49 ]
         |))).
     
     Global Instance AssociatedConstant_value_BALANCE :
@@ -3508,6 +3542,8 @@ Module opcode.
             M.alloc (|
               Value.StructRecord
                 "revm_bytecode::opcode::OpCodeInfo"
+                []
+                []
                 [
                   ("name_ptr",
                     M.call_closure (|
@@ -3995,7 +4031,11 @@ Module opcode.
             ] :=
         M.alloc (|
           repeat (|
-            Value.StructTuple "core::option::Option::None" [],
+            Value.StructTuple
+              "core::option::Option::None"
+              []
+              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+              [],
             Value.Integer IntegerKind.Usize 256
           |)
         |) in
@@ -4101,7 +4141,11 @@ Module opcode.
         M.alloc (|
           M.write (|
             M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
-            Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+              [ M.read (| info |) ]
           |)
         |) in
       let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
@@ -4196,7 +4240,11 @@ Module opcode.
         M.alloc (|
           M.write (|
             M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
-            Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+              [ M.read (| info |) ]
           |)
         |) in
       let~ val : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
@@ -4291,7 +4339,11 @@ Module opcode.
         M.alloc (|
           M.write (|
             M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
-            Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
+            Value.StructTuple
+              "core::option::Option::Some"
+              []
+              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+              [ M.read (| info |) ]
           |)
         |) in
       M.match_operator (|
@@ -4324,6 +4376,8 @@ Module opcode.
         M.alloc (|
           Value.StructRecord
             "phf::map::Map"
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "revm_bytecode::opcode::OpCode" ]
             [
               ("key", Value.Integer IntegerKind.U64 15467950696543387533);
               ("disps",

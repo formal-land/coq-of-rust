@@ -18,8 +18,8 @@ Module TxKind.
     Φ := Ty.path "alloy_primitives::common::TxKind";
     φ x :=
       match x with
-      | Create => Value.StructTuple "alloy_primitives::common::TxKind::Create" []
-      | Call address => Value.StructTuple "alloy_primitives::common::TxKind::Call" [φ address]
+      | Create => Value.StructTuple "alloy_primitives::common::TxKind::Create" [] [] []
+      | Call address => Value.StructTuple "alloy_primitives::common::TxKind::Call" [] [] [φ address]
       end;
   }.
 

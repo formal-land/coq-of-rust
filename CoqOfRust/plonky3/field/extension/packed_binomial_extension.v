@@ -50,6 +50,8 @@ Module extension.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -687,6 +689,8 @@ Module extension.
                                         M.alloc (|
                                           Value.StructRecord
                                             "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith"
+                                            [ D ]
+                                            [ F; PF ]
                                             [
                                               ("values",
                                                 Value.Tuple
@@ -706,7 +710,17 @@ Module extension.
                                                     |)
                                                   ]);
                                               ("phantom",
-                                                Value.StructTuple "core::marker::PhantomData" [])
+                                                Value.StructTuple
+                                                  "core::marker::PhantomData"
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                                      [ D ]
+                                                      [ F; PF ]
+                                                  ]
+                                                  [])
                                             ]
                                         |)
                                       |)
@@ -911,9 +925,27 @@ Module extension.
                   |);
                   Value.StructRecord
                     "p3_field::extension::packed_binomial_extension::_'1::deserialize::__Visitor"
+                    [ D ]
+                    [ F; PF ]
                     [
-                      ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                      ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                      ("marker",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path
+                                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                              [ D ]
+                              [ F; PF ]
+                          ]
+                          []);
+                      ("lifetime",
+                        Value.StructTuple
+                          "core::marker::PhantomData"
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                          [])
                     ]
                 ]
               |)))
@@ -1113,6 +1145,8 @@ Module extension.
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [ ("value", M.read (| value |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1151,6 +1185,8 @@ Module extension.
           ltac:(M.monadic
             (Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -1230,6 +1266,8 @@ Module extension.
             (let x := M.alloc (| x |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -1299,6 +1337,8 @@ Module extension.
             (let x := M.alloc (| x |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -1392,6 +1432,8 @@ Module extension.
           (M.alloc (|
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   repeat (|
@@ -1424,6 +1466,8 @@ Module extension.
           (M.alloc (|
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -1459,6 +1503,8 @@ Module extension.
           (M.alloc (|
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -1494,6 +1540,8 @@ Module extension.
           (M.alloc (|
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -2139,6 +2187,8 @@ Module extension.
             (let f := M.alloc (| f |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -2560,7 +2610,11 @@ Module extension.
                                             []
                                             [ Ty.path "core::panicking::AssertKind" ] :=
                                         M.alloc (|
-                                          Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                          Value.StructTuple
+                                            "core::panicking::AssertKind::Eq"
+                                            []
+                                            []
+                                            []
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
@@ -2590,7 +2644,11 @@ Module extension.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructTuple "core::option::Option::None" []
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ Ty.path "core::fmt::Arguments" ]
+                                              []
                                           ]
                                         |)
                                       |)
@@ -3002,6 +3060,8 @@ Module extension.
                                         [
                                           Value.StructRecord
                                             "core::ops::range::Range"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_", M.read (| width |))
@@ -3437,6 +3497,8 @@ Module extension.
                                   M.borrow (| Pointer.Kind.Ref, powers |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("end_", M.read (| width |)) ]
                                 ]
                               |)
@@ -3526,6 +3588,14 @@ Module extension.
               M.alloc (|
                 Value.StructRecord
                   "p3_field::field::Powers"
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
+                  ]
                   [ ("base", M.read (| multiplier |)); ("current", M.read (| current |)) ]
               |)
             |)))
@@ -3589,6 +3659,8 @@ Module extension.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|
@@ -3709,6 +3781,8 @@ Module extension.
               M.alloc (|
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+                  [ D ]
+                  [ F; PF ]
                   [ ("value", M.read (| value |)) ]
               |)
             |)))
@@ -3812,6 +3886,8 @@ Module extension.
               M.alloc (|
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+                  [ D ]
+                  [ F; PF ]
                   [ ("value", M.read (| value |)) ]
               |)
             |)))
@@ -3966,6 +4042,8 @@ Module extension.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", D) ]
                       ]
                     |)
@@ -4135,6 +4213,8 @@ Module extension.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
+                          []
+                          [ Ty.path "usize" ]
                           [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", D) ]
                       ]
                     |)
@@ -4630,6 +4710,8 @@ Module extension.
               M.alloc (|
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+                  [ D ]
+                  [ F; PF ]
                   [ ("value", M.read (| value |)) ]
               |)
             |)))
@@ -4733,6 +4815,8 @@ Module extension.
               M.alloc (|
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+                  [ D ]
+                  [ F; PF ]
                   [ ("value", M.read (| value |)) ]
               |)
             |)))
@@ -4827,6 +4911,8 @@ Module extension.
               M.alloc (|
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+                  [ D ]
+                  [ F; PF ]
                   [ ("value", M.read (| res |)) ]
               |)
             |)))
@@ -5417,6 +5503,8 @@ Module extension.
             let rhs := M.alloc (| rhs |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
+              [ D ]
+              [ F; PF ]
               [
                 ("value",
                   M.call_closure (|

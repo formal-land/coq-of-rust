@@ -178,6 +178,11 @@ Module control_flow.
                                     |);
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::FunctionDefinitionIndex"
+                                      ]
                                       [ M.read (| index |) ];
                                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
                                   ]
@@ -254,6 +259,11 @@ Module control_flow.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "move_bytecode_verifier::absint::FunctionContext";
+                            Ty.path "move_binary_format::errors::PartialVMError"
+                          ]
                           [
                             M.call_closure (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
@@ -327,6 +337,11 @@ Module control_flow.
                                   [
                                     Value.StructTuple
                                       "core::option::Option::Some"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::FunctionDefinitionIndex"
+                                      ]
                                       [ M.read (| index |) ];
                                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
                                   ]
@@ -557,6 +572,11 @@ Module control_flow.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "move_bytecode_verifier::absint::FunctionContext";
+                            Ty.path "move_binary_format::errors::PartialVMError"
+                          ]
                           [ M.read (| function_context |) ]
                       |)))
                 ]
@@ -615,6 +635,8 @@ Module control_flow.
                   M.read (| current_function_opt |);
                   Value.StructTuple
                     "move_binary_format::file_format::FunctionDefinitionIndex"
+                    []
+                    []
                     [ Value.Integer IntegerKind.U16 0 ]
                 ]
               |)
@@ -701,6 +723,8 @@ Module control_flow.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -713,6 +737,8 @@ Module control_flow.
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::EMPTY_CODE_UNIT"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -742,6 +768,8 @@ Module control_flow.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -763,6 +791,8 @@ Module control_flow.
                               [
                                 Value.StructTuple
                                   "move_core_types::vm_status::StatusCode::INVALID_FALL_THROUGH"
+                                  []
+                                  []
                                   []
                               ]
                             |);
@@ -809,7 +839,13 @@ Module control_flow.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))
@@ -942,6 +978,8 @@ Module control_flow.
                       |);
                       Value.StructTuple
                         "move_binary_format::file_format::FunctionDefinitionIndex"
+                        []
+                        []
                         [ Value.Integer IntegerKind.U16 0 ]
                     ]
                   |)
@@ -1022,6 +1060,11 @@ Module control_flow.
                                             (let offset := M.copy (| γ |) in
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ]
                                               [
                                                 M.call_closure (|
                                                   Ty.path
@@ -2080,6 +2123,8 @@ Module control_flow.
                                                                                                       [
                                                                                                         Value.StructTuple
                                                                                                           "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
+                                                                                                          []
+                                                                                                          []
                                                                                                           [];
                                                                                                         M.call_closure (|
                                                                                                           Ty.path
@@ -2405,6 +2450,8 @@ Module control_flow.
                                                                       [
                                                                         Value.StructTuple
                                                                           "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
+                                                                          []
+                                                                          []
                                                                           [];
                                                                         M.call_closure (|
                                                                           Ty.path "u16",
@@ -2444,7 +2491,13 @@ Module control_flow.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

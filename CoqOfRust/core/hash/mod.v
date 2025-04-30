@@ -1083,7 +1083,9 @@ Module hash.
         ltac:(M.monadic
           (Value.StructTuple
             "core::hash::BuildHasherDefault"
-            [ Value.StructTuple "core::marker::PhantomData" [] ]))
+            []
+            [ H ]
+            [ Value.StructTuple "core::marker::PhantomData" [] [ Ty.function [] H ] [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1215,7 +1217,9 @@ Module hash.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::hash::BuildHasherDefault"
-            [ Value.StructTuple "core::marker::PhantomData" [] ]))
+            []
+            [ H ]
+            [ Value.StructTuple "core::marker::PhantomData" [] [ Ty.function [] H ] [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

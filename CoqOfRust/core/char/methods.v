@@ -397,11 +397,15 @@ Module char.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "u32" ]
                           [ M.cast (Ty.path "u32") (M.read (| value |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u32" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -479,7 +483,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -495,7 +500,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -511,7 +517,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -527,7 +534,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -546,6 +554,8 @@ Module char.
                           [
                             Value.StructTuple
                               "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                              []
+                              []
                               []
                           ]
                         |)
@@ -570,7 +580,12 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::QuotationMark" []
+                          [
+                            Value.StructTuple
+                              "core::ascii::ascii_char::AsciiChar::QuotationMark"
+                              []
+                              []
+                              []
                           ]
                         |)
                       |)));
@@ -594,7 +609,13 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" [] ]
+                          [
+                            Value.StructTuple
+                              "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                              []
+                              []
+                              []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -748,7 +769,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -764,7 +786,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -780,7 +803,8 @@ Module char.
                             [],
                             []
                           |),
-                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] [] []
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1462,6 +1486,8 @@ Module char.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::char::ToLowercase"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::char::CaseMappingIter",
@@ -1507,6 +1533,8 @@ Module char.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "core::char::ToUppercase"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "core::char::CaseMappingIter",
@@ -1609,6 +1637,8 @@ Module char.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                           [
                             M.call_closure (|
                               Ty.path "core::ascii::ascii_char::AsciiChar",
@@ -1625,7 +1655,13 @@ Module char.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -2418,6 +2454,8 @@ Module char.
           (M.alloc (|
             Value.StructRecord
               "core::char::methods::EscapeDebugExtArgs"
+              []
+              []
               [
                 ("escape_grapheme_extended", Value.Bool true);
                 ("escape_single_quote", Value.Bool true);

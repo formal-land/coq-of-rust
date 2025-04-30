@@ -195,6 +195,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "structures::Person"
+              []
+              []
               [ ("name", M.read (| name |)); ("age", M.read (| age |)) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -261,6 +263,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "structures::Point"
+              []
+              []
               [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
           |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -483,20 +487,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructRecord
                       "structures::Rectangle"
+                      []
+                      []
                       [
                         ("top_left",
                           Value.StructRecord
                             "structures::Point"
+                            []
+                            []
                             [ ("x", M.read (| left_edge |)); ("y", M.read (| top_edge |)) ]);
                         ("bottom_right", M.read (| bottom_right |))
                       ]
                   |) in
                 let~ _unit : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Unit" ] :=
-                  M.alloc (| Value.StructTuple "structures::Unit" [] |) in
+                  M.alloc (| Value.StructTuple "structures::Unit" [] [] [] |) in
                 let~ pair_ : Ty.apply (Ty.path "*") [] [ Ty.path "structures::Pair" ] :=
                   M.alloc (|
                     Value.StructTuple
                       "structures::Pair"
+                      []
+                      []
                       [ Value.Integer IntegerKind.I32 1; M.read (| UnsupportedLiteral |) ]
                   |) in
                 let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=

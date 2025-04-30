@@ -967,6 +967,8 @@ Module num.
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Nan"
                                       []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -975,6 +977,8 @@ Module num.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Infinite"
+                                      []
+                                      []
                                       []
                                   |)));
                               fun γ =>
@@ -985,6 +989,8 @@ Module num.
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Zero"
                                       []
+                                      []
+                                      []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -993,9 +999,13 @@ Module num.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                      []
+                                      []
                                       [
                                         Value.StructRecord
                                           "core::num::flt2dec::decoder::Decoded"
+                                          []
+                                          []
                                           [
                                             ("mant", M.read (| mant |));
                                             ("minus", Value.Integer IntegerKind.U64 1);
@@ -1075,9 +1085,13 @@ Module num.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                              []
+                                              []
                                               [
                                                 Value.StructRecord
                                                   "core::num::flt2dec::decoder::Decoded"
+                                                  []
+                                                  []
                                                   [
                                                     ("mant",
                                                       M.call_closure (|
@@ -1108,9 +1122,13 @@ Module num.
                                           (M.alloc (|
                                             Value.StructTuple
                                               "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                              []
+                                              []
                                               [
                                                 Value.StructRecord
                                                   "core::num::flt2dec::decoder::Decoded"
+                                                  []
+                                                  []
                                                   [
                                                     ("mant",
                                                       M.call_closure (|

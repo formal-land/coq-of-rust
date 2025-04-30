@@ -226,6 +226,8 @@ Module num.
             ltac:(M.monadic
               (Value.StructRecord
                 "core::num::dec2flt::number::Number"
+                []
+                []
                 [
                   ("exponent",
                     M.call_closure (|
@@ -1016,6 +1018,8 @@ Module num.
                                                           Value.StructTuple
                                                             "core::option::Option::None"
                                                             []
+                                                            [ F ]
+                                                            []
                                                         |)
                                                       |)
                                                     |)
@@ -1121,11 +1125,17 @@ Module num.
                                 ]
                               |) in
                             M.alloc (|
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ F ]
+                                [ M.read (| value |) ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                            (M.alloc (|
+                              Value.StructTuple "core::option::Option::None" [] [ F ] []
+                            |)))
                       ]
                     |)
                   |)))

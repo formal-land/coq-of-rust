@@ -24,6 +24,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "erc721::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -258,6 +260,8 @@ Module Impl_core_default_Default_for_erc721_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "erc721::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -455,6 +459,8 @@ Module Impl_core_default_Default_for_erc721_Erc721.
       ltac:(M.monadic
         (Value.StructRecord
           "erc721::Erc721"
+          []
+          []
           [
             ("token_owner",
               M.call_closure (|
@@ -1172,6 +1178,8 @@ Module Impl_erc721_Erc721.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.path "erc721::AccountId" ]
                         [
                           M.call_closure (|
                             Ty.path "erc721::AccountId",
@@ -1568,7 +1576,9 @@ Module Impl_erc721_Erc721.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
                               |)
                             |)
                           |)
@@ -1594,9 +1604,13 @@ Module Impl_erc721_Erc721.
                       |);
                       Value.StructTuple
                         "erc721::Event::ApprovalForAll"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "erc721::ApprovalForAll"
+                            []
+                            []
                             [
                               ("owner", M.read (| caller |));
                               ("operator", M.read (| to |));
@@ -1686,7 +1700,13 @@ Module Impl_erc721_Erc721.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1819,7 +1839,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1943,6 +1969,8 @@ Module Impl_erc721_Erc721.
                                         M.alloc (|
                                           Value.StructTuple
                                             "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "erc721::AccountId" ]
                                             [ M.read (| caller |) ]
                                         |)
                                       |)
@@ -1994,7 +2022,9 @@ Module Impl_erc721_Erc721.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
                               |)
                             |)
                           |)
@@ -2063,7 +2093,9 @@ Module Impl_erc721_Erc721.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                  [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
                               |)
                             |)
                           |)
@@ -2115,7 +2147,9 @@ Module Impl_erc721_Erc721.
                               M.return_ (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ Value.StructTuple "erc721::Error::CannotInsert" [] ]
+                                  []
+                                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                  [ Value.StructTuple "erc721::Error::CannotInsert" [] [] [] ]
                               |)
                             |)
                           |)
@@ -2174,9 +2208,13 @@ Module Impl_erc721_Erc721.
                       |);
                       Value.StructTuple
                         "erc721::Event::Approval"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "erc721::Approval"
+                            []
+                            []
                             [
                               ("from", M.read (| caller |));
                               ("to", M.read (| M.deref (| M.read (| to |) |) |));
@@ -2186,7 +2224,13 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2322,7 +2366,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2440,7 +2490,15 @@ Module Impl_erc721_Erc721.
                                       M.return_ (|
                                         Value.StructTuple
                                           "core::result::Result::Err"
-                                          [ Value.StructTuple "erc721::Error::TokenNotFound" [] ]
+                                          []
+                                          [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                          [
+                                            Value.StructTuple
+                                              "erc721::Error::TokenNotFound"
+                                              []
+                                              []
+                                              []
+                                          ]
                                       |)
                                     |)
                                   |)
@@ -2579,7 +2637,7 @@ Module Impl_erc721_Erc721.
                                                 end))
                                         ]
                                       |);
-                                      Value.StructTuple "erc721::Error::CannotFetchValue" []
+                                      Value.StructTuple "erc721::Error::CannotFetchValue" [] [] []
                                     ]
                                   |)
                                 ]
@@ -2693,7 +2751,11 @@ Module Impl_erc721_Erc721.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ]
+                          [ Value.Tuple [] ]
                       |)))
                 ]
               |)
@@ -2920,7 +2982,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3065,7 +3133,13 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3243,13 +3317,19 @@ Module Impl_erc721_Erc721.
                       |);
                       Value.StructTuple
                         "erc721::Event::Transfer"
+                        []
+                        []
                         [
                           Value.StructRecord
                             "erc721::Transfer"
+                            []
+                            []
                             [
                               ("from",
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "erc721::AccountId" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "erc721::AccountId",
@@ -3278,6 +3358,8 @@ Module Impl_erc721_Erc721.
                               ("to",
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "erc721::AccountId" ]
                                   [ M.read (| caller |) ]);
                               ("id", M.read (| id |))
                             ]
@@ -3285,7 +3367,13 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

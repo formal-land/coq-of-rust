@@ -414,6 +414,8 @@ Module columns.
                                                   Value.StructTuple
                                                     "core::panicking::AssertKind::Eq"
                                                     []
+                                                    []
+                                                    []
                                                 |) in
                                               M.alloc (|
                                                 M.call_closure (|
@@ -445,6 +447,8 @@ Module columns.
                                                     |);
                                                     Value.StructTuple
                                                       "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
                                                   ]
                                                 |)
@@ -786,6 +790,8 @@ Module columns.
                                                           Value.StructTuple
                                                             "core::panicking::AssertKind::Eq"
                                                             []
+                                                            []
+                                                            []
                                                         |) in
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -821,6 +827,8 @@ Module columns.
                                                             |);
                                                             Value.StructTuple
                                                               "core::option::Option::None"
+                                                              []
+                                                              [ Ty.path "core::fmt::Arguments" ]
                                                               []
                                                           ]
                                                         |)
@@ -984,6 +992,8 @@ Module columns.
                                                       Value.StructTuple
                                                         "core::panicking::AssertKind::Eq"
                                                         []
+                                                        []
+                                                        []
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -1015,6 +1025,8 @@ Module columns.
                                                         |);
                                                         Value.StructTuple
                                                           "core::option::Option::None"
+                                                          []
+                                                          [ Ty.path "core::fmt::Arguments" ]
                                                           []
                                                       ]
                                                     |)
@@ -1372,6 +1384,8 @@ Module columns.
                                                               Value.StructTuple
                                                                 "core::panicking::AssertKind::Eq"
                                                                 []
+                                                                []
+                                                                []
                                                             |) in
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -1407,6 +1421,8 @@ Module columns.
                                                                 |);
                                                                 Value.StructTuple
                                                                   "core::option::Option::None"
+                                                                  []
+                                                                  [ Ty.path "core::fmt::Arguments" ]
                                                                   []
                                                               ]
                                                             |)

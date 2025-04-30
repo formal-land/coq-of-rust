@@ -630,6 +630,8 @@ Module signature.
           ltac:(M.monadic
             (Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
+              []
+              []
               [ Value.Bool false ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -748,6 +750,8 @@ Module signature.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
+              []
+              []
               [
                 UnOp.not (|
                   M.call_closure (|
@@ -798,6 +802,8 @@ Module signature.
             (let value := M.alloc (| value |) in
             Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
+              []
+              []
               [ M.read (| value |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -878,9 +884,16 @@ Module signature.
                                 (M.alloc (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "alloy_primitives::signature::parity::Parity";
+                                      Ty.path "alloy_primitives::signature::error::SignatureError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "alloy_primitives::signature::parity::Parity::Parity"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "bool",
@@ -923,9 +936,16 @@ Module signature.
                                 (M.alloc (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
+                                    []
+                                    [
+                                      Ty.path "alloy_primitives::signature::parity::Parity";
+                                      Ty.path "alloy_primitives::signature::error::SignatureError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "alloy_primitives::signature::parity::Parity::NonEip155"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "bool",
@@ -954,9 +974,16 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path "alloy_primitives::signature::parity::Parity";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ]
                           [
                             Value.StructTuple
                               "alloy_primitives::signature::parity::Parity::Eip155"
+                              []
+                              []
                               [ M.read (| value |) ]
                           ]
                       |)));
@@ -965,9 +992,16 @@ Module signature.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.path "alloy_primitives::signature::parity::Parity";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ]
                           [
                             Value.StructTuple
                               "alloy_primitives::signature::error::SignatureError::InvalidParity"
+                              []
+                              []
                               [ M.read (| value |) ]
                           ]
                       |)))
@@ -1085,6 +1119,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "u64" ]
                           [
                             M.call_closure (|
                               Ty.path "u64",
@@ -1095,7 +1131,9 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1370,6 +1408,8 @@ Module signature.
                                 (M.alloc (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
+                                    []
+                                    [ Ty.path "u8" ]
                                     [
                                       M.call_closure (|
                                         Ty.path "u8",
@@ -1388,7 +1428,9 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u8" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1506,6 +1548,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Parity"
+                          []
+                          []
                           [ UnOp.not (| M.read (| b |) |) ]
                       |)));
                   fun γ =>
@@ -1520,6 +1564,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::NonEip155"
+                          []
+                          []
                           [ UnOp.not (| M.read (| b |) |) ]
                       |)));
                   fun γ =>
@@ -1538,6 +1584,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
+                          []
+                          []
                           [ Value.Integer IntegerKind.U64 1 ]
                       |)));
                   fun γ =>
@@ -1552,6 +1600,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
+                          []
+                          []
                           [
                             M.read (|
                               M.match_operator (|
@@ -1615,6 +1665,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "u64",
@@ -1664,6 +1716,8 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::NonEip155"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "bool",
@@ -1783,6 +1837,8 @@ Module signature.
               M.alloc (|
                 Value.StructTuple
                   "alloy_primitives::signature::parity::Parity::Eip155"
+                  []
+                  []
                   [
                     M.call_closure (|
                       Ty.path "u64",
@@ -1816,6 +1872,8 @@ Module signature.
             (let self := M.alloc (| self |) in
             Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.path "bool",

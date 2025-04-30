@@ -23,6 +23,8 @@ Module coset.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
+            []
+            [ F ]
             [
               ("shift",
                 M.call_closure (|
@@ -237,14 +239,27 @@ Module coset.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ]
+                        ]
                         [
                           Value.StructRecord
                             "p3_field::coset::TwoAdicMultiplicativeCoset"
+                            []
+                            [ F ]
                             [ ("shift", M.read (| shift |)); ("log_size", M.read (| log_size |)) ]
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ]
+                        ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -464,6 +479,8 @@ Module coset.
                                 (let new_log_size := M.copy (| γ |) in
                                 Value.StructRecord
                                   "p3_field::coset::TwoAdicMultiplicativeCoset"
+                                  []
+                                  [ F ]
                                   [
                                     ("shift",
                                       M.read (|
@@ -648,6 +665,8 @@ Module coset.
           let scale := M.alloc (| scale |) in
           Value.StructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
+            []
+            [ F ]
             [
               ("shift",
                 M.call_closure (|
@@ -699,6 +718,8 @@ Module coset.
           let shift := M.alloc (| shift |) in
           Value.StructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
+            []
+            [ F ]
             [
               ("shift", M.read (| shift |));
               ("log_size",
@@ -800,6 +821,8 @@ Module coset.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
+                                      []
+                                      [ Ty.path "usize" ]
                                       [
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",

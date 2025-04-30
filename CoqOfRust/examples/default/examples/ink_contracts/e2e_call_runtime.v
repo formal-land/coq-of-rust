@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "e2e_call_runtime::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -138,7 +140,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   (* Default *)
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -206,7 +208,7 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

@@ -16,7 +16,12 @@ Module iter.
             (let gen := M.alloc (| gen |) in
             Value.StructRecord
               "core::iter::sources::once_with::OnceWith"
-              [ ("gen", Value.StructTuple "core::option::Option::Some" [ M.read (| gen |) ]) ]))
+              []
+              [ F ]
+              [
+                ("gen",
+                  Value.StructTuple "core::option::Option::Some" [] [ F ] [ M.read (| gen |) ])
+              ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -46,6 +51,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::sources::once_with::OnceWith"
+                []
+                [ F ]
                 [
                   ("gen",
                     M.call_closure (|
@@ -330,6 +337,8 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ A ]
                         [
                           M.call_closure (|
                             A,

@@ -213,7 +213,11 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Validation"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::vm_status::StatusType::Validation" []
+                      Value.StructTuple
+                        "move_core_types::vm_status::StatusType::Validation"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -224,7 +228,11 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Verification"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::vm_status::StatusType::Verification" []
+                      Value.StructTuple
+                        "move_core_types::vm_status::StatusType::Verification"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -238,6 +246,8 @@ Module vm_status.
                       Value.StructTuple
                         "move_core_types::vm_status::StatusType::InvariantViolation"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -248,7 +258,11 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Deserialization"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::vm_status::StatusType::Deserialization" []
+                      Value.StructTuple
+                        "move_core_types::vm_status::StatusType::Deserialization"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -259,7 +273,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Execution"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::vm_status::StatusType::Execution" []
+                      Value.StructTuple "move_core_types::vm_status::StatusType::Execution" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -270,7 +284,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Unknown"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" []
+                      Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] [] []
                     |)))
               ]
             |)
@@ -5147,9 +5161,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VALIDATION_STATUS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5163,9 +5184,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5179,9 +5207,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_AUTH_KEY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5195,9 +5230,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_OLD"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5211,9 +5253,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_NEW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5227,9 +5276,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5243,9 +5299,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TRANSACTION_EXPIRED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5259,9 +5322,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_DOES_NOT_EXIST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5275,9 +5345,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::REJECTED_WRITE_SET"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5291,9 +5368,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_WRITE_SET"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5307,9 +5391,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EXCEEDED_MAX_TRANSACTION_SIZE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5323,9 +5414,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SCRIPT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5339,9 +5437,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_MODULE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5355,9 +5460,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5371,9 +5483,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5387,9 +5506,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_BELOW_MIN_BOUND"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5403,9 +5529,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_ABOVE_MAX_BOUND"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5419,9 +5552,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_GAS_SPECIFIER"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5435,9 +5575,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_FROZEN"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5451,9 +5598,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNABLE_TO_DESERIALIZE_ACCOUNT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5467,9 +5621,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CURRENCY_INFO_DOES_NOT_EXIST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5483,9 +5644,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_PUBLISHER"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5499,9 +5667,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::NO_ACCOUNT_ROLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5515,9 +5690,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BAD_CHAIN_ID"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5531,9 +5713,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_BIG"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5547,9 +5736,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BAD_TRANSACTION_FEE_CURRENCY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5563,9 +5759,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FEATURE_UNDER_GATING"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5579,9 +5782,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5595,9 +5805,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SIGNERS_CONTAIN_DUPLICATES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5611,9 +5828,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NONCE_INVALID"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5627,9 +5851,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5643,9 +5874,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERIFICATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5659,9 +5897,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5675,9 +5920,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE_TOKEN"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5691,9 +5943,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RECURSIVE_STRUCT_DEFINITION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5707,9 +5966,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FIELD_MISSING_TYPE_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5723,9 +5989,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_FALL_THROUGH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5739,9 +6012,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::NEGATIVE_STACK_SIZE_WITHIN_BLOCK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5755,9 +6035,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_MAIN_FUNCTION_SIGNATURE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5771,9 +6058,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5787,9 +6081,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_HANDLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5803,9 +6104,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNIMPLEMENTED_HANDLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5819,9 +6127,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5835,9 +6150,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5851,9 +6173,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MISSING_DEPENDENCY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5867,9 +6196,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::POP_WITHOUT_DROP_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5883,9 +6219,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BR_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5899,9 +6242,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::ABORT_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5915,9 +6265,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::STLOC_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5931,9 +6288,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5947,9 +6311,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5963,9 +6334,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RET_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5979,9 +6357,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RET_BORROWED_MUTABLE_REFERENCE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -5995,9 +6380,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6011,9 +6403,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6027,9 +6426,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6043,9 +6449,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_BAD_FIELD_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6059,9 +6472,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6075,9 +6495,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6091,9 +6518,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::COPYLOC_WITHOUT_COPY_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6107,9 +6541,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::COPYLOC_EXISTS_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6123,9 +6564,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6139,9 +6587,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MOVELOC_EXISTS_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6155,9 +6610,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWLOC_REFERENCE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6171,9 +6633,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6187,9 +6656,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWLOC_EXISTS_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6203,9 +6679,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CALL_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6219,9 +6702,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CALL_BORROWED_MUTABLE_REFERENCE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6235,9 +6725,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::PACK_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6251,9 +6748,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNPACK_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6267,9 +6771,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::READREF_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6283,9 +6794,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::READREF_WITHOUT_COPY_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6299,9 +6817,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::READREF_EXISTS_MUTABLE_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6315,9 +6840,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::WRITEREF_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6331,9 +6863,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::WRITEREF_WITHOUT_DROP_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6347,9 +6886,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::WRITEREF_EXISTS_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6363,9 +6909,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6379,9 +6932,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6395,9 +6955,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6411,9 +6978,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6427,9 +7001,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6443,9 +7024,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWGLOBAL_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6459,9 +7047,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BORROWGLOBAL_WITHOUT_KEY_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6475,9 +7070,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MOVEFROM_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6491,9 +7093,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MOVEFROM_WITHOUT_KEY_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6507,9 +7116,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6523,9 +7139,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MOVETO_WITHOUT_KEY_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6539,9 +7162,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MODULE_ADDRESS_DOES_NOT_MATCH_SENDER"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6555,9 +7185,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::NO_MODULE_HANDLES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6571,9 +7208,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::POSITIVE_STACK_SIZE_AT_BLOCK_END"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6587,9 +7231,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MISSING_ACQUIRES_ANNOTATION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6603,9 +7254,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EXTRANEOUS_ACQUIRES_ANNOTATION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6619,9 +7277,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::DUPLICATE_ACQUIRES_ANNOTATION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6635,9 +7300,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_ACQUIRES_ANNOTATION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6651,9 +7323,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6667,9 +7346,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6683,9 +7369,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6699,9 +7392,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::LOOP_IN_INSTANTIATION_GRAPH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6715,9 +7415,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::ZERO_SIZED_STRUCT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6731,9 +7438,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::LINKER_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6747,9 +7461,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6763,9 +7484,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6779,9 +7507,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EMPTY_CODE_UNIT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6795,9 +7530,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6811,9 +7553,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6827,9 +7576,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6843,9 +7599,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6859,9 +7622,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_LOCALS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6875,9 +7645,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::GENERIC_MEMBER_OPCODE_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6891,9 +7668,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FUNCTION_RESOLUTION_FAILURE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6907,9 +7691,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_OPERATION_IN_SCRIPT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6923,9 +7714,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::DUPLICATE_MODULE_NAME"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6939,9 +7737,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6955,9 +7760,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_DEPENDENCY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6971,9 +7783,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_ARGUMENTS_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -6987,9 +7806,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_PARAM_TYPE_FOR_DESERIALIZATION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7003,9 +7829,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_ARGUMENT"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7019,9 +7852,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7035,9 +7875,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7051,9 +7898,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7067,9 +7921,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7083,9 +7944,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7099,9 +7967,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7115,9 +7990,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_FRIENDSHIP"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7131,9 +8013,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_PHANTOM_TYPE_PARAM_POSITION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7147,9 +8036,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7163,9 +8059,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7179,9 +8082,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7195,9 +8105,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_PARAMETERS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7211,9 +8128,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_PARAMETERS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7227,9 +8151,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_BASIC_BLOCKS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7243,9 +8174,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VALUE_STACK_OVERFLOW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7259,9 +8197,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_NODES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7275,9 +8220,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VALUE_STACK_PUSH_OVERFLOW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7291,9 +8243,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MAX_DEPENDENCY_DEPTH_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7307,9 +8266,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MAX_FUNCTION_DEFINITIONS_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7323,9 +8289,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MAX_STRUCT_DEFINITIONS_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7339,9 +8312,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MAX_FIELD_DEFINITIONS_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7355,9 +8335,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_BACK_EDGES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7371,9 +8358,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_1"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7387,9 +8381,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_2"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7403,9 +8404,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_3"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7419,9 +8427,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_4"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7435,9 +8450,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_5"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7451,9 +8473,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TOO_MANY_VECTOR_ELEMENTS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7467,9 +8496,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::IDENTIFIER_TOO_LONG"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7483,9 +8519,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::PROGRAM_TOO_COMPLEX"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7499,9 +8542,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7515,9 +8565,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EMPTY_VALUE_STACK"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7531,7 +8588,17 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::PC_OVERFLOW" []
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::PC_OVERFLOW"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -7544,9 +8611,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7560,9 +8634,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::STORAGE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7576,9 +8657,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INTERNAL_TYPE_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7592,9 +8680,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EVENT_KEY_MISMATCH"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7608,7 +8703,17 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::UNREACHABLE" []
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::UNREACHABLE"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -7621,9 +8726,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VM_STARTUP_FAILURE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7637,9 +8749,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7653,9 +8772,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VERIFIER_INVARIANT_VIOLATION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7669,9 +8795,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_VERIFIER_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7685,9 +8818,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_DESERIALIZATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7701,9 +8841,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FAILED_TO_SERIALIZE_WRITE_SET_CHANGES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7717,9 +8864,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_RESOURCE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7733,9 +8887,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TYPE_RESOLUTION_FAILURE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7749,9 +8910,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::DUPLICATE_NATIVE_FUNCTION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7765,9 +8933,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::ARITHMETIC_OVERFLOW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7781,9 +8956,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_BINARY_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7797,7 +8979,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::MALFORMED" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::MALFORMED"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -7809,7 +9002,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::BAD_MAGIC" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::BAD_MAGIC"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -7821,9 +9025,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERSION"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7837,9 +9048,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_TABLE_TYPE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7853,9 +9071,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SIGNATURE_TYPE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7869,9 +9094,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SERIALIZED_TYPE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7885,9 +9117,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_OPCODE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7901,9 +9140,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7917,9 +9163,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_SIGNATURE_TYPE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7933,9 +9186,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::DUPLICATE_TABLE"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7949,9 +9209,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7965,9 +9232,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_NATIVE_STRUCT_FLAG"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -7981,7 +9255,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::BAD_U16" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::BAD_U16"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -7993,7 +9278,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::BAD_U32" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::BAD_U32"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8005,7 +9301,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::BAD_U64" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::BAD_U64"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8017,7 +9324,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::BAD_U128" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::BAD_U128"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8029,7 +9347,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::BAD_U256" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::BAD_U256"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8041,9 +9370,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VALUE_SERIALIZATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8057,9 +9393,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VALUE_DESERIALIZATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8073,9 +9416,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CODE_DESERIALIZATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8089,9 +9439,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::INVALID_FLAG_BITS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8105,9 +9462,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::TRAILING_BYTES"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8121,9 +9485,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_RUNTIME_STATUS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8137,7 +9508,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::EXECUTED" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::EXECUTED"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8149,7 +9531,17 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::OUT_OF_GAS" []
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::OUT_OF_GAS"
+                            []
+                            []
+                            []
                         ]
                     |)));
                 fun γ =>
@@ -8162,9 +9554,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESOURCE_DOES_NOT_EXIST"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8178,9 +9577,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::RESOURCE_ALREADY_EXISTS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8194,9 +9600,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MISSING_DATA"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8210,9 +9623,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::DATA_FORMAT_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8226,7 +9646,18 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
-                        [ Value.StructTuple "move_core_types::vm_status::StatusCode::ABORTED" [] ]
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
+                        [
+                          Value.StructTuple
+                            "move_core_types::vm_status::StatusCode::ABORTED"
+                            []
+                            []
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -8238,9 +9669,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::ARITHMETIC_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8254,9 +9692,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VECTOR_OPERATION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8270,9 +9715,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::EXECUTION_STACK_OVERFLOW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8286,9 +9738,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::CALL_STACK_OVERFLOW"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8302,9 +9761,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_DEPTH_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8318,9 +9784,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VM_MAX_VALUE_DEPTH_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8334,9 +9807,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VM_EXTENSION_ERROR"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8350,9 +9830,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::STORAGE_WRITE_LIMIT_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8366,9 +9853,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::MEMORY_LIMIT_EXCEEDED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8382,9 +9876,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_NODES_REACHED"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8398,9 +9899,16 @@ Module vm_status.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           Value.StructTuple
                             "move_core_types::vm_status::StatusCode::UNKNOWN_STATUS"
+                            []
+                            []
                             []
                         ]
                     |)));
@@ -8409,6 +9917,11 @@ Module vm_status.
                     (M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -8552,6 +10065,8 @@ Module vm_status.
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusType::Validation"
                                     []
+                                    []
+                                    []
                                 |)
                               |)
                             |)
@@ -8615,6 +10130,8 @@ Module vm_status.
                                 M.return_ (|
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusType::Verification"
+                                    []
+                                    []
                                     []
                                 |)
                               |)
@@ -8680,6 +10197,8 @@ Module vm_status.
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusType::InvariantViolation"
                                     []
+                                    []
+                                    []
                                 |)
                               |)
                             |)
@@ -8743,6 +10262,8 @@ Module vm_status.
                                 M.return_ (|
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusType::Deserialization"
+                                    []
+                                    []
                                     []
                                 |)
                               |)
@@ -8808,6 +10329,8 @@ Module vm_status.
                                   Value.StructTuple
                                     "move_core_types::vm_status::StatusType::Execution"
                                     []
+                                    []
+                                    []
                                 |)
                               |)
                             |)
@@ -8815,7 +10338,9 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] |)
+                M.alloc (|
+                  Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] [] []
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8933,7 +10458,11 @@ Module vm_status.
             |),
             [
               M.read (| deserializer |);
-              Value.StructTuple "move_core_types::vm_status::deserialize::StatusCodeVisitor" []
+              Value.StructTuple
+                "move_core_types::vm_status::deserialize::StatusCodeVisitor"
+                []
+                []
+                []
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

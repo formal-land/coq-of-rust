@@ -42,6 +42,8 @@ Module stack.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_matrix::stack::VerticalPair"
+            []
+            [ First; Second ]
             [
               ("first",
                 M.call_closure (|
@@ -220,6 +222,8 @@ Module stack.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "p3_matrix::stack::HorizontalPair"
+            []
+            [ First; Second ]
             [
               ("first",
                 M.call_closure (|
@@ -468,7 +472,7 @@ Module stack.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -498,7 +502,11 @@ Module stack.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -513,6 +521,8 @@ Module stack.
             M.alloc (|
               Value.StructRecord
                 "p3_matrix::stack::VerticalPair"
+                []
+                [ First; Second ]
                 [ ("first", M.read (| first |)); ("second", M.read (| second |)) ]
             |)
           |)))
@@ -636,7 +646,7 @@ Module stack.
                                           []
                                           [ Ty.path "core::panicking::AssertKind" ] :=
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                        Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
@@ -666,7 +676,11 @@ Module stack.
                                               |)
                                             |)
                                           |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                            []
                                         ]
                                       |)
                                     |)
@@ -681,6 +695,8 @@ Module stack.
             M.alloc (|
               Value.StructRecord
                 "p3_matrix::stack::HorizontalPair"
+                []
+                [ First; Second ]
                 [ ("first", M.read (| first |)); ("second", M.read (| second |)) ]
             |)
           |)))
@@ -1026,6 +1042,11 @@ Module stack.
                     M.alloc (|
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Left"
+                        []
+                        [
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+                        ]
                         [
                           M.call_closure (|
                             Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row",
@@ -1057,6 +1078,11 @@ Module stack.
                     (M.alloc (|
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Right"
+                        []
+                        [
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+                        ]
                         [
                           M.call_closure (|
                             Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row",
@@ -1193,6 +1219,21 @@ Module stack.
                     M.alloc (|
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Left"
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            First
+                            "{{synthetic}}'2";
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            Second
+                            "{{synthetic}}'2"
+                        ]
                         [
                           M.call_closure (|
                             Ty.associated_in_trait
@@ -1229,6 +1270,21 @@ Module stack.
                     (M.alloc (|
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Right"
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            First
+                            "{{synthetic}}'2";
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            Second
+                            "{{synthetic}}'2"
+                        ]
                         [
                           M.call_closure (|
                             Ty.associated_in_trait

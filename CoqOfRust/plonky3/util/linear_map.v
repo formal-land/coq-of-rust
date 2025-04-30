@@ -93,6 +93,8 @@ Module linear_map.
         ltac:(M.monadic
           (Value.StructTuple
             "p3_util::linear_map::LinearMap"
+            []
+            [ K; V ]
             [
               M.call_closure (|
                 Ty.apply
@@ -629,7 +631,7 @@ Module linear_map.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| v |) ]
+                      Value.StructTuple "core::option::Option::Some" [] [ V ] [ M.read (| v |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -659,7 +661,7 @@ Module linear_map.
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ V ] [] |)))
               ]
             |)
           |)))

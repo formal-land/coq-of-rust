@@ -96,6 +96,8 @@ Module Impl_core_clone_Clone_for_clone_Pair.
         (let self := M.alloc (| self |) in
         Value.StructTuple
           "clone::Pair"
+          []
+          []
           [
             M.call_closure (|
               Ty.apply
@@ -288,7 +290,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ unit_ : Ty.apply (Ty.path "*") [] [ Ty.path "clone::Unit" ] :=
-          M.alloc (| Value.StructTuple "clone::Unit" [] |) in
+          M.alloc (| Value.StructTuple "clone::Unit" [] [] [] |) in
         let~ copied_unit : Ty.apply (Ty.path "*") [] [ Ty.path "clone::Unit" ] :=
           M.copy (| unit_ |) in
         let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -417,6 +419,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple
               "clone::Pair"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply

@@ -10,7 +10,11 @@ Definition some_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.U32 42 ]))
+      (Value.StructTuple
+        "core::option::Option::Some"
+        []
+        [ Ty.path "u32" ]
+        [ Value.Integer IntegerKind.U32 42 ]))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 

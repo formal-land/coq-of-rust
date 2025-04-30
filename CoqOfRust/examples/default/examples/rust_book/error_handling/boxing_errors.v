@@ -62,7 +62,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.StructTuple "boxing_errors::EmptyVec" []))
+        Value.StructTuple "boxing_errors::EmptyVec" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -329,7 +329,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                     [],
                                     []
                                   |),
-                                  [ Value.StructTuple "boxing_errors::EmptyVec" [] ]
+                                  [ Value.StructTuple "boxing_errors::EmptyVec" [] [] [] ]
                                 |)))
                           ]
                         |)))

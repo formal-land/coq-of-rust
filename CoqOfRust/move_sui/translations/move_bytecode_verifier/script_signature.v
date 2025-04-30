@@ -92,7 +92,11 @@ Module script_signature.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  []
+                                  [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ]
+                                  [ Value.Tuple [] ]
                               |)
                             |)
                           |)
@@ -579,6 +583,8 @@ Module script_signature.
                                                     |);
                                                     Value.StructTuple
                                                       "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                      []
+                                                      []
                                                       [ M.cast (Ty.path "u16") (M.read (| idx |)) ];
                                                     M.read (| check_signature |)
                                                   ]
@@ -659,7 +665,13 @@ Module script_signature.
                           |)))
                     ]
                   |)) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ]
+                  [ Value.Tuple [] ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1174,6 +1186,8 @@ Module script_signature.
                                                           Value.StructTuple
                                                             "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR"
                                                             []
+                                                            []
+                                                            []
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -1202,6 +1216,8 @@ Module script_signature.
                                                   |);
                                                   Value.StructTuple
                                                     "move_binary_format::errors::Location::Module"
+                                                    []
+                                                    []
                                                     [
                                                       M.call_closure (|
                                                         Ty.path
@@ -1312,6 +1328,8 @@ Module script_signature.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                             Value.StructTuple
                               "move_binary_format::file_format::FunctionDefinitionIndex"
+                              []
+                              []
                               [ M.cast (Ty.path "u16") (M.read (| idx |)) ];
                             M.read (| check_signature |)
                           ]
@@ -1494,7 +1512,11 @@ Module script_signature.
                       |)
                     |);
                     M.read (| parameters |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| return_ |) ];
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureIndex" ]
+                      [ M.read (| return_ |) ];
                     M.read (| check_signature |)
                   ]
                 |);
@@ -1542,6 +1564,8 @@ Module script_signature.
                                           M.read (| e |);
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
+                                            []
+                                            []
                                             [];
                                           M.read (|
                                             M.SubPointer.get_struct_tuple_field (|
@@ -1554,6 +1578,8 @@ Module script_signature.
                                       |);
                                       Value.StructTuple
                                         "move_binary_format::errors::Location::Module"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "move_core_types::language_storage::ModuleId",
@@ -1839,7 +1865,11 @@ Module script_signature.
         let _is_entry := M.alloc (| _is_entry |) in
         let _parameters := M.alloc (| _parameters |) in
         let _return_type := M.alloc (| _return_type |) in
-        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+        Value.StructTuple
+          "core::result::Result::Ok"
+          []
+          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+          [ Value.Tuple [] ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -2924,6 +2954,8 @@ Module script_signature.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                       [
                         M.call_closure (|
                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -2937,13 +2969,21 @@ Module script_signature.
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::INVALID_MAIN_FUNCTION_SIGNATURE"
                               []
+                              []
+                              []
                           ]
                         |)
                       ]
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  (M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)))
             ]
           |)
         |)))

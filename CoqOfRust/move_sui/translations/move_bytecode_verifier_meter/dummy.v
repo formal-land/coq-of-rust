@@ -38,7 +38,11 @@ Module dummy.
           let _from := M.alloc (| _from |) in
           let _to := M.alloc (| _to |) in
           let _factor := M.alloc (| _factor |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -54,7 +58,11 @@ Module dummy.
           (let self := M.alloc (| self |) in
           let _scope := M.alloc (| _scope |) in
           let _units := M.alloc (| _units |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

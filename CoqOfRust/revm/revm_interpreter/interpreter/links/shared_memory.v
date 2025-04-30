@@ -26,7 +26,7 @@ Module SharedMemory.
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory";
     φ x :=
-      Value.StructRecord "revm_interpreter::interpreter::shared_memory::SharedMemory" [
+      Value.StructRecord "revm_interpreter::interpreter::shared_memory::SharedMemory" [] [] [
         ("buffer", φ x.(buffer));
         ("checkpoints", φ x.(checkpoints));
         ("last_checkpoint", φ x.(last_checkpoint));

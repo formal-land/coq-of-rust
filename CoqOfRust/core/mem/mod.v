@@ -1023,6 +1023,8 @@ Module mem.
         (let v := M.alloc (| v |) in
         Value.StructTuple
           "core::mem::Discriminant"
+          []
+          [ T ]
           [
             M.call_closure (|
               Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",

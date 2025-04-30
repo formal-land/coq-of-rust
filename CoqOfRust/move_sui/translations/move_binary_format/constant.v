@@ -58,9 +58,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::Signer"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -75,9 +79,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::Address"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -92,9 +100,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::Bool"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -109,9 +121,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::U8"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -126,9 +142,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::U16"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -143,9 +163,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::U32"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -160,9 +184,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::U64"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -177,9 +205,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::U128"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -194,9 +226,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::U256"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -213,9 +249,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                           [
                             Value.StructTuple
                               "move_core_types::runtime_value::MoveTypeLayout::Vector"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -460,7 +500,13 @@ Module constant.
                             match γ with
                             | [] =>
                               ltac:(M.monadic
-                                (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::None"
+                                    []
+                                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
+                                    []
+                                |)))
                             | _ => M.impossible "wrong number of arguments"
                             end)
                       |)))
@@ -528,9 +574,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Address"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -545,9 +595,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Signer"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -562,9 +616,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::U8"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -579,9 +637,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::U16"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -596,9 +658,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::U32"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -613,9 +679,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::U64"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -630,9 +700,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::U128"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -647,9 +721,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::U256"
+                              []
+                              []
                               []
                           ]
                       |)));
@@ -666,9 +744,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Vector"
+                              []
+                              []
                               [
                                 M.call_closure (|
                                   Ty.apply
@@ -863,7 +945,13 @@ Module constant.
                           "move_core_types::runtime_value::MoveTypeLayout::Struct",
                           0
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                          []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -875,9 +963,13 @@ Module constant.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                           [
                             Value.StructTuple
                               "move_binary_format::file_format::SignatureToken::Bool"
+                              []
+                              []
                               []
                           ]
                       |)))
@@ -918,9 +1010,13 @@ Module constant.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
+                []
+                [ Ty.path "move_binary_format::file_format::Constant" ]
                 [
                   Value.StructRecord
                     "move_binary_format::file_format::Constant"
+                    []
+                    []
                     [
                       ("type_",
                         M.read (|

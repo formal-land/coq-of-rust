@@ -313,6 +313,8 @@ Module ptr.
               M.alloc (|
                 Value.StructRecord
                   "core::ptr::non_null::NonNull"
+                  []
+                  [ T ]
                   [
                     ("pointer",
                       M.cast
@@ -381,6 +383,8 @@ Module ptr.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                           [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
@@ -396,7 +400,13 @@ Module ptr.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -423,6 +433,8 @@ Module ptr.
             (let r := M.alloc (| r |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   M.read (|
@@ -455,6 +467,8 @@ Module ptr.
             (let r := M.alloc (| r |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   (* MutToConstPointer *)
@@ -936,6 +950,8 @@ Module ptr.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ U ]
               [
                 ("pointer",
                   (* MutToConstPointer *)
@@ -983,6 +999,8 @@ Module ptr.
             let count := M.alloc (| count |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   M.call_closure (|
@@ -1037,6 +1055,8 @@ Module ptr.
             let count := M.alloc (| count |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   (* MutToConstPointer *)
@@ -1094,6 +1114,8 @@ Module ptr.
             let count := M.alloc (| count |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   M.call_closure (|
@@ -1148,6 +1170,8 @@ Module ptr.
             let count := M.alloc (| count |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   (* MutToConstPointer *)
@@ -1282,6 +1306,8 @@ Module ptr.
             let count := M.alloc (| count |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
+              []
+              [ T ]
               [
                 ("pointer",
                   (* MutToConstPointer *)

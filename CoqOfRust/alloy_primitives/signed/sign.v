@@ -259,7 +259,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -276,7 +276,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -293,7 +293,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -310,7 +310,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
               |)
@@ -360,7 +360,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -370,7 +370,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
               |)
@@ -420,7 +420,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -430,7 +430,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
-                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" []
+                        Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
               |)
@@ -506,7 +506,11 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                          [ Value.Tuple [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic

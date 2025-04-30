@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::filter_map::FilterMap"
+                []
+                [ I; F ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -98,6 +100,8 @@ Module iter.
               let f := M.alloc (| f |) in
               Value.StructRecord
                 "core::iter::adapters::filter_map::FilterMap"
+                []
+                [ I; F ]
                 [ ("iter", M.read (| iter |)); ("f", M.read (| f |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -610,6 +614,8 @@ Module iter.
                   M.alloc (|
                     Value.StructRecord
                       "core::iter::adapters::filter_map::next_chunk::Guard"
+                      []
+                      [ B ]
                       [
                         ("array",
                           (* Unsize *)
@@ -1056,6 +1062,8 @@ Module iter.
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::ops::control_flow::ControlFlow::Continue"
+                                                        []
+                                                        [ Ty.tuple []; Ty.tuple [] ]
                                                         [ Value.Tuple [] ]
                                                     |)));
                                                 fun γ =>
@@ -1063,6 +1071,8 @@ Module iter.
                                                     (M.alloc (|
                                                       Value.StructTuple
                                                         "core::ops::control_flow::ControlFlow::Break"
+                                                        []
+                                                        [ Ty.tuple []; Ty.tuple [] ]
                                                         [ Value.Tuple [] ]
                                                     |)))
                                               ]
@@ -1144,6 +1154,11 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply (Ty.path "array") [ N ] [ B ];
+                              Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ B ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "array") [ N ] [ B ],
@@ -1211,6 +1226,11 @@ Module iter.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [
+                              Ty.apply (Ty.path "array") [ N ] [ B ];
+                              Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ B ]
+                            ]
                             [
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ B ],
@@ -1224,6 +1244,8 @@ Module iter.
                                   M.read (| array |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", M.read (| initialized |))

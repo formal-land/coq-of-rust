@@ -298,6 +298,8 @@ Module buf.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| cnt |)) ]
                                         ]
                                       |)
@@ -335,6 +337,8 @@ Module buf.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("end_", M.read (| cnt |)) ]
                                             ]
                                           |)
@@ -650,6 +654,8 @@ Module buf.
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::RangeTo"
+                                            []
+                                            [ Ty.path "usize" ]
                                             [ ("end_", M.read (| cnt |)) ]
                                         ]
                                       |)
@@ -687,6 +693,8 @@ Module buf.
                                               |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
+                                                []
+                                                [ Ty.path "usize" ]
                                                 [ ("end_", M.read (| cnt |)) ]
                                             ]
                                           |)
@@ -733,6 +741,8 @@ Module buf.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [ ("start", M.read (| cnt |)) ]
                                           ]
                                         |)
@@ -2445,6 +2455,8 @@ Module buf.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("start", M.read (| start |)) ]
                                 ]
                               |)
@@ -2529,6 +2541,8 @@ Module buf.
                           (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, slice |));
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", M.read (| nbytes |)) ]
                         ]
                       |)
@@ -2806,6 +2820,8 @@ Module buf.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("start", M.read (| start |)) ]
                                 ]
                               |)
@@ -2890,6 +2906,8 @@ Module buf.
                           (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, slice |));
                           Value.StructRecord
                             "core::ops::range::RangeTo"
+                            []
+                            [ Ty.path "usize" ]
                             [ ("end_", M.read (| nbytes |)) ]
                         ]
                       |)
@@ -5318,6 +5336,8 @@ Module buf.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("end_",
                                     M.call_closure (|

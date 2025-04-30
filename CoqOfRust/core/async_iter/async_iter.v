@@ -16,7 +16,9 @@ Module async_iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
-              [ Value.Integer IntegerKind.Usize 0; Value.StructTuple "core::option::Option::None" []
+              [
+                Value.Integer IntegerKind.Usize 0;
+                Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -341,7 +343,9 @@ Module async_iter.
             (let t := M.alloc (| t |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
-              [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+              [ Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ] ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -363,7 +367,14 @@ Module async_iter.
           (α : list Value.t)
           : M :=
         let Self : Ty.t := Self T in
-        ltac:(M.monadic (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "core::task::poll::Poll::Pending"
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+              []
+          |))).
       
       Global Instance AssociatedConstant_value_PENDING :
         forall (T : Ty.t),
@@ -387,7 +398,9 @@ Module async_iter.
           (M.alloc (|
             Value.StructTuple
               "core::task::poll::Poll::Ready"
-              [ Value.StructTuple "core::option::Option::None" [] ]
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+              [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]
           |))).
       
       Global Instance AssociatedConstant_value_FINISHED :

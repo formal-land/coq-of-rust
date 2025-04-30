@@ -332,6 +332,8 @@ Module any.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -351,7 +353,14 @@ Module any.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -413,6 +422,8 @@ Module any.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                         [
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -437,7 +448,14 @@ Module any.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                        []
+                    |)))
               ]
             |)
           |)))
@@ -1345,6 +1363,8 @@ Module any.
             M.alloc (|
               Value.StructRecord
                 "core::any::TypeId"
+                []
+                []
                 [ ("t", Value.Tuple [ M.read (| t1 |); M.read (| t2 |) ]) ]
             |)
           |)))
@@ -1605,11 +1625,13 @@ Module any.
                                   [
                                     Value.Integer IntegerKind.Usize 0;
                                     Value.UnicodeChar 32;
-                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [] [] [];
                                     Value.Integer IntegerKind.U32 12;
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                    Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
                                     Value.StructTuple
                                       "core::fmt::rt::Count::Is"
+                                      []
+                                      []
                                       [ Value.Integer IntegerKind.Usize 34 ]
                                   ]
                                 |)

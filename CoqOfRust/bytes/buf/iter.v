@@ -86,7 +86,11 @@ Module buf.
         | [], [], [ inner ] =>
           ltac:(M.monadic
             (let inner := M.alloc (| inner |) in
-            Value.StructRecord "bytes::buf::iter::IntoIter" [ ("inner", M.read (| inner |)) ]))
+            Value.StructRecord
+              "bytes::buf::iter::IntoIter"
+              []
+              [ T ]
+              [ ("inner", M.read (| inner |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -258,7 +262,13 @@ Module buf.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "u8" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -324,7 +334,13 @@ Module buf.
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| b |) ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "u8" ]
+                      [ M.read (| b |) ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -372,7 +388,11 @@ Module buf.
                 Value.Tuple
                   [
                     M.read (| rem |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| rem |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| rem |) ]
                   ]
               |)
             |)))

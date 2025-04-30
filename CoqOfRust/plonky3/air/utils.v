@@ -2304,6 +2304,8 @@ Module utils.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("end_", Value.Integer IntegerKind.Usize 16) ]
                                 ]
                               |)
@@ -2747,6 +2749,8 @@ Module utils.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [ ("start", Value.Integer IntegerKind.Usize 16) ]
                                 ]
                               |)

@@ -19,6 +19,8 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "constructors_return_value::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -269,6 +271,8 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord
           "constructors_return_value::ConstructorsReturnValue"
+          []
+          []
           [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -314,6 +318,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "constructors_return_value::ConstructorsReturnValue";
+                        Ty.path "constructors_return_value::ConstructorError"
+                      ]
                       [
                         M.call_closure (|
                           Ty.path "constructors_return_value::ConstructorsReturnValue",
@@ -332,7 +341,12 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
-                      [ Value.StructTuple "constructors_return_value::ConstructorError" [] ]
+                      []
+                      [
+                        Ty.path "constructors_return_value::ConstructorsReturnValue";
+                        Ty.path "constructors_return_value::ConstructorError"
+                      ]
+                      [ Value.StructTuple "constructors_return_value::ConstructorError" [] [] [] ]
                   |)))
             ]
           |)
@@ -392,6 +406,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.path "constructors_return_value::AccountId";
+                          Ty.path "constructors_return_value::LangError"
+                        ]
                         [
                           M.call_closure (|
                             Ty.path "constructors_return_value::AccountId",
@@ -500,9 +519,25 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "constructors_return_value::AccountId";
+                                Ty.path "constructors_return_value::ConstructorError"
+                              ];
+                            Ty.path "constructors_return_value::LangError"
+                          ]
                           [
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "constructors_return_value::AccountId";
+                                Ty.path "constructors_return_value::ConstructorError"
+                              ]
                               [
                                 M.call_closure (|
                                   Ty.path "constructors_return_value::AccountId",
@@ -535,9 +570,22 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "constructors_return_value::AccountId";
+                                Ty.path "constructors_return_value::ConstructorError"
+                              ];
+                            Ty.path "constructors_return_value::LangError"
+                          ]
                           [
                             Value.StructTuple
                               "constructors_return_value::LangError::CouldNotReadInput"
+                              []
+                              []
                               []
                           ]
                       |)))

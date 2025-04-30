@@ -1194,7 +1194,11 @@ Module modular.
                                               []
                                               [ Ty.path "core::panicking::AssertKind" ] :=
                                           M.alloc (|
-                                            Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                            Value.StructTuple
+                                              "core::panicking::AssertKind::Eq"
+                                              []
+                                              []
+                                              []
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
@@ -1224,7 +1228,11 @@ Module modular.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructTuple "core::option::Option::None" []
+                                              Value.StructTuple
+                                                "core::option::Option::None"
+                                                []
+                                                [ Ty.path "core::fmt::Arguments" ]
+                                                []
                                             ]
                                           |)
                                         |)

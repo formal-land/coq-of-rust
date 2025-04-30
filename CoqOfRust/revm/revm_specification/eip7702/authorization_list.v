@@ -83,6 +83,8 @@ Module eip7702.
                       M.alloc (|
                         Value.StructTuple
                           "revm_specification::eip7702::authorization_list::AuthorizationList::Signed"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -125,6 +127,8 @@ Module eip7702.
                       M.alloc (|
                         Value.StructTuple
                           "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -556,6 +560,8 @@ Module eip7702.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_specification::eip7702::authorization_list::AuthorizationList::Signed"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -608,6 +614,8 @@ Module eip7702.
             (let signed := M.alloc (| signed |) in
             Value.StructTuple
               "revm_specification::eip7702::authorization_list::AuthorizationList::Signed"
+              []
+              []
               [ M.read (| signed |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -646,6 +654,8 @@ Module eip7702.
             (let recovered := M.alloc (| recovered |) in
             Value.StructTuple
               "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+              []
+              []
               [ M.read (| recovered |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -769,6 +779,8 @@ Module eip7702.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+              []
+              []
               [
                 M.call_closure (|
                   Ty.apply
@@ -1308,6 +1320,8 @@ Module eip7702.
                       M.alloc (|
                         Value.StructTuple
                           "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.apply
@@ -1650,6 +1664,8 @@ Module eip7702.
                         Value.StructTuple
                           "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidChainId"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1663,6 +1679,8 @@ Module eip7702.
                         Value.StructTuple
                           "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidYParity"
                           []
+                          []
+                          []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1675,6 +1693,8 @@ Module eip7702.
                       M.alloc (|
                         Value.StructTuple
                           "revm_specification::eip7702::authorization_list::InvalidAuthorization::Eip2InvalidSValue"
+                          []
+                          []
                           []
                       |)))
                 ]

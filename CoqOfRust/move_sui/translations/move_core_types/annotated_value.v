@@ -295,6 +295,8 @@ Module annotated_value.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::annotated_value::MoveStruct"
+            []
+            []
             [
               ("type_",
                 M.call_closure (|
@@ -1603,6 +1605,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U8"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u8",
@@ -1632,6 +1636,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U64"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u64",
@@ -1661,6 +1667,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U128"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u128",
@@ -1690,6 +1698,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Bool"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "bool",
@@ -1719,6 +1729,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Address"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::account_address::AccountAddress",
@@ -1748,6 +1760,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -1789,6 +1803,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::annotated_value::MoveStruct",
@@ -1818,6 +1834,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::Signer"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::account_address::AccountAddress",
@@ -1847,6 +1865,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U16"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u16",
@@ -1876,6 +1896,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U32"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "u32",
@@ -1905,6 +1927,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveValue::U256"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
@@ -2034,6 +2058,8 @@ Module annotated_value.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::annotated_value::MoveFieldLayout"
+            []
+            []
             [
               ("name",
                 M.call_closure (|
@@ -2220,6 +2246,21 @@ Module annotated_value.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -2302,6 +2343,21 @@ Module annotated_value.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2383,6 +2439,21 @@ Module annotated_value.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2469,9 +2540,21 @@ Module annotated_value.
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'1::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -2601,6 +2684,21 @@ Module annotated_value.
                                     M.return_ (|
                                       Value.StructTuple
                                         "core::result::Result::Err"
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ]
                                         [ M.read (| __err |) ]
                                     |)
                                   |)
@@ -2683,6 +2781,21 @@ Module annotated_value.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2772,6 +2885,21 @@ Module annotated_value.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ]
                                       [ M.read (| __err |) ]
                                   |)
                                 |)
@@ -2858,9 +2986,21 @@ Module annotated_value.
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'3::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -3337,9 +3477,21 @@ Module annotated_value.
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'5::deserialize::__Visitor"
+                  []
+                  []
                   [
-                    ("marker", Value.StructTuple "core::marker::PhantomData" []);
-                    ("lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ("marker",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ]
+                        []);
+                    ("lifetime",
+                      Value.StructTuple
+                        "core::marker::PhantomData"
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                        [])
                   ]
               ]
             |)))
@@ -3373,6 +3525,8 @@ Module annotated_value.
           let layout := M.alloc (| layout |) in
           Value.StructRecord
             "move_core_types::annotated_value::MoveFieldLayout"
+            []
+            []
             [ ("name", M.read (| name |)); ("layout", M.read (| layout |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3487,6 +3641,8 @@ Module annotated_value.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "move_core_types::annotated_value::MoveStructLayout"
+            []
+            []
             [
               ("type_",
                 M.call_closure (|
@@ -4025,7 +4181,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::Bool" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::Bool"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4036,7 +4196,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::U8" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::U8"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4047,7 +4211,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::U64" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::U64"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4058,7 +4226,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::U128" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::U128"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4071,6 +4243,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveTypeLayout::Address"
+                        []
+                        []
                         []
                     |)));
                 fun γ =>
@@ -4086,6 +4260,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveTypeLayout::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -4127,6 +4303,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveTypeLayout::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::annotated_value::MoveStructLayout",
@@ -4155,6 +4333,8 @@ Module annotated_value.
                       Value.StructTuple
                         "move_core_types::annotated_value::MoveTypeLayout::Signer"
                         []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4165,7 +4345,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::U16" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::U16"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4176,7 +4360,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::U32" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::U32"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4187,7 +4375,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::annotated_value::MoveTypeLayout::U256" []
+                      Value.StructTuple
+                        "move_core_types::annotated_value::MoveTypeLayout::U256"
+                        []
+                        []
+                        []
                     |)))
               ]
             |)
@@ -4228,6 +4420,8 @@ Module annotated_value.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.path "anyhow::Error" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -4634,13 +4828,35 @@ Module annotated_value.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.path "anyhow::Error"
+                            ]
+                            [ M.read (| res |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.path "anyhow::Error"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.path "anyhow::Error",
@@ -4656,6 +4872,8 @@ Module annotated_value.
                                 [
                                   Value.StructTuple
                                     "move_core_types::annotated_visitor::Error::TrailingBytes"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "usize",
@@ -4794,6 +5012,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.path "move_core_types::runtime_value::MoveStruct",
@@ -4819,6 +5039,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -4946,6 +5168,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U8"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4960,6 +5184,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U64"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4974,6 +5200,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U128"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -4988,6 +5216,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Bool"
+                        []
+                        []
                         [ M.read (| b |) ]
                     |)));
                 fun γ =>
@@ -5002,6 +5232,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Address"
+                        []
+                        []
                         [ M.read (| a |) ]
                     |)));
                 fun γ =>
@@ -5016,6 +5248,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::Signer"
+                        []
+                        []
                         [ M.read (| s |) ]
                     |)));
                 fun γ =>
@@ -5030,6 +5264,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U16"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -5044,6 +5280,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U32"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)));
                 fun γ =>
@@ -5058,6 +5296,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::runtime_value::MoveValue::U256"
+                        []
+                        []
                         [ M.read (| u |) ]
                     |)))
               ]
@@ -5336,6 +5576,8 @@ Module annotated_value.
           let fields := M.alloc (| fields |) in
           Value.StructRecord
             "move_core_types::annotated_value::MoveStruct"
+            []
+            []
             [ ("type_", M.read (| type_ |)); ("fields", M.read (| fields |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5364,6 +5606,8 @@ Module annotated_value.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [ Ty.path "move_core_types::annotated_value::MoveStruct"; Ty.path "anyhow::Error" ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -5770,13 +6014,35 @@ Module annotated_value.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ]
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.path "anyhow::Error"
+                            ]
+                            [ M.read (| res |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.path "anyhow::Error"
+                            ]
                             [
                               M.call_closure (|
                                 Ty.path "anyhow::Error",
@@ -5792,6 +6058,8 @@ Module annotated_value.
                                 [
                                   Value.StructTuple
                                     "move_core_types::annotated_visitor::Error::TrailingBytes"
+                                    []
+                                    []
                                     [
                                       M.call_closure (|
                                         Ty.path "usize",
@@ -6057,6 +6325,8 @@ Module annotated_value.
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "move_core_types::runtime_value::MoveStruct"
+            []
+            []
             [
               M.call_closure (|
                 Ty.apply
@@ -6213,6 +6483,8 @@ Module annotated_value.
           let fields := M.alloc (| fields |) in
           Value.StructRecord
             "move_core_types::annotated_value::MoveStructLayout"
+            []
+            []
             [ ("type_", M.read (| type_ |)); ("fields", M.read (| fields |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6519,6 +6791,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::Bool"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6578,6 +6852,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::U8"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6637,6 +6913,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::U16"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6696,6 +6974,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::U32"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6755,6 +7035,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::U64"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6814,6 +7096,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::U128"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6873,6 +7157,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::U256"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6932,6 +7218,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::Address"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -6991,6 +7279,8 @@ Module annotated_value.
                               |);
                               M.constructor_as_closure
                                 "move_core_types::annotated_value::MoveValue::Signer"
+                                []
+                                []
                             ]
                           |)
                         |)));
@@ -7007,9 +7297,16 @@ Module annotated_value.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_core_types::annotated_value::MoveValue";
+                              Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                            ]
                             [
                               Value.StructTuple
                                 "move_core_types::annotated_value::MoveValue::Struct"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -7196,9 +7493,16 @@ Module annotated_value.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.path "move_core_types::annotated_value::MoveValue";
+                              Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                            ]
                             [
                               Value.StructTuple
                                 "move_core_types::annotated_value::MoveValue::Vector"
+                                []
+                                []
                                 [
                                   M.read (|
                                     M.match_operator (|
@@ -7305,6 +7609,8 @@ Module annotated_value.
                                                 M.read (| deserializer |);
                                                 Value.StructTuple
                                                   "move_core_types::annotated_value::VectorElementVisitor"
+                                                  []
+                                                  []
                                                   [
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
@@ -7791,7 +8097,22 @@ Module annotated_value.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vals |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_core_types::annotated_value::MoveValue";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                    ]
+                    [ M.read (| vals |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8414,6 +8735,28 @@ Module annotated_value.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::result::Result::Err"
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::identifier::Identifier";
+                                                                      Ty.path
+                                                                        "move_core_types::annotated_value::MoveValue"
+                                                                    ];
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ];
+                                                              Ty.associated_in_trait
+                                                                "serde::de::SeqAccess"
+                                                                []
+                                                                []
+                                                                A
+                                                                "Error"
+                                                            ]
                                                             [
                                                               M.call_closure (|
                                                                 Ty.associated_in_trait
@@ -8464,7 +8807,26 @@ Module annotated_value.
                             |)))
                       ]
                     |)) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vals |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.path "move_core_types::annotated_value::MoveValue"
+                            ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                    ]
+                    [ M.read (| vals |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8529,6 +8891,15 @@ Module annotated_value.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.path "move_core_types::annotated_value::MoveValue"
+                    ];
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                ]
                 [
                   Value.Tuple
                     [
@@ -8932,6 +9303,8 @@ Module annotated_value.
                                 |);
                                 Value.StructTuple
                                   "move_core_types::annotated_value::DecoratedStructFieldVisitor"
+                                  []
+                                  []
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -9071,9 +9444,16 @@ Module annotated_value.
                 M.alloc (|
                   Value.StructTuple
                     "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "move_core_types::annotated_value::MoveStruct";
+                      Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                    ]
                     [
                       Value.StructRecord
                         "move_core_types::annotated_value::MoveStruct"
+                        []
+                        []
                         [
                           ("type_",
                             M.call_closure (|
@@ -9613,6 +9993,8 @@ Module annotated_value.
                                         M.read (| serializer |);
                                         Value.StructTuple
                                           "core::option::Option::Some"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [
                                             M.call_closure (|
                                               Ty.path "usize",
@@ -10191,6 +10573,8 @@ Module annotated_value.
                                 M.read (| serializer |);
                                 Value.StructTuple
                                   "core::option::Option::Some"
+                                  []
+                                  [ Ty.path "usize" ]
                                   [
                                     M.call_closure (|
                                       Ty.path "usize",
@@ -11174,6 +11558,8 @@ Module annotated_value.
                                     M.alloc (|
                                       Value.StructTuple
                                         "move_core_types::annotated_value::MoveFields"
+                                        []
+                                        []
                                         [
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -11942,12 +12328,20 @@ Module annotated_value.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 4;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
-                                                Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -12181,12 +12575,20 @@ Module annotated_value.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 4;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
-                                                Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -12462,12 +12864,20 @@ Module annotated_value.
                                                 Value.UnicodeChar 32;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Alignment::Unknown"
+                                                  []
+                                                  []
                                                   [];
                                                 Value.Integer IntegerKind.U32 4;
                                                 Value.StructTuple
                                                   "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
                                                   [];
-                                                Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                                Value.StructTuple
+                                                  "core::fmt::rt::Count::Implied"
+                                                  []
+                                                  []
+                                                  []
                                               ]
                                             |)
                                           ]
@@ -13058,6 +13468,11 @@ Module annotated_value.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_core_types::annotated_value::DebugAsDisplay"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::identifier::Identifier"
+                                                              ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
@@ -13089,6 +13504,11 @@ Module annotated_value.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_core_types::annotated_value::DebugAsDisplay"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::annotated_value::MoveTypeLayout"
+                                                              ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
@@ -13191,7 +13611,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::Address"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::Address" []
+                      Value.StructTuple
+                        "move_core_types::language_storage::TypeTag::Address"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13202,7 +13626,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::Bool"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::Bool" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::Bool" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13213,7 +13637,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U8"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U8" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U8" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13224,7 +13648,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U16"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U16" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U16" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13235,7 +13659,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U32"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U32" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U32" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13246,7 +13670,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U64"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U64" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U64" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13257,7 +13681,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U128"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U128" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U128" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13268,7 +13692,7 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::U256"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::U256" []
+                      Value.StructTuple "move_core_types::language_storage::TypeTag::U256" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13279,7 +13703,11 @@ Module annotated_value.
                         "move_core_types::annotated_value::MoveTypeLayout::Signer"
                       |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::language_storage::TypeTag::Signer" []
+                      Value.StructTuple
+                        "move_core_types::language_storage::TypeTag::Signer"
+                        []
+                        []
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13310,6 +13738,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::language_storage::TypeTag::Vector"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -13370,6 +13800,8 @@ Module annotated_value.
                     M.alloc (|
                       Value.StructTuple
                         "move_core_types::language_storage::TypeTag::Struct"
+                        []
+                        []
                         [
                           M.call_closure (|
                             Ty.apply
@@ -14611,6 +15043,11 @@ Module annotated_value.
                                                                   M.alloc (|
                                                                     Value.StructTuple
                                                                       "move_core_types::annotated_value::DebugAsDisplay"
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::annotated_value::MoveValue"
+                                                                      ]
                                                                       [
                                                                         M.borrow (|
                                                                           Pointer.Kind.Ref,
@@ -15144,6 +15581,11 @@ Module annotated_value.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_core_types::annotated_value::DebugAsDisplay"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::identifier::Identifier"
+                                                              ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
@@ -15164,6 +15606,11 @@ Module annotated_value.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_core_types::annotated_value::DebugAsDisplay"
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::annotated_value::MoveValue"
+                                                              ]
                                                               [
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,

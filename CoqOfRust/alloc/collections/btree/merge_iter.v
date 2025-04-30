@@ -83,6 +83,8 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::merge_iter::Peeked::A"
+                            []
+                            [ I ]
                             [
                               M.call_closure (|
                                 Ty.associated_in_trait
@@ -127,6 +129,8 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::merge_iter::Peeked::B"
+                            []
+                            [ I ]
                             [
                               M.call_closure (|
                                 Ty.associated_in_trait
@@ -300,6 +304,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "alloc::collections::btree::merge_iter::MergeIterInner"
+                []
+                [ I ]
                 [
                   ("a",
                     M.call_closure (|
@@ -568,10 +574,18 @@ Module collections.
               let b := M.alloc (| b |) in
               Value.StructRecord
                 "alloc::collections::btree::merge_iter::MergeIterInner"
+                []
+                [ I ]
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
-                  ("peeked", Value.StructTuple "core::option::Option::None" [])
+                  ("peeked",
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [] [ I ]
+                      ]
+                      [])
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -686,7 +700,18 @@ Module collections.
                             M.alloc (|
                               M.write (|
                                 a_next,
-                                Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item"
+                                  ]
+                                  [ M.read (| next |) ]
                               |)
                             |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -747,7 +772,18 @@ Module collections.
                             M.alloc (|
                               M.write (|
                                 b_next,
-                                Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item"
+                                  ]
+                                  [ M.read (| next |) ]
                               |)
                             |) in
                           let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
@@ -1049,6 +1085,8 @@ Module collections.
                                           |);
                                           M.constructor_as_closure
                                             "alloc::collections::btree::merge_iter::Peeked::B"
+                                            []
+                                            [ I ]
                                         ]
                                       |)
                                     |)
@@ -1144,6 +1182,8 @@ Module collections.
                                           |);
                                           M.constructor_as_closure
                                             "alloc::collections::btree::merge_iter::Peeked::A"
+                                            []
+                                            [ I ]
                                         ]
                                       |)
                                     |)

@@ -109,6 +109,8 @@ Module bls12_381.
                                   M.borrow (| Pointer.Kind.MutRef, out |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.read (|
@@ -178,6 +180,8 @@ Module bls12_381.
                                   M.borrow (| Pointer.Kind.MutRef, out |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("start",
                                         M.read (|
@@ -270,6 +274,8 @@ Module bls12_381.
                   M.alloc (|
                     Value.StructRecord
                       "blst::blst_p1_affine"
+                      []
+                      []
                       [
                         ("x",
                           M.read (|
@@ -523,7 +529,16 @@ Module bls12_381.
                           |))
                       ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| out |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "blst::blst_p1_affine";
+                      Ty.path "revm_precompile::interface::PrecompileError"
+                    ]
+                    [ M.read (| out |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -651,9 +666,16 @@ Module bls12_381.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "blst::blst_p1_affine";
+                                      Ty.path "revm_precompile::interface::PrecompileError"
+                                    ]
                                     [
                                       Value.StructTuple
                                         "revm_precompile::interface::PrecompileError::Other"
+                                        []
+                                        []
                                         [
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -989,6 +1011,8 @@ Module bls12_381.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("end_",
                                                   M.read (|
@@ -1205,6 +1229,8 @@ Module bls12_381.
                                             |);
                                             Value.StructRecord
                                               "core::ops::range::Range"
+                                              []
+                                              [ Ty.path "usize" ]
                                               [
                                                 ("start",
                                                   M.read (|
@@ -1469,9 +1495,16 @@ Module bls12_381.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "blst::blst_p1_affine";
+                                              Ty.path "revm_precompile::interface::PrecompileError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "revm_precompile::interface::PrecompileError::Other"
+                                                []
+                                                []
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "alloc::string::String",
@@ -1541,9 +1574,16 @@ Module bls12_381.
                                         M.return_ (|
                                           Value.StructTuple
                                             "core::result::Result::Err"
+                                            []
+                                            [
+                                              Ty.path "blst::blst_p1_affine";
+                                              Ty.path "revm_precompile::interface::PrecompileError"
+                                            ]
                                             [
                                               Value.StructTuple
                                                 "revm_precompile::interface::PrecompileError::Other"
+                                                []
+                                                []
                                                 [
                                                   M.call_closure (|
                                                     Ty.path "alloc::string::String",
@@ -1576,7 +1616,16 @@ Module bls12_381.
                           |)))
                     ]
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| out |) ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.path "blst::blst_p1_affine";
+                      Ty.path "revm_precompile::interface::PrecompileError"
+                    ]
+                    [ M.read (| out |) ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

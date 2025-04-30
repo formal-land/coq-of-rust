@@ -268,7 +268,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                 |)
                               ]
                             |);
-                            Value.StructTuple "other_uses_of_question_mark::EmptyVec" []
+                            Value.StructTuple "other_uses_of_question_mark::EmptyVec" [] [] []
                           ]
                         |)
                       ]
@@ -482,6 +482,14 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.path "i32";
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ]
+                ]
                 [
                   M.call_closure (|
                     Ty.path "i32",

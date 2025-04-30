@@ -107,6 +107,8 @@ Module buf.
             let b := M.alloc (| b |) in
             Value.StructRecord
               "bytes::buf::chain::Chain"
+              []
+              [ T; U ]
               [ ("a", M.read (| a |)); ("b", M.read (| b |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -805,6 +807,8 @@ Module buf.
                                         |);
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
+                                          []
+                                          [ Ty.path "usize" ]
                                           [ ("start", M.read (| n |)) ]
                                       ]
                                     |)

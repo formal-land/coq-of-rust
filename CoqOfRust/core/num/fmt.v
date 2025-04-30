@@ -823,6 +823,8 @@ Module num.
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::RangeTo"
+                                                    []
+                                                    [ Ty.path "usize" ]
                                                     [ ("end_", M.read (| nzeroes |)) ]
                                                 ]
                                               |)
@@ -1027,6 +1029,8 @@ Module num.
                                                           |);
                                                           Value.StructRecord
                                                             "core::ops::range::RangeTo"
+                                                            []
+                                                            [ Ty.path "usize" ]
                                                             [ ("end_", M.read (| len |)) ]
                                                         ]
                                                       |)
@@ -1213,6 +1217,8 @@ Module num.
                                                 |);
                                                 Value.StructRecord
                                                   "core::ops::range::RangeTo"
+                                                  []
+                                                  [ Ty.path "usize" ]
                                                   [
                                                     ("end_",
                                                       M.call_closure (|
@@ -1249,11 +1255,17 @@ Module num.
                           ]
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ Ty.path "usize" ]
+                          [ M.read (| len |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1292,6 +1304,8 @@ Module num.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "core::num::fmt::Formatted"
+              []
+              []
               [
                 ("sign",
                   M.borrow (|
@@ -1637,7 +1651,13 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "usize" ]
+                                      []
+                                  |)
                                 |)
                               |)
                             |)));
@@ -1684,6 +1704,8 @@ Module num.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
+                                    []
+                                    [ Ty.path "usize" ]
                                     [
                                       ("end_",
                                         M.call_closure (|
@@ -1949,6 +1971,8 @@ Module num.
                                                                         |);
                                                                         Value.StructRecord
                                                                           "core::ops::range::RangeFrom"
+                                                                          []
+                                                                          [ Ty.path "usize" ]
                                                                           [
                                                                             ("start",
                                                                               M.read (| written |))
@@ -2044,7 +2068,11 @@ Module num.
                         ]
                       |)) in
                   M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| written |) ]
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| written |) ]
                   |)
                 |)))
             |)))

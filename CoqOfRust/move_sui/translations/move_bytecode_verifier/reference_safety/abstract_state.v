@@ -478,6 +478,8 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
+                          []
+                          [ Ty.path "move_borrow_graph::references::RefID" ]
                           [ M.read (| M.deref (| M.read (| id |) |) |) ]
                       |)));
                   fun γ =>
@@ -488,7 +490,13 @@ Module reference_safety.
                           γ,
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [ Ty.path "move_borrow_graph::references::RefID" ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -562,6 +570,8 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::Label::Local"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "u8",
@@ -592,6 +602,8 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::Label::Global"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -622,6 +634,8 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::Label::Field"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "move_binary_format::file_format::FieldHandleIndex",
@@ -1983,6 +1997,8 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+              []
+              []
               [
                 ("current_function",
                   M.call_closure (|
@@ -2636,6 +2652,8 @@ Module reference_safety.
                 M.alloc (|
                   Value.StructRecord
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                    []
+                    []
                     [
                       ("current_function",
                         M.call_closure (|
@@ -2677,6 +2695,8 @@ Module reference_safety.
                           [
                             Value.StructTuple
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                              []
+                              []
                               [];
                             M.read (| num_locals |)
                           ]
@@ -3074,6 +3094,8 @@ Module reference_safety.
                                                     |),
                                                     Value.StructTuple
                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                                      []
+                                                      []
                                                       [ M.read (| id |) ]
                                                   |)
                                                 |)));
@@ -3369,6 +3391,8 @@ Module reference_safety.
                     |);
                     Value.StructTuple
                       "move_binary_format::file_format::FunctionDefinitionIndex"
+                      []
+                      []
                       [ Value.Integer IntegerKind.U16 0 ]
                   ]
                 |);
@@ -3420,6 +3444,8 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "move_borrow_graph::references::RefID",
@@ -3449,6 +3475,8 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "move_borrow_graph::references::RefID",
@@ -3471,6 +3499,8 @@ Module reference_safety.
                       (M.alloc (|
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                          []
+                          []
                           []
                       |)))
                 ]
@@ -3714,6 +3744,8 @@ Module reference_safety.
                 M.read (| parent |);
                 Value.StructTuple
                   "move_bytecode_verifier::reference_safety::abstract_state::Label::Field"
+                  []
+                  []
                   [ M.read (| field |) ];
                 M.read (| child |)
               ]
@@ -3776,6 +3808,8 @@ Module reference_safety.
                 |);
                 Value.StructTuple
                   "move_bytecode_verifier::reference_safety::abstract_state::Label::Local"
+                  []
+                  []
                   [ M.read (| local |) ];
                 M.read (| id |)
               ]
@@ -3838,6 +3872,8 @@ Module reference_safety.
                 |);
                 Value.StructTuple
                   "move_bytecode_verifier::reference_safety::abstract_state::Label::Global"
+                  []
+                  []
                   [ M.read (| resource |) ];
                 M.read (| id |)
               ]
@@ -5139,7 +5175,12 @@ Module reference_safety.
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| id |);
-                      Value.StructTuple "core::option::Option::None" []
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                        ]
+                        []
                     ]
                   |)
                 |)
@@ -5262,6 +5303,8 @@ Module reference_safety.
                           M.read (| at_field_opt |);
                           M.constructor_as_closure
                             "move_bytecode_verifier::reference_safety::abstract_state::Label::Field"
+                            []
+                            []
                         ]
                       |)
                     ]
@@ -5384,9 +5427,13 @@ Module reference_safety.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                   [
                     Value.StructTuple
                       "move_bytecode_verifier::reference_safety::abstract_state::Label::Local"
+                      []
+                      []
                       [ M.read (| idx |) ]
                   ]
               ]
@@ -5437,9 +5484,13 @@ Module reference_safety.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                   [
                     Value.StructTuple
                       "move_bytecode_verifier::reference_safety::abstract_state::Label::Local"
+                      []
+                      []
                       [ M.read (| idx |) ]
                   ]
               ]
@@ -5486,9 +5537,13 @@ Module reference_safety.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                   [
                     Value.StructTuple
                       "move_bytecode_verifier::reference_safety::abstract_state::Label::Global"
+                      []
+                      []
                       [ M.read (| resource |) ]
                   ]
               ]
@@ -5539,9 +5594,13 @@ Module reference_safety.
                 |);
                 Value.StructTuple
                   "core::option::Option::Some"
+                  []
+                  [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                   [
                     Value.StructTuple
                       "move_bytecode_verifier::reference_safety::abstract_state::Label::Global"
+                      []
+                      []
                       [ M.read (| resource |) ]
                   ]
               ]
@@ -5590,7 +5649,11 @@ Module reference_safety.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |);
-                  Value.StructTuple "core::option::Option::None" []
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
+                    []
                 ]
               |)
             |)))
@@ -5846,6 +5909,8 @@ Module reference_safety.
                                         Value.StructTuple
                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                           []
+                                          []
+                                          []
                                       ]
                                     |);
                                     M.call_closure (|
@@ -6037,6 +6102,12 @@ Module reference_safety.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ]
                                               [ M.read (| err |) ]
                                           |)
                                         |)
@@ -6137,9 +6208,17 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                  []
+                                  []
                                   [ M.read (| new_id |) ]
                               ]
                           |)));
@@ -6173,6 +6252,12 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 M.call_closure (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
@@ -6190,6 +6275,8 @@ Module reference_safety.
                                     |);
                                     Value.StructTuple
                                       "move_core_types::vm_status::StatusCode::COPYLOC_EXISTS_BORROW_ERROR"
+                                      []
+                                      []
                                       [];
                                     M.read (| offset |)
                                   ]
@@ -6207,9 +6294,17 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                                  []
+                                  []
                                   []
                               ]
                           |)))
@@ -6434,6 +6529,8 @@ Module reference_safety.
                                                       [
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |);
@@ -6660,6 +6757,13 @@ Module reference_safety.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [ M.read (| err |) ]
                                                                   |)
                                                                 |)
@@ -6680,6 +6784,8 @@ Module reference_safety.
                           |);
                           Value.StructTuple
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                            []
+                            []
                             []
                         ]
                       |)
@@ -6712,9 +6818,17 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                  []
+                                  []
                                   [ M.read (| id |) ]
                               ]
                           |)));
@@ -6747,6 +6861,12 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 M.call_closure (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
@@ -6764,6 +6884,8 @@ Module reference_safety.
                                     |);
                                     Value.StructTuple
                                       "move_core_types::vm_status::StatusCode::MOVELOC_EXISTS_BORROW_ERROR"
+                                      []
+                                      []
                                       [];
                                     M.read (| offset |)
                                   ]
@@ -6780,9 +6902,17 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                                  []
+                                  []
                                   []
                               ]
                           |)))
@@ -7007,6 +7137,8 @@ Module reference_safety.
                                                       [
                                                         Value.StructTuple
                                                           "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                          []
+                                                          []
                                                           []
                                                       ]
                                                     |);
@@ -7233,6 +7365,12 @@ Module reference_safety.
                                                                   M.return_ (|
                                                                     Value.StructTuple
                                                                       "core::result::Result::Err"
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
                                                                       [ M.read (| err |) ]
                                                                   |)
                                                                 |)
@@ -7297,7 +7435,11 @@ Module reference_safety.
                               |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                              [ Value.Tuple [] ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7328,6 +7470,8 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
                               [
                                 M.call_closure (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
@@ -7345,6 +7489,8 @@ Module reference_safety.
                                     |);
                                     Value.StructTuple
                                       "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
+                                      []
+                                      []
                                       [];
                                     M.read (| offset |)
                                   ]
@@ -7359,7 +7505,11 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                              [ Value.Tuple [] ]
                           |)))
                     ]
                   |)
@@ -7427,7 +7577,14 @@ Module reference_safety.
                                           M.deref (| M.read (| self |) |)
                                         |);
                                         M.read (| id |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FieldHandleIndex"
+                                          ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -7440,6 +7597,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -7457,6 +7620,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -7528,9 +7693,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [ M.read (| frozen_id |) ]
                       ]
                   |)
@@ -7630,7 +7803,14 @@ Module reference_safety.
                                           M.deref (| M.read (| self |) |)
                                         |);
                                         M.read (| id1 |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FieldHandleIndex"
+                                          ]
+                                          []
                                       ]
                                     |)
                                   |),
@@ -7651,7 +7831,14 @@ Module reference_safety.
                                             M.deref (| M.read (| self |) |)
                                           |);
                                           M.read (| id2 |);
-                                          Value.StructTuple "core::option::Option::None" []
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FieldHandleIndex"
+                                            ]
+                                            []
                                         ]
                                       |)
                                     |)))
@@ -7665,6 +7852,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -7682,6 +7875,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::READREF_EXISTS_MUTABLE_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -7842,9 +8037,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                          []
+                          []
                           []
                       ]
                   |)
@@ -7911,7 +8114,14 @@ Module reference_safety.
                                           M.deref (| M.read (| self |) |)
                                         |);
                                         M.read (| id |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FieldHandleIndex"
+                                          ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -7924,6 +8134,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -7941,6 +8157,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::READREF_EXISTS_MUTABLE_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -7973,9 +8191,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                          []
+                          []
                           []
                       ]
                   |)
@@ -8051,6 +8277,11 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -8068,6 +8299,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::WRITEREF_EXISTS_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -8097,7 +8330,13 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8184,6 +8423,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -8201,6 +8446,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::BORROWLOC_EXISTS_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -8255,9 +8502,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [ M.read (| new_id |) ]
                       ]
                   |)
@@ -8398,6 +8653,11 @@ Module reference_safety.
                                                   M.read (| id |);
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldHandleIndex"
+                                                    ]
                                                     [ M.read (| field |) ]
                                                 ]
                                               |)
@@ -8468,6 +8728,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -8485,6 +8751,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -8557,9 +8825,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [ M.read (| field_borrow_id |) ]
                       ]
                   |)
@@ -8668,6 +8944,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -8685,6 +8967,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -8739,9 +9023,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [ M.read (| new_id |) ]
                       ]
                   |)
@@ -8816,6 +9108,12 @@ Module reference_safety.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                            Ty.path "move_binary_format::errors::PartialVMError"
+                          ]
                           [
                             M.call_closure (|
                               Ty.path "move_binary_format::errors::PartialVMError",
@@ -8830,6 +9128,8 @@ Module reference_safety.
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                                 Value.StructTuple
                                   "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR"
+                                  []
+                                  []
                                   [];
                                 M.read (| offset |)
                               ]
@@ -8841,9 +9141,17 @@ Module reference_safety.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                            Ty.path "move_binary_format::errors::PartialVMError"
+                          ]
                           [
                             Value.StructTuple
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                              []
+                              []
                               []
                           ]
                       |)))
@@ -8955,6 +9263,8 @@ Module reference_safety.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                            []
+                                            []
                                             []
                                         ]
                                       |);
@@ -9146,6 +9456,12 @@ Module reference_safety.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ]
                                                 [ M.read (| err |) ]
                                             |)
                                           |)
@@ -9198,6 +9514,11 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -9215,6 +9536,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -9244,7 +9567,13 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -9362,6 +9691,8 @@ Module reference_safety.
                                         [
                                           Value.StructTuple
                                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                            []
+                                            []
                                             []
                                         ]
                                       |);
@@ -9553,6 +9884,13 @@ Module reference_safety.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "core::result::Result::Err"
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ]
                                                 [ M.read (| err |) ]
                                             |)
                                           |)
@@ -9605,6 +9943,12 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -9622,6 +9966,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -9693,9 +10039,17 @@ Module reference_safety.
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
                       [
                         Value.StructTuple
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                          []
+                          []
                           [ M.read (| elem_id |) ]
                       ]
                   |)
@@ -9870,6 +10224,8 @@ Module reference_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -10124,6 +10480,19 @@ Module reference_safety.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -10144,6 +10513,8 @@ Module reference_safety.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR"
+                                                                      []
+                                                                      []
                                                                       [];
                                                                     M.read (| offset |)
                                                                   ]
@@ -10676,6 +11047,21 @@ Module reference_safety.
                                                                       M.return_ (|
                                                                         Value.StructTuple
                                                                           "core::result::Result::Err"
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ];
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ]
                                                                           [
                                                                             M.call_closure (|
                                                                               Ty.path
@@ -10698,6 +11084,8 @@ Module reference_safety.
                                                                                 |);
                                                                                 Value.StructTuple
                                                                                   "move_core_types::vm_status::StatusCode::CALL_BORROWED_MUTABLE_REFERENCE_ERROR"
+                                                                                  []
+                                                                                  []
                                                                                   [];
                                                                                 M.read (| offset |)
                                                                               ]
@@ -11267,6 +11655,8 @@ Module reference_safety.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                                              []
+                                                              []
                                                               [ M.read (| id |) ]
                                                           |)));
                                                       fun γ =>
@@ -11527,6 +11917,8 @@ Module reference_safety.
                                                           M.alloc (|
                                                             Value.StructTuple
                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                                              []
+                                                              []
                                                               [ M.read (| id |) ]
                                                           |)));
                                                       fun γ =>
@@ -11534,6 +11926,8 @@ Module reference_safety.
                                                           (M.alloc (|
                                                             Value.StructTuple
                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                                                              []
+                                                              []
                                                               []
                                                           |)))
                                                     ]
@@ -11601,6 +11995,8 @@ Module reference_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -11845,7 +12241,21 @@ Module reference_safety.
                         ]
                       |)) in
                   M.alloc (|
-                    Value.StructTuple "core::result::Result::Ok" [ M.read (| return_values |) ]
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]
+                      [ M.read (| return_values |) ]
                   |)
                 |)))
             |)))
@@ -12294,6 +12704,11 @@ Module reference_safety.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ]
                                       [
                                         M.call_closure (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
@@ -12311,6 +12726,8 @@ Module reference_safety.
                                             |);
                                             Value.StructTuple
                                               "move_core_types::vm_status::StatusCode::UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
+                                              []
+                                              []
                                               [];
                                             M.read (| offset |)
                                           ]
@@ -12682,6 +13099,12 @@ Module reference_safety.
                                                           M.return_ (|
                                                             Value.StructTuple
                                                               "core::result::Result::Err"
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
                                                               [
                                                                 M.call_closure (|
                                                                   Ty.path
@@ -12702,6 +13125,8 @@ Module reference_safety.
                                                                     |);
                                                                     Value.StructTuple
                                                                       "move_core_types::vm_status::StatusCode::RET_BORROWED_MUTABLE_REFERENCE_ERROR"
+                                                                      []
+                                                                      []
                                                                       [];
                                                                     M.read (| offset |)
                                                                   ]
@@ -12721,7 +13146,13 @@ Module reference_safety.
                               |)))
                         ]
                       |)) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]
+                      [ Value.Tuple [] ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13259,6 +13690,8 @@ Module reference_safety.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                                          []
+                                                          []
                                                           [ M.read (| new_id |) ]
                                                       |)));
                                                   fun γ =>
@@ -13272,6 +13705,8 @@ Module reference_safety.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                                                          []
+                                                          []
                                                           []
                                                       |)))
                                                 ]
@@ -13446,6 +13881,8 @@ Module reference_safety.
                 M.alloc (|
                   Value.StructRecord
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                    []
+                    []
                     [
                       ("locals", M.read (| locals |));
                       ("borrow_graph", M.read (| borrow_graph |));
@@ -14934,6 +15371,8 @@ Module reference_safety.
                                                         Value.StructTuple
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
                                                           []
+                                                          []
+                                                          []
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -14991,6 +15430,8 @@ Module reference_safety.
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                                                          []
+                                                          []
                                                           []
                                                       |)));
                                                   fun γ =>
@@ -15165,6 +15606,8 @@ Module reference_safety.
               M.alloc (|
                 Value.StructRecord
                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
+                  []
+                  []
                   [
                     ("current_function", M.read (| current_function |));
                     ("locals", M.read (| locals |));
@@ -15438,6 +15881,8 @@ Module reference_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -15566,6 +16011,8 @@ Module reference_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -15720,6 +16167,8 @@ Module reference_safety.
                                 |);
                                 Value.StructTuple
                                   "move_bytecode_verifier_meter::Scope::Function"
+                                  []
+                                  []
                                   [];
                                 M.read (|
                                   get_constant (|
@@ -16161,9 +16610,16 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::absint::JoinResult::Unchanged"
+                                  []
+                                  []
                                   []
                               ]
                           |)));
@@ -16176,9 +16632,16 @@ Module reference_safety.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
+                              []
+                              [
+                                Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ]
                               [
                                 Value.StructTuple
                                   "move_bytecode_verifier::absint::JoinResult::Changed"
+                                  []
+                                  []
                                   []
                               ]
                           |)))

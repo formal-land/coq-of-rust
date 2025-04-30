@@ -128,6 +128,8 @@ Module move_resource.
         ltac:(M.monadic
           (Value.StructRecord
             "move_core_types::language_storage::StructTag"
+            []
+            []
             [
               ("address",
                 M.read (|

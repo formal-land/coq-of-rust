@@ -89,6 +89,8 @@ Module slice.
                             [
                               Value.StructRecord
                                 "core::ops::range::Range"
+                                []
+                                [ Ty.path "usize" ]
                                 [
                                   ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_",
@@ -270,6 +272,8 @@ Module slice.
                                                             |);
                                                             Value.StructRecord
                                                               "core::ops::range::RangeTo"
+                                                              []
+                                                              [ Ty.path "usize" ]
                                                               [
                                                                 ("end_",
                                                                   M.call_closure (|

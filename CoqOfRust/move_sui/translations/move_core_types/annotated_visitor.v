@@ -18,7 +18,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -35,7 +47,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -55,7 +79,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -75,7 +111,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -95,7 +143,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -115,7 +175,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -135,7 +207,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -155,7 +239,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -175,7 +271,19 @@ Module annotated_visitor.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _value := M.alloc (| _value |) in
-          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
+          Value.StructTuple
+            "core::result::Result::Ok"
+            []
+            [
+              Ty.tuple [];
+              Ty.associated_in_trait
+                "move_core_types::annotated_visitor::Traversal"
+                []
+                []
+                Self
+                "Error"
+            ]
+            [ Value.Tuple [] ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -433,7 +541,21 @@ Module annotated_visitor.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Traversal"
+                        []
+                        []
+                        Self
+                        "Error"
+                    ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -753,7 +875,21 @@ Module annotated_visitor.
                         ]
                       |)))
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Traversal"
+                        []
+                        []
+                        Self
+                        "Error"
+                    ]
+                    [ Value.Tuple [] ]
+                |)
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1839,6 +1975,8 @@ Module annotated_visitor.
           let len := M.alloc (| len |) in
           Value.StructRecord
             "move_core_types::annotated_visitor::VecDriver"
+            []
+            []
             [
               ("bytes", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |));
               ("layout", M.read (| layout |));
@@ -1980,6 +2118,26 @@ Module annotated_visitor.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::result::Result::Ok"
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Visitor"
+                        []
+                        []
+                        V
+                        "Value"
+                    ];
+                  Ty.associated_in_trait
+                    "move_core_types::annotated_visitor::Visitor"
+                    []
+                    []
+                    V
+                    "Error"
+                ]
                 [
                   M.read (|
                     M.match_operator (|
@@ -2029,7 +2187,20 @@ Module annotated_visitor.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value"
+                                ]
+                                []
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let~ res :
@@ -2282,7 +2453,18 @@ Module annotated_visitor.
                                 |)
                               |) in
                             M.alloc (|
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| res |) ]
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value"
+                                ]
+                                [ M.read (| res |) ]
                             |)))
                       ]
                     |)
@@ -2352,7 +2534,11 @@ Module annotated_visitor.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.alloc (|
-                          Value.StructTuple "move_core_types::annotated_visitor::NullTraversal" []
+                          Value.StructTuple
+                            "move_core_types::annotated_visitor::NullTraversal"
+                            []
+                            []
+                            []
                         |)
                       |)
                     |)
@@ -2427,6 +2613,8 @@ Module annotated_visitor.
           let layout := M.alloc (| layout |) in
           Value.StructRecord
             "move_core_types::annotated_visitor::StructDriver"
+            []
+            []
             [
               ("bytes", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |));
               ("layout", M.read (| layout |));
@@ -2945,9 +3133,58 @@ Module annotated_visitor.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
+                                ];
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ]
                             [
                               Value.StructTuple
                                 "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
+                                ]
                                 [
                                   Value.Tuple
                                     [
@@ -3096,7 +3333,11 @@ Module annotated_visitor.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.alloc (|
-                          Value.StructTuple "move_core_types::annotated_visitor::NullTraversal" []
+                          Value.StructTuple
+                            "move_core_types::annotated_visitor::NullTraversal"
+                            []
+                            []
+                            []
                         |)
                       |)
                     |)
@@ -3651,6 +3892,21 @@ Module annotated_visitor.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value";
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Error"
+                                  ]
                                   [
                                     M.call_closure (|
                                       Ty.associated_in_trait
@@ -3678,6 +3934,8 @@ Module annotated_visitor.
                                       [
                                         Value.StructTuple
                                           "move_core_types::annotated_visitor::Error::UnexpectedByte"
+                                          []
+                                          []
                                           [ M.read (| b |) ]
                                       ]
                                     |)
@@ -5490,6 +5748,8 @@ Module annotated_visitor.
                                                       ltac:(M.monadic
                                                         (Value.StructTuple
                                                           "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                                                          []
+                                                          []
                                                           []))
                                                   ]
                                                 |)))
@@ -6018,7 +6278,24 @@ Module annotated_visitor.
                             |)))
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value";
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Error"
+                          ]
+                          [ M.read (| res |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6574,7 +6851,26 @@ Module annotated_visitor.
                       ]
                     |)))
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value";
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Error"
+                  ]
+                  [ M.read (| res |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6714,6 +7010,8 @@ Module annotated_visitor.
                                             ltac:(M.monadic
                                               (Value.StructTuple
                                                 "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                                                []
+                                                []
                                                 []))
                                         ]
                                       |)))
@@ -6787,7 +7085,16 @@ Module annotated_visitor.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| buf |) ] |)
+              M.alloc (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
+                    Ty.path "move_core_types::annotated_visitor::Error"
+                  ]
+                  [ M.read (| buf |) ]
+              |)
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

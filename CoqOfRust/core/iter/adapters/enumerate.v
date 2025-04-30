@@ -25,6 +25,8 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.StructRecord
                 "core::iter::adapters::enumerate::Enumerate"
+                []
+                [ I ]
                 [
                   ("iter",
                     M.call_closure (|
@@ -183,6 +185,8 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
                 "core::iter::adapters::enumerate::Enumerate"
+                []
+                [ I ]
                 [ ("iter", M.read (| iter |)); ("count", Value.Integer IntegerKind.Usize 0) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -440,6 +444,19 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                        ]
                         [ Value.Tuple [ M.read (| i |); M.read (| a |) ] ]
                     |)
                   |)))
@@ -730,6 +747,19 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                        ]
                         [ Value.Tuple [ M.read (| i |); M.read (| a |) ] ]
                     |)
                   |)))
@@ -1407,6 +1437,19 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                        ]
                         [
                           Value.Tuple
                             [
@@ -1670,6 +1713,19 @@ Module iter.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                        ]
                         [
                           Value.Tuple
                             [

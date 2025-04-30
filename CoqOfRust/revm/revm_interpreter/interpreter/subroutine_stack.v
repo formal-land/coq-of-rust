@@ -98,6 +98,8 @@ Module interpreter.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+              []
+              []
               [
                 ("idx",
                   M.call_closure (|
@@ -403,6 +405,8 @@ Module interpreter.
             let pc := M.alloc (| pc |) in
             Value.StructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+              []
+              []
               [ ("idx", M.read (| idx |)); ("pc", M.read (| pc |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -443,6 +447,8 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl"
+              []
+              []
               [
                 ("return_stack",
                   M.call_closure (|
@@ -614,6 +620,8 @@ Module interpreter.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl"
+              []
+              []
               [
                 ("return_stack",
                   M.call_closure (|
@@ -836,6 +844,8 @@ Module interpreter.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl"
+              []
+              []
               [
                 ("return_stack",
                   M.call_closure (|
@@ -1202,6 +1212,8 @@ Module interpreter.
                           |);
                           Value.StructRecord
                             "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+                            []
+                            []
                             [
                               ("idx",
                                 M.read (|

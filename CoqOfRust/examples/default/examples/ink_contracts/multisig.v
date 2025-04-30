@@ -24,6 +24,8 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Mapping"
+          []
+          [ K; V ]
           [
             ("_key",
               M.call_closure (|
@@ -258,6 +260,8 @@ Module Impl_core_default_Default_for_multisig_AccountId.
       ltac:(M.monadic
         (Value.StructTuple
           "multisig::AccountId"
+          []
+          []
           [
             M.call_closure (|
               Ty.path "u128",
@@ -712,6 +716,8 @@ Module Impl_core_default_Default_for_multisig_Transaction.
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Transaction"
+          []
+          []
           [
             ("callee",
               M.call_closure (|
@@ -956,6 +962,8 @@ Module Impl_core_default_Default_for_multisig_Transactions.
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Transactions"
+          []
+          []
           [
             ("transactions",
               M.call_closure (|
@@ -1290,6 +1298,8 @@ Module Impl_core_default_Default_for_multisig_Multisig.
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Multisig"
+          []
+          []
           [
             ("confirmations",
               M.call_closure (|
@@ -2326,7 +2336,7 @@ Module Impl_multisig_Multisig.
                                         []
                                         [ Ty.path "core::panicking::AssertKind" ] :=
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" [] [] []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -2359,7 +2369,11 @@ Module Impl_multisig_Multisig.
                                             |)
                                           |)
                                         |);
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
                                       ]
                                     |)
                                   |)
@@ -2626,9 +2640,13 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::OwnerAddition"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "multisig::OwnerAddition"
+                        []
+                        []
                         [ ("owner", M.read (| new_owner |)) ]
                     ]
                 ]
@@ -3376,7 +3394,14 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::OwnerRemoval"
-                    [ Value.StructRecord "multisig::OwnerRemoval" [ ("owner", M.read (| owner |)) ]
+                    []
+                    []
+                    [
+                      Value.StructRecord
+                        "multisig::OwnerRemoval"
+                        []
+                        []
+                        [ ("owner", M.read (| owner |)) ]
                     ]
                 ]
               |)
@@ -3608,9 +3633,13 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::OwnerRemoval"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "multisig::OwnerRemoval"
+                        []
+                        []
                         [ ("owner", M.read (| old_owner |)) ]
                     ]
                 ]
@@ -3634,9 +3663,13 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::OwnerAddition"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "multisig::OwnerAddition"
+                        []
+                        []
                         [ ("owner", M.read (| new_owner |)) ]
                     ]
                 ]
@@ -3746,9 +3779,13 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::RequirementChange"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "multisig::RequirementChange"
+                        []
+                        []
                         [ ("new_requirement", M.read (| new_requirement |)) ]
                     ]
                 ]
@@ -3999,13 +4036,15 @@ Module Impl_multisig_Multisig.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple "multisig::ConfirmationStatus::Confirmed" []
+                        Value.StructTuple "multisig::ConfirmationStatus::Confirmed" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "multisig::ConfirmationStatus::ConfirmationsNeeded"
+                          []
+                          []
                           [
                             M.call_closure (|
                               Ty.path "u32",
@@ -4064,9 +4103,13 @@ Module Impl_multisig_Multisig.
                             |);
                             Value.StructTuple
                               "multisig::Event::Confirmation"
+                              []
+                              []
                               [
                                 Value.StructRecord
                                   "multisig::Confirmation"
+                                  []
+                                  []
                                   [
                                     ("transaction", M.read (| transaction |));
                                     ("from", M.read (| confirmer |));
@@ -4259,9 +4302,13 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::Submission"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "multisig::Submission"
+                        []
+                        []
                         [ ("transaction", M.read (| trans_id |)) ]
                     ]
                 ]
@@ -4941,9 +4988,13 @@ Module Impl_multisig_Multisig.
                           |);
                           Value.StructTuple
                             "multisig::Event::Cancellation"
+                            []
+                            []
                             [
                               Value.StructRecord
                                 "multisig::Cancellation"
+                                []
+                                []
                                 [ ("transaction", M.read (| trans_id |)) ]
                             ]
                         ]
@@ -5302,9 +5353,13 @@ Module Impl_multisig_Multisig.
                           |);
                           Value.StructTuple
                             "multisig::Event::Revocation"
+                            []
+                            []
                             [
                               Value.StructRecord
                                 "multisig::Revocation"
+                                []
+                                []
                                 [
                                   ("transaction", M.read (| trans_id |));
                                   ("from", M.read (| caller |))
@@ -5560,14 +5615,20 @@ Module Impl_multisig_Multisig.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "multisig::Error" ]
+                          [ Value.Tuple [] ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
-                          [ Value.StructTuple "multisig::Error::TransactionFailed" [] ]
+                          []
+                          [ Ty.tuple []; Ty.path "multisig::Error" ]
+                          [ Value.StructTuple "multisig::Error::TransactionFailed" [] [] [] ]
                       |)))
                 ]
               |)
@@ -5590,9 +5651,13 @@ Module Impl_multisig_Multisig.
                   |);
                   Value.StructTuple
                     "multisig::Event::Execution"
+                    []
+                    []
                     [
                       Value.StructRecord
                         "multisig::Execution"
+                        []
+                        []
                         [
                           ("transaction", M.read (| trans_id |));
                           ("result",
@@ -5676,6 +5741,16 @@ Module Impl_multisig_Multisig.
                                                 ltac:(M.monadic
                                                   (Value.StructTuple
                                                     "core::option::Option::None"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "u8";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ]
                                                     []))
                                             ]
                                           |)))

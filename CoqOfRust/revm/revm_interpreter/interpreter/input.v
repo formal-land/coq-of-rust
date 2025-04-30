@@ -32,6 +32,8 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "revm_interpreter::interpreter::input::InputsImpl"
+              []
+              []
               [
                 ("target_address",
                   M.call_closure (|
@@ -281,6 +283,8 @@ Module interpreter.
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter::input::InputsImpl"
+              []
+              []
               [
                 ("target_address",
                   M.call_closure (|
