@@ -901,37 +901,33 @@ Module serial.
         (let oper_a := M.alloc (| oper_a |) in
         let oper_b := M.alloc (| oper_b |) in
         M.read (|
-          let~ result_a : Ty.apply (Ty.path "*") [] [ RA ] :=
-            M.alloc (|
-              M.call_closure (|
-                RA,
-                M.get_trait_method (|
-                  "core::ops::function::FnOnce",
-                  A,
-                  [],
-                  [ Ty.tuple [] ],
-                  "call_once",
-                  [],
-                  []
-                |),
-                [ M.read (| oper_a |); Value.Tuple [] ]
-              |)
+          let~ result_a : RA :=
+            M.call_closure (|
+              RA,
+              M.get_trait_method (|
+                "core::ops::function::FnOnce",
+                A,
+                [],
+                [ Ty.tuple [] ],
+                "call_once",
+                [],
+                []
+              |),
+              [ M.read (| oper_a |); Value.Tuple [] ]
             |) in
-          let~ result_b : Ty.apply (Ty.path "*") [] [ RB ] :=
-            M.alloc (|
-              M.call_closure (|
-                RB,
-                M.get_trait_method (|
-                  "core::ops::function::FnOnce",
-                  B,
-                  [],
-                  [ Ty.tuple [] ],
-                  "call_once",
-                  [],
-                  []
-                |),
-                [ M.read (| oper_b |); Value.Tuple [] ]
-              |)
+          let~ result_b : RB :=
+            M.call_closure (|
+              RB,
+              M.get_trait_method (|
+                "core::ops::function::FnOnce",
+                B,
+                [],
+                [ Ty.tuple [] ],
+                "call_once",
+                [],
+                []
+              |),
+              [ M.read (| oper_b |); Value.Tuple [] ]
             |) in
           M.alloc (| Value.Tuple [ M.read (| result_a |); M.read (| result_b |) ] |)
         |)))

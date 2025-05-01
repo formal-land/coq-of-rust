@@ -67,109 +67,105 @@ Module identity.
             ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ gas_used : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.path "bytes::bytes::Bytes",
-                          "len",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)
-                                ]
-                              |)
+              let~ gas_used : Ty.path "u64" :=
+                M.call_closure (|
+                  Ty.path "u64",
+                  M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.path "alloy_primitives::bytes_::Bytes",
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                             |)
                           |)
-                        ]
-                      |);
-                      M.read (|
-                        get_constant (| "revm_precompile::identity::IDENTITY_BASE", Ty.path "u64" |)
-                      |);
-                      M.read (|
-                        get_constant (|
-                          "revm_precompile::identity::IDENTITY_PER_WORD",
-                          Ty.path "u64"
                         |)
+                      ]
+                    |);
+                    M.read (|
+                      get_constant (| "revm_precompile::identity::IDENTITY_BASE", Ty.path "u64" |)
+                    |);
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::identity::IDENTITY_PER_WORD",
+                        Ty.path "u64"
                       |)
+                    |)
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| gas_used |); M.read (| gas_limit |) ]
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    []
+                                    [
+                                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                                    ]
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "revm_precompile::interface::PrecompileErrors",
+                                        M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.path "revm_precompile::interface::PrecompileError",
+                                          [],
+                                          [ Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ],
+                                          "into",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          Value.StructTuple
+                                            "revm_precompile::interface::PrecompileError::OutOfGas"
+                                            []
+                                            []
+                                            []
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |)
-                |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.gt,
-                                [ M.read (| gas_used |); M.read (| gas_limit |) ]
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  []
-                                  [
-                                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                                  ]
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "revm_precompile::interface::PrecompileErrors",
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "revm_precompile::interface::PrecompileError",
-                                        [],
-                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
-                                        "into",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.StructTuple
-                                          "revm_precompile::interface::PrecompileError::OutOfGas"
-                                          []
-                                          []
-                                          []
-                                      ]
-                                    |)
-                                  ]
-                              |)
-                            |)
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
                 |) in
               M.alloc (|
                 Value.StructTuple

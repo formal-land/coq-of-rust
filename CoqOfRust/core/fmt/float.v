@@ -25,13 +25,11 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "f32" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "f32",
-                    M.get_associated_function (| Ty.path "f32", "abs", [], [] |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ abs : Ty.path "f32" :=
+                M.call_closure (|
+                  Ty.path "f32",
+                  M.get_associated_function (| Ty.path "f32", "abs", [], [] |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 LogicalOp.or (|
@@ -92,13 +90,11 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ abs : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "f64",
-                    M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ abs : Ty.path "f64" :=
+                M.call_closure (|
+                  Ty.path "f64",
+                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 LogicalOp.or (|
@@ -179,134 +175,110 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 1024 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ]
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 1024 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 1024
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 1024
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "*")
-                  []
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 4 ]
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "core::num::fmt::Part" ]
-                      ]
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.path "core::num::fmt::Part" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                       []
                       [ Ty.path "core::num::fmt::Part" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [ Ty.path "core::num::fmt::Part" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 4
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 4
               |) in
-            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::num::fmt::Formatted",
-                  M.get_function (|
-                    "core::num::flt2dec::to_exact_fixed_str",
-                    [],
-                    [
-                      T;
-                      Ty.function
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+              M.call_closure (|
+                Ty.path "core::num::fmt::Formatted",
+                M.get_function (|
+                  "core::num::flt2dec::to_exact_fixed_str",
+                  [],
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
+                                  [ Ty.path "u8" ]
+                              ]
+                          ];
+                        Ty.path "i16"
+                      ]
+                      (Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&")
                             []
-                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ Ty.path "u8" ]
-                                ]
-                            ];
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "i16"
-                        ]
-                        (Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                            Ty.path "i16"
-                          ])
-                    ]
-                  |),
-                  [
-                    M.get_function (|
-                      "core::num::flt2dec::strategy::grisu::format_exact",
-                      [],
-                      []
-                    |);
-                    M.read (| M.deref (| M.read (| num |) |) |);
-                    M.read (| sign |);
-                    M.read (| precision |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
-                      |))
+                        ])
                   ]
-                |)
+                |),
+                [
+                  M.get_function (| "core::num::flt2dec::strategy::grisu::format_exact", [], [] |);
+                  M.read (| M.deref (| M.read (| num |) |) |);
+                  M.read (| sign |);
+                  M.read (| precision |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                    |));
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
+                    |))
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -381,133 +353,113 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 17 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ]
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 17 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 17
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 17
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "*")
-                  []
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 4 ]
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "core::num::fmt::Part" ]
-                      ]
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.path "core::num::fmt::Part" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                       []
                       [ Ty.path "core::num::fmt::Part" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [ Ty.path "core::num::fmt::Part" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 4
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 4
               |) in
-            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::num::fmt::Formatted",
-                  M.get_function (|
-                    "core::num::flt2dec::to_shortest_str",
-                    [],
-                    [
-                      T;
-                      Ty.function
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+              M.call_closure (|
+                Ty.path "core::num::fmt::Formatted",
+                M.get_function (|
+                  "core::num::flt2dec::to_shortest_str",
+                  [],
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
+                                  [ Ty.path "u8" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&")
                             []
-                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ Ty.path "u8" ]
-                                ]
-                            ]
-                        ]
-                        (Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                            Ty.path "i16"
-                          ])
-                    ]
-                  |),
-                  [
-                    M.get_function (|
-                      "core::num::flt2dec::strategy::grisu::format_shortest",
-                      [],
-                      []
-                    |);
-                    M.read (| M.deref (| M.read (| num |) |) |);
-                    M.read (| sign |);
-                    M.read (| precision |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
-                      |))
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                          Ty.path "i16"
+                        ])
                   ]
-                |)
+                |),
+                [
+                  M.get_function (|
+                    "core::num::flt2dec::strategy::grisu::format_shortest",
+                    [],
+                    []
+                  |);
+                  M.read (| M.deref (| M.read (| num |) |) |);
+                  M.read (| sign |);
+                  M.read (| precision |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                    |));
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
+                    |))
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -567,21 +519,14 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let~ force_sign : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "sign_plus",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
-                |)
+            let~ force_sign : Ty.path "bool" :=
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
               |) in
-            let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
-              M.copy (|
+            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
+              M.read (|
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ],
                   force_sign,
@@ -651,8 +596,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ min_precision : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                    (let~ min_precision : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -725,135 +669,111 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 1024 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ]
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 1024 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 1024
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 1024
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "*")
-                  []
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 6 ]
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 6 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "core::num::fmt::Part" ]
-                      ]
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.path "core::num::fmt::Part" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                       []
                       [ Ty.path "core::num::fmt::Part" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [ Ty.path "core::num::fmt::Part" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 6
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 6
               |) in
-            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::num::fmt::Formatted",
-                  M.get_function (|
-                    "core::num::flt2dec::to_exact_exp_str",
-                    [],
-                    [
-                      T;
-                      Ty.function
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+              M.call_closure (|
+                Ty.path "core::num::fmt::Formatted",
+                M.get_function (|
+                  "core::num::flt2dec::to_exact_exp_str",
+                  [],
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
+                                  [ Ty.path "u8" ]
+                              ]
+                          ];
+                        Ty.path "i16"
+                      ]
+                      (Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&")
                             []
-                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ Ty.path "u8" ]
-                                ]
-                            ];
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "i16"
-                        ]
-                        (Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                            Ty.path "i16"
-                          ])
-                    ]
-                  |),
-                  [
-                    M.get_function (|
-                      "core::num::flt2dec::strategy::grisu::format_exact",
-                      [],
-                      []
-                    |);
-                    M.read (| M.deref (| M.read (| num |) |) |);
-                    M.read (| sign |);
-                    M.read (| precision |);
-                    M.read (| upper |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
-                      |))
+                        ])
                   ]
-                |)
+                |),
+                [
+                  M.get_function (| "core::num::flt2dec::strategy::grisu::format_exact", [], [] |);
+                  M.read (| M.deref (| M.read (| num |) |) |);
+                  M.read (| sign |);
+                  M.read (| precision |);
+                  M.read (| upper |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                    |));
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
+                    |))
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -929,135 +849,114 @@ Module fmt.
           M.read (|
             let~ buf :
                 Ty.apply
-                  (Ty.path "*")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 17 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ]
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 17 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 17
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 17
               |) in
             let~ parts :
                 Ty.apply
-                  (Ty.path "*")
-                  []
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 6 ]
                   [
                     Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 6 ]
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "core::num::fmt::Part" ]
-                      ]
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              M.alloc (|
-                repeat (|
-                  M.call_closure (|
+              repeat (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.path "core::num::fmt::Part" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                       []
                       [ Ty.path "core::num::fmt::Part" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                        []
-                        [ Ty.path "core::num::fmt::Part" ],
-                      "uninit",
-                      [],
-                      []
-                    |),
+                    "uninit",
+                    [],
                     []
                   |),
-                  Value.Integer IntegerKind.Usize 6
-                |)
+                  []
+                |),
+                Value.Integer IntegerKind.Usize 6
               |) in
-            let~ formatted : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::fmt::Formatted" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::num::fmt::Formatted",
-                  M.get_function (|
-                    "core::num::flt2dec::to_shortest_exp_str",
-                    [],
-                    [
-                      T;
-                      Ty.function
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
+              M.call_closure (|
+                Ty.path "core::num::fmt::Formatted",
+                M.get_function (|
+                  "core::num::flt2dec::to_shortest_exp_str",
+                  [],
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
+                                  [ Ty.path "u8" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&")
                             []
-                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ Ty.path "u8" ]
-                                ]
-                            ]
-                        ]
-                        (Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                            Ty.path "i16"
-                          ])
-                    ]
-                  |),
-                  [
-                    M.get_function (|
-                      "core::num::flt2dec::strategy::grisu::format_shortest",
-                      [],
-                      []
-                    |);
-                    M.read (| M.deref (| M.read (| num |) |) |);
-                    M.read (| sign |);
-                    Value.Tuple
-                      [ Value.Integer IntegerKind.I16 0; Value.Integer IntegerKind.I16 0 ];
-                    M.read (| upper |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
-                      |))
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                          Ty.path "i16"
+                        ])
                   ]
-                |)
+                |),
+                [
+                  M.get_function (|
+                    "core::num::flt2dec::strategy::grisu::format_shortest",
+                    [],
+                    []
+                  |);
+                  M.read (| M.deref (| M.read (| num |) |) |);
+                  M.read (| sign |);
+                  Value.Tuple [ Value.Integer IntegerKind.I16 0; Value.Integer IntegerKind.I16 0 ];
+                  M.read (| upper |);
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                    |));
+                  (* Unsize *)
+                  M.pointer_coercion
+                    (M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, parts |) |)
+                    |))
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1122,21 +1021,14 @@ Module fmt.
           let num := M.alloc (| num |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let~ force_sign : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "sign_plus",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
-                |)
+            let~ force_sign : Ty.path "bool" :=
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
               |) in
-            let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
-              M.copy (|
+            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
+              M.read (|
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ],
                   force_sign,
@@ -1274,21 +1166,14 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let~ force_sign : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "sign_plus",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
-                |)
+            let~ force_sign : Ty.path "bool" :=
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
               |) in
-            let~ sign : Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ] :=
-              M.copy (|
+            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
+              M.read (|
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.path "core::num::flt2dec::Sign" ],
                   force_sign,
@@ -1396,8 +1281,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ upper : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-                              M.alloc (| Value.Bool false |) in
+                            let~ upper : Ty.path "bool" := Value.Bool false in
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1422,8 +1306,8 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ min_precision : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                              M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
+                            (let~ min_precision : Ty.path "usize" :=
+                              Value.Integer IntegerKind.Usize 1 in
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply

@@ -113,25 +113,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ b : Ty.apply (Ty.path "*") [] [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ] :=
-          M.alloc (|
-            M.call_closure (|
+        let~ b : Ty.path "scoping_rules_lifetimes_traits::Borrowed" :=
+          M.call_closure (|
+            Ty.path "scoping_rules_lifetimes_traits::Borrowed",
+            M.get_trait_method (|
+              "core::default::Default",
               Ty.path "scoping_rules_lifetimes_traits::Borrowed",
-              M.get_trait_method (|
-                "core::default::Default",
-                Ty.path "scoping_rules_lifetimes_traits::Borrowed",
-                [],
-                [],
-                "default",
-                [],
-                []
-              |),
+              [],
+              [],
+              "default",
+              [],
               []
-            |)
+            |),
+            []
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -186,9 +184,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

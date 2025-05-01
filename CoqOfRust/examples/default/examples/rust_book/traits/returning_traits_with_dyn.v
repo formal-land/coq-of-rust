@@ -200,37 +200,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ random_number : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
-          M.copy (| UnsupportedLiteral |) in
+        let~ random_number : Ty.path "f64" := M.read (| UnsupportedLiteral |) in
         let~ animal :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::boxed::Box")
               []
               [
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [
-                    Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
+                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                Ty.path "alloc::alloc::Global"
               ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                []
-                [
-                  Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
-                  Ty.path "alloc::alloc::Global"
-                ],
-              M.get_function (| "returning_traits_with_dyn::random_animal", [], [] |),
-              [ M.read (| random_number |) ]
-            |)
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [
+                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                Ty.path "alloc::alloc::Global"
+              ],
+            M.get_function (| "returning_traits_with_dyn::random_animal", [], [] |),
+            [ M.read (| random_number |) ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -319,9 +311,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

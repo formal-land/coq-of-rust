@@ -694,9 +694,13 @@ impl Expr {
                 init,
                 body,
             } => Rc::new(coq::Expression::Let {
-                is_user: ty.is_some(),
+                suffix: if ty.is_some() {
+                    "~".to_string()
+                } else {
+                    "".to_string()
+                },
                 name: name.to_owned(),
-                ty: ty.as_ref().map(|ty| ty.clone().make_raw_ref().to_coq()),
+                ty: ty.as_ref().map(|ty| ty.to_coq()),
                 init: init.to_coq(),
                 body: body.to_coq(),
             }),

@@ -1435,8 +1435,8 @@ impl FunDefinition {
                                 ty: Some(coq::Expression::just_name("M")),
                                 body: if !generics.is_empty() && !with_extra_self_ty {
                                     Rc::new(coq::Expression::Let {
+                                        suffix: "".to_string(),
                                         name: Some("Self".to_string()),
-                                        is_user: false,
                                         ty: Some(coq::Expression::just_name("Ty.t")),
                                         init: coq::Expression::just_name("Self").apply_many(
                                             &generics
@@ -1523,8 +1523,8 @@ impl ImplItemKind {
                                 ty: Some(coq::Expression::just_name("M")),
                                 body: if !generics.is_empty() {
                                     Rc::new(coq::Expression::Let {
+                                        suffix: "".to_string(),
                                         name: Some("Self".to_string()),
-                                        is_user: false,
                                         ty: Some(coq::Expression::just_name("Ty.t")),
                                         init: coq::Expression::just_name("Self").apply_many(
                                             &generics

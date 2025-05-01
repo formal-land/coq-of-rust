@@ -1130,55 +1130,48 @@ Module transaction.
             ltac:(M.monadic
               (M.read (|
                 let~ tx_type :
-                    Ty.apply
-                      (Ty.path "*")
-                      []
+                    Ty.path
+                      "revm_context_interface::transaction::transaction_type::TransactionType" :=
+                  M.call_closure (|
+                    Ty.path
+                      "revm_context_interface::transaction::transaction_type::TransactionType",
+                    M.get_trait_method (|
+                      "core::convert::Into",
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        Self
+                        "TransactionType",
+                      [],
                       [
                         Ty.path
                           "revm_context_interface::transaction::transaction_type::TransactionType"
-                      ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path
-                        "revm_context_interface::transaction::transaction_type::TransactionType",
-                      M.get_trait_method (|
-                        "core::convert::Into",
+                      ],
+                      "into",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
                         Ty.associated_in_trait
                           "revm_context_interface::transaction::Transaction"
                           []
                           []
                           Self
                           "TransactionType",
-                        [],
-                        [
-                          Ty.path
-                            "revm_context_interface::transaction::transaction_type::TransactionType"
-                        ],
-                        "into",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          Ty.associated_in_trait
-                            "revm_context_interface::transaction::Transaction"
-                            []
-                            []
-                            Self
-                            "TransactionType",
-                          M.get_trait_method (|
-                            "revm_context_interface::transaction::Transaction",
-                            Self,
-                            [],
-                            [],
-                            "tx_type",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      ]
-                    |)
+                        M.get_trait_method (|
+                          "revm_context_interface::transaction::Transaction",
+                          Self,
+                          [],
+                          [],
+                          "tx_type",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    ]
                   |) in
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.path "u128" ],
@@ -1785,52 +1778,44 @@ Module transaction.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ tx_type :
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" :=
+              M.call_closure (|
+                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
+                M.get_trait_method (|
+                  "core::convert::Into",
+                  Ty.associated_in_trait
+                    "revm_context_interface::transaction::Transaction"
+                    []
+                    []
+                    Self
+                    "TransactionType",
+                  [],
                   [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
-                  M.get_trait_method (|
-                    "core::convert::Into",
+                  ],
+                  "into",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.associated_in_trait
                       "revm_context_interface::transaction::Transaction"
                       []
                       []
                       Self
                       "TransactionType",
-                    [],
-                    [
-                      Ty.path
-                        "revm_context_interface::transaction::transaction_type::TransactionType"
-                    ],
-                    "into",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.associated_in_trait
-                        "revm_context_interface::transaction::Transaction"
-                        []
-                        []
-                        Self
-                        "TransactionType",
-                      M.get_trait_method (|
-                        "revm_context_interface::transaction::Transaction",
-                        Self,
-                        [],
-                        [],
-                        "tx_type",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                    |)
-                  ]
-                |)
+                    M.get_trait_method (|
+                      "revm_context_interface::transaction::Transaction",
+                      Self,
+                      [],
+                      [],
+                      "tx_type",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                ]
               |) in
             M.match_operator (|
               Ty.apply (Ty.path "*") [] [ Ty.path "alloy_primitives::common::TxKind" ],
@@ -2225,52 +2210,44 @@ Module transaction.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ tx_type :
-                Ty.apply
-                  (Ty.path "*")
-                  []
+                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" :=
+              M.call_closure (|
+                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
+                M.get_trait_method (|
+                  "core::convert::Into",
+                  Ty.associated_in_trait
+                    "revm_context_interface::transaction::Transaction"
+                    []
+                    []
+                    Self
+                    "TransactionType",
+                  [],
                   [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
-                  ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
-                  M.get_trait_method (|
-                    "core::convert::Into",
+                  ],
+                  "into",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.associated_in_trait
                       "revm_context_interface::transaction::Transaction"
                       []
                       []
                       Self
                       "TransactionType",
-                    [],
-                    [
-                      Ty.path
-                        "revm_context_interface::transaction::transaction_type::TransactionType"
-                    ],
-                    "into",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.associated_in_trait
-                        "revm_context_interface::transaction::Transaction"
-                        []
-                        []
-                        Self
-                        "TransactionType",
-                      M.get_trait_method (|
-                        "revm_context_interface::transaction::Transaction",
-                        Self,
-                        [],
-                        [],
-                        "tx_type",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                    |)
-                  ]
-                |)
+                    M.get_trait_method (|
+                      "revm_context_interface::transaction::Transaction",
+                      Self,
+                      [],
+                      [],
+                      "tx_type",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                ]
               |) in
             M.match_operator (|
               Ty.apply

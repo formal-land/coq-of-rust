@@ -28,16 +28,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ an_integer : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (| Value.Integer IntegerKind.U32 1 |) in
-        let~ a_boolean : Ty.apply (Ty.path "*") [] [ Ty.path "bool" ] :=
-          M.alloc (| Value.Bool true |) in
-        let~ unit_ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := M.alloc (| Value.Tuple [] |) in
-        let~ copied_integer : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.copy (| an_integer |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ an_integer : Ty.path "u32" := Value.Integer IntegerKind.U32 1 in
+        let~ a_boolean : Ty.path "bool" := Value.Bool true in
+        let~ unit_ : Ty.tuple [] := Value.Tuple [] in
+        let~ copied_integer : Ty.path "u32" := M.read (| an_integer |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -96,12 +93,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -158,12 +155,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -220,13 +217,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _unused_variable : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (| Value.Integer IntegerKind.U32 3 |) in
-        let~ _noisy_unused_variable : Ty.apply (Ty.path "*") [] [ Ty.path "u32" ] :=
-          M.alloc (| Value.Integer IntegerKind.U32 2 |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _unused_variable : Ty.path "u32" := Value.Integer IntegerKind.U32 3 in
+        let~ _noisy_unused_variable : Ty.path "u32" := Value.Integer IntegerKind.U32 2 in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

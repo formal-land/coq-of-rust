@@ -562,45 +562,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitAndAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitAndAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 20 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 20 ]
-                          []
-                      ],
-                      "bitand_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitand_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -698,45 +696,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOrAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitOrAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 20 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 20 ]
-                          []
-                      ],
-                      "bitor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -834,45 +830,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitXorAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitXorAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 20 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 20 ]
-                          []
-                      ],
-                      "bitxor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::address::Address",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitxor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::address::Address",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::address::Address",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1806,27 +1800,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 20 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 20 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::address::Address",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::address::Address",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -1879,27 +1866,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 20 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 20 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::address::Address",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::address::Address",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -6512,45 +6492,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitAndAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitAndAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 256 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 256 ]
-                          []
-                      ],
-                      "bitand_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitand_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -6648,45 +6626,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOrAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitOrAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 256 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 256 ]
-                          []
-                      ],
-                      "bitor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -6784,45 +6760,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitXorAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitXorAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 256 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 256 ]
-                          []
-                      ],
-                      "bitxor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::bloom::Bloom",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitxor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::bloom::Bloom",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -7751,27 +7725,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 256 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 256 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::bloom::Bloom",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -7824,27 +7791,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 256 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 256 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::bloom::Bloom",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -7897,27 +7857,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 256 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 256 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::bloom::Bloom",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::bloom::Bloom",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -14886,45 +14839,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitAndAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitAndAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 24 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 24 ]
-                          []
-                      ],
-                      "bitand_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitand_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -15022,45 +14973,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOrAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitOrAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 24 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 24 ]
-                          []
-                      ],
-                      "bitor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -15158,45 +15107,43 @@ Module bits.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::ops::bit::BitXorAssign",
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::ops::bit::BitXorAssign",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    [],
+                    [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 24 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 24 ]
-                          []
-                      ],
-                      "bitxor_assign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          rhs,
-                          "alloy_primitives::bits::function::Function",
-                          0
-                        |)
+                        []
+                    ],
+                    "bitxor_assign",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloy_primitives::bits::function::Function",
+                        0
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        rhs,
+                        "alloy_primitives::bits::function::Function",
+                        0
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -16133,27 +16080,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 24 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::function::Function",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -16206,27 +16146,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 24 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::function::Function",
+                    0
                   |)
                 |) in
               M.alloc (|
@@ -16279,27 +16212,20 @@ Module bits.
             M.read (|
               let~ _0 :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "&")
                     []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 24 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            []
-                        ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloy_primitives::bits::function::Function",
-                      0
-                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::bits::function::Function",
+                    0
                   |)
                 |) in
               M.alloc (|

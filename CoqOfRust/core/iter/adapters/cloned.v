@@ -928,30 +928,28 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ item : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ T ] ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ T ],
-                      M.get_trait_method (|
-                        "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                        I,
-                        [],
-                        [],
-                        "next_unchecked",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::cloned::Cloned",
-                            "it"
-                          |)
+                let~ item : Ty.apply (Ty.path "&") [] [ T ] :=
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
+                    M.get_trait_method (|
+                      "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                      I,
+                      [],
+                      [],
+                      "next_unchecked",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::cloned::Cloned",
+                          "it"
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |) in
                 M.alloc (|
                   M.call_closure (|

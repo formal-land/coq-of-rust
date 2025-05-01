@@ -867,29 +867,25 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -922,29 +918,25 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -986,29 +978,25 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+              let~ __arg1_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1058,17 +1046,15 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+              let~ __self_discr : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1312,25 +1298,26 @@ Module ascii.
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                                []
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                  []
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_associated_function (|
@@ -1340,19 +1327,17 @@ Module ascii.
                                 []
                               |),
                               [ M.read (| d |) ]
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
-                    [ M.read (| UnsupportedLiteral |); M.read (| d |) ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
                   |)
+                |) in
+              let~ byte : Ty.path "u8" :=
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
+                  [ M.read (| UnsupportedLiteral |); M.read (| d |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1644,27 +1629,15 @@ Module ascii.
             M.read (|
               let~ ascii_ptr :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "*const")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "*const")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                        ]
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     ] :=
-                M.alloc (|
-                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
-                |) in
-              let~ str_ptr :
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "str" ] ] :=
-                M.alloc (|
-                  M.cast (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ]) (M.read (| ascii_ptr |))
-                |) in
+                M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |) in
+              let~ str_ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "str" ] :=
+                M.cast
+                  (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ])
+                  (M.read (| ascii_ptr |)) in
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -2040,25 +2013,19 @@ Module ascii.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ byte : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "u8",
-                              M.get_associated_function (|
-                                Ty.path "core::ascii::ascii_char::AsciiChar",
-                                "to_u8",
-                                [],
-                                []
-                              |),
-                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |) in
-                        let~ hi :
-                            Ty.apply
-                              (Ty.path "*")
+                        let~ byte : Ty.path "u8" :=
+                          M.call_closure (|
+                            Ty.path "u8",
+                            M.get_associated_function (|
+                              Ty.path "core::ascii::ascii_char::AsciiChar",
+                              "to_u8",
+                              [],
                               []
-                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-                          M.copy (|
+                            |),
+                            [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                          |) in
+                        let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+                          M.read (|
                             M.SubPointer.get_array_field (|
                               get_constant (|
                                 "core::ascii::ascii_char::fmt::HEX_DIGITS",
@@ -2088,12 +2055,8 @@ Module ascii.
                               |)
                             |)
                           |) in
-                        let~ lo :
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
-                          M.copy (|
+                        let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+                          M.read (|
                             M.SubPointer.get_array_field (|
                               get_constant (|
                                 "core::ascii::ascii_char::fmt::HEX_DIGITS",

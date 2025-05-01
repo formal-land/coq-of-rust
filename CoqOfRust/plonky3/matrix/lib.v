@@ -923,271 +923,250 @@ Module Matrix.
         (let self := M.alloc (| self |) in
         let r := M.alloc (| r |) in
         M.read (|
-          let~ num_packed : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                BinOp.Wrap.div,
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_trait_method (| "p3_matrix::Matrix", Self, [], [ T ], "width", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |);
-                  M.read (|
-                    get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
-                  |)
-                ]
-              |)
+          let~ num_packed : Ty.path "usize" :=
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.div,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_trait_method (| "p3_matrix::Matrix", Self, [], [ T ], "width", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |);
+                M.read (|
+                  get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
+                |)
+              ]
             |) in
           let~ packed :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::iter::adapters::map::Map")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::map::Map")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                      Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
-                    ]
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
                 ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::iter::adapters::map::Map")
-                  []
-                  [
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
-                  ],
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                  [],
-                  [],
-                  "map",
-                  [],
-                  [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
-                |),
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                []
                 [
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    []
-                    [ Ty.path "usize" ]
-                    [
-                      ("start", Value.Integer IntegerKind.Usize 0);
-                      ("end_", M.read (| num_packed |))
-                    ];
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ],
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let c := M.copy (| γ |) in
-                                    M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                ],
+              M.get_trait_method (|
+                "core::iter::traits::iterator::Iterator",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
+                [],
+                "map",
+                [],
+                [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
+              |),
+              [
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
+                  [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| num_packed |))
+                  ];
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ],
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let c := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    P,
+                                    M.get_trait_method (|
+                                      "p3_field::packed::PackedValue",
                                       P,
-                                      M.get_trait_method (|
-                                        "p3_field::packed::PackedValue",
-                                        P,
-                                        [],
-                                        [],
-                                        "from_fn",
-                                        [],
-                                        [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
-                                      |),
-                                      [
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                ltac:(M.monadic
-                                                  (M.match_operator (|
-                                                    Ty.apply
-                                                      (Ty.path "*")
-                                                      []
-                                                      [
-                                                        Ty.function
-                                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                                          T
-                                                      ],
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let i := M.copy (| γ |) in
-                                                          M.call_closure (|
-                                                            T,
-                                                            M.get_trait_method (|
-                                                              "p3_matrix::Matrix",
-                                                              Self,
-                                                              [],
-                                                              [ T ],
-                                                              "get",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| self |) |)
-                                                              |);
-                                                              M.read (| r |);
-                                                              M.call_closure (|
-                                                                Ty.path "usize",
-                                                                BinOp.Wrap.add,
-                                                                [
-                                                                  M.call_closure (|
-                                                                    Ty.path "usize",
-                                                                    BinOp.Wrap.mul,
-                                                                    [
-                                                                      M.read (|
-                                                                        get_constant (|
-                                                                          "p3_field::packed::PackedValue::WIDTH",
-                                                                          Ty.path "usize"
-                                                                        |)
-                                                                      |);
-                                                                      M.read (| c |)
-                                                                    ]
-                                                                  |);
-                                                                  M.read (| i |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)))
-                                                    ]
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
+                                      [],
+                                      [],
+                                      "from_fn",
+                                      [],
+                                      [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                    |),
+                                    [
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  Ty.apply
+                                                    (Ty.path "*")
+                                                    []
+                                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
+                                                    ],
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let i := M.copy (| γ |) in
+                                                        M.call_closure (|
+                                                          T,
+                                                          M.get_trait_method (|
+                                                            "p3_matrix::Matrix",
+                                                            Self,
+                                                            [],
+                                                            [ T ],
+                                                            "get",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |);
+                                                            M.read (| r |);
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.mul,
+                                                                  [
+                                                                    M.read (|
+                                                                      get_constant (|
+                                                                        "p3_field::packed::PackedValue::WIDTH",
+                                                                        Ty.path "usize"
+                                                                      |)
+                                                                    |);
+                                                                    M.read (| c |)
+                                                                  ]
+                                                                |);
+                                                                M.read (| i |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
             |) in
           let~ sfx :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::iter::adapters::map::Map")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::map::Map")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                      Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
-                    ]
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
                 ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::iter::adapters::map::Map")
-                  []
-                  [
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
-                  ],
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                  [],
-                  [],
-                  "map",
-                  [],
-                  [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
-                |),
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                []
                 [
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    []
-                    [ Ty.path "usize" ]
-                    [
-                      ("start",
-                        M.call_closure (|
-                          Ty.path "usize",
-                          BinOp.Wrap.mul,
-                          [
-                            M.read (| num_packed |);
-                            M.read (|
-                              get_constant (|
-                                "p3_field::packed::PackedValue::WIDTH",
-                                Ty.path "usize"
-                              |)
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
+                ],
+              M.get_trait_method (|
+                "core::iter::traits::iterator::Iterator",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
+                [],
+                "map",
+                [],
+                [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+              |),
+              [
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  []
+                  [ Ty.path "usize" ]
+                  [
+                    ("start",
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (| num_packed |);
+                          M.read (|
+                            get_constant (|
+                              "p3_field::packed::PackedValue::WIDTH",
+                              Ty.path "usize"
                             |)
-                          ]
-                        |));
-                      ("end_",
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_trait_method (|
-                            "p3_matrix::Matrix",
-                            Self,
-                            [],
-                            [ T ],
-                            "width",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |))
-                    ];
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ],
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let c := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      T,
-                                      M.get_trait_method (|
-                                        "p3_matrix::Matrix",
-                                        Self,
-                                        [],
-                                        [ T ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |);
-                                        M.read (| r |);
-                                        M.read (| c |)
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
+                          |)
+                        ]
+                      |));
+                    ("end_",
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_trait_method (|
+                          "p3_matrix::Matrix",
+                          Self,
+                          [],
+                          [ T ],
+                          "width",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |))
+                  ];
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply
+                              (Ty.path "*")
+                              []
+                              [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ],
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let c := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    T,
+                                    M.get_trait_method (|
+                                      "p3_matrix::Matrix",
+                                      Self,
+                                      [],
+                                      [ T ],
+                                      "get",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.read (| r |);
+                                      M.read (| c |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
             |) in
           M.alloc (| Value.Tuple [ M.read (| packed |); M.read (| sfx |) ] |)
         |)))
@@ -1209,34 +1188,26 @@ Module Matrix.
         (let self := M.alloc (| self |) in
         let r := M.alloc (| r |) in
         M.read (|
-          let~ row_iter :
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row",
-                M.get_trait_method (| "p3_matrix::Matrix", Self, [], [ T ], "row", [], [] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| r |) ]
-              |)
+          let~ row_iter : Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row" :=
+            M.call_closure (|
+              Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row",
+              M.get_trait_method (| "p3_matrix::Matrix", Self, [], [ T ], "row", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| r |) ]
             |) in
-          let~ num_elems : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_trait_method (| "p3_matrix::Matrix", Self, [], [ T ], "width", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |);
-                  M.read (|
-                    get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
-                  |)
-                ]
-              |)
+          let~ num_elems : Ty.path "usize" :=
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_trait_method (| "p3_matrix::Matrix", Self, [], [ T ], "width", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |);
+                M.read (|
+                  get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1675,28 +1646,39 @@ Module Matrix.
         M.read (|
           let~ rows :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "alloc::vec::Vec")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                      Ty.path "alloc::alloc::Global"
-                    ]
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                  Ty.path "alloc::alloc::Global"
                 ] :=
-            M.alloc (|
-              M.call_closure (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                  Ty.path "alloc::alloc::Global"
+                ],
+              M.get_trait_method (|
+                "itertools::Itertools",
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "core::iter::adapters::map::Map")
                   []
                   [
-                    Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                    Ty.function
+                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                   ],
-                M.get_trait_method (|
-                  "itertools::Itertools",
+                [],
+                [],
+                "collect_vec",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     []
@@ -1706,147 +1688,119 @@ Module Matrix.
                         [ Ty.tuple [ Ty.path "usize" ] ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ],
-                  [],
-                  [],
-                  "collect_vec",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::map::Map")
-                      []
-                      [
-                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Self
-                            "{{synthetic}}'2")
-                      ],
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      [],
-                      [],
-                      "map",
-                      [],
-                      [
-                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Self
-                            "{{synthetic}}'2")
-                      ]
-                    |),
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
+                    [],
+                    "map",
+                    [],
                     [
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        []
-                        [ Ty.path "usize" ]
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_",
-                            M.read (|
-                              get_constant (|
-                                "p3_field::packed::PackedValue::WIDTH",
-                                Ty.path "usize"
-                              |)
-                            |))
-                        ];
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.associated_in_trait
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                      Ty.function
+                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
+                    ]
+                  |),
+                  [
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
+                      [
+                        ("start", Value.Integer IntegerKind.Usize 0);
+                        ("end_",
+                          M.read (|
+                            get_constant (|
+                              "p3_field::packed::PackedValue::WIDTH",
+                              Ty.path "usize"
+                            |)
+                          |))
+                      ];
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                      (Ty.associated_in_trait
+                                        "p3_matrix::Matrix"
+                                        []
+                                        [ T ]
+                                        Self
+                                        "{{synthetic}}'2")
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let c := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        Ty.associated_in_trait
                                           "p3_matrix::Matrix"
                                           []
                                           [ T ]
                                           Self
-                                          "{{synthetic}}'2")
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let c := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          Ty.associated_in_trait
-                                            "p3_matrix::Matrix"
-                                            []
-                                            [ T ]
-                                            Self
-                                            "{{synthetic}}'2",
-                                          M.get_trait_method (|
-                                            "p3_matrix::Matrix",
-                                            Self,
-                                            [],
-                                            [ T ],
-                                            "row_slice",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |);
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.rem,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.add,
-                                                  [ M.read (| r |); M.read (| c |) ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_trait_method (|
-                                                    "p3_matrix::Matrix",
-                                                    Self,
-                                                    [],
-                                                    [ T ],
-                                                    "height",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| self |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
-                ]
-              |)
+                                          "{{synthetic}}'2",
+                                        M.get_trait_method (|
+                                          "p3_matrix::Matrix",
+                                          Self,
+                                          [],
+                                          [ T ],
+                                          "row_slice",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.rem,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [ M.read (| r |); M.read (| c |) ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_trait_method (|
+                                                  "p3_matrix::Matrix",
+                                                  Self,
+                                                  [],
+                                                  [ T ],
+                                                  "height",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -2049,28 +2003,39 @@ Module Matrix.
         M.read (|
           let~ rows :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "alloc::vec::Vec")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                      Ty.path "alloc::alloc::Global"
-                    ]
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                  Ty.path "alloc::alloc::Global"
                 ] :=
-            M.alloc (|
-              M.call_closure (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                  Ty.path "alloc::alloc::Global"
+                ],
+              M.get_trait_method (|
+                "itertools::Itertools",
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "core::iter::adapters::map::Map")
                   []
                   [
-                    Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                    Ty.function
+                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                   ],
-                M.get_trait_method (|
-                  "itertools::Itertools",
+                [],
+                [],
+                "collect_vec",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     []
@@ -2080,172 +2045,155 @@ Module Matrix.
                         [ Ty.tuple [ Ty.path "usize" ] ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ],
-                  [],
-                  [],
-                  "collect_vec",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::map::Map")
-                      []
-                      [
-                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Self
-                            "{{synthetic}}'2")
-                      ],
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      [],
-                      [],
-                      "map",
-                      [],
-                      [
-                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Self
-                            "{{synthetic}}'2")
-                      ]
-                    |),
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
+                    [],
+                    "map",
+                    [],
                     [
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        []
-                        [ Ty.path "usize" ]
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_",
-                            M.read (|
-                              get_constant (|
-                                "p3_field::packed::PackedValue::WIDTH",
-                                Ty.path "usize"
-                              |)
-                            |))
-                        ];
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.associated_in_trait
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                      Ty.function
+                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
+                    ]
+                  |),
+                  [
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
+                      [
+                        ("start", Value.Integer IntegerKind.Usize 0);
+                        ("end_",
+                          M.read (|
+                            get_constant (|
+                              "p3_field::packed::PackedValue::WIDTH",
+                              Ty.path "usize"
+                            |)
+                          |))
+                      ];
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                      (Ty.associated_in_trait
+                                        "p3_matrix::Matrix"
+                                        []
+                                        [ T ]
+                                        Self
+                                        "{{synthetic}}'2")
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let c := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        Ty.associated_in_trait
                                           "p3_matrix::Matrix"
                                           []
                                           [ T ]
                                           Self
-                                          "{{synthetic}}'2")
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let c := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          Ty.associated_in_trait
-                                            "p3_matrix::Matrix"
-                                            []
-                                            [ T ]
-                                            Self
-                                            "{{synthetic}}'2",
-                                          M.get_trait_method (|
-                                            "p3_matrix::Matrix",
-                                            Self,
-                                            [],
-                                            [ T ],
-                                            "row_slice",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |);
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.rem,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.add,
-                                                  [ M.read (| r |); M.read (| c |) ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_trait_method (|
-                                                    "p3_matrix::Matrix",
-                                                    Self,
-                                                    [],
-                                                    [ T ],
-                                                    "height",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| self |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
-                ]
-              |)
+                                          "{{synthetic}}'2",
+                                        M.get_trait_method (|
+                                          "p3_matrix::Matrix",
+                                          Self,
+                                          [],
+                                          [ T ],
+                                          "row_slice",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.rem,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [ M.read (| r |); M.read (| c |) ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_trait_method (|
+                                                  "p3_matrix::Matrix",
+                                                  Self,
+                                                  [],
+                                                  [ T ],
+                                                  "height",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
+                |)
+              ]
             |) in
           let~ next_rows :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "alloc::vec::Vec")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                      Ty.path "alloc::alloc::Global"
-                    ]
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                  Ty.path "alloc::alloc::Global"
                 ] :=
-            M.alloc (|
-              M.call_closure (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                  Ty.path "alloc::alloc::Global"
+                ],
+              M.get_trait_method (|
+                "itertools::Itertools",
                 Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+                  (Ty.path "core::iter::adapters::map::Map")
                   []
                   [
-                    Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                    Ty.function
+                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                   ],
-                M.get_trait_method (|
-                  "itertools::Itertools",
+                [],
+                [],
+                "collect_vec",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     []
@@ -2255,154 +2203,126 @@ Module Matrix.
                         [ Ty.tuple [ Ty.path "usize" ] ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ],
-                  [],
-                  [],
-                  "collect_vec",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::iter::adapters::map::Map")
-                      []
-                      [
-                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Self
-                            "{{synthetic}}'2")
-                      ],
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      [],
-                      [],
-                      "map",
-                      [],
-                      [
-                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Self
-                            "{{synthetic}}'2")
-                      ]
-                    |),
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
+                    [],
+                    "map",
+                    [],
                     [
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        []
-                        [ Ty.path "usize" ]
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_",
-                            M.read (|
-                              get_constant (|
-                                "p3_field::packed::PackedValue::WIDTH",
-                                Ty.path "usize"
-                              |)
-                            |))
-                        ];
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.associated_in_trait
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
+                      Ty.function
+                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
+                    ]
+                  |),
+                  [
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      []
+                      [ Ty.path "usize" ]
+                      [
+                        ("start", Value.Integer IntegerKind.Usize 0);
+                        ("end_",
+                          M.read (|
+                            get_constant (|
+                              "p3_field::packed::PackedValue::WIDTH",
+                              Ty.path "usize"
+                            |)
+                          |))
+                      ];
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                      (Ty.associated_in_trait
+                                        "p3_matrix::Matrix"
+                                        []
+                                        [ T ]
+                                        Self
+                                        "{{synthetic}}'2")
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let c := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        Ty.associated_in_trait
                                           "p3_matrix::Matrix"
                                           []
                                           [ T ]
                                           Self
-                                          "{{synthetic}}'2")
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let c := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          Ty.associated_in_trait
-                                            "p3_matrix::Matrix"
-                                            []
-                                            [ T ]
-                                            Self
-                                            "{{synthetic}}'2",
-                                          M.get_trait_method (|
-                                            "p3_matrix::Matrix",
-                                            Self,
-                                            [],
-                                            [ T ],
-                                            "row_slice",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |);
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.rem,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.add,
-                                                  [
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      BinOp.Wrap.add,
-                                                      [ M.read (| r |); M.read (| c |) ]
-                                                    |);
-                                                    M.read (| step |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_trait_method (|
-                                                    "p3_matrix::Matrix",
-                                                    Self,
-                                                    [],
-                                                    [ T ],
-                                                    "height",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| self |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
-                ]
-              |)
+                                          "{{synthetic}}'2",
+                                        M.get_trait_method (|
+                                          "p3_matrix::Matrix",
+                                          Self,
+                                          [],
+                                          [ T ],
+                                          "row_slice",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.rem,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [ M.read (| r |); M.read (| c |) ]
+                                                  |);
+                                                  M.read (| step |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_trait_method (|
+                                                  "p3_matrix::Matrix",
+                                                  Self,
+                                                  [],
+                                                  [ T ],
+                                                  "height",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -2902,52 +2822,23 @@ Module Matrix.
           (Ty.apply (Ty.path "alloc::vec::Vec") [] [ EF; Ty.path "alloc::alloc::Global" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] := M.alloc (| Value.Tuple [] |) in
-              let __tracing_attr_span := M.copy (| Value.DeclaredButUndefined |) in
-              let __tracing_attr_guard := M.copy (| Value.DeclaredButUndefined |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              LogicalOp.or (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialOrd",
-                                      Ty.path "tracing_core::metadata::Level",
-                                      [],
-                                      [ Ty.path "tracing_core::metadata::LevelFilter" ],
-                                      "le",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        get_associated_constant (|
-                                          Ty.path "tracing_core::metadata::Level",
-                                          "DEBUG",
-                                          Ty.path "tracing_core::metadata::Level"
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        get_constant (|
-                                          "tracing::level_filters::STATIC_MAX_LEVEL",
-                                          Ty.path "tracing_core::metadata::LevelFilter"
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+              let~ _ : Ty.tuple [] := Value.Tuple [] in
+              let __tracing_attr_span := M.read (| Value.DeclaredButUndefined |) in
+              let __tracing_attr_guard := M.read (| Value.DeclaredButUndefined |) in
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                LogicalOp.or (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
@@ -2969,47 +2860,71 @@ Module Matrix.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.path "tracing_core::metadata::LevelFilter",
-                                              M.get_associated_function (|
-                                                Ty.path "tracing_core::metadata::LevelFilter",
-                                                "current",
-                                                [],
-                                                []
-                                              |),
-                                              []
-                                            |)
+                                          get_constant (|
+                                            "tracing::level_filters::STATIC_MAX_LEVEL",
+                                            Ty.path "tracing_core::metadata::LevelFilter"
                                           |)
                                         |)
                                       ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic (Value.Bool false))
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialOrd",
+                                          Ty.path "tracing_core::metadata::Level",
+                                          [],
+                                          [ Ty.path "tracing_core::metadata::LevelFilter" ],
+                                          "le",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            get_associated_constant (|
+                                              Ty.path "tracing_core::metadata::Level",
+                                              "DEBUG",
+                                              Ty.path "tracing_core::metadata::Level"
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.path "tracing_core::metadata::LevelFilter",
+                                                M.get_associated_function (|
+                                                  Ty.path "tracing_core::metadata::LevelFilter",
+                                                  "current",
+                                                  [],
+                                                  []
+                                                |),
+                                                []
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |),
+                                  ltac:(M.monadic (Value.Bool false))
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
                             M.write (|
                               __tracing_attr_span,
                               M.read (|
-                                let~ interest :
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.path "tracing_core::subscriber::Interest" ] :=
-                                  M.alloc (|
-                                    M.call_closure (|
+                                let~ interest : Ty.path "tracing_core::subscriber::Interest" :=
+                                  M.call_closure (|
+                                    Ty.path "tracing_core::subscriber::Interest",
+                                    M.get_associated_function (|
                                       Ty.path "tracing_core::subscriber::Interest",
-                                      M.get_associated_function (|
-                                        Ty.path "tracing_core::subscriber::Interest",
-                                        "never",
-                                        [],
-                                        []
-                                      |),
+                                      "never",
+                                      [],
                                       []
-                                    |)
+                                    |),
+                                    []
                                   |) in
                                 M.match_operator (|
                                   Ty.apply (Ty.path "*") [] [ Ty.path "tracing::span::Span" ],
@@ -3104,44 +3019,38 @@ Module Matrix.
                                                   |),
                                                   ltac:(M.monadic
                                                     (M.read (|
-                                                      let~ _ :
-                                                          Ty.apply
-                                                            (Ty.path "*")
-                                                            []
-                                                            [ Ty.tuple [] ] :=
-                                                        M.alloc (|
-                                                          M.write (|
-                                                            interest,
-                                                            M.call_closure (|
+                                                      let~ _ : Ty.tuple [] :=
+                                                        M.write (|
+                                                          interest,
+                                                          M.call_closure (|
+                                                            Ty.path
+                                                              "tracing_core::subscriber::Interest",
+                                                            M.get_associated_function (|
                                                               Ty.path
-                                                                "tracing_core::subscriber::Interest",
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "tracing_core::callsite::DefaultCallsite",
-                                                                "interest",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.read (|
-                                                                      get_constant (|
-                                                                        "p3_matrix::Matrix::columnwise_dot_product::__CALLSITE",
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "tracing_core::callsite::DefaultCallsite"
-                                                                          ]
-                                                                      |)
+                                                                "tracing_core::callsite::DefaultCallsite",
+                                                              "interest",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "p3_matrix::Matrix::columnwise_dot_product::__CALLSITE",
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "tracing_core::callsite::DefaultCallsite"
+                                                                        ]
                                                                     |)
                                                                   |)
                                                                 |)
-                                                              ]
-                                                            |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -3230,49 +3139,42 @@ Module Matrix.
                                           |) in
                                         let~ meta :
                                             Ty.apply
-                                              (Ty.path "*")
+                                              (Ty.path "&")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "tracing_core::metadata::Metadata" ]
-                                              ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.path "tracing_core::metadata::Metadata" ],
-                                              M.get_trait_method (|
-                                                "tracing_core::callsite::Callsite",
-                                                Ty.path "tracing_core::callsite::DefaultCallsite",
-                                                [],
-                                                [],
-                                                "metadata",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "p3_matrix::Matrix::columnwise_dot_product::__CALLSITE",
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "tracing_core::callsite::DefaultCallsite"
-                                                          ]
-                                                      |)
+                                              [ Ty.path "tracing_core::metadata::Metadata" ] :=
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "tracing_core::metadata::Metadata" ],
+                                            M.get_trait_method (|
+                                              "tracing_core::callsite::Callsite",
+                                              Ty.path "tracing_core::callsite::DefaultCallsite",
+                                              [],
+                                              [],
+                                              "metadata",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "p3_matrix::Matrix::columnwise_dot_product::__CALLSITE",
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "tracing_core::callsite::DefaultCallsite"
+                                                        ]
                                                     |)
                                                   |)
                                                 |)
-                                              ]
-                                            |)
+                                              |)
+                                            ]
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
@@ -3294,51 +3196,44 @@ Module Matrix.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     let~ iter :
-                                                        Ty.apply
-                                                          (Ty.path "*")
+                                                        Ty.path "tracing_core::field::Iter" :=
+                                                      M.call_closure (|
+                                                        Ty.path "tracing_core::field::Iter",
+                                                        M.get_associated_function (|
+                                                          Ty.path "tracing_core::field::FieldSet",
+                                                          "iter",
+                                                          [],
                                                           []
-                                                          [ Ty.path "tracing_core::field::Iter" ] :=
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          Ty.path "tracing_core::field::Iter",
-                                                          M.get_associated_function (|
-                                                            Ty.path "tracing_core::field::FieldSet",
-                                                            "iter",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "tracing_core::field::FieldSet"
-                                                                    ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "tracing_core::metadata::Metadata",
-                                                                    "fields",
-                                                                    [],
-                                                                    []
-                                                                  |),
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
                                                                   [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| meta |)
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)
+                                                                    Ty.path
+                                                                      "tracing_core::field::FieldSet"
+                                                                  ],
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "tracing_core::metadata::Metadata",
+                                                                  "fields",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| meta |) |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)
-                                                          ]
-                                                        |)
+                                                          |)
+                                                        ]
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -3595,74 +3490,65 @@ Module Matrix.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let~ span :
-                                            Ty.apply
-                                              (Ty.path "*")
+                                        (let~ span : Ty.path "tracing::span::Span" :=
+                                          M.call_closure (|
+                                            Ty.path "tracing::span::Span",
+                                            M.get_function (|
+                                              "tracing::__macro_support::__disabled_span",
+                                              [],
                                               []
-                                              [ Ty.path "tracing::span::Span" ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.path "tracing::span::Span",
-                                              M.get_function (|
-                                                "tracing::__macro_support::__disabled_span",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [ Ty.path "tracing_core::metadata::Metadata"
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "tracing_core::callsite::Callsite",
-                                                        Ty.path
-                                                          "tracing_core::callsite::DefaultCallsite",
-                                                        [],
-                                                        [],
-                                                        "metadata",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "p3_matrix::Matrix::columnwise_dot_product::__CALLSITE",
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "tracing_core::callsite::DefaultCallsite"
-                                                                  ]
-                                                              |)
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "tracing_core::metadata::Metadata"
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "tracing_core::callsite::Callsite",
+                                                      Ty.path
+                                                        "tracing_core::callsite::DefaultCallsite",
+                                                      [],
+                                                      [],
+                                                      "metadata",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            get_constant (|
+                                                              "p3_matrix::Matrix::columnwise_dot_product::__CALLSITE",
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "tracing_core::callsite::DefaultCallsite"
+                                                                ]
                                                             |)
                                                           |)
                                                         |)
-                                                      ]
-                                                    |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
-                                              ]
-                                            |)
+                                              |)
+                                            ]
                                           |) in
-                                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                          M.alloc (| Value.Tuple [] |) in
+                                        let~ _ : Ty.tuple [] := Value.Tuple [] in
                                         span))
                                   ]
                                 |)
                               |)
-                            |)
-                          |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
+                            |) in
+                          let~ _ : Ty.tuple [] :=
                             M.write (|
                               __tracing_attr_guard,
                               M.call_closure (|
@@ -3675,35 +3561,31 @@ Module Matrix.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, __tracing_attr_span |) ]
                               |)
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              let~ __tracing_attr_fake_return :
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ EF; Ty.path "alloc::alloc::Global" ]
-                                    ] :=
-                                M.alloc (|
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let~ __tracing_attr_fake_return :
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ EF; Ty.path "alloc::alloc::Global" ] :=
                                   M.never_to_any (|
                                     M.read (|
                                       M.loop (|
@@ -3711,44 +3593,82 @@ Module Matrix.
                                         ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       |)
                                     |)
-                                  |)
-                                |) in
-                              M.return_ (| M.read (| __tracing_attr_fake_return |) |)
+                                  |) in
+                                M.return_ (| M.read (| __tracing_attr_fake_return |) |)
+                              |)
                             |)
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              let~ packed_width : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
-                    [
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_trait_method (|
-                          "p3_matrix::Matrix",
-                          Self,
-                          [],
-                          [ T ],
-                          "width",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |);
-                      M.read (|
-                        get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
-                      |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |)
                 |) in
+              let~ packed_width : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_trait_method (|
+                        "p3_matrix::Matrix",
+                        Self,
+                        [],
+                        [ T ],
+                        "width",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |);
+                    M.read (|
+                      get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
+                    |)
+                  ]
+                |) in
               let~ packed_result :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "alloc::vec::Vec")
                     []
+                    [
+                      Ty.associated_in_trait
+                        "p3_field::field::ExtensionField"
+                        []
+                        [ T ]
+                        EF
+                        "ExtensionPacking";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "p3_field::field::ExtensionField"
+                        []
+                        [ T ]
+                        EF
+                        "ExtensionPacking";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  M.get_trait_method (|
+                    "p3_maybe_rayon::prelude::SharedExt",
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::zip::Zip")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
+                          Self
+                          "{{synthetic}}'9";
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ]
+                      ],
+                    [],
+                    [],
+                    "par_fold_reduce",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -3761,24 +3681,115 @@ Module Matrix.
                             EF
                             "ExtensionPacking";
                           Ty.path "alloc::alloc::Global"
-                        ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [
-                        Ty.associated_in_trait
-                          "p3_field::field::ExtensionField"
+                        ];
+                      Ty.function
+                        [ Ty.tuple [] ]
+                        (Ty.apply
+                          (Ty.path "alloc::vec::Vec")
                           []
-                          [ T ]
-                          EF
-                          "ExtensionPacking";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_trait_method (|
-                      "p3_maybe_rayon::prelude::SharedExt",
+                          [
+                            Ty.associated_in_trait
+                              "p3_field::field::ExtensionField"
+                              []
+                              [ T ]
+                              EF
+                              "ExtensionPacking";
+                            Ty.path "alloc::alloc::Global"
+                          ]);
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "p3_field::field::ExtensionField"
+                                    []
+                                    [ T ]
+                                    EF
+                                    "ExtensionPacking";
+                                  Ty.path "alloc::alloc::Global"
+                                ];
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "p3_matrix::Matrix"
+                                    []
+                                    [
+                                      T;
+                                      Ty.associated_in_trait
+                                        "p3_field::field::Field"
+                                        []
+                                        []
+                                        T
+                                        "Packing"
+                                    ]
+                                    Self
+                                    "{{synthetic}}'10";
+                                  Ty.apply (Ty.path "&") [] [ EF ]
+                                ]
+                            ]
+                        ]
+                        (Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "p3_field::field::ExtensionField"
+                              []
+                              [ T ]
+                              EF
+                              "ExtensionPacking";
+                            Ty.path "alloc::alloc::Global"
+                          ]);
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "p3_field::field::ExtensionField"
+                                    []
+                                    [ T ]
+                                    EF
+                                    "ExtensionPacking";
+                                  Ty.path "alloc::alloc::Global"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "p3_field::field::ExtensionField"
+                                    []
+                                    [ T ]
+                                    EF
+                                    "ExtensionPacking";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ]
+                        ]
+                        (Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "p3_field::field::ExtensionField"
+                              []
+                              [ T ]
+                              EF
+                              "ExtensionPacking";
+                            Ty.path "alloc::alloc::Global"
+                          ])
+                    ]
+                  |),
+                  [
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::iter::adapters::zip::Zip")
                         []
@@ -3791,195 +3802,74 @@ Module Matrix.
                             "{{synthetic}}'9";
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ]
                         ],
-                      [],
-                      [],
-                      "par_fold_reduce",
-                      [],
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
+                          Self
+                          "{{synthetic}}'9",
+                        [],
+                        [],
+                        "zip",
+                        [],
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ EF ] ] ]
+                      |),
                       [
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.associated_in_trait
-                              "p3_field::field::ExtensionField"
-                              []
-                              [ T ]
-                              EF
-                              "ExtensionPacking";
-                            Ty.path "alloc::alloc::Global"
-                          ];
-                        Ty.function
-                          [ Ty.tuple [] ]
-                          (Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.associated_in_trait
-                                "p3_field::field::ExtensionField"
-                                []
-                                [ T ]
-                                EF
-                                "ExtensionPacking";
-                              Ty.path "alloc::alloc::Global"
-                            ]);
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_field::field::ExtensionField"
-                                      []
-                                      [ T ]
-                                      EF
-                                      "ExtensionPacking";
-                                    Ty.path "alloc::alloc::Global"
-                                  ];
-                                Ty.tuple
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_matrix::Matrix"
-                                      []
-                                      [
-                                        T;
-                                        Ty.associated_in_trait
-                                          "p3_field::field::Field"
-                                          []
-                                          []
-                                          T
-                                          "Packing"
-                                      ]
-                                      Self
-                                      "{{synthetic}}'10";
-                                    Ty.apply (Ty.path "&") [] [ EF ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.associated_in_trait
-                                "p3_field::field::ExtensionField"
-                                []
-                                [ T ]
-                                EF
-                                "ExtensionPacking";
-                              Ty.path "alloc::alloc::Global"
-                            ]);
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_field::field::ExtensionField"
-                                      []
-                                      [ T ]
-                                      EF
-                                      "ExtensionPacking";
-                                    Ty.path "alloc::alloc::Global"
-                                  ];
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_field::field::ExtensionField"
-                                      []
-                                      [ T ]
-                                      EF
-                                      "ExtensionPacking";
-                                    Ty.path "alloc::alloc::Global"
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.associated_in_trait
-                                "p3_field::field::ExtensionField"
-                                []
-                                [ T ]
-                                EF
-                                "ExtensionPacking";
-                              Ty.path "alloc::alloc::Global"
-                            ])
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::zip::Zip")
-                          []
-                          [
-                            Ty.associated_in_trait
-                              "p3_matrix::Matrix"
-                              []
-                              [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing"
-                              ]
-                              Self
-                              "{{synthetic}}'9";
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ]
-                          ],
-                        M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
+                        M.call_closure (|
                           Ty.associated_in_trait
                             "p3_matrix::Matrix"
                             []
                             [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
                             Self
                             "{{synthetic}}'9",
-                          [],
-                          [],
-                          "zip",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ EF ] ] ]
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.associated_in_trait
-                              "p3_matrix::Matrix"
-                              []
-                              [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing"
-                              ]
-                              Self
-                              "{{synthetic}}'9",
-                            M.get_trait_method (|
-                              "p3_matrix::Matrix",
-                              Self,
-                              [],
-                              [ T ],
-                              "par_padded_horizontally_packed_rows",
-                              [],
-                              [ Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |);
-                          M.read (| v |)
-                        ]
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [ Ty.tuple [] ]
-                                        (Ty.apply
+                          M.get_trait_method (|
+                            "p3_matrix::Matrix",
+                            Self,
+                            [],
+                            [ T ],
+                            "par_padded_horizontally_packed_rows",
+                            [],
+                            [ Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |);
+                        M.read (| v |)
+                      ]
+                    |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [ Ty.tuple [] ]
+                                      (Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_field::field::ExtensionField"
+                                            []
+                                            [ T ]
+                                            EF
+                                            "ExtensionPacking";
+                                          Ty.path "alloc::alloc::Global"
+                                        ])
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.apply
                                           (Ty.path "alloc::vec::Vec")
                                           []
                                           [
@@ -3990,61 +3880,134 @@ Module Matrix.
                                               EF
                                               "ExtensionPacking";
                                             Ty.path "alloc::alloc::Global"
-                                          ])
-                                    ],
-                                  M.alloc (| α0 |),
+                                          ],
+                                        M.get_trait_method (|
+                                          "p3_field::field::PrimeCharacteristicRing",
+                                          Ty.associated_in_trait
+                                            "p3_field::field::ExtensionField"
+                                            []
+                                            [ T ]
+                                            EF
+                                            "ExtensionPacking",
+                                          [],
+                                          [],
+                                          "zero_vec",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| packed_width |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end));
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
                                   [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [
-                                              Ty.associated_in_trait
-                                                "p3_field::field::ExtensionField"
-                                                []
-                                                [ T ]
-                                                EF
-                                                "ExtensionPacking";
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          M.get_trait_method (|
-                                            "p3_field::field::PrimeCharacteristicRing",
-                                            Ty.associated_in_trait
-                                              "p3_field::field::ExtensionField"
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
                                               []
-                                              [ T ]
-                                              EF
-                                              "ExtensionPacking",
-                                            [],
-                                            [],
-                                            "zero_vec",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| packed_width |) ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end));
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_field::field::ExtensionField"
+                                                  []
+                                                  [ T ]
+                                                  EF
+                                                  "ExtensionPacking";
+                                                Ty.path "alloc::alloc::Global"
+                                              ];
+                                            Ty.tuple
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_matrix::Matrix"
+                                                  []
+                                                  [
+                                                    T;
+                                                    Ty.associated_in_trait
+                                                      "p3_field::field::Field"
+                                                      []
+                                                      []
+                                                      T
+                                                      "Packing"
+                                                  ]
+                                                  Self
+                                                  "{{synthetic}}'10";
+                                                Ty.apply (Ty.path "&") [] [ EF ]
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
+                                          Ty.associated_in_trait
+                                            "p3_field::field::ExtensionField"
+                                            []
+                                            [ T ]
+                                            EF
+                                            "ExtensionPacking";
+                                          Ty.path "alloc::alloc::Global"
+                                        ])
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_field::field::ExtensionField"
+                                                          []
+                                                          [ T ]
+                                                          EF
+                                                          "ExtensionPacking";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_matrix::Matrix"
+                                                          []
+                                                          [
+                                                            T;
+                                                            Ty.associated_in_trait
+                                                              "p3_field::field::Field"
+                                                              []
+                                                              []
+                                                              T
+                                                              "Packing"
+                                                          ]
+                                                          Self
+                                                          "{{synthetic}}'10";
+                                                        Ty.apply (Ty.path "&") [] [ EF ]
+                                                      ]
+                                                  ]
+                                              ]
+                                              (Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
                                                 []
                                                 [
@@ -4055,68 +4018,178 @@ Module Matrix.
                                                     EF
                                                     "ExtensionPacking";
                                                   Ty.path "alloc::alloc::Global"
-                                                ];
-                                              Ty.tuple
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_matrix::Matrix"
-                                                    []
-                                                    [
-                                                      T;
+                                                ])
+                                          ],
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let row := M.copy (| γ0_0 |) in
+                                              let γ0_1 := M.read (| γ0_1 |) in
+                                              let scale := M.copy (| γ0_1 |) in
+                                              M.read (|
+                                                let~ scale :
+                                                    Ty.associated_in_trait
+                                                      "p3_field::field::ExtensionField"
+                                                      []
+                                                      [ T ]
+                                                      EF
+                                                      "ExtensionPacking" :=
+                                                  M.call_closure (|
+                                                    Ty.associated_in_trait
+                                                      "p3_field::field::ExtensionField"
+                                                      []
+                                                      [ T ]
+                                                      EF
+                                                      "ExtensionPacking",
+                                                    M.get_trait_method (|
+                                                      "p3_field::field::BasedVectorSpace",
                                                       Ty.associated_in_trait
-                                                        "p3_field::field::Field"
+                                                        "p3_field::field::ExtensionField"
                                                         []
-                                                        []
-                                                        T
-                                                        "Packing"
-                                                    ]
-                                                    Self
-                                                    "{{synthetic}}'10";
-                                                  Ty.apply (Ty.path "&") [] [ EF ]
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_field::field::ExtensionField"
-                                              []
-                                              [ T ]
-                                              EF
-                                              "ExtensionPacking";
-                                            Ty.path "alloc::alloc::Global"
-                                          ])
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let acc := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
-                                                        [
-                                                          Ty.associated_in_trait
-                                                            "p3_field::field::ExtensionField"
+                                                        [ T ]
+                                                        EF
+                                                        "ExtensionPacking",
+                                                      [],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_field::field::Field"
+                                                          []
+                                                          []
+                                                          T
+                                                          "Packing"
+                                                      ],
+                                                      "from_basis_coefficients_fn",
+                                                      [],
+                                                      [
+                                                        Ty.function
+                                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                                          (Ty.associated_in_trait
+                                                            "p3_field::field::Field"
                                                             []
-                                                            [ T ]
-                                                            EF
-                                                            "ExtensionPacking";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ];
-                                                      Ty.tuple
+                                                            []
+                                                            T
+                                                            "Packing")
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.closure
+                                                        (fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0 ] =>
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.function
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [ Ty.path "usize" ]
+                                                                        ]
+                                                                        (Ty.associated_in_trait
+                                                                          "p3_field::field::Field"
+                                                                          []
+                                                                          []
+                                                                          T
+                                                                          "Packing")
+                                                                    ],
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let i := M.copy (| γ |) in
+                                                                        M.call_closure (|
+                                                                          Ty.associated_in_trait
+                                                                            "p3_field::field::Field"
+                                                                            []
+                                                                            []
+                                                                            T
+                                                                            "Packing",
+                                                                          M.get_trait_method (|
+                                                                            "core::convert::From",
+                                                                            Ty.associated_in_trait
+                                                                              "p3_field::field::Field"
+                                                                              []
+                                                                              []
+                                                                              T
+                                                                              "Packing",
+                                                                            [],
+                                                                            [ T ],
+                                                                            "from",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_array_field (|
+                                                                                M.deref (|
+                                                                                  M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [ T ]
+                                                                                      ],
+                                                                                    M.get_trait_method (|
+                                                                                      "p3_field::field::BasedVectorSpace",
+                                                                                      EF,
+                                                                                      [],
+                                                                                      [ T ],
+                                                                                      "as_basis_coefficients_slice",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        scale
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |),
+                                                                                M.read (| i |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end))
+                                                    ]
+                                                  |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.call_closure (|
+                                                    Ty.tuple [],
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::iterator::Iterator",
+                                                      Ty.apply
+                                                        (Ty.path "core::iter::adapters::zip::Zip")
+                                                        []
                                                         [
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::IterMut")
+                                                            []
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_field::field::ExtensionField"
+                                                                []
+                                                                [ T ]
+                                                                EF
+                                                                "ExtensionPacking"
+                                                            ];
                                                           Ty.associated_in_trait
                                                             "p3_matrix::Matrix"
                                                             []
@@ -4130,881 +4203,252 @@ Module Matrix.
                                                                 "Packing"
                                                             ]
                                                             Self
-                                                            "{{synthetic}}'10";
-                                                          Ty.apply (Ty.path "&") [] [ EF ]
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "p3_field::field::ExtensionField"
-                                                      []
-                                                      [ T ]
-                                                      EF
-                                                      "ExtensionPacking";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ])
-                                            ],
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                let γ0_1 :=
-                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                let row := M.copy (| γ0_0 |) in
-                                                let γ0_1 := M.read (| γ0_1 |) in
-                                                let scale := M.copy (| γ0_1 |) in
-                                                M.read (|
-                                                  let~ scale :
-                                                      Ty.apply
-                                                        (Ty.path "*")
-                                                        []
-                                                        [
-                                                          Ty.associated_in_trait
-                                                            "p3_field::field::ExtensionField"
-                                                            []
-                                                            [ T ]
-                                                            EF
-                                                            "ExtensionPacking"
-                                                        ] :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.associated_in_trait
-                                                          "p3_field::field::ExtensionField"
-                                                          []
-                                                          [ T ]
-                                                          EF
-                                                          "ExtensionPacking",
-                                                        M.get_trait_method (|
-                                                          "p3_field::field::BasedVectorSpace",
-                                                          Ty.associated_in_trait
-                                                            "p3_field::field::ExtensionField"
-                                                            []
-                                                            [ T ]
-                                                            EF
-                                                            "ExtensionPacking",
-                                                          [],
+                                                            "{{synthetic}}'10"
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "for_each",
+                                                      [],
+                                                      [
+                                                        Ty.function
                                                           [
-                                                            Ty.associated_in_trait
-                                                              "p3_field::field::Field"
-                                                              []
-                                                              []
-                                                              T
-                                                              "Packing"
-                                                          ],
-                                                          "from_basis_coefficients_fn",
-                                                          [],
-                                                          [
-                                                            Ty.function
-                                                              [ Ty.tuple [ Ty.path "usize" ] ]
-                                                              (Ty.associated_in_trait
-                                                                "p3_field::field::Field"
-                                                                []
-                                                                []
-                                                                T
-                                                                "Packing")
-                                                          ]
-                                                        |),
-                                                        [
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.match_operator (|
-                                                                      Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
-                                                                        [
-                                                                          Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
-                                                                            (Ty.associated_in_trait
-                                                                              "p3_field::field::Field"
-                                                                              []
-                                                                              []
-                                                                              T
-                                                                              "Packing")
-                                                                        ],
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let i :=
-                                                                              M.copy (| γ |) in
-                                                                            M.call_closure (|
-                                                                              Ty.associated_in_trait
-                                                                                "p3_field::field::Field"
-                                                                                []
-                                                                                []
-                                                                                T
-                                                                                "Packing",
-                                                                              M.get_trait_method (|
-                                                                                "core::convert::From",
-                                                                                Ty.associated_in_trait
-                                                                                  "p3_field::field::Field"
-                                                                                  []
-                                                                                  []
-                                                                                  T
-                                                                                  "Packing",
-                                                                                [],
-                                                                                [ T ],
-                                                                                "from",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  M.SubPointer.get_array_field (|
-                                                                                    M.deref (|
-                                                                                      M.call_closure (|
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "&")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "slice")
-                                                                                              []
-                                                                                              [ T ]
-                                                                                          ],
-                                                                                        M.get_trait_method (|
-                                                                                          "p3_field::field::BasedVectorSpace",
-                                                                                          EF,
-                                                                                          [],
-                                                                                          [ T ],
-                                                                                          "as_basis_coefficients_slice",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            scale
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    |),
-                                                                                    M.read (| i |)
-                                                                                  |)
-                                                                                |)
-                                                                              ]
-                                                                            |)))
-                                                                      ]
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  let~ _ :
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.tuple [],
-                                                        M.get_trait_method (|
-                                                          "core::iter::traits::iterator::Iterator",
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::iter::adapters::zip::Zip")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "core::slice::iter::IterMut")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_field::field::ExtensionField"
-                                                                    []
-                                                                    [ T ]
-                                                                    EF
-                                                                    "ExtensionPacking"
-                                                                ];
-                                                              Ty.associated_in_trait
-                                                                "p3_matrix::Matrix"
-                                                                []
-                                                                [
-                                                                  T;
-                                                                  Ty.associated_in_trait
-                                                                    "p3_field::field::Field"
-                                                                    []
-                                                                    []
-                                                                    T
-                                                                    "Packing"
-                                                                ]
-                                                                Self
-                                                                "{{synthetic}}'10"
-                                                            ],
-                                                          [],
-                                                          [],
-                                                          "for_each",
-                                                          [],
-                                                          [
-                                                            Ty.function
+                                                            Ty.tuple
                                                               [
                                                                 Ty.tuple
                                                                   [
-                                                                    Ty.tuple
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
                                                                       [
-                                                                        Ty.apply
-                                                                          (Ty.path "&mut")
-                                                                          []
-                                                                          [
-                                                                            Ty.associated_in_trait
-                                                                              "p3_field::field::ExtensionField"
-                                                                              []
-                                                                              [ T ]
-                                                                              EF
-                                                                              "ExtensionPacking"
-                                                                          ];
-                                                                        Ty.associated_in_trait
-                                                                          "p3_field::field::Field"
-                                                                          []
-                                                                          []
-                                                                          T
-                                                                          "Packing"
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.tuple [])
-                                                          ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "core::iter::adapters::zip::Zip")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::slice::iter::IterMut")
-                                                                  []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::ExtensionField"
-                                                                      []
-                                                                      [ T ]
-                                                                      EF
-                                                                      "ExtensionPacking"
-                                                                  ];
-                                                                Ty.associated_in_trait
-                                                                  "p3_matrix::Matrix"
-                                                                  []
-                                                                  [
-                                                                    T;
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::Field"
-                                                                      []
-                                                                      []
-                                                                      T
-                                                                      "Packing"
-                                                                  ]
-                                                                  Self
-                                                                  "{{synthetic}}'10"
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "core::iter::traits::iterator::Iterator",
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "core::slice::iter::IterMut")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_field::field::ExtensionField"
-                                                                    []
-                                                                    [ T ]
-                                                                    EF
-                                                                    "ExtensionPacking"
-                                                                ],
-                                                              [],
-                                                              [],
-                                                              "zip",
-                                                              [],
-                                                              [
-                                                                Ty.associated_in_trait
-                                                                  "p3_matrix::Matrix"
-                                                                  []
-                                                                  [
-                                                                    T;
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::Field"
-                                                                      []
-                                                                      []
-                                                                      T
-                                                                      "Packing"
-                                                                  ]
-                                                                  Self
-                                                                  "{{synthetic}}'10"
-                                                              ]
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::slice::iter::IterMut")
-                                                                  []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::ExtensionField"
-                                                                      []
-                                                                      [ T ]
-                                                                      EF
-                                                                      "ExtensionPacking"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "core::iter::traits::collect::IntoIterator",
-                                                                  Ty.apply
-                                                                    (Ty.path "&mut")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.associated_in_trait
-                                                                            "p3_field::field::ExtensionField"
-                                                                            []
-                                                                            [ T ]
-                                                                            EF
-                                                                            "ExtensionPacking";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ],
-                                                                  [],
-                                                                  [],
-                                                                  "into_iter",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    acc
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.read (| row |)
-                                                            ]
-                                                          |);
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.match_operator (|
-                                                                      Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
-                                                                        [
-                                                                          Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&mut")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.associated_in_trait
-                                                                                            "p3_field::field::ExtensionField"
-                                                                                            []
-                                                                                            [ T ]
-                                                                                            EF
-                                                                                            "ExtensionPacking"
-                                                                                        ];
-                                                                                      Ty.associated_in_trait
-                                                                                        "p3_field::field::Field"
-                                                                                        []
-                                                                                        []
-                                                                                        T
-                                                                                        "Packing"
-                                                                                    ]
-                                                                                ]
-                                                                            ]
-                                                                            (Ty.tuple [])
-                                                                        ],
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_tuple_field (|
-                                                                                γ,
-                                                                                0
-                                                                              |) in
-                                                                            let γ0_1 :=
-                                                                              M.SubPointer.get_tuple_field (|
-                                                                                γ,
-                                                                                1
-                                                                              |) in
-                                                                            let l :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            let r :=
-                                                                              M.copy (| γ0_1 |) in
-                                                                            M.call_closure (|
-                                                                              Ty.tuple [],
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::arith::AddAssign",
-                                                                                Ty.associated_in_trait
-                                                                                  "p3_field::field::ExtensionField"
-                                                                                  []
-                                                                                  [ T ]
-                                                                                  EF
-                                                                                  "ExtensionPacking",
-                                                                                [],
-                                                                                [
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_field::field::ExtensionField"
-                                                                                    []
-                                                                                    [ T ]
-                                                                                    EF
-                                                                                    "ExtensionPacking"
-                                                                                ],
-                                                                                "add_assign",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.MutRef,
-                                                                                  M.deref (|
-                                                                                    M.read (| l |)
-                                                                                  |)
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_field::field::ExtensionField"
-                                                                                    []
-                                                                                    [ T ]
-                                                                                    EF
-                                                                                    "ExtensionPacking",
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::arith::Mul",
-                                                                                    Ty.associated_in_trait
-                                                                                      "p3_field::field::ExtensionField"
-                                                                                      []
-                                                                                      [ T ]
-                                                                                      EF
-                                                                                      "ExtensionPacking",
-                                                                                    [],
-                                                                                    [
-                                                                                      Ty.associated_in_trait
-                                                                                        "p3_field::field::Field"
-                                                                                        []
-                                                                                        []
-                                                                                        T
-                                                                                        "Packing"
-                                                                                    ],
-                                                                                    "mul",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      scale
-                                                                                    |);
-                                                                                    M.read (| r |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)))
-                                                                      ]
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  acc
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end));
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.apply
-                                    (Ty.path "*")
-                                    []
-                                    [
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_field::field::ExtensionField"
-                                                    []
-                                                    [ T ]
-                                                    EF
-                                                    "ExtensionPacking";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_field::field::ExtensionField"
-                                                    []
-                                                    [ T ]
-                                                    EF
-                                                    "ExtensionPacking";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_field::field::ExtensionField"
-                                              []
-                                              [ T ]
-                                              EF
-                                              "ExtensionPacking";
-                                            Ty.path "alloc::alloc::Global"
-                                          ])
-                                    ],
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let acc_l := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "*")
-                                            []
-                                            [
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
-                                                        [
-                                                          Ty.associated_in_trait
-                                                            "p3_field::field::ExtensionField"
-                                                            []
-                                                            [ T ]
-                                                            EF
-                                                            "ExtensionPacking";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ];
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
-                                                        [
-                                                          Ty.associated_in_trait
-                                                            "p3_field::field::ExtensionField"
-                                                            []
-                                                            [ T ]
-                                                            EF
-                                                            "ExtensionPacking";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "p3_field::field::ExtensionField"
-                                                      []
-                                                      [ T ]
-                                                      EF
-                                                      "ExtensionPacking";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ])
-                                            ],
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let acc_r := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ _ :
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.tuple [],
-                                                        M.get_trait_method (|
-                                                          "core::iter::traits::iterator::Iterator",
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::iter::adapters::zip::Zip")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "core::slice::iter::IterMut")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_field::field::ExtensionField"
-                                                                    []
-                                                                    [ T ]
-                                                                    EF
-                                                                    "ExtensionPacking"
-                                                                ];
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::vec::into_iter::IntoIter")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_field::field::ExtensionField"
-                                                                    []
-                                                                    [ T ]
-                                                                    EF
-                                                                    "ExtensionPacking";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ],
-                                                          [],
-                                                          [],
-                                                          "for_each",
-                                                          [],
-                                                          [
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&mut")
-                                                                          []
-                                                                          [
-                                                                            Ty.associated_in_trait
-                                                                              "p3_field::field::ExtensionField"
-                                                                              []
-                                                                              [ T ]
-                                                                              EF
-                                                                              "ExtensionPacking"
-                                                                          ];
                                                                         Ty.associated_in_trait
                                                                           "p3_field::field::ExtensionField"
                                                                           []
                                                                           [ T ]
                                                                           EF
                                                                           "ExtensionPacking"
-                                                                      ]
+                                                                      ];
+                                                                    Ty.associated_in_trait
+                                                                      "p3_field::field::Field"
+                                                                      []
+                                                                      []
+                                                                      T
+                                                                      "Packing"
                                                                   ]
                                                               ]
-                                                              (Ty.tuple [])
+                                                          ]
+                                                          (Ty.tuple [])
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::iter::adapters::zip::Zip")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::slice::iter::IterMut")
+                                                              []
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
+                                                                  []
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking"
+                                                              ];
+                                                            Ty.associated_in_trait
+                                                              "p3_matrix::Matrix"
+                                                              []
+                                                              [
+                                                                T;
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::Field"
+                                                                  []
+                                                                  []
+                                                                  T
+                                                                  "Packing"
+                                                              ]
+                                                              Self
+                                                              "{{synthetic}}'10"
+                                                          ],
+                                                        M.get_trait_method (|
+                                                          "core::iter::traits::iterator::Iterator",
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::IterMut")
+                                                            []
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_field::field::ExtensionField"
+                                                                []
+                                                                [ T ]
+                                                                EF
+                                                                "ExtensionPacking"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "zip",
+                                                          [],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "p3_matrix::Matrix"
+                                                              []
+                                                              [
+                                                                T;
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::Field"
+                                                                  []
+                                                                  []
+                                                                  T
+                                                                  "Packing"
+                                                              ]
+                                                              Self
+                                                              "{{synthetic}}'10"
                                                           ]
                                                         |),
                                                         [
                                                           M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path
-                                                                "core::iter::adapters::zip::Zip")
+                                                              (Ty.path "core::slice::iter::IterMut")
                                                               []
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::slice::iter::IterMut")
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
                                                                   []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::ExtensionField"
-                                                                      []
-                                                                      [ T ]
-                                                                      EF
-                                                                      "ExtensionPacking"
-                                                                  ];
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::vec::into_iter::IntoIter")
-                                                                  []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::ExtensionField"
-                                                                      []
-                                                                      [ T ]
-                                                                      EF
-                                                                      "ExtensionPacking";
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ]
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking"
                                                               ],
                                                             M.get_trait_method (|
-                                                              "core::iter::traits::iterator::Iterator",
+                                                              "core::iter::traits::collect::IntoIterator",
                                                               Ty.apply
-                                                                (Ty.path
-                                                                  "core::slice::iter::IterMut")
+                                                                (Ty.path "&mut")
                                                                 []
                                                                 [
-                                                                  Ty.associated_in_trait
-                                                                    "p3_field::field::ExtensionField"
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
                                                                     []
-                                                                    [ T ]
-                                                                    EF
-                                                                    "ExtensionPacking"
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "p3_field::field::ExtensionField"
+                                                                        []
+                                                                        [ T ]
+                                                                        EF
+                                                                        "ExtensionPacking";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ]
                                                                 ],
                                                               [],
                                                               [],
-                                                              "zip",
+                                                              "into_iter",
                                                               [],
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
-                                                                  []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::ExtensionField"
-                                                                      []
-                                                                      [ T ]
-                                                                      EF
-                                                                      "ExtensionPacking";
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ]
-                                                              ]
+                                                              []
                                                             |),
                                                             [
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::slice::iter::IterMut")
-                                                                  []
-                                                                  [
-                                                                    Ty.associated_in_trait
-                                                                      "p3_field::field::ExtensionField"
-                                                                      []
-                                                                      [ T ]
-                                                                      EF
-                                                                      "ExtensionPacking"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "core::iter::traits::collect::IntoIterator",
-                                                                  Ty.apply
-                                                                    (Ty.path "&mut")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.associated_in_trait
-                                                                            "p3_field::field::ExtensionField"
-                                                                            []
-                                                                            [ T ]
-                                                                            EF
-                                                                            "ExtensionPacking";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ],
-                                                                  [],
-                                                                  [],
-                                                                  "into_iter",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    acc_l
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.read (| acc_r |)
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                acc
+                                                              |)
                                                             ]
                                                           |);
-                                                          M.closure
-                                                            (fun γ =>
+                                                          M.read (| row |)
+                                                        ]
+                                                      |);
+                                                      M.closure
+                                                        (fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0 ] =>
                                                               ltac:(M.monadic
-                                                                match γ with
-                                                                | [ α0 ] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.match_operator (|
-                                                                      Ty.apply
-                                                                        (Ty.path "*")
-                                                                        []
+                                                                (M.match_operator (|
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.function
                                                                         [
-                                                                          Ty.function
+                                                                          Ty.tuple
                                                                             [
                                                                               Ty.tuple
                                                                                 [
-                                                                                  Ty.tuple
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&mut")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&mut")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.associated_in_trait
-                                                                                            "p3_field::field::ExtensionField"
-                                                                                            []
-                                                                                            [ T ]
-                                                                                            EF
-                                                                                            "ExtensionPacking"
-                                                                                        ];
                                                                                       Ty.associated_in_trait
                                                                                         "p3_field::field::ExtensionField"
                                                                                         []
                                                                                         [ T ]
                                                                                         EF
                                                                                         "ExtensionPacking"
-                                                                                    ]
+                                                                                    ];
+                                                                                  Ty.associated_in_trait
+                                                                                    "p3_field::field::Field"
+                                                                                    []
+                                                                                    []
+                                                                                    T
+                                                                                    "Packing"
                                                                                 ]
                                                                             ]
-                                                                            (Ty.tuple [])
-                                                                        ],
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_tuple_field (|
-                                                                                γ,
-                                                                                0
-                                                                              |) in
-                                                                            let γ0_1 :=
-                                                                              M.SubPointer.get_tuple_field (|
-                                                                                γ,
-                                                                                1
-                                                                              |) in
-                                                                            let l :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            let r :=
-                                                                              M.copy (| γ0_1 |) in
+                                                                        ]
+                                                                        (Ty.tuple [])
+                                                                    ],
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ,
+                                                                            0
+                                                                          |) in
+                                                                        let γ0_1 :=
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ,
+                                                                            1
+                                                                          |) in
+                                                                        let l :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        let r :=
+                                                                          M.copy (| γ0_1 |) in
+                                                                        M.call_closure (|
+                                                                          Ty.tuple [],
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::arith::AddAssign",
+                                                                            Ty.associated_in_trait
+                                                                              "p3_field::field::ExtensionField"
+                                                                              []
+                                                                              [ T ]
+                                                                              EF
+                                                                              "ExtensionPacking",
+                                                                            [],
+                                                                            [
+                                                                              Ty.associated_in_trait
+                                                                                "p3_field::field::ExtensionField"
+                                                                                []
+                                                                                [ T ]
+                                                                                EF
+                                                                                "ExtensionPacking"
+                                                                            ],
+                                                                            "add_assign",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.MutRef,
+                                                                              M.deref (|
+                                                                                M.read (| l |)
+                                                                              |)
+                                                                            |);
                                                                             M.call_closure (|
-                                                                              Ty.tuple [],
+                                                                              Ty.associated_in_trait
+                                                                                "p3_field::field::ExtensionField"
+                                                                                []
+                                                                                [ T ]
+                                                                                EF
+                                                                                "ExtensionPacking",
                                                                               M.get_trait_method (|
-                                                                                "core::ops::arith::AddAssign",
+                                                                                "core::ops::arith::Mul",
                                                                                 Ty.associated_in_trait
                                                                                   "p3_field::field::ExtensionField"
                                                                                   []
@@ -5014,45 +4458,438 @@ Module Matrix.
                                                                                 [],
                                                                                 [
                                                                                   Ty.associated_in_trait
+                                                                                    "p3_field::field::Field"
+                                                                                    []
+                                                                                    []
+                                                                                    T
+                                                                                    "Packing"
+                                                                                ],
+                                                                                "mul",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (| scale |);
+                                                                                M.read (| r |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end))
+                                                    ]
+                                                  |) in
+                                                acc
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end));
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "*")
+                                  []
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_field::field::ExtensionField"
+                                                  []
+                                                  [ T ]
+                                                  EF
+                                                  "ExtensionPacking";
+                                                Ty.path "alloc::alloc::Global"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_field::field::ExtensionField"
+                                                  []
+                                                  [ T ]
+                                                  EF
+                                                  "ExtensionPacking";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_field::field::ExtensionField"
+                                            []
+                                            [ T ]
+                                            EF
+                                            "ExtensionPacking";
+                                          Ty.path "alloc::alloc::Global"
+                                        ])
+                                  ],
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc_l := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        Ty.apply
+                                          (Ty.path "*")
+                                          []
+                                          [
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_field::field::ExtensionField"
+                                                          []
+                                                          [ T ]
+                                                          EF
+                                                          "ExtensionPacking";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_field::field::ExtensionField"
+                                                          []
+                                                          [ T ]
+                                                          EF
+                                                          "ExtensionPacking";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                              (Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_field::field::ExtensionField"
+                                                    []
+                                                    [ T ]
+                                                    EF
+                                                    "ExtensionPacking";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ])
+                                          ],
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let acc_r := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.call_closure (|
+                                                    Ty.tuple [],
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::iterator::Iterator",
+                                                      Ty.apply
+                                                        (Ty.path "core::iter::adapters::zip::Zip")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::IterMut")
+                                                            []
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_field::field::ExtensionField"
+                                                                []
+                                                                [ T ]
+                                                                EF
+                                                                "ExtensionPacking"
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::vec::into_iter::IntoIter")
+                                                            []
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_field::field::ExtensionField"
+                                                                []
+                                                                [ T ]
+                                                                EF
+                                                                "ExtensionPacking";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ]
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "for_each",
+                                                      [],
+                                                      [
+                                                        Ty.function
+                                                          [
+                                                            Ty.tuple
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "p3_field::field::ExtensionField"
+                                                                          []
+                                                                          [ T ]
+                                                                          EF
+                                                                          "ExtensionPacking"
+                                                                      ];
+                                                                    Ty.associated_in_trait
+                                                                      "p3_field::field::ExtensionField"
+                                                                      []
+                                                                      [ T ]
+                                                                      EF
+                                                                      "ExtensionPacking"
+                                                                  ]
+                                                              ]
+                                                          ]
+                                                          (Ty.tuple [])
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::iter::adapters::zip::Zip")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::slice::iter::IterMut")
+                                                              []
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
+                                                                  []
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking"
+                                                              ];
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::vec::into_iter::IntoIter")
+                                                              []
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
+                                                                  []
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ],
+                                                        M.get_trait_method (|
+                                                          "core::iter::traits::iterator::Iterator",
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::IterMut")
+                                                            []
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "p3_field::field::ExtensionField"
+                                                                []
+                                                                [ T ]
+                                                                EF
+                                                                "ExtensionPacking"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "zip",
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
+                                                                  []
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::slice::iter::IterMut")
+                                                              []
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
+                                                                  []
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking"
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::iter::traits::collect::IntoIterator",
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "p3_field::field::ExtensionField"
+                                                                        []
+                                                                        [ T ]
+                                                                        EF
+                                                                        "ExtensionPacking";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ]
+                                                                ],
+                                                              [],
+                                                              [],
+                                                              "into_iter",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                acc_l
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          M.read (| acc_r |)
+                                                        ]
+                                                      |);
+                                                      M.closure
+                                                        (fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0 ] =>
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  Ty.apply
+                                                                    (Ty.path "*")
+                                                                    []
+                                                                    [
+                                                                      Ty.function
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.tuple
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&mut")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.associated_in_trait
+                                                                                        "p3_field::field::ExtensionField"
+                                                                                        []
+                                                                                        [ T ]
+                                                                                        EF
+                                                                                        "ExtensionPacking"
+                                                                                    ];
+                                                                                  Ty.associated_in_trait
                                                                                     "p3_field::field::ExtensionField"
                                                                                     []
                                                                                     [ T ]
                                                                                     EF
                                                                                     "ExtensionPacking"
-                                                                                ],
-                                                                                "add_assign",
-                                                                                [],
+                                                                                ]
+                                                                            ]
+                                                                        ]
+                                                                        (Ty.tuple [])
+                                                                    ],
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ,
+                                                                            0
+                                                                          |) in
+                                                                        let γ0_1 :=
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ,
+                                                                            1
+                                                                          |) in
+                                                                        let l :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        let r :=
+                                                                          M.copy (| γ0_1 |) in
+                                                                        M.call_closure (|
+                                                                          Ty.tuple [],
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::arith::AddAssign",
+                                                                            Ty.associated_in_trait
+                                                                              "p3_field::field::ExtensionField"
+                                                                              []
+                                                                              [ T ]
+                                                                              EF
+                                                                              "ExtensionPacking",
+                                                                            [],
+                                                                            [
+                                                                              Ty.associated_in_trait
+                                                                                "p3_field::field::ExtensionField"
                                                                                 []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.MutRef,
-                                                                                  M.deref (|
-                                                                                    M.read (| l |)
-                                                                                  |)
-                                                                                |);
-                                                                                M.read (| r |)
-                                                                              ]
-                                                                            |)))
-                                                                      ]
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  acc_l
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
-                    ]
-                  |)
+                                                                                [ T ]
+                                                                                EF
+                                                                                "ExtensionPacking"
+                                                                            ],
+                                                                            "add_assign",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.MutRef,
+                                                                              M.deref (|
+                                                                                M.read (| l |)
+                                                                              |)
+                                                                            |);
+                                                                            M.read (| r |)
+                                                                          ]
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end))
+                                                    ]
+                                                  |) in
+                                                acc_l
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -5675,97 +5512,103 @@ Module Matrix.
         (let self := M.alloc (| self |) in
         let vec := M.alloc (| vec |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.ge,
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_field::field::ExtensionField"
-                                          []
-                                          [ T ]
-                                          EF
-                                          "ExtensionPacking"
-                                      ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vec |) |) |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            UnOp.not (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [
+                                  M.call_closure (|
                                     Ty.path "usize",
-                                    "div_ceil",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_trait_method (|
-                                        "p3_matrix::Matrix",
-                                        Self,
-                                        [],
-                                        [ T ],
-                                        "width",
-                                        [],
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
                                         []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::packed::PackedValue::WIDTH",
-                                        Ty.path "usize"
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_field::field::ExtensionField"
+                                            []
+                                            [ T ]
+                                            EF
+                                            "ExtensionPacking"
+                                        ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| vec |) |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.path "usize",
+                                      "div_ceil",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_trait_method (|
+                                          "p3_matrix::Matrix",
+                                          Self,
+                                          [],
+                                          [ T ],
+                                          "width",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "p3_field::packed::PackedValue::WIDTH",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)
                             |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            Ty.path "never",
+                            M.get_function (| "core::panicking::panic", [], [] |),
+                            [
+                              mk_str (|
+                                "assertion failed: vec.len() >= self.width().div_ceil(T::Packing::WIDTH)"
+                              |)
+                            ]
                           |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::panicking::panic", [], [] |),
-                          [
-                            mk_str (|
-                              "assertion failed: vec.len() >= self.width().div_ceil(T::Packing::WIDTH)"
-                            |)
-                          ]
                         |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -5881,87 +5724,107 @@ Module Matrix.
                                   (let row_packed := M.copy (| γ |) in
                                   M.read (|
                                     let~ packed_sum_of_packed :
-                                        Ty.apply
-                                          (Ty.path "*")
+                                        Ty.associated_in_trait
+                                          "p3_field::field::ExtensionField"
                                           []
+                                          [ T ]
+                                          EF
+                                          "ExtensionPacking" :=
+                                      M.call_closure (|
+                                        Ty.associated_in_trait
+                                          "p3_field::field::ExtensionField"
+                                          []
+                                          [ T ]
+                                          EF
+                                          "ExtensionPacking",
+                                        M.get_function (|
+                                          "p3_field::helpers::dot_product",
+                                          [],
                                           [
                                             Ty.associated_in_trait
                                               "p3_field::field::ExtensionField"
                                               []
                                               [ T ]
                                               EF
-                                              "ExtensionPacking"
-                                          ] :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.associated_in_trait
-                                            "p3_field::field::ExtensionField"
-                                            []
-                                            [ T ]
-                                            EF
-                                            "ExtensionPacking",
-                                          M.get_function (|
-                                            "p3_field::helpers::dot_product",
-                                            [],
-                                            [
-                                              Ty.associated_in_trait
-                                                "p3_field::field::ExtensionField"
-                                                []
-                                                [ T ]
-                                                EF
-                                                "ExtensionPacking";
+                                              "ExtensionPacking";
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::copied::Copied")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "p3_field::field::ExtensionField"
+                                                      []
+                                                      [ T ]
+                                                      EF
+                                                      "ExtensionPacking"
+                                                  ]
+                                              ];
+                                            Ty.associated_in_trait
+                                              "p3_matrix::Matrix"
+                                              []
+                                              [
+                                                T;
+                                                Ty.associated_in_trait
+                                                  "p3_field::field::Field"
+                                                  []
+                                                  []
+                                                  T
+                                                  "Packing"
+                                              ]
+                                              Self
+                                              "{{synthetic}}'10"
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::copied::Copied")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "p3_field::field::ExtensionField"
+                                                      []
+                                                      [ T ]
+                                                      EF
+                                                      "ExtensionPacking"
+                                                  ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "core::iter::adapters::copied::Copied")
+                                                (Ty.path "core::slice::iter::Iter")
                                                 []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
-                                                    []
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_field::field::ExtensionField"
-                                                        []
-                                                        [ T ]
-                                                        EF
-                                                        "ExtensionPacking"
-                                                    ]
-                                                ];
-                                              Ty.associated_in_trait
-                                                "p3_matrix::Matrix"
-                                                []
-                                                [
-                                                  T;
                                                   Ty.associated_in_trait
-                                                    "p3_field::field::Field"
+                                                    "p3_field::field::ExtensionField"
                                                     []
-                                                    []
-                                                    T
-                                                    "Packing"
-                                                ]
-                                                Self
-                                                "{{synthetic}}'10"
-                                            ]
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::iter::adapters::copied::Copied")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
-                                                    []
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "p3_field::field::ExtensionField"
-                                                        []
-                                                        [ T ]
-                                                        EF
-                                                        "ExtensionPacking"
-                                                    ]
+                                                    [ T ]
+                                                    EF
+                                                    "ExtensionPacking"
                                                 ],
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
+                                              [],
+                                              [],
+                                              "copied",
+                                              [],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_field::field::ExtensionField"
+                                                  []
+                                                  [ T ]
+                                                  EF
+                                                  "ExtensionPacking"
+                                              ]
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
                                                   []
@@ -5973,23 +5836,9 @@ Module Matrix.
                                                       EF
                                                       "ExtensionPacking"
                                                   ],
-                                                [],
-                                                [],
-                                                "copied",
-                                                [],
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "p3_field::field::ExtensionField"
-                                                    []
-                                                    [ T ]
-                                                    EF
-                                                    "ExtensionPacking"
-                                                ]
-                                              |),
-                                              [
-                                                M.call_closure (|
+                                                M.get_associated_function (|
                                                   Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
+                                                    (Ty.path "slice")
                                                     []
                                                     [
                                                       Ty.associated_in_trait
@@ -5999,73 +5848,78 @@ Module Matrix.
                                                         EF
                                                         "ExtensionPacking"
                                                     ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "slice")
-                                                      []
-                                                      [
-                                                        Ty.associated_in_trait
-                                                          "p3_field::field::ExtensionField"
-                                                          []
-                                                          [ T ]
-                                                          EF
-                                                          "ExtensionPacking"
-                                                      ],
-                                                    "iter",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| vec |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |);
-                                            M.read (| row_packed |)
-                                          ]
-                                        |)
+                                                  "iter",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| vec |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (| row_packed |)
+                                        ]
                                       |) in
-                                    let~ sum_of_packed : Ty.apply (Ty.path "*") [] [ EF ] :=
-                                      M.alloc (|
-                                        M.call_closure (|
+                                    let~ sum_of_packed : EF :=
+                                      M.call_closure (|
+                                        EF,
+                                        M.get_trait_method (|
+                                          "p3_field::field::BasedVectorSpace",
                                           EF,
-                                          M.get_trait_method (|
-                                            "p3_field::field::BasedVectorSpace",
-                                            EF,
-                                            [],
-                                            [ T ],
-                                            "from_basis_coefficients_fn",
-                                            [],
-                                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
-                                          |),
-                                          [
-                                            M.closure
-                                              (fun γ =>
-                                                ltac:(M.monadic
-                                                  match γ with
-                                                  | [ α0 ] =>
-                                                    ltac:(M.monadic
-                                                      (M.match_operator (|
-                                                        Ty.apply
-                                                          (Ty.path "*")
-                                                          []
-                                                          [
-                                                            Ty.function
-                                                              [ Ty.tuple [ Ty.path "usize" ] ]
-                                                              T
-                                                          ],
-                                                        M.alloc (| α0 |),
+                                          [],
+                                          [ T ],
+                                          "from_basis_coefficients_fn",
+                                          [],
+                                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                        |),
+                                        [
+                                          M.closure
+                                            (fun γ =>
+                                              ltac:(M.monadic
+                                                match γ with
+                                                | [ α0 ] =>
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      Ty.apply
+                                                        (Ty.path "*")
+                                                        []
                                                         [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let i := M.copy (| γ |) in
-                                                              M.call_closure (|
-                                                                T,
-                                                                M.get_trait_method (|
-                                                                  "core::iter::traits::iterator::Iterator",
+                                                          Ty.function
+                                                            [ Ty.tuple [ Ty.path "usize" ] ]
+                                                            T
+                                                        ],
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let i := M.copy (| γ |) in
+                                                            M.call_closure (|
+                                                              T,
+                                                              M.get_trait_method (|
+                                                                "core::iter::traits::iterator::Iterator",
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::iter::adapters::copied::Copied")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::slice::iter::Iter")
+                                                                      []
+                                                                      [ T ]
+                                                                  ],
+                                                                [],
+                                                                [],
+                                                                "sum",
+                                                                [],
+                                                                [ T ]
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "core::iter::adapters::copied::Copied")
@@ -6077,155 +5931,135 @@ Module Matrix.
                                                                         []
                                                                         [ T ]
                                                                     ],
-                                                                  [],
-                                                                  [],
-                                                                  "sum",
-                                                                  [],
-                                                                  [ T ]
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::iter::traits::iterator::Iterator",
                                                                     Ty.apply
                                                                       (Ty.path
-                                                                        "core::iter::adapters::copied::Copied")
+                                                                        "core::slice::iter::Iter")
                                                                       []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::slice::iter::Iter")
-                                                                          []
-                                                                          [ T ]
-                                                                      ],
-                                                                    M.get_trait_method (|
-                                                                      "core::iter::traits::iterator::Iterator",
+                                                                      [ T ],
+                                                                    [],
+                                                                    [],
+                                                                    "copied",
+                                                                    [],
+                                                                    [ T ]
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::slice::iter::Iter")
                                                                         []
                                                                         [ T ],
-                                                                      [],
-                                                                      [],
-                                                                      "copied",
-                                                                      [],
-                                                                      [ T ]
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
+                                                                      M.get_associated_function (|
                                                                         Ty.apply
-                                                                          (Ty.path
-                                                                            "core::slice::iter::Iter")
+                                                                          (Ty.path "slice")
                                                                           []
                                                                           [ T ],
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path "slice")
-                                                                            []
-                                                                            [ T ],
-                                                                          "iter",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.deref (|
-                                                                              M.call_closure (|
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ T ]
-                                                                                  ],
-                                                                                M.get_trait_method (|
-                                                                                  "p3_field::packed::PackedValue",
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_field::field::Field"
-                                                                                    []
-                                                                                    []
-                                                                                    T
-                                                                                    "Packing",
-                                                                                  [],
-                                                                                  [],
-                                                                                  "as_slice",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
+                                                                        "iter",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
                                                                                 [
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.SubPointer.get_array_field (|
-                                                                                      M.deref (|
-                                                                                        M.call_closure (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "slice")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.associated_in_trait
-                                                                                                    "p3_field::field::Field"
-                                                                                                    []
-                                                                                                    []
-                                                                                                    T
-                                                                                                    "Packing"
-                                                                                                ]
-                                                                                            ],
-                                                                                          M.get_trait_method (|
-                                                                                            "p3_field::field::BasedVectorSpace",
-                                                                                            Ty.associated_in_trait
-                                                                                              "p3_field::field::ExtensionField"
-                                                                                              []
-                                                                                              [ T ]
-                                                                                              EF
-                                                                                              "ExtensionPacking",
-                                                                                            [],
-                                                                                            [
-                                                                                              Ty.associated_in_trait
-                                                                                                "p3_field::field::Field"
-                                                                                                []
-                                                                                                []
-                                                                                                T
-                                                                                                "Packing"
-                                                                                            ],
-                                                                                            "as_basis_coefficients_slice",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ T ]
+                                                                                ],
+                                                                              M.get_trait_method (|
+                                                                                "p3_field::packed::PackedValue",
+                                                                                Ty.associated_in_trait
+                                                                                  "p3_field::field::Field"
+                                                                                  []
+                                                                                  []
+                                                                                  T
+                                                                                  "Packing",
+                                                                                [],
+                                                                                [],
+                                                                                "as_slice",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.SubPointer.get_array_field (|
+                                                                                    M.deref (|
+                                                                                      M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
                                                                                           [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              packed_sum_of_packed
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      |),
-                                                                                      M.read (| i |)
-                                                                                    |)
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "slice")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.associated_in_trait
+                                                                                                  "p3_field::field::Field"
+                                                                                                  []
+                                                                                                  []
+                                                                                                  T
+                                                                                                  "Packing"
+                                                                                              ]
+                                                                                          ],
+                                                                                        M.get_trait_method (|
+                                                                                          "p3_field::field::BasedVectorSpace",
+                                                                                          Ty.associated_in_trait
+                                                                                            "p3_field::field::ExtensionField"
+                                                                                            []
+                                                                                            [ T ]
+                                                                                            EF
+                                                                                            "ExtensionPacking",
+                                                                                          [],
+                                                                                          [
+                                                                                            Ty.associated_in_trait
+                                                                                              "p3_field::field::Field"
+                                                                                              []
+                                                                                              []
+                                                                                              T
+                                                                                              "Packing"
+                                                                                          ],
+                                                                                          "as_basis_coefficients_slice",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            packed_sum_of_packed
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    |),
+                                                                                    M.read (| i |)
                                                                                   |)
-                                                                                ]
-                                                                              |)
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                  | _ => M.impossible "wrong number of arguments"
-                                                  end))
-                                          ]
-                                        |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
+                                                end))
+                                        ]
                                       |) in
                                     sum_of_packed
                                   |)))

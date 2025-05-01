@@ -13,9 +13,9 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -70,12 +70,12 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -132,9 +132,9 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -158,9 +158,9 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
       (let t := M.alloc (| t |) in
       let u := M.alloc (| u |) in
       M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -215,12 +215,12 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -275,9 +275,9 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -306,49 +306,47 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ string : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (| mk_str (| "words" |) |) in
+        let~ string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] := mk_str (| "words" |) in
         let~ array :
-            Ty.apply
-              (Ty.path "*")
-              []
-              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "i32" ]
-              ] :=
-          M.alloc (|
-            Value.Array
-              [
-                Value.Integer IntegerKind.I32 1;
-                Value.Integer IntegerKind.I32 2;
-                Value.Integer IntegerKind.I32 3
-              ]
-          |) in
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "i32" ] :=
+          Value.Array
+            [
+              Value.Integer IntegerKind.I32 1;
+              Value.Integer IntegerKind.I32 2;
+              Value.Integer IntegerKind.I32 3
+            ] in
         let~ vec :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::vec::Vec")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                "into_vec",
-                [],
-                [ Ty.path "alloc::alloc::Global" ]
-              |),
-              [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+              "into_vec",
+              [],
+              [ Ty.path "alloc::alloc::Global" ]
+            |),
+            [
+              (* Unsize *)
+              M.pointer_coercion
+                (M.read (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "i32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -359,79 +357,53 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
+                      "new",
+                      [],
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
                           [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 3 ]
-                              [ Ty.path "i32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
-                        [],
-                        []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.I32 1;
-                              Value.Integer IntegerKind.I32 2;
-                              Value.Integer IntegerKind.I32 3
-                            ]
-                        |)
-                      ]
-                    |)
-                  |))
-              ]
-            |)
+                            Value.Integer IntegerKind.I32 1;
+                            Value.Integer IntegerKind.I32 2;
+                            Value.Integer IntegerKind.I32 3
+                          ]
+                      |)
+                    ]
+                  |)
+                |))
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "generics_multiple_bounds::compare_prints",
-                [],
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, string |) |)
-                |)
-              ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "generics_multiple_bounds::compare_prints",
+              [],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, string |) |) |)
+            ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "generics_multiple_bounds::compare_types",
-                [],
-                [
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 3 ]
-                    [ Ty.path "i32" ];
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                ]
-              |),
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "generics_multiple_bounds::compare_types",
+              [],
               [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, array |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, vec |) |) |)
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "i32" ];
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
               ]
-            |)
+            |),
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, array |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, vec |) |) |)
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

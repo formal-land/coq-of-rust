@@ -142,66 +142,64 @@ Module Impl_custom_allocator_CustomAllocator.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
-              M.write (|
-                M.deref (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.path "bool" ],
-                    M.get_trait_method (|
-                      "core::ops::index::IndexMut",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                      [],
-                      [ Ty.path "usize" ],
-                      "index_mut",
-                      [],
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.deref (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "&mut") [] [ Ty.path "bool" ],
+                  M.get_trait_method (|
+                    "core::ops::index::IndexMut",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
                       []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "custom_allocator::CustomAllocator",
-                          "value"
-                        |)
-                      |);
-                      Value.Integer IntegerKind.Usize 0
-                    ]
-                  |)
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                          [],
-                          [ Ty.path "usize" ],
-                          "index",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "custom_allocator::CustomAllocator",
-                              "value"
-                            |)
-                          |);
-                          Value.Integer IntegerKind.Usize 0
-                        ]
+                      [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    [ Ty.path "usize" ],
+                    "index_mut",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "custom_allocator::CustomAllocator",
+                        "value"
                       |)
+                    |);
+                    Value.Integer IntegerKind.Usize 0
+                  ]
+                |)
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        [ Ty.path "usize" ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "custom_allocator::CustomAllocator",
+                            "value"
+                          |)
+                        |);
+                        Value.Integer IntegerKind.Usize 0
+                      ]
                     |)
                   |)
                 |)

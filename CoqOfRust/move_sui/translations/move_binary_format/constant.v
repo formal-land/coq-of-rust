@@ -1280,12 +1280,8 @@ Module constant.
               [ Ty.path "move_core_types::runtime_value::MoveValue" ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ ty :
-                    Ty.apply
-                      (Ty.path "*")
-                      []
-                      [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ] :=
-                  M.copy (|
+                let~ ty : Ty.path "move_core_types::runtime_value::MoveTypeLayout" :=
+                  M.read (|
                     M.match_operator (|
                       Ty.apply
                         (Ty.path "*")

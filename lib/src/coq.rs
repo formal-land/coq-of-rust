@@ -93,8 +93,8 @@ pub(crate) enum Expression {
         body: Rc<Expression>,
     },
     Let {
+        suffix: String,
         name: Option<String>,
-        is_user: bool,
         ty: Option<Rc<Expression>>,
         init: Rc<Expression>,
         body: Rc<Expression>,
@@ -633,8 +633,8 @@ impl Expression {
                 }
             }
             Self::Let {
+                suffix,
                 name,
-                is_user,
                 ty,
                 init,
                 body,
@@ -661,8 +661,7 @@ impl Expression {
                                             nest(
                                                 ψ,
                                                 [
-                                                    ψ.text("let"),
-                                                    optional_insert(ψ, !*is_user, ψ.text("~")),
+                                                    ψ.text(format!("let{}", suffix)),
                                                     ψ.line(),
                                                     ψ.text(name),
                                                 ],

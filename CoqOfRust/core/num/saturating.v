@@ -724,31 +724,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -782,38 +777,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -905,31 +895,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -963,38 +948,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1086,31 +1066,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1144,38 +1119,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1267,31 +1237,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1325,38 +1290,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1456,31 +1416,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1514,38 +1469,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1683,31 +1633,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1741,38 +1686,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1864,31 +1804,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1922,38 +1857,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2045,31 +1975,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "usize" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2103,38 +2028,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "usize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "usize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "usize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "usize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2226,24 +2146,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2277,31 +2195,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2393,24 +2309,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2444,31 +2358,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2560,24 +2472,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2611,31 +2521,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2727,24 +2635,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2778,31 +2684,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2902,24 +2806,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2953,31 +2855,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3115,24 +3015,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3166,31 +3064,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3282,24 +3178,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3333,31 +3227,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3449,24 +3341,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3500,31 +3390,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3616,28 +3504,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3671,35 +3553,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3791,28 +3667,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3846,35 +3716,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3966,28 +3830,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4021,35 +3879,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4141,28 +3993,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4196,35 +4042,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4324,28 +4164,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4379,35 +4213,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4545,28 +4373,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4600,35 +4422,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4720,28 +4536,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4775,35 +4585,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4895,28 +4699,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4950,35 +4748,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u16" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5070,28 +4862,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5125,35 +4911,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5245,28 +5025,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5300,35 +5074,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5420,28 +5188,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5475,35 +5237,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5595,28 +5351,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5650,35 +5400,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5778,28 +5522,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5833,35 +5571,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5999,28 +5731,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6054,35 +5780,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6174,28 +5894,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6229,35 +5943,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6349,28 +6057,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6404,35 +6106,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u32" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6524,28 +6220,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6579,35 +6269,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6699,28 +6383,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6754,35 +6432,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6874,28 +6546,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6929,35 +6595,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7049,28 +6709,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7104,35 +6758,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7232,28 +6880,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7287,35 +6929,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7453,28 +7089,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7508,35 +7138,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7628,28 +7252,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7683,35 +7301,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7803,28 +7415,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7858,35 +7464,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u64" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7978,31 +7578,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8036,38 +7627,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8159,31 +7741,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8217,38 +7790,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8340,31 +7904,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8398,38 +7953,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8521,31 +8067,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8579,38 +8116,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8710,31 +8238,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8768,38 +8287,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8937,31 +8447,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8995,38 +8496,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9118,31 +8610,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9176,38 +8659,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9299,31 +8773,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9357,38 +8822,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "u128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "u128" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "u128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "u128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9480,31 +8936,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9538,38 +8989,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9661,31 +9107,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9719,38 +9160,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9842,31 +9278,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9900,38 +9331,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10023,31 +9449,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10081,38 +9502,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10212,31 +9628,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10270,38 +9681,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10439,31 +9845,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10497,38 +9898,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10620,31 +10016,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10678,38 +10069,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10801,31 +10187,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                          [ Ty.path "isize" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10859,38 +10240,33 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
+                      [],
+                      [
                         Ty.apply
                           (Ty.path "core::num::saturating::Saturating")
                           []
-                          [ Ty.path "isize" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "isize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
                           [ Ty.path "isize" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
+                        []
+                        [ Ty.path "isize" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10982,24 +10358,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11033,31 +10407,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11149,24 +10521,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11200,31 +10570,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11316,24 +10684,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11367,31 +10733,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11483,24 +10847,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11534,31 +10896,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11658,24 +11018,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11709,31 +11067,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11871,24 +11227,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11922,31 +11276,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12038,24 +11390,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12089,31 +11439,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12205,24 +11553,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12256,31 +11602,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i8" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i8" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12372,28 +11716,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12427,35 +11765,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12547,28 +11879,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12602,35 +11928,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12722,28 +12042,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12777,35 +12091,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12897,28 +12205,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12952,35 +12254,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13080,28 +12376,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13135,35 +12425,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13301,28 +12585,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13356,35 +12634,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13476,28 +12748,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13531,35 +12797,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13651,28 +12911,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13706,35 +12960,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i16" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i16" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i16" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13826,28 +13074,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13881,35 +13123,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14001,28 +13237,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14056,35 +13286,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14176,28 +13400,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14231,35 +13449,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14351,28 +13563,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14406,35 +13612,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14534,28 +13734,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14589,35 +13783,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14755,28 +13943,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14810,35 +13992,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14930,28 +14106,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14985,35 +14155,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15105,28 +14269,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15160,35 +14318,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i32" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i32" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i32" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15280,28 +14432,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15335,35 +14481,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15455,28 +14595,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15510,35 +14644,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15630,28 +14758,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15685,35 +14807,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15805,28 +14921,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15860,35 +14970,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15988,28 +15092,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16043,35 +15141,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16209,28 +15301,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16264,35 +15350,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16384,28 +15464,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16439,35 +15513,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16559,28 +15627,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16614,35 +15676,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i64" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i64" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i64" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16734,31 +15790,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16792,38 +15839,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "add",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16915,31 +15953,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16973,38 +16002,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "sub",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17096,31 +16116,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17154,38 +16165,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "mul",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17277,31 +16279,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17335,38 +16328,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "div",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17466,31 +16450,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17524,38 +16499,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "rem",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17693,31 +16659,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17751,38 +16708,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "bitxor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17874,31 +16822,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17932,38 +16871,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "bitor",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18055,31 +16985,22 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18113,38 +17034,29 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+              let~ _ : Ty.tuple [] :=
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply
-                          (Ty.path "core::num::saturating::Saturating")
-                          []
-                          [ Ty.path "i128" ],
-                        [],
-                        [
-                          Ty.apply
-                            (Ty.path "core::num::saturating::Saturating")
-                            []
-                            [ Ty.path "i128" ]
-                        ],
-                        "bitand",
-                        [],
+                      [],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple
+                        "core::num::saturating::Saturating"
                         []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple
-                          "core::num::saturating::Saturating"
-                          []
-                          [ Ty.path "i128" ]
-                          [ M.read (| other |) ]
-                      ]
-                    |)
+                        [ Ty.path "i128" ]
+                        [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

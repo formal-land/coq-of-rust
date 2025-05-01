@@ -232,18 +232,13 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     let~ x :
-                        Ty.apply
-                          (Ty.path "*")
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
                           []
-                          [
-                            Ty.associated_in_trait
-                              "core::iter::traits::iterator::Iterator"
-                              []
-                              []
-                              I
-                              "Item"
-                          ] :=
-                      M.copy (|
+                          []
+                          I
+                          "Item" :=
+                      M.read (|
                         M.match_operator (|
                           Ty.apply
                             (Ty.path "*")

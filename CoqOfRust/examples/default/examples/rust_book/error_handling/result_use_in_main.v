@@ -23,11 +23,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ]) (|
         ltac:(M.monadic
           (M.read (|
-            let~ number_str :
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-              M.alloc (| mk_str (| "10" |) |) in
-            let~ number : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-              M.copy (|
+            let~ number_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] := mk_str (| "10" |) in
+            let~ number : Ty.path "i32" :=
+              M.read (|
                 M.match_operator (|
                   Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
                   M.alloc (|
@@ -76,9 +74,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-              let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                M.alloc (|
+            let~ _ : Ty.tuple [] :=
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -133,9 +131,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"

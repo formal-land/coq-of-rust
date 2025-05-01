@@ -81,24 +81,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ open_box :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "struct_visibility::my::OpenBox")
               []
-              [
-                Ty.apply
-                  (Ty.path "struct_visibility::my::OpenBox")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-              ] :=
-          M.alloc (|
-            Value.StructRecord
-              "struct_visibility::my::OpenBox"
-              []
-              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-              [ ("contents", mk_str (| "public information" |)) ]
-          |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+          Value.StructRecord
+            "struct_visibility::my::OpenBox"
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+            [ ("contents", mk_str (| "public information" |)) ] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -165,36 +158,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _closed_box :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "struct_visibility::my::ClosedBox")
               []
-              [
-                Ty.apply
-                  (Ty.path "struct_visibility::my::ClosedBox")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "struct_visibility::my::ClosedBox")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "struct_visibility::my::ClosedBox")
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "struct_visibility::my::ClosedBox")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                "new",
-                [],
-                []
-              |),
-              [ mk_str (| "classified information" |) ]
-            |)
+              "new",
+              [],
+              []
+            |),
+            [ mk_str (| "classified information" |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

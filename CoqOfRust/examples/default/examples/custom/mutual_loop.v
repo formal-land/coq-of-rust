@@ -115,21 +115,17 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ la : Ty.apply (Ty.path "*") [] [ Ty.path "mutual_loop::LoopA" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "mutual_loop::LoopA",
-              M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [], [] |),
-              []
-            |)
+        let~ la : Ty.path "mutual_loop::LoopA" :=
+          M.call_closure (|
+            Ty.path "mutual_loop::LoopA",
+            M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [], [] |),
+            []
           |) in
-        let~ lb : Ty.apply (Ty.path "*") [] [ Ty.path "mutual_loop::LoopB" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "mutual_loop::LoopB",
-              M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, la |) ]
-            |)
+        let~ lb : Ty.path "mutual_loop::LoopB" :=
+          M.call_closure (|
+            Ty.path "mutual_loop::LoopB",
+            M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, la |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -1205,45 +1205,33 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 let~ item :
-                    Ty.apply
-                      (Ty.path "*")
+                    Ty.associated_in_trait
+                      "core::iter::traits::iterator::Iterator"
                       []
-                      [
-                        Ty.associated_in_trait
-                          "core::iter::traits::iterator::Iterator"
-                          []
-                          []
-                          I
-                          "Item"
-                      ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.associated_in_trait
-                        "core::iter::traits::iterator::Iterator"
-                        []
-                        []
-                        I
-                        "Item",
-                      M.get_trait_method (|
-                        "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                        I,
-                        [],
-                        [],
-                        "next_unchecked",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::map::Map",
-                            "iter"
-                          |)
+                      []
+                      I
+                      "Item" :=
+                  M.call_closure (|
+                    Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item",
+                    M.get_trait_method (|
+                      "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                      I,
+                      [],
+                      [],
+                      "next_unchecked",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::map::Map",
+                          "iter"
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |) in
                 M.alloc (|
                   M.call_closure (|

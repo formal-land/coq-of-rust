@@ -66,40 +66,38 @@ Module hash.
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
         M.read (|
-          let~ cost : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "u64",
-                M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
-                          |)
+          let~ cost : Ty.path "u64" :=
+            M.call_closure (|
+              Ty.path "u64",
+              M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                         |)
                       |)
-                    ]
-                  |);
-                  Value.Integer IntegerKind.U64 60;
-                  Value.Integer IntegerKind.U64 12
-                ]
-              |)
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U64 60;
+                Value.Integer IntegerKind.U64 12
+              ]
             |) in
           M.match_operator (|
             Ty.apply
@@ -162,14 +160,14 @@ Module hash.
                 ltac:(M.monadic
                   (let~ output :
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "generic_array::GenericArray")
                         []
                         [
+                          Ty.path "u8";
                           Ty.apply
-                            (Ty.path "generic_array::GenericArray")
+                            (Ty.path "typenum::uint::UInt")
                             []
                             [
-                              Ty.path "u8";
                               Ty.apply
                                 (Ty.path "typenum::uint::UInt")
                                 []
@@ -190,14 +188,8 @@ Module hash.
                                                 (Ty.path "typenum::uint::UInt")
                                                 []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "typenum::uint::UInt")
-                                                    []
-                                                    [
-                                                      Ty.path "typenum::uint::UTerm";
-                                                      Ty.path "typenum::bit::B1"
-                                                    ];
-                                                  Ty.path "typenum::bit::B0"
+                                                  Ty.path "typenum::uint::UTerm";
+                                                  Ty.path "typenum::bit::B1"
                                                 ];
                                               Ty.path "typenum::bit::B0"
                                             ];
@@ -206,20 +198,65 @@ Module hash.
                                       Ty.path "typenum::bit::B0"
                                     ];
                                   Ty.path "typenum::bit::B0"
-                                ]
+                                ];
+                              Ty.path "typenum::bit::B0"
                             ]
                         ] :=
-                    M.alloc (|
-                      M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "generic_array::GenericArray")
+                        []
+                        [
+                          Ty.path "u8";
+                          Ty.apply
+                            (Ty.path "typenum::uint::UInt")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "typenum::uint::UInt")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "typenum::uint::UInt")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "typenum::uint::UInt")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "typenum::uint::UInt")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "typenum::uint::UInt")
+                                                []
+                                                [
+                                                  Ty.path "typenum::uint::UTerm";
+                                                  Ty.path "typenum::bit::B1"
+                                                ];
+                                              Ty.path "typenum::bit::B0"
+                                            ];
+                                          Ty.path "typenum::bit::B0"
+                                        ];
+                                      Ty.path "typenum::bit::B0"
+                                    ];
+                                  Ty.path "typenum::bit::B0"
+                                ];
+                              Ty.path "typenum::bit::B0"
+                            ]
+                        ],
+                      M.get_trait_method (|
+                        "digest::digest::Digest",
                         Ty.apply
-                          (Ty.path "generic_array::GenericArray")
+                          (Ty.path "digest::core_api::wrapper::CoreWrapper")
                           []
                           [
-                            Ty.path "u8";
                             Ty.apply
-                              (Ty.path "typenum::uint::UInt")
+                              (Ty.path "digest::core_api::ct_variable::CtVariableCoreWrapper")
                               []
                               [
+                                Ty.path "sha2::core_api::Sha256VarCore";
                                 Ty.apply
                                   (Ty.path "typenum::uint::UInt")
                                   []
@@ -240,8 +277,14 @@ Module hash.
                                                   (Ty.path "typenum::uint::UInt")
                                                   []
                                                   [
-                                                    Ty.path "typenum::uint::UTerm";
-                                                    Ty.path "typenum::bit::B1"
+                                                    Ty.apply
+                                                      (Ty.path "typenum::uint::UInt")
+                                                      []
+                                                      [
+                                                        Ty.path "typenum::uint::UTerm";
+                                                        Ty.path "typenum::bit::B1"
+                                                      ];
+                                                    Ty.path "typenum::bit::B0"
                                                   ];
                                                 Ty.path "typenum::bit::B0"
                                               ];
@@ -251,69 +294,16 @@ Module hash.
                                       ];
                                     Ty.path "typenum::bit::B0"
                                   ];
-                                Ty.path "typenum::bit::B0"
+                                Ty.path "sha2::OidSha256"
                               ]
                           ],
-                        M.get_trait_method (|
-                          "digest::digest::Digest",
-                          Ty.apply
-                            (Ty.path "digest::core_api::wrapper::CoreWrapper")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "digest::core_api::ct_variable::CtVariableCoreWrapper")
-                                []
-                                [
-                                  Ty.path "sha2::core_api::Sha256VarCore";
-                                  Ty.apply
-                                    (Ty.path "typenum::uint::UInt")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "typenum::uint::UInt")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "typenum::uint::UInt")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "typenum::uint::UInt")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "typenum::uint::UInt")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "typenum::uint::UInt")
-                                                        []
-                                                        [
-                                                          Ty.path "typenum::uint::UTerm";
-                                                          Ty.path "typenum::bit::B1"
-                                                        ];
-                                                      Ty.path "typenum::bit::B0"
-                                                    ];
-                                                  Ty.path "typenum::bit::B0"
-                                                ];
-                                              Ty.path "typenum::bit::B0"
-                                            ];
-                                          Ty.path "typenum::bit::B0"
-                                        ];
-                                      Ty.path "typenum::bit::B0"
-                                    ];
-                                  Ty.path "sha2::OidSha256"
-                                ]
-                            ],
-                          [],
-                          [],
-                          "digest",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                          ]
-                        |),
-                        [ M.read (| input |) ]
-                      |)
+                        [],
+                        [],
+                        "digest",
+                        [],
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                      |),
+                      [ M.read (| input |) ]
                     |) in
                   M.alloc (|
                     Value.StructTuple
@@ -467,40 +457,38 @@ Module hash.
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
         M.read (|
-          let~ gas_used : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "u64",
-                M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
-                          |)
+          let~ gas_used : Ty.path "u64" :=
+            M.call_closure (|
+              Ty.path "u64",
+              M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                         |)
                       |)
-                    ]
-                  |);
-                  Value.Integer IntegerKind.U64 600;
-                  Value.Integer IntegerKind.U64 120
-                ]
-              |)
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U64 600;
+                Value.Integer IntegerKind.U64 120
+              ]
             |) in
           M.match_operator (|
             Ty.apply
@@ -563,233 +551,214 @@ Module hash.
                 ltac:(M.monadic
                   (let~ hasher :
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "digest::core_api::wrapper::CoreWrapper")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "digest::core_api::wrapper::CoreWrapper")
-                            []
-                            [ Ty.path "ripemd::Ripemd160Core" ]
-                        ] :=
-                    M.alloc (|
-                      M.call_closure (|
+                        [ Ty.path "ripemd::Ripemd160Core" ] :=
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                        []
+                        [ Ty.path "ripemd::Ripemd160Core" ],
+                      M.get_trait_method (|
+                        "digest::digest::Digest",
                         Ty.apply
                           (Ty.path "digest::core_api::wrapper::CoreWrapper")
                           []
                           [ Ty.path "ripemd::Ripemd160Core" ],
-                        M.get_trait_method (|
-                          "digest::digest::Digest",
-                          Ty.apply
-                            (Ty.path "digest::core_api::wrapper::CoreWrapper")
-                            []
-                            [ Ty.path "ripemd::Ripemd160Core" ],
-                          [],
-                          [],
-                          "new",
-                          [],
-                          []
-                        |),
+                        [],
+                        [],
+                        "new",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "digest::digest::Digest",
-                          Ty.apply
-                            (Ty.path "digest::core_api::wrapper::CoreWrapper")
-                            []
-                            [ Ty.path "ripemd::Ripemd160Core" ],
-                          [],
-                          [],
-                          "update",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                          ]
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, hasher |); M.read (| input |) ]
-                      |)
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_trait_method (|
+                        "digest::digest::Digest",
+                        Ty.apply
+                          (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                          []
+                          [ Ty.path "ripemd::Ripemd160Core" ],
+                        [],
+                        [],
+                        "update",
+                        [],
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, hasher |); M.read (| input |) ]
                     |) in
                   let~ output :
                       Ty.apply
-                        (Ty.path "*")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 32 ]
-                            [ Ty.path "u8" ]
-                        ] :=
-                    M.alloc (|
-                      repeat (|
-                        Value.Integer IntegerKind.U8 0,
-                        Value.Integer IntegerKind.Usize 32
-                      |)
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ] :=
+                    repeat (|
+                      Value.Integer IntegerKind.U8 0,
+                      Value.Integer IntegerKind.Usize 32
                     |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "digest::digest::Digest",
-                          Ty.apply
-                            (Ty.path "digest::core_api::wrapper::CoreWrapper")
-                            []
-                            [ Ty.path "ripemd::Ripemd160Core" ],
-                          [],
-                          [],
-                          "finalize_into",
-                          [],
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_trait_method (|
+                        "digest::digest::Digest",
+                        Ty.apply
+                          (Ty.path "digest::core_api::wrapper::CoreWrapper")
                           []
-                        |),
-                        [
-                          M.read (| hasher |);
-                          M.call_closure (|
+                          [ Ty.path "ripemd::Ripemd160Core" ],
+                        [],
+                        [],
+                        "finalize_into",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (| hasher |);
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "generic_array::GenericArray")
+                                []
+                                [
+                                  Ty.path "u8";
+                                  Ty.apply
+                                    (Ty.path "typenum::uint::UInt")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "typenum::uint::UInt")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "typenum::uint::UInt")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "typenum::uint::UInt")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "typenum::uint::UInt")
+                                                    []
+                                                    [
+                                                      Ty.path "typenum::uint::UTerm";
+                                                      Ty.path "typenum::bit::B1"
+                                                    ];
+                                                  Ty.path "typenum::bit::B0"
+                                                ];
+                                              Ty.path "typenum::bit::B1"
+                                            ];
+                                          Ty.path "typenum::bit::B0"
+                                        ];
+                                      Ty.path "typenum::bit::B0"
+                                    ]
+                                ]
+                            ],
+                          M.get_trait_method (|
+                            "core::convert::Into",
                             Ty.apply
                               (Ty.path "&mut")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "generic_array::GenericArray")
-                                  []
-                                  [
-                                    Ty.path "u8";
-                                    Ty.apply
-                                      (Ty.path "typenum::uint::UInt")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "typenum::uint::UInt")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "typenum::uint::UInt")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "typenum::uint::UInt")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "typenum::uint::UInt")
-                                                      []
-                                                      [
-                                                        Ty.path "typenum::uint::UTerm";
-                                                        Ty.path "typenum::bit::B1"
-                                                      ];
-                                                    Ty.path "typenum::bit::B0"
-                                                  ];
-                                                Ty.path "typenum::bit::B1"
-                                              ];
-                                            Ty.path "typenum::bit::B0"
-                                          ];
-                                        Ty.path "typenum::bit::B0"
-                                      ]
-                                  ]
-                              ],
-                            M.get_trait_method (|
-                              "core::convert::Into",
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            [],
+                            [
                               Ty.apply
                                 (Ty.path "&mut")
                                 []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "generic_array::GenericArray")
-                                      []
-                                      [
-                                        Ty.path "u8";
-                                        Ty.apply
-                                          (Ty.path "typenum::uint::UInt")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "typenum::uint::UInt")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "typenum::uint::UInt")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "typenum::uint::UInt")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "typenum::uint::UInt")
-                                                          []
-                                                          [
-                                                            Ty.path "typenum::uint::UTerm";
-                                                            Ty.path "typenum::bit::B1"
-                                                          ];
-                                                        Ty.path "typenum::bit::B0"
-                                                      ];
-                                                    Ty.path "typenum::bit::B1"
-                                                  ];
-                                                Ty.path "typenum::bit::B0"
-                                              ];
-                                            Ty.path "typenum::bit::B0"
-                                          ]
-                                      ]
-                                  ]
-                              ],
-                              "into",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::IndexMut",
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [ Ty.path "u8" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index_mut",
-                                          [],
-                                          []
-                                        |),
+                                [
+                                  Ty.apply
+                                    (Ty.path "generic_array::GenericArray")
+                                    []
+                                    [
+                                      Ty.path "u8";
+                                      Ty.apply
+                                        (Ty.path "typenum::uint::UInt")
+                                        []
                                         [
-                                          M.borrow (| Pointer.Kind.MutRef, output |);
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
+                                          Ty.apply
+                                            (Ty.path "typenum::uint::UInt")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "typenum::uint::UInt")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "typenum::uint::UInt")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "typenum::uint::UInt")
+                                                        []
+                                                        [
+                                                          Ty.path "typenum::uint::UTerm";
+                                                          Ty.path "typenum::bit::B1"
+                                                        ];
+                                                      Ty.path "typenum::bit::B0"
+                                                    ];
+                                                  Ty.path "typenum::bit::B1"
+                                                ];
+                                              Ty.path "typenum::bit::B0"
+                                            ];
+                                          Ty.path "typenum::bit::B0"
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            "into",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.get_trait_method (|
+                                        "core::ops::index::IndexMut",
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ],
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeFrom")
                                             []
                                             [ Ty.path "usize" ]
-                                            [ ("start", Value.Integer IntegerKind.Usize 12) ]
-                                        ]
-                                      |)
+                                        ],
+                                        "index_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, output |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeFrom"
+                                          []
+                                          [ Ty.path "usize" ]
+                                          [ ("start", Value.Integer IntegerKind.Usize 12) ]
+                                      ]
                                     |)
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        ]
-                      |)
+                            |)
+                          ]
+                        |)
+                      ]
                     |) in
                   M.alloc (|
                     Value.StructTuple

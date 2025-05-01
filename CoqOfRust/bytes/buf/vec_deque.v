@@ -151,38 +151,31 @@ Module buf.
             M.read (|
               let~ _ :
                   Ty.apply
-                    (Ty.path "*")
+                    (Ty.path "alloc::collections::vec_deque::drain::Drain")
                     []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::collections::vec_deque::drain::Drain")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                    ] :=
-                M.alloc (|
-                  M.call_closure (|
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::vec_deque::drain::Drain")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  M.get_associated_function (|
                     Ty.apply
-                      (Ty.path "alloc::collections::vec_deque::drain::Drain")
+                      (Ty.path "alloc::collections::vec_deque::VecDeque")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::collections::vec_deque::VecDeque")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      "drain",
-                      [],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      Value.StructRecord
-                        "core::ops::range::RangeTo"
-                        []
-                        [ Ty.path "usize" ]
-                        [ ("end_", M.read (| cnt |)) ]
-                    ]
-                  |)
+                    "drain",
+                    [],
+                    [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    Value.StructRecord
+                      "core::ops::range::RangeTo"
+                      []
+                      [ Ty.path "usize" ]
+                      [ ("end_", M.read (| cnt |)) ]
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

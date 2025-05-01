@@ -242,21 +242,14 @@ Module Impl_call_builder_CallBuilderTest.
         M.read (|
           let~ result :
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "call_builder::LangError" ]
-                ] :=
-            M.alloc (|
-              M.never_to_any (|
-                M.call_closure (|
-                  Ty.path "never",
-                  M.get_function (| "core::panicking::panic", [], [] |),
-                  [ mk_str (| "not yet implemented" |) ]
-                |)
+                [ Ty.tuple []; Ty.path "call_builder::LangError" ] :=
+            M.never_to_any (|
+              M.call_closure (|
+                Ty.path "never",
+                M.get_function (| "core::panicking::panic", [], [] |),
+                [ mk_str (| "not yet implemented" |) ]
               |)
             |) in
           M.match_operator (|

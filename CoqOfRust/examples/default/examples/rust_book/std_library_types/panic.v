@@ -86,43 +86,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _x :
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "alloc::boxed::Box")
               []
-              [
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-              ] :=
-          M.alloc (|
-            M.call_closure (|
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
-                []
-              |),
-              [ Value.Integer IntegerKind.I32 0 ]
-            |)
+              "new",
+              [],
+              []
+            |),
+            [ Value.Integer IntegerKind.I32 0 ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "i32" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "i32",
-              M.get_function (| "panic::division", [], [] |),
-              [ Value.Integer IntegerKind.I32 3; Value.Integer IntegerKind.I32 0 ]
-            |)
+        let~ _ : Ty.path "i32" :=
+          M.call_closure (|
+            Ty.path "i32",
+            M.get_function (| "panic::division", [], [] |),
+            [ Value.Integer IntegerKind.I32 3; Value.Integer IntegerKind.I32 0 ]
           |) in
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-            M.alloc (|
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -151,9 +142,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

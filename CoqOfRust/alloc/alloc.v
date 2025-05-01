@@ -145,30 +145,28 @@ Module alloc.
       ltac:(M.monadic
         (let layout := M.alloc (| layout |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.ConstPointer,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.read (|
-                            get_constant (|
-                              "alloc::alloc::__rust_no_alloc_shim_is_unstable",
-                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
-                            |)
+          let~ _ : Ty.path "u8" :=
+            M.call_closure (|
+              Ty.path "u8",
+              M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.ConstPointer,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          get_constant (|
+                            "alloc::alloc::__rust_no_alloc_shim_is_unstable",
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
                           |)
                         |)
                       |)
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -305,30 +303,28 @@ Module alloc.
       ltac:(M.monadic
         (let layout := M.alloc (| layout |) in
         M.read (|
-          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.path "u8" ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.ConstPointer,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.read (|
-                            get_constant (|
-                              "alloc::alloc::__rust_no_alloc_shim_is_unstable",
-                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
-                            |)
+          let~ _ : Ty.path "u8" :=
+            M.call_closure (|
+              Ty.path "u8",
+              M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.ConstPointer,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          get_constant (|
+                            "alloc::alloc::__rust_no_alloc_shim_is_unstable",
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]
                           |)
                         |)
                       |)
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -487,12 +483,8 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let size := M.copy (| γ |) in
-                        let~ raw_ptr :
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] :=
-                          M.copy (|
+                        let~ raw_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -528,16 +520,8 @@ Module alloc.
                             |)
                           |) in
                         let~ ptr :
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.path "u8" ]
-                              ] :=
-                          M.copy (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -824,103 +808,113 @@ Module alloc.
               ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.not (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::alloc::layout::Layout",
+                                                        "size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, new_layout |)
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::alloc::layout::Layout",
+                                                        "size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
                                             M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
+                                              Ty.path "never",
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
-                                                  Ty.path "usize",
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
-                                                    Ty.path "core::alloc::layout::Layout",
-                                                    "size",
-                                                    [],
+                                                    Ty.path "core::fmt::Arguments",
+                                                    "new_const",
+                                                    [ Value.Integer IntegerKind.Usize 1 ],
                                                     []
                                                   |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::alloc::layout::Layout",
-                                                    "size",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                mk_str (|
+                                                                  "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "core::fmt::Arguments",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_const",
-                                                [ Value.Integer IntegerKind.Usize 1 ],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            mk_str (|
-                                                              "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
-                                                            |)
-                                                          ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.match_operator (|
                   Ty.apply
@@ -1016,84 +1010,66 @@ Module alloc.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ new_size : Ty.apply (Ty.path "*") [] [ Ty.path "usize" ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.path "core::alloc::layout::Layout",
-                                "size",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                            |)
-                          |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_function (| "core::hint::assert_unchecked", [], [] |),
-                              [
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ge,
-                                  [
-                                    M.read (| new_size |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.path "core::alloc::layout::Layout",
-                                        "size",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |) in
-                        let~ raw_ptr :
-                            Ty.apply
-                              (Ty.path "*")
+                        let~ new_size : Ty.path "usize" :=
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.path "core::alloc::layout::Layout",
+                              "size",
+                              [],
                               []
-                              [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                              M.get_function (| "alloc::alloc::realloc", [], [] |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [
+                                  M.read (| new_size |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.path "core::alloc::layout::Layout",
+                                      "size",
+                                      [],
                                       []
-                                      [ Ty.path "u8" ],
-                                    "as_ptr",
-                                    [],
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |) in
+                        let~ raw_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                            M.get_function (| "alloc::alloc::realloc", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
                                     []
-                                  |),
-                                  [ M.read (| ptr |) ]
-                                |);
-                                M.read (| old_layout |);
-                                M.read (| new_size |)
-                              ]
-                            |)
+                                    [ Ty.path "u8" ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| ptr |) ]
+                              |);
+                              M.read (| old_layout |);
+                              M.read (| new_size |)
+                            ]
                           |) in
                         let~ ptr :
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.path "u8" ]
-                              ] :=
-                          M.copy (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -1270,21 +1246,21 @@ Module alloc.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ := M.use zeroed in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                                    M.alloc (|
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ := M.use zeroed in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
                                         M.get_associated_function (|
@@ -1311,11 +1287,11 @@ Module alloc.
                                             [ M.read (| new_size |); M.read (| old_size |) ]
                                           |)
                                         ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -1352,15 +1328,10 @@ Module alloc.
                         (let old_size := M.copy (| γ |) in
                         let~ new_ptr :
                             Ty.apply
-                              (Ty.path "*")
+                              (Ty.path "core::ptr::non_null::NonNull")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                              ] :=
-                          M.copy (|
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -1513,67 +1484,63 @@ Module alloc.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_function (|
-                                "core::intrinsics::copy_nonoverlapping",
-                                [],
-                                [ Ty.path "u8" ]
-                              |),
-                              [
-                                (* MutToConstPointer *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.path "u8" ],
-                                      "as_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| ptr |) ]
-                                  |));
-                                M.call_closure (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (|
+                              "core::intrinsics::copy_nonoverlapping",
+                              [],
+                              [ Ty.path "u8" ]
+                            |),
+                            [
+                              (* MutToConstPointer *)
+                              M.pointer_coercion
+                                (M.call_closure (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
                                       []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                    "as_mut_ptr",
+                                      [ Ty.path "u8" ],
+                                    "as_ptr",
                                     [],
                                     []
                                   |),
-                                  [ M.read (| new_ptr |) ]
-                                |);
-                                M.read (| old_size |)
-                              ]
-                            |)
+                                  [ M.read (| ptr |) ]
+                                |));
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| new_ptr |) ]
+                              |);
+                              M.read (| old_size |)
+                            ]
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_trait_method (|
-                                "core::alloc::Allocator",
-                                Ty.path "alloc::alloc::Global",
-                                [],
-                                [],
-                                "deallocate",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                M.read (| ptr |);
-                                M.read (| old_layout |)
-                              ]
-                            |)
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::alloc::Allocator",
+                              Ty.path "alloc::alloc::Global",
+                              [],
+                              [],
+                              "deallocate",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| ptr |);
+                              M.read (| old_layout |)
+                            ]
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -1887,103 +1854,113 @@ Module alloc.
               ]) (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.not (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::alloc::layout::Layout",
+                                                        "size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, new_layout |)
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::alloc::layout::Layout",
+                                                        "size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
                                             M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.le,
+                                              Ty.path "never",
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
-                                                  Ty.path "usize",
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
-                                                    Ty.path "core::alloc::layout::Layout",
-                                                    "size",
-                                                    [],
+                                                    Ty.path "core::fmt::Arguments",
+                                                    "new_const",
+                                                    [ Value.Integer IntegerKind.Usize 1 ],
                                                     []
                                                   |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::alloc::layout::Layout",
-                                                    "size",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                mk_str (|
+                                                                  "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "core::fmt::Arguments",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_const",
-                                                [ Value.Integer IntegerKind.Usize 1 ],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            mk_str (|
-                                                              "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
-                                                            |)
-                                                          ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.match_operator (|
                   Ty.apply
@@ -2021,25 +1998,23 @@ Module alloc.
                             M.read (| γ |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_trait_method (|
-                                "core::alloc::Allocator",
-                                Ty.path "alloc::alloc::Global",
-                                [],
-                                [],
-                                "deallocate",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                M.read (| ptr |);
-                                M.read (| old_layout |)
-                              ]
-                            |)
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::alloc::Allocator",
+                              Ty.path "alloc::alloc::Global",
+                              [],
+                              [],
+                              "deallocate",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| ptr |);
+                              M.read (| old_layout |)
+                            ]
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -2119,71 +2094,55 @@ Module alloc.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_function (| "core::hint::assert_unchecked", [], [] |),
-                              [
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [
-                                    M.read (| new_size |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.path "core::alloc::layout::Layout",
-                                        "size",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |) in
-                        let~ raw_ptr :
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                              M.get_function (| "alloc::alloc::realloc", [], [] |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [
+                                  M.read (| new_size |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.path "core::alloc::layout::Layout",
+                                      "size",
+                                      [],
                                       []
-                                      [ Ty.path "u8" ],
-                                    "as_ptr",
-                                    [],
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |) in
+                        let~ raw_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                            M.get_function (| "alloc::alloc::realloc", [], [] |),
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
                                     []
-                                  |),
-                                  [ M.read (| ptr |) ]
-                                |);
-                                M.read (| old_layout |);
-                                M.read (| new_size |)
-                              ]
-                            |)
+                                    [ Ty.path "u8" ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| ptr |) ]
+                              |);
+                              M.read (| old_layout |);
+                              M.read (| new_size |)
+                            ]
                           |) in
                         let~ ptr :
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.path "u8" ]
-                              ] :=
-                          M.copy (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -2395,15 +2354,10 @@ Module alloc.
                         (let new_size := M.copy (| γ |) in
                         let~ new_ptr :
                             Ty.apply
-                              (Ty.path "*")
+                              (Ty.path "core::ptr::non_null::NonNull")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                              ] :=
-                          M.copy (|
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
+                          M.read (|
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "*")
@@ -2558,67 +2512,63 @@ Module alloc.
                               ]
                             |)
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_function (|
-                                "core::intrinsics::copy_nonoverlapping",
-                                [],
-                                [ Ty.path "u8" ]
-                              |),
-                              [
-                                (* MutToConstPointer *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.path "u8" ],
-                                      "as_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| ptr |) ]
-                                  |));
-                                M.call_closure (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (|
+                              "core::intrinsics::copy_nonoverlapping",
+                              [],
+                              [ Ty.path "u8" ]
+                            |),
+                            [
+                              (* MutToConstPointer *)
+                              M.pointer_coercion
+                                (M.call_closure (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
                                       []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                    "as_mut_ptr",
+                                      [ Ty.path "u8" ],
+                                    "as_ptr",
                                     [],
                                     []
                                   |),
-                                  [ M.read (| new_ptr |) ]
-                                |);
-                                M.read (| new_size |)
-                              ]
-                            |)
+                                  [ M.read (| ptr |) ]
+                                |));
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| new_ptr |) ]
+                              |);
+                              M.read (| new_size |)
+                            ]
                           |) in
-                        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_trait_method (|
-                                "core::alloc::Allocator",
-                                Ty.path "alloc::alloc::Global",
-                                [],
-                                [],
-                                "deallocate",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                M.read (| ptr |);
-                                M.read (| old_layout |)
-                              ]
-                            |)
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::alloc::Allocator",
+                              Ty.path "alloc::alloc::Global",
+                              [],
+                              [],
+                              "deallocate",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| ptr |);
+                              M.read (| old_layout |)
+                            ]
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -2673,18 +2623,16 @@ Module alloc.
         (let size := M.alloc (| size |) in
         let align := M.alloc (| align |) in
         M.read (|
-          let~ layout : Ty.apply (Ty.path "*") [] [ Ty.path "core::alloc::layout::Layout" ] :=
-            M.alloc (|
-              M.call_closure (|
+          let~ layout : Ty.path "core::alloc::layout::Layout" :=
+            M.call_closure (|
+              Ty.path "core::alloc::layout::Layout",
+              M.get_associated_function (|
                 Ty.path "core::alloc::layout::Layout",
-                M.get_associated_function (|
-                  Ty.path "core::alloc::layout::Layout",
-                  "from_size_align_unchecked",
-                  [],
-                  []
-                |),
-                [ M.read (| size |); M.read (| align |) ]
-              |)
+                "from_size_align_unchecked",
+                [],
+                []
+              |),
+              [ M.read (| size |); M.read (| align |) ]
             |) in
           M.match_operator (|
             Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ],

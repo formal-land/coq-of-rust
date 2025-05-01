@@ -305,18 +305,13 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     let~ a :
-                        Ty.apply
-                          (Ty.path "*")
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
                           []
-                          [
-                            Ty.associated_in_trait
-                              "core::iter::traits::iterator::Iterator"
-                              []
-                              []
-                              I
-                              "Item"
-                          ] :=
-                      M.copy (|
+                          []
+                          I
+                          "Item" :=
+                      M.read (|
                         M.match_operator (|
                           Ty.apply
                             (Ty.path "*")
@@ -616,26 +611,22 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let~ state : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ St ] ] :=
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::scan::Scan",
-                        "state"
-                      |)
+                let~ state : Ty.apply (Ty.path "&mut") [] [ St ] :=
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::scan::Scan",
+                      "state"
                     |)
                   |) in
-                let~ f : Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] :=
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::scan::Scan",
-                        "f"
-                      |)
+                let~ f : Ty.apply (Ty.path "&mut") [] [ F ] :=
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::scan::Scan",
+                      "f"
                     |)
                   |) in
                 M.alloc (|

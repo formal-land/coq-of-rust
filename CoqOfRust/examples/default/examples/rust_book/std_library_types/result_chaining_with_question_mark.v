@@ -403,8 +403,8 @@ Module checked.
             [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]) (|
           ltac:(M.monadic
             (M.read (|
-              let~ ratio : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
-                M.copy (|
+              let~ ratio : Ty.path "f64" :=
+                M.read (|
                   M.match_operator (|
                     Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                     M.alloc (|
@@ -523,8 +523,8 @@ Module checked.
                     ]
                   |)
                 |) in
-              let~ ln : Ty.apply (Ty.path "*") [] [ Ty.path "f64" ] :=
-                M.copy (|
+              let~ ln : Ty.path "f64" :=
+                M.read (|
                   M.match_operator (|
                     Ty.apply (Ty.path "*") [] [ Ty.path "f64" ],
                     M.alloc (|
@@ -781,64 +781,62 @@ Module checked.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
-                  let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                        [
-                          M.call_closure (|
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
+                      [
+                        M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
+                          M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+                            "new_v1",
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ] |)
-                                  |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.path "f64" ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |)
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "f64" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        ]
-                      |)
+                            |)
+                          ]
+                        |)
+                      ]
                     |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
@@ -863,13 +861,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "result_chaining_with_question_mark::checked::op", [], [] |),
-              [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
-            |)
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "result_chaining_with_question_mark::checked::op", [], [] |),
+            [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

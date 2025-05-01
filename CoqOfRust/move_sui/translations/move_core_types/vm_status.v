@@ -324,29 +324,25 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusType" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusType" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusType" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusType" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -518,17 +514,15 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "isize" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusType" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "isize" :=
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusType" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4865,17 +4859,15 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4934,29 +4926,25 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4989,29 +4977,25 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -5061,29 +5045,25 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+            let~ __self_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
-            let~ __arg1_discr : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+            let~ __arg1_discr : Ty.path "u64" :=
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::vm_status::StatusCode" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -9992,351 +9972,359 @@ Module vm_status.
           M.catch_return (Ty.path "move_core_types::vm_status::StatusType") (|
             ltac:(M.monadic
               (M.read (|
-                let~ major_status_number : Ty.apply (Ty.path "*") [] [ Ty.path "u64" ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "u64",
-                      M.get_trait_method (|
-                        "core::convert::Into",
-                        Ty.path "move_core_types::vm_status::StatusCode",
-                        [],
-                        [ Ty.path "u64" ],
-                        "into",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                let~ major_status_number : Ty.path "u64" :=
+                  M.call_closure (|
+                    Ty.path "u64",
+                    M.get_trait_method (|
+                      "core::convert::Into",
+                      Ty.path "move_core_types::vm_status::StatusCode",
+                      [],
+                      [ Ty.path "u64" ],
+                      "into",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ge,
+                                      [
+                                        M.read (| major_status_number |);
+                                        M.read (|
+                                          M.deref (|
+                                            M.read (|
+                                              get_constant (|
+                                                "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| major_status_number |);
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE",
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "move_core_types::vm_status::StatusType::Validation"
+                                      []
+                                      []
+                                      []
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
                     |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.read (| major_status_number |);
-                                      M.read (|
-                                        M.deref (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
+                                      BinOp.ge,
                                       [
                                         M.read (| major_status_number |);
                                         M.read (|
                                           M.deref (|
                                             M.read (|
                                               get_constant (|
-                                                "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE",
+                                                "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE",
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                               |)
                                             |)
                                           |)
                                         |)
                                       ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "move_core_types::vm_status::StatusType::Validation"
-                                    []
-                                    []
-                                    []
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| major_status_number |);
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE",
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "move_core_types::vm_status::StatusType::Verification"
+                                      []
+                                      []
+                                      []
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.read (| major_status_number |);
-                                      M.read (|
-                                        M.deref (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
+                                      BinOp.ge,
                                       [
                                         M.read (| major_status_number |);
                                         M.read (|
                                           M.deref (|
                                             M.read (|
                                               get_constant (|
-                                                "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE",
+                                                "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE",
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                               |)
                                             |)
                                           |)
                                         |)
                                       ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "move_core_types::vm_status::StatusType::Verification"
-                                    []
-                                    []
-                                    []
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| major_status_number |);
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE",
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "move_core_types::vm_status::StatusType::InvariantViolation"
+                                      []
+                                      []
+                                      []
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.read (| major_status_number |);
-                                      M.read (|
-                                        M.deref (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
+                                      BinOp.ge,
                                       [
                                         M.read (| major_status_number |);
                                         M.read (|
                                           M.deref (|
                                             M.read (|
                                               get_constant (|
-                                                "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE",
+                                                "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE",
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                               |)
                                             |)
                                           |)
                                         |)
                                       ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "move_core_types::vm_status::StatusType::InvariantViolation"
-                                    []
-                                    []
-                                    []
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| major_status_number |);
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE",
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "move_core_types::vm_status::StatusType::Deserialization"
+                                      []
+                                      []
+                                      []
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.read (| major_status_number |);
-                                      M.read (|
-                                        M.deref (|
-                                          M.read (|
-                                            get_constant (|
-                                              "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
+                                      BinOp.ge,
                                       [
                                         M.read (| major_status_number |);
                                         M.read (|
                                           M.deref (|
                                             M.read (|
                                               get_constant (|
-                                                "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE",
+                                                "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE",
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                               |)
                                             |)
                                           |)
                                         |)
                                       ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "move_core_types::vm_status::StatusType::Deserialization"
-                                    []
-                                    []
-                                    []
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ : Ty.apply (Ty.path "*") [] [ Ty.tuple [] ] :=
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.read (| major_status_number |);
-                                      M.read (|
-                                        M.deref (|
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| major_status_number |);
                                           M.read (|
-                                            get_constant (|
-                                              "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE",
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.le,
-                                      [
-                                        M.read (| major_status_number |);
-                                        M.read (|
-                                          M.deref (|
-                                            M.read (|
-                                              get_constant (|
-                                                "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE",
-                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                            M.deref (|
+                                              M.read (|
+                                                get_constant (|
+                                                  "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE",
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "move_core_types::vm_status::StatusType::Execution"
-                                    []
-                                    []
-                                    []
+                                        ]
+                                      |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "move_core_types::vm_status::StatusType::Execution"
+                                      []
+                                      []
+                                      []
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (|
                   Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] [] []
