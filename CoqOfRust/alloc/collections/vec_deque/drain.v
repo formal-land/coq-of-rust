@@ -255,15 +255,10 @@ Module collections.
                         |))
                     ] in
                 M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
+                  Ty.tuple
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                        ]
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     ],
                   M.alloc (|
                     M.call_closure (|
@@ -764,7 +759,7 @@ Module collections.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -806,7 +801,7 @@ Module collections.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.tuple
@@ -1011,166 +1006,78 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
-                ltac:(M.monadic
-                  (M.read (|
-                    let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
+                  ltac:(M.monadic
+                    (M.alloc (|
                       M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.eq,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "alloc::collections::vec_deque::drain::Drain",
-                                              "remaining"
-                                            |)
-                                          |);
-                                          Value.Integer IntegerKind.Usize 0
-                                        ]
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.read (|
-                                      M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" [] [ T ] []
-                                      |)
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)
-                      |) in
-                    let~ wrapped_idx : Ty.path "usize" :=
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
-                          "to_physical_idx",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::vec_deque::VecDeque")
-                                      []
-                                      [ T; A ]
-                                  ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::vec_deque::VecDeque")
-                                        []
-                                        [ T; A ]
-                                    ],
-                                  "as_ref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::vec_deque::drain::Drain",
-                                      "deque"
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            |)
-                          |);
+                        let~ _ : Ty.tuple [] :=
                           M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::collections::vec_deque::drain::Drain",
-                              "idx"
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::vec_deque::drain::Drain",
+                                                  "remaining"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.Usize 0
+                                            ]
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ T ]
+                                              []
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
                             |)
-                          |)
-                        ]
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      let β :=
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::collections::vec_deque::drain::Drain",
-                          "idx"
-                        |) in
-                      M.write (|
-                        β,
-                        M.call_closure (|
-                          Ty.path "usize",
-                          BinOp.Wrap.add,
-                          [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
-                        |)
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      let β :=
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::collections::vec_deque::drain::Drain",
-                          "remaining"
-                        |) in
-                      M.write (|
-                        β,
-                        M.call_closure (|
-                          Ty.path "usize",
-                          BinOp.Wrap.sub,
-                          [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
-                        |)
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ T ]
-                        [
+                          |) in
+                        let~ wrapped_idx : Ty.path "usize" :=
                           M.call_closure (|
-                            T,
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::vec_deque::VecDeque")
                                 []
                                 [ T; A ],
-                              "buffer_read",
+                              "to_physical_idx",
                               [],
                               []
                             |),
                             [
                               M.borrow (|
-                                Pointer.Kind.MutRef,
+                                Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "&mut")
+                                      (Ty.path "&")
                                       []
                                       [
                                         Ty.apply
@@ -1188,13 +1095,13 @@ Module collections.
                                             []
                                             [ T; A ]
                                         ],
-                                      "as_mut",
+                                      "as_ref",
                                       [],
                                       []
                                     |),
                                     [
                                       M.borrow (|
-                                        Pointer.Kind.MutRef,
+                                        Pointer.Kind.Ref,
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| self |) |),
                                           "alloc::collections::vec_deque::drain::Drain",
@@ -1205,12 +1112,111 @@ Module collections.
                                   |)
                                 |)
                               |);
-                              M.read (| wrapped_idx |)
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::drain::Drain",
+                                  "idx"
+                                |)
+                              |)
                             ]
-                          |)
-                        ]
-                    |)
-                  |)))
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          let β :=
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::drain::Drain",
+                              "idx"
+                            |) in
+                          M.write (|
+                            β,
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          let β :=
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::drain::Drain",
+                              "remaining"
+                            |) in
+                          M.write (|
+                            β,
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [ T ]
+                            [
+                              M.call_closure (|
+                                T,
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
+                                    [ T; A ],
+                                  "buffer_read",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
+                                              [ T; A ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                                []
+                                                [ T; A ]
+                                            ],
+                                          "as_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::vec_deque::drain::Drain",
+                                              "deque"
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.read (| wrapped_idx |)
+                                ]
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)))
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1296,164 +1302,93 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
-                ltac:(M.monadic
-                  (M.read (|
-                    let~ _ : Ty.tuple [] :=
+              M.read (|
+                M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
+                  ltac:(M.monadic
+                    (M.alloc (|
                       M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.eq,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "alloc::collections::vec_deque::drain::Drain",
-                                              "remaining"
-                                            |)
-                                          |);
-                                          Value.Integer IntegerKind.Usize 0
-                                        ]
+                        let~ _ : Ty.tuple [] :=
+                          M.read (|
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::vec_deque::drain::Drain",
+                                                  "remaining"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.Usize 0
+                                            ]
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [ T ]
+                                              []
+                                          |)
+                                        |)
                                       |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.read (|
-                                      M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" [] [ T ] []
-                                      |)
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      let β :=
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::collections::vec_deque::drain::Drain",
-                          "remaining"
-                        |) in
-                      M.write (|
-                        β,
-                        M.call_closure (|
-                          Ty.path "usize",
-                          BinOp.Wrap.sub,
-                          [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
-                        |)
-                      |) in
-                    let~ wrapped_idx : Ty.path "usize" :=
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
-                          "to_physical_idx",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::vec_deque::VecDeque")
-                                      []
-                                      [ T; A ]
-                                  ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::vec_deque::VecDeque")
-                                        []
-                                        [ T; A ]
-                                    ],
-                                  "as_ref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::vec_deque::drain::Drain",
-                                      "deque"
-                                    |)
-                                  |)
-                                ]
-                              |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
                             |)
-                          |);
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          let β :=
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::drain::Drain",
+                              "remaining"
+                            |) in
+                          M.write (|
+                            β,
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          |) in
+                        let~ wrapped_idx : Ty.path "usize" :=
                           M.call_closure (|
                             Ty.path "usize",
-                            BinOp.Wrap.add,
-                            [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "idx"
-                                |)
-                              |);
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "remaining"
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ T ]
-                        [
-                          M.call_closure (|
-                            T,
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::vec_deque::VecDeque")
                                 []
                                 [ T; A ],
-                              "buffer_read",
+                              "to_physical_idx",
                               [],
                               []
                             |),
                             [
                               M.borrow (|
-                                Pointer.Kind.MutRef,
+                                Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "&mut")
+                                      (Ty.path "&")
                                       []
                                       [
                                         Ty.apply
@@ -1471,13 +1406,13 @@ Module collections.
                                             []
                                             [ T; A ]
                                         ],
-                                      "as_mut",
+                                      "as_ref",
                                       [],
                                       []
                                     |),
                                     [
                                       M.borrow (|
-                                        Pointer.Kind.MutRef,
+                                        Pointer.Kind.Ref,
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| self |) |),
                                           "alloc::collections::vec_deque::drain::Drain",
@@ -1488,12 +1423,94 @@ Module collections.
                                   |)
                                 |)
                               |);
-                              M.read (| wrapped_idx |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "idx"
+                                    |)
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "remaining"
+                                    |)
+                                  |)
+                                ]
+                              |)
                             ]
-                          |)
-                        ]
-                    |)
-                  |)))
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            []
+                            [ T ]
+                            [
+                              M.call_closure (|
+                                T,
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
+                                    [ T; A ],
+                                  "buffer_read",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
+                                              [ T; A ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                                []
+                                                [ T; A ]
+                                            ],
+                                          "as_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::vec_deque::drain::Drain",
+                                              "deque"
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.read (| wrapped_idx |)
+                                ]
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)))
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

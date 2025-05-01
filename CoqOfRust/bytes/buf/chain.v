@@ -381,10 +381,7 @@ Module buf.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -514,173 +511,180 @@ Module buf.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cnt := M.alloc (| cnt |) in
-            M.catch_return (Ty.tuple []) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ a_rem : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_trait_method (|
-                        "bytes::buf::buf_impl::Buf",
-                        T,
-                        [],
-                        [],
-                        "remaining",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "bytes::buf::chain::Chain",
-                            "a"
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.ne,
-                                      [ M.read (| a_rem |); Value.Integer IntegerKind.Usize 0 ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ : Ty.tuple [] :=
-                                M.read (|
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ge,
-                                                  [ M.read (| a_rem |); M.read (| cnt |) ]
+                      let~ a_rem : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "bytes::buf::buf_impl::Buf",
+                            T,
+                            [],
+                            [],
+                            "remaining",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "bytes::buf::chain::Chain",
+                                "a"
+                              |)
+                            |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [ M.read (| a_rem |); Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.read (|
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| a_rem |); M.read (| cnt |) ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (|
+                                                    let~ _ : Ty.tuple [] :=
+                                                      M.call_closure (|
+                                                        Ty.tuple [],
+                                                        M.get_trait_method (|
+                                                          "bytes::buf::buf_impl::Buf",
+                                                          T,
+                                                          [],
+                                                          [],
+                                                          "advance",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "bytes::buf::chain::Chain",
+                                                              "a"
+                                                            |)
+                                                          |);
+                                                          M.read (| cnt |)
+                                                        ]
+                                                      |) in
+                                                    M.return_ (| Value.Tuple [] |)
+                                                  |)
                                                 |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.call_closure (|
-                                                    Ty.tuple [],
-                                                    M.get_trait_method (|
-                                                      "bytes::buf::buf_impl::Buf",
-                                                      T,
-                                                      [],
-                                                      [],
-                                                      "advance",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.MutRef,
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "bytes::buf::chain::Chain",
-                                                          "a"
-                                                        |)
-                                                      |);
-                                                      M.read (| cnt |)
-                                                    ]
-                                                  |) in
-                                                M.return_ (| Value.Tuple [] |)
-                                              |)
-                                            |)
-                                          |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ : Ty.tuple [] :=
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_trait_method (|
-                                    "bytes::buf::buf_impl::Buf",
-                                    T,
-                                    [],
-                                    [],
-                                    "advance",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "bytes::buf::chain::Chain",
-                                        "a"
+                                              |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        ]
                                       |)
-                                    |);
-                                    M.read (| a_rem |)
-                                  ]
-                                |) in
-                              let~ _ : Ty.tuple [] :=
-                                let β := cnt in
-                                M.write (|
-                                  β,
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    BinOp.Wrap.sub,
-                                    [ M.read (| β |); M.read (| a_rem |) ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "bytes::buf::buf_impl::Buf",
-                        U,
-                        [],
-                        [],
-                        "advance",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "bytes::buf::chain::Chain",
-                            "b"
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.call_closure (|
+                                      Ty.tuple [],
+                                      M.get_trait_method (|
+                                        "bytes::buf::buf_impl::Buf",
+                                        T,
+                                        [],
+                                        [],
+                                        "advance",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "bytes::buf::chain::Chain",
+                                            "a"
+                                          |)
+                                        |);
+                                        M.read (| a_rem |)
+                                      ]
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    let β := cnt in
+                                    M.write (|
+                                      β,
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.sub,
+                                        [ M.read (| β |); M.read (| a_rem |) ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
                           |)
-                        |);
-                        M.read (| cnt |)
-                      ]
-                    |) in
-                  M.alloc (| Value.Tuple [] |)
-                |)))
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_trait_method (|
+                            "bytes::buf::buf_impl::Buf",
+                            U,
+                            [],
+                            [],
+                            "advance",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "bytes::buf::chain::Chain",
+                                "b"
+                              |)
+                            |);
+                            M.read (| cnt |)
+                          ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -866,7 +870,7 @@ Module buf.
                   ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bytes::bytes::Bytes" ],
+                Ty.path "bytes::bytes::Bytes",
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -909,7 +913,7 @@ Module buf.
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bytes::bytes::Bytes" ],
+                        Ty.path "bytes::bytes::Bytes",
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -955,7 +959,7 @@ Module buf.
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -1248,14 +1252,9 @@ Module buf.
                     M.read (|
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "&mut")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.path "bytes::buf::uninit_slice::UninitSlice" ]
-                          ],
+                          [ Ty.path "bytes::buf::uninit_slice::UninitSlice" ],
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1400,173 +1399,180 @@ Module buf.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cnt := M.alloc (| cnt |) in
-            M.catch_return (Ty.tuple []) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ a_rem : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_trait_method (|
-                        "bytes::buf::buf_mut::BufMut",
-                        T,
-                        [],
-                        [],
-                        "remaining_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "bytes::buf::chain::Chain",
-                            "a"
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.ne,
-                                      [ M.read (| a_rem |); Value.Integer IntegerKind.Usize 0 ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ : Ty.tuple [] :=
-                                M.read (|
-                                  M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ge,
-                                                  [ M.read (| a_rem |); M.read (| cnt |) ]
+                      let~ a_rem : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "bytes::buf::buf_mut::BufMut",
+                            T,
+                            [],
+                            [],
+                            "remaining_mut",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "bytes::buf::chain::Chain",
+                                "a"
+                              |)
+                            |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [ M.read (| a_rem |); Value.Integer IntegerKind.Usize 0 ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.read (|
+                                      M.match_operator (|
+                                        Ty.tuple [],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| a_rem |); M.read (| cnt |) ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (|
+                                                    let~ _ : Ty.tuple [] :=
+                                                      M.call_closure (|
+                                                        Ty.tuple [],
+                                                        M.get_trait_method (|
+                                                          "bytes::buf::buf_mut::BufMut",
+                                                          T,
+                                                          [],
+                                                          [],
+                                                          "advance_mut",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "bytes::buf::chain::Chain",
+                                                              "a"
+                                                            |)
+                                                          |);
+                                                          M.read (| cnt |)
+                                                        ]
+                                                      |) in
+                                                    M.return_ (| Value.Tuple [] |)
+                                                  |)
                                                 |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.call_closure (|
-                                                    Ty.tuple [],
-                                                    M.get_trait_method (|
-                                                      "bytes::buf::buf_mut::BufMut",
-                                                      T,
-                                                      [],
-                                                      [],
-                                                      "advance_mut",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.MutRef,
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "bytes::buf::chain::Chain",
-                                                          "a"
-                                                        |)
-                                                      |);
-                                                      M.read (| cnt |)
-                                                    ]
-                                                  |) in
-                                                M.return_ (| Value.Tuple [] |)
-                                              |)
-                                            |)
-                                          |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ : Ty.tuple [] :=
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_trait_method (|
-                                    "bytes::buf::buf_mut::BufMut",
-                                    T,
-                                    [],
-                                    [],
-                                    "advance_mut",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "bytes::buf::chain::Chain",
-                                        "a"
+                                              |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        ]
                                       |)
-                                    |);
-                                    M.read (| a_rem |)
-                                  ]
-                                |) in
-                              let~ _ : Ty.tuple [] :=
-                                let β := cnt in
-                                M.write (|
-                                  β,
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    BinOp.Wrap.sub,
-                                    [ M.read (| β |); M.read (| a_rem |) ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "bytes::buf::buf_mut::BufMut",
-                        U,
-                        [],
-                        [],
-                        "advance_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "bytes::buf::chain::Chain",
-                            "b"
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.call_closure (|
+                                      Ty.tuple [],
+                                      M.get_trait_method (|
+                                        "bytes::buf::buf_mut::BufMut",
+                                        T,
+                                        [],
+                                        [],
+                                        "advance_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "bytes::buf::chain::Chain",
+                                            "a"
+                                          |)
+                                        |);
+                                        M.read (| a_rem |)
+                                      ]
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    let β := cnt in
+                                    M.write (|
+                                      β,
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.sub,
+                                        [ M.read (| β |); M.read (| a_rem |) ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
                           |)
-                        |);
-                        M.read (| cnt |)
-                      ]
-                    |) in
-                  M.alloc (| Value.Tuple [] |)
-                |)))
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_trait_method (|
+                            "bytes::buf::buf_mut::BufMut",
+                            U,
+                            [],
+                            [],
+                            "advance_mut",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "bytes::buf::chain::Chain",
+                                "b"
+                              |)
+                            |);
+                            M.read (| cnt |)
+                          ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

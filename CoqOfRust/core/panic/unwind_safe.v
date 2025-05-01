@@ -634,28 +634,22 @@ Module panic.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
+                                Ty.function
                                   [
-                                    Ty.function
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "core::panic::unwind_safe::AssertUnwindSafe")
-                                                  []
-                                                  [ F ]
-                                              ]
+                                              [ F ]
                                           ]
                                       ]
-                                      (Ty.apply (Ty.path "&mut") [] [ F ])
-                                  ],
+                                  ]
+                                  (Ty.apply (Ty.path "&mut") [] [ F ]),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -808,28 +802,22 @@ Module panic.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
+                                Ty.function
                                   [
-                                    Ty.function
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "core::panic::unwind_safe::AssertUnwindSafe")
-                                                  []
-                                                  [ S ]
-                                              ]
+                                              [ S ]
                                           ]
                                       ]
-                                      (Ty.apply (Ty.path "&mut") [] [ S ])
-                                  ],
+                                  ]
+                                  (Ty.apply (Ty.path "&mut") [] [ S ]),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>

@@ -15,211 +15,218 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [ P ], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
-      M.catch_return
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          []
-          [
-            Ty.apply
-              (Ty.path "std::io::Lines")
-              []
-              [
-                Ty.apply
-                  (Ty.path "std::io::buffered::bufreader::BufReader")
-                  []
-                  [ Ty.path "std::fs::File" ]
-              ];
-            Ty.path "std::io::error::Error"
-          ]) (|
-        ltac:(M.monadic
-          (M.read (|
-            let~ file : Ty.path "std::fs::File" :=
+      M.read (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "std::io::Lines")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "std::io::buffered::bufreader::BufReader")
+                    []
+                    [ Ty.path "std::fs::File" ]
+                ];
+              Ty.path "std::io::error::Error"
+            ]) (|
+          ltac:(M.monadic
+            (M.alloc (|
               M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.path "std::fs::File" ],
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::ops::control_flow::ControlFlow")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error"
-                            ];
-                          Ty.path "std::fs::File"
-                        ],
-                      M.get_trait_method (|
-                        "core::ops::try_trait::Try",
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                        [],
-                        [],
-                        "branch",
-                        [],
-                        []
-                      |),
-                      [
+                let~ file : Ty.path "std::fs::File" :=
+                  M.read (|
+                    M.match_operator (|
+                      Ty.path "std::fs::File",
+                      M.alloc (|
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "core::result::Result")
+                            (Ty.path "core::ops::control_flow::ControlFlow")
                             []
-                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "std::fs::File",
-                            "open",
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "std::io::error::Error"
+                                ];
+                              Ty.path "std::fs::File"
+                            ],
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                             [],
-                            [ P ]
+                            [],
+                            "branch",
+                            [],
+                            []
                           |),
-                          [ M.read (| filename |) ]
+                          [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                              M.get_associated_function (|
+                                Ty.path "std::fs::File",
+                                "open",
+                                [],
+                                [ P ]
+                              |),
+                              [ M.read (| filename |) ]
+                            |)
+                          ]
                         |)
-                      ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::ops::control_flow::ControlFlow::Break",
-                            0
-                          |) in
-                        let residual := M.copy (| γ0_0 |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              M.return_ (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "std::io::Lines")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "std::io::buffered::bufreader::BufReader")
-                                            []
-                                            [ Ty.path "std::fs::File" ]
-                                        ];
-                                      Ty.path "std::io::error::Error"
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::FromResidual",
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "std::io::Lines")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "std::io::buffered::bufreader::BufReader")
-                                              []
-                                              [ Ty.path "std::fs::File" ]
-                                          ];
-                                        Ty.path "std::io::error::Error"
-                                      ],
-                                    [],
-                                    [
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.path "core::convert::Infallible";
+                                          Ty.apply
+                                            (Ty.path "std::io::Lines")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "std::io::buffered::bufreader::BufReader")
+                                                []
+                                                [ Ty.path "std::fs::File" ]
+                                            ];
                                           Ty.path "std::io::error::Error"
-                                        ]
-                                    ],
-                                    "from_residual",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| residual |) ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "std::io::Lines")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "std::io::buffered::bufreader::BufReader")
+                                                  []
+                                                  [ Ty.path "std::fs::File" ]
+                                              ];
+                                            Ty.path "std::io::error::Error"
+                                          ],
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "std::io::error::Error"
+                                            ]
+                                        ],
+                                        "from_residual",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| residual |) ]
+                                    |)
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::ops::control_flow::ControlFlow::Continue",
-                            0
-                          |) in
-                        let val := M.copy (| γ0_0 |) in
-                        val))
-                  ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructTuple
-                "core::result::Result::Ok"
-                []
-                [
-                  Ty.apply
-                    (Ty.path "std::io::Lines")
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| γ0_0 |) in
+                            val))
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
                     []
                     [
                       Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
+                        (Ty.path "std::io::Lines")
                         []
-                        [ Ty.path "std::fs::File" ]
-                    ];
-                  Ty.path "std::io::error::Error"
-                ]
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "std::io::Lines")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "std::io::buffered::bufreader::BufReader")
-                          []
-                          [ Ty.path "std::fs::File" ]
-                      ],
-                    M.get_trait_method (|
-                      "std::io::BufRead",
-                      Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
-                        []
-                        [ Ty.path "std::fs::File" ],
-                      [],
-                      [],
-                      "lines",
-                      [],
-                      []
-                    |),
+                        [
+                          Ty.apply
+                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                            []
+                            [ Ty.path "std::fs::File" ]
+                        ];
+                      Ty.path "std::io::error::Error"
+                    ]
                     [
                       M.call_closure (|
                         Ty.apply
-                          (Ty.path "std::io::buffered::bufreader::BufReader")
+                          (Ty.path "std::io::Lines")
                           []
-                          [ Ty.path "std::fs::File" ],
-                        M.get_associated_function (|
+                          [
+                            Ty.apply
+                              (Ty.path "std::io::buffered::bufreader::BufReader")
+                              []
+                              [ Ty.path "std::fs::File" ]
+                          ],
+                        M.get_trait_method (|
+                          "std::io::BufRead",
                           Ty.apply
                             (Ty.path "std::io::buffered::bufreader::BufReader")
                             []
                             [ Ty.path "std::fs::File" ],
-                          "new",
+                          [],
+                          [],
+                          "lines",
                           [],
                           []
                         |),
-                        [ M.read (| file |) ]
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "std::io::buffered::bufreader::BufReader")
+                              []
+                              [ Ty.path "std::fs::File" ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "std::io::buffered::bufreader::BufReader")
+                                []
+                                [ Ty.path "std::fs::File" ],
+                              "new",
+                              [],
+                              []
+                            |),
+                            [ M.read (| file |) ]
+                          |)
+                        ]
                       |)
                     ]
-                  |)
-                ]
-            |)
-          |)))
+                |)
+              |)
+            |)))
+        |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -248,7 +255,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
-          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+          Ty.tuple [],
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
@@ -284,7 +291,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let lines := M.copy (| γ0_0 |) in
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -321,12 +328,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -387,7 +394,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |) in
                                           let line := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                            Ty.tuple [],
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>

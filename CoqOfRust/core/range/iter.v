@@ -1308,106 +1308,117 @@ Module range.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeInclusive")
-                                          []
-                                          [ A ],
-                                        "is_empty",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            self,
-                                            "core::range::iter::IterRangeInclusive",
-                                            0
-                                          |)
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeInclusive")
+                                              []
+                                              [ A ],
+                                            "is_empty",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                self,
+                                                "core::range::iter::IterRangeInclusive",
+                                                0
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::range::RangeInclusive")
+                                                []
+                                                [ A ]
+                                            ]
+                                            []
+                                        |)
+                                      |)
                                     |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::option::Option::None"
-                                        []
-                                        [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ]
-                                        ]
-                                        []
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      []
-                      [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]
-                      [
-                        Value.StructRecord
-                          "core::range::RangeInclusive"
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
                           []
-                          [ A ]
+                          [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]
                           [
-                            ("start",
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    self,
-                                    "core::range::iter::IterRangeInclusive",
-                                    0
-                                  |),
-                                  "core::ops::range::RangeInclusive",
-                                  "start"
-                                |)
-                              |));
-                            ("end_",
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    self,
-                                    "core::range::iter::IterRangeInclusive",
-                                    0
-                                  |),
-                                  "core::ops::range::RangeInclusive",
-                                  "end"
-                                |)
-                              |))
+                            Value.StructRecord
+                              "core::range::RangeInclusive"
+                              []
+                              [ A ]
+                              [
+                                ("start",
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        self,
+                                        "core::range::iter::IterRangeInclusive",
+                                        0
+                                      |),
+                                      "core::ops::range::RangeInclusive",
+                                      "start"
+                                    |)
+                                  |));
+                                ("end_",
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        self,
+                                        "core::range::iter::IterRangeInclusive",
+                                        0
+                                      |),
+                                      "core::ops::range::RangeInclusive",
+                                      "end"
+                                    |)
+                                  |))
+                              ]
                           ]
-                      ]
-                  |)
-                |)))
+                      |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

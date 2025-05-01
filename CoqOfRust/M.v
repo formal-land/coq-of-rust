@@ -702,7 +702,7 @@ Definition get_trait_method
   ).
 
 Definition catch (ty : Ty.t) (body : M) (handler : Exception.t -> M) : M :=
-  LowM.Let ty body (fun result =>
+  LowM.LetAlloc ty (let_ body read) (fun result =>
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception
@@ -714,7 +714,7 @@ Definition catch_return (ty : Ty.t) (body : M) : M :=
     body
     (fun exception =>
       match exception with
-      | Exception.Return r => pure r
+      | Exception.Return r => alloc r
       | _ => raise exception
       end
     ).
@@ -744,7 +744,7 @@ Definition catch_break (ty : Ty.t) (body : M) : M :=
 Definition loop (ty : Ty.t) (body : M) : M :=
   LowM.Loop
     ty
-    (catch_continue ty body)
+    (let_ (catch_continue ty body) read)
     (fun result =>
       catch_break ty (LowM.Pure result)).
 
@@ -801,6 +801,7 @@ Definition find_or_pattern
     (body : list Value.t -> M) :
     M :=
   let* free_vars := find_or_pattern_aux arm_ty scrutinee arms in
+  let* free_vars := M.read free_vars in
   LowM.MatchTuple free_vars body.
 
 Definition never_to_any (x : Value.t) : M :=

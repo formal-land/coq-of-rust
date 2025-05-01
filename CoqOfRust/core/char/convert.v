@@ -19,10 +19,7 @@ Module char.
           (let i := M.alloc (| i |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -86,7 +83,7 @@ Module char.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -291,14 +288,9 @@ Module char.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                                  (Ty.path "core::char::TryFromCharError")
-                              ],
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                              (Ty.path "core::char::TryFromCharError"),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -400,14 +392,9 @@ Module char.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                                  (Ty.path "core::char::TryFromCharError")
-                              ],
+                            Ty.function
+                              [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                              (Ty.path "core::char::TryFromCharError"),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -663,7 +650,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -759,7 +746,7 @@ Module char.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     self,
                     [
                       fun γ =>
@@ -915,7 +902,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::char::convert::ParseCharError",
@@ -1048,14 +1035,9 @@ Module char.
                 |) in
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ]
-                  ],
+                  [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ],
                 M.alloc (|
                   Value.Tuple
                     [
@@ -1201,14 +1183,9 @@ Module char.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.path "char"; Ty.path "core::char::convert::CharTryFromError" ]
-                ],
+                [ Ty.path "char"; Ty.path "core::char::convert::CharTryFromError" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1360,7 +1337,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::char::convert::CharTryFromError" ],
+                Ty.path "core::char::convert::CharTryFromError",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -1514,7 +1491,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -1595,7 +1572,7 @@ Module char.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1652,10 +1629,7 @@ Module char.
                 |)
               |) in
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1672,10 +1646,7 @@ Module char.
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ num : Ty.path "u8" := M.cast (Ty.path "u8") (M.read (| num |)) in
                     M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

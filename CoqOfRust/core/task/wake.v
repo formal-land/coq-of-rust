@@ -417,31 +417,25 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                Ty.path "core::task::wake::RawWakerVTable",
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                        Ty.path "core::task::wake::RawWakerVTable",
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "core::task::wake::RawWakerVTable" ],
+                                Ty.path "core::task::wake::RawWakerVTable",
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.apply
-                                          (Ty.path "*")
-                                          []
-                                          [ Ty.path "core::task::wake::RawWakerVTable" ],
+                                        Ty.path "core::task::wake::RawWakerVTable",
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
@@ -650,14 +644,9 @@ Module task.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 self,
                 [
                   fun γ =>
@@ -913,14 +902,9 @@ Module task.
                         M.read (|
                           M.match_operator (|
                             Ty.apply
-                              (Ty.path "*")
+                              (Ty.path "&mut")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
-                              ],
+                              [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
                             M.alloc (|
                               M.borrow (|
                                 Pointer.Kind.MutRef,
@@ -1327,7 +1311,7 @@ Module task.
               let~ ext : Ty.path "core::task::wake::ExtData" :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::ExtData" ],
+                    Ty.path "core::task::wake::ExtData",
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -1531,7 +1515,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::task::wake::Context" ],
+                Ty.path "core::task::wake::Context",
                 self,
                 [
                   fun γ =>
@@ -1846,7 +1830,7 @@ Module task.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::task::wake::Waker",
@@ -1870,7 +1854,7 @@ Module task.
                       let a_data := M.copy (| γ0_0 |) in
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::Waker",
@@ -2141,7 +2125,7 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2648,7 +2632,7 @@ Module task.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::task::wake::LocalWaker",
@@ -2672,7 +2656,7 @@ Module task.
                       let a_data := M.copy (| γ0_0 |) in
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::LocalWaker",
@@ -2947,7 +2931,7 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

@@ -5,6 +5,7 @@ Require Import core.array.links.mod.
 Require Import core.convert.links.num.
 Require Import core.convert.links.mod.
 Require Import core.ops.links.range.
+Require Import core.links.array.
 Require Import core.links.result.
 Require Import core.num.links.mod.
 Require Import core.slice.links.index.
@@ -54,6 +55,10 @@ Proof.
     apply Impl_SliceIndex_for_RangeTo.run.
   }
   run_symbolic.
+  eapply Run.Rewrite. {
+    exact (array.repeat_φ_eq 32 (Integer.Build_t IntegerKind.U8 0)).
+  }
+  run_symbolic.
 Defined.
 
 (*
@@ -89,6 +94,10 @@ Proof.
   ). {
     apply Impl_IndexMut_for_Slice.run.
     apply Impl_SliceIndex_for_RangeTo.run.
+  }
+  run_symbolic.
+  eapply Run.Rewrite. {
+    exact (array.repeat_φ_eq 32 (Integer.Build_t IntegerKind.U8 0)).
   }
   run_symbolic.
 Defined.

@@ -429,14 +429,9 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::boxed::Box")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
-                  ],
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                 cow,
                 [
                   fun γ =>
@@ -653,14 +648,9 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::boxed::Box")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-                  ],
+                  [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                 cow,
                 [
                   fun γ =>
@@ -761,14 +751,9 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "alloc::boxed::Box")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ]
-                  ],
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ]; A ],
@@ -911,7 +896,7 @@ Module boxed.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -921,7 +906,7 @@ Module boxed.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (|
                                 Value.Tuple
                                   [
@@ -956,7 +941,7 @@ Module boxed.
                                     let left_val := M.copy (| γ0_0 |) in
                                     let right_val := M.copy (| γ0_1 |) in
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -1046,14 +1031,9 @@ Module boxed.
               |) in
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "alloc::boxed::Box")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ]
-                ],
+                [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -1154,23 +1134,17 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "alloc::boxed::Box")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global"
-                          ];
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
-                      ]
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
                   ],
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1323,23 +1297,14 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "alloc::boxed::Box")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global"
-                          ];
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ T; Ty.path "alloc::alloc::Global" ]
-                      ]
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
                   ],
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1487,19 +1452,14 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                     Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "alloc::boxed::Box")
                       []
-                      [
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
-                      ]
+                      [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
                   ],
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1598,7 +1558,7 @@ Module boxed.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1609,7 +1569,7 @@ Module boxed.
                           let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1659,7 +1619,7 @@ Module boxed.
                   |)
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -1733,23 +1693,17 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                     Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "alloc::boxed::Box")
                       []
                       [
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.dyn
-                              [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", [])
-                              ];
-                            A
-                          ]
+                        Ty.dyn
+                          [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ];
+                        A
                       ]
                   ],
                 M.alloc (| Value.Tuple [] |),
@@ -1874,7 +1828,7 @@ Module boxed.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1885,7 +1839,7 @@ Module boxed.
                           let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1939,7 +1893,7 @@ Module boxed.
                   |)
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -2035,26 +1989,21 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                     Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "alloc::boxed::Box")
                       []
                       [
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
+                        Ty.dyn
                           [
-                            Ty.dyn
-                              [
-                                ("core::any::Any::Trait", []);
-                                ("core::marker::Sync::AutoTrait", []);
-                                ("core::marker::Send::AutoTrait", [])
-                              ];
-                            A
-                          ]
+                            ("core::any::Any::Trait", []);
+                            ("core::marker::Sync::AutoTrait", []);
+                            ("core::marker::Send::AutoTrait", [])
+                          ];
+                        A
                       ]
                   ],
                 M.alloc (| Value.Tuple [] |),
@@ -2184,7 +2133,7 @@ Module boxed.
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2195,7 +2144,7 @@ Module boxed.
                           let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -2250,7 +2199,7 @@ Module boxed.
                   |)
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -2934,24 +2883,14 @@ Module boxed.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
                   [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ];
                     Ty.apply
-                      (Ty.path "core::result::Result")
+                      (Ty.path "alloc::boxed::Box")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ T; Ty.path "alloc::alloc::Global" ];
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                            Ty.path "alloc::alloc::Global"
-                          ]
+                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global"
                       ]
                   ],
                 M.alloc (| Value.Tuple [] |),
@@ -3206,35 +3145,30 @@ Module boxed.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
+                                Ty.function
                                   [
-                                    Ty.function
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [
-                                                Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
                                           ]
                                       ]
-                                      (Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.dyn
                                         [
-                                          Ty.dyn
-                                            [
-                                              ("core::error::Error::Trait", []);
-                                              ("core::marker::Send::AutoTrait", [])
-                                            ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ])
-                                  ],
+                                          ("core::error::Error::Trait", []);
+                                          ("core::marker::Send::AutoTrait", [])
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -3443,36 +3377,31 @@ Module boxed.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
+                                Ty.function
                                   [
-                                    Ty.function
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [
-                                                Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
                                           ]
                                       ]
-                                      (Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.dyn
                                         [
-                                          Ty.dyn
-                                            [
-                                              ("core::error::Error::Trait", []);
-                                              ("core::marker::Sync::AutoTrait", []);
-                                              ("core::marker::Send::AutoTrait", [])
-                                            ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ])
-                                  ],
+                                          ("core::error::Error::Trait", []);
+                                          ("core::marker::Sync::AutoTrait", []);
+                                          ("core::marker::Send::AutoTrait", [])
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>

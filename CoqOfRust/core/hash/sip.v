@@ -886,7 +886,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::hash::sip::State" ],
+                Ty.path "core::hash::sip::State",
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
@@ -952,7 +952,7 @@ Module hash.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -962,7 +962,7 @@ Module hash.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1007,7 +1007,7 @@ Module hash.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1038,7 +1038,7 @@ Module hash.
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                      Ty.tuple [],
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -1052,7 +1052,7 @@ Module hash.
                                             let~ _ : Ty.tuple [] :=
                                               M.read (|
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                  Ty.tuple [],
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -1240,7 +1240,7 @@ Module hash.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1281,7 +1281,7 @@ Module hash.
                                         let~ _ : Ty.tuple [] :=
                                           M.read (|
                                             M.match_operator (|
-                                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                              Ty.tuple [],
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -1296,7 +1296,7 @@ Module hash.
                                                     let~ _ : Ty.tuple [] :=
                                                       M.read (|
                                                         M.match_operator (|
-                                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                          Ty.tuple [],
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -1505,7 +1505,7 @@ Module hash.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1587,7 +1587,7 @@ Module hash.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1597,7 +1597,7 @@ Module hash.
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2371,145 +2371,312 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let msg := M.alloc (| msg |) in
-            M.catch_return (Ty.tuple []) (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ length : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    let β :=
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "length"
-                      |) in
-                    M.write (|
-                      β,
-                      M.call_closure (|
-                        Ty.path "usize",
-                        BinOp.Wrap.add,
-                        [ M.read (| β |); M.read (| length |) ]
-                      |)
-                    |) in
-                  let~ needed : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
-                  let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.alloc (|
                     M.read (|
-                      M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.ne,
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::hash::sip::Hasher",
-                                            "ntail"
-                                          |)
-                                        |);
-                                        Value.Integer IntegerKind.Usize 0
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ : Ty.tuple [] :=
-                                M.write (|
-                                  needed,
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    BinOp.Wrap.sub,
-                                    [
-                                      Value.Integer IntegerKind.Usize 8;
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::hash::sip::Hasher",
-                                          "ntail"
+                      let~ length : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            "len",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        let β :=
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::Hasher",
+                            "length"
+                          |) in
+                        M.write (|
+                          β,
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| β |); M.read (| length |) ]
+                          |)
+                        |) in
+                      let~ needed : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "ntail"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    M.write (|
+                                      needed,
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.sub,
+                                        [
+                                          Value.Integer IntegerKind.Usize 8;
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::hash::sip::Hasher",
+                                              "ntail"
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ : Ty.tuple [] :=
-                                let β :=
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::hash::sip::Hasher",
-                                    "tail"
-                                  |) in
-                                M.write (|
-                                  β,
-                                  M.call_closure (|
-                                    Ty.path "u64",
-                                    BinOp.Wrap.bit_or,
-                                    [
-                                      M.read (| β |);
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
+                                    let β :=
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::hash::sip::Hasher",
+                                        "tail"
+                                      |) in
+                                    M.write (|
+                                      β,
                                       M.call_closure (|
                                         Ty.path "u64",
-                                        BinOp.Wrap.shl,
+                                        BinOp.Wrap.bit_or,
                                         [
+                                          M.read (| β |);
                                           M.call_closure (|
                                             Ty.path "u64",
-                                            M.get_function (|
-                                              "core::hash::sip::u8to64_le",
-                                              [],
-                                              []
-                                            |),
+                                            BinOp.Wrap.shl,
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| msg |) |)
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                M.get_function (|
+                                                  "core::hash::sip::u8to64_le",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| msg |) |)
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 0;
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_function (|
+                                                      "core::cmp::min",
+                                                      [],
+                                                      [ Ty.path "usize" ]
+                                                    |),
+                                                    [ M.read (| length |); M.read (| needed |) ]
+                                                  |)
+                                                ]
                                               |);
-                                              Value.Integer IntegerKind.Usize 0;
                                               M.call_closure (|
                                                 Ty.path "usize",
-                                                M.get_function (|
-                                                  "core::cmp::min",
-                                                  [],
-                                                  [ Ty.path "usize" ]
-                                                |),
-                                                [ M.read (| length |); M.read (| needed |) ]
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            BinOp.Wrap.mul,
-                                            [
-                                              Value.Integer IntegerKind.Usize 8;
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::hash::sip::Hasher",
-                                                  "ntail"
-                                                |)
+                                                BinOp.Wrap.mul,
+                                                [
+                                                  Value.Integer IntegerKind.Usize 8;
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::hash::sip::Hasher",
+                                                      "ntail"
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |)
                                         ]
                                       |)
+                                    |) in
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [ M.read (| length |); M.read (| needed |) ]
+                                                |)
+                                              |)) in
+                                          let _ :=
+                                            is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                let~ _ : Ty.tuple [] :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::hash::sip::Hasher",
+                                                      "ntail"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.add,
+                                                      [ M.read (| β |); M.read (| length |) ]
+                                                    |)
+                                                  |) in
+                                                M.return_ (| Value.Tuple [] |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let~ _ : Ty.tuple [] :=
+                                            let β :=
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::hash::sip::Hasher",
+                                                  "state"
+                                                |),
+                                                "core::hash::sip::State",
+                                                "v3"
+                                              |) in
+                                            M.write (|
+                                              β,
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.bit_xor,
+                                                [
+                                                  M.read (| β |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::hash::sip::Hasher",
+                                                      "tail"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.call_closure (|
+                                              Ty.tuple [],
+                                              M.get_trait_method (|
+                                                "core::hash::sip::Sip",
+                                                S,
+                                                [],
+                                                [],
+                                                "c_rounds",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::hash::sip::Hasher",
+                                                        "state"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            let β :=
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::hash::sip::Hasher",
+                                                  "state"
+                                                |),
+                                                "core::hash::sip::State",
+                                                "v0"
+                                              |) in
+                                            M.write (|
+                                              β,
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.bit_xor,
+                                                [
+                                                  M.read (| β |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::hash::sip::Hasher",
+                                                      "tail"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.write (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "ntail"
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
                                     ]
-                                  |)
-                                |) in
-                              M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)
+                        |) in
+                      let~ len : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ M.read (| length |); M.read (| needed |) ]
+                        |) in
+                      let~ left : Ty.path "usize" :=
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.bit_and,
+                          [ M.read (| len |); Value.Integer IntegerKind.Usize 7 ]
+                        |) in
+                      let~ i : Ty.path "usize" := M.read (| needed |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -2520,7 +2687,14 @@ Module hash.
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.lt,
-                                              [ M.read (| length |); M.read (| needed |) ]
+                                              [
+                                                M.read (| i |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [ M.read (| len |); M.read (| left |) ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -2528,31 +2702,204 @@ Module hash.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            let~ _ : Ty.tuple [] :=
-                                              let β :=
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::hash::sip::Hasher",
-                                                  "ntail"
-                                                |) in
-                                              M.write (|
-                                                β,
+                                      let~ mi : Ty.path "u64" :=
+                                        M.read (|
+                                          let~ _ : Ty.tuple [] :=
+                                            M.read (|
+                                              M.match_operator (|
+                                                Ty.tuple [],
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use (M.alloc (| Value.Bool true |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      let~ _ : Ty.tuple [] :=
+                                                        M.read (|
+                                                          M.match_operator (|
+                                                            Ty.tuple [],
+                                                            M.alloc (| Value.Tuple [] |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.use
+                                                                      (M.alloc (|
+                                                                        UnOp.not (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.le,
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.read (| i |);
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "usize",
+                                                                                    M.get_function (|
+                                                                                      "core::mem::size_of",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    []
+                                                                                  |)
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        msg
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)) in
+                                                                  let _ :=
+                                                                    is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.call_closure (|
+                                                                        Ty.path "never",
+                                                                        M.get_function (|
+                                                                          "core::panicking::panic",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          mk_str (|
+                                                                            "assertion failed: i + mem::size_of::<u64>() <= msg.len()"
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ]
+                                              |)
+                                            |) in
+                                          let~ data : Ty.path "u64" :=
+                                            M.read (|
+                                              M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |))
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.call_closure (|
+                                              Ty.tuple [],
+                                              M.get_function (|
+                                                "core::intrinsics::copy_nonoverlapping",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                    "add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        "as_ptr",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| msg |) |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (| i |)
+                                                  ]
+                                                |);
+                                                M.cast
+                                                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                                  (M.read (|
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutPointer,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, data |)
+                                                          |)
+                                                        |)
+                                                      |))
+                                                  |));
                                                 M.call_closure (|
                                                   Ty.path "usize",
-                                                  BinOp.Wrap.add,
-                                                  [ M.read (| β |); M.read (| length |) ]
+                                                  M.get_function (|
+                                                    "core::mem::size_of",
+                                                    [],
+                                                    [ Ty.path "u64" ]
+                                                  |),
+                                                  []
                                                 |)
-                                              |) in
-                                            M.return_ (| Value.Tuple [] |)
+                                              ]
+                                            |) in
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              M.get_associated_function (|
+                                                Ty.path "u64",
+                                                "to_le",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| data |) ]
+                                            |)
                                           |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ : Ty.tuple [] :=
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
                                         let β :=
                                           M.SubPointer.get_struct_record_field (|
                                             M.SubPointer.get_struct_record_field (|
@@ -2568,16 +2915,7 @@ Module hash.
                                           M.call_closure (|
                                             Ty.path "u64",
                                             BinOp.Wrap.bit_xor,
-                                            [
-                                              M.read (| β |);
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::hash::sip::Hasher",
-                                                  "tail"
-                                                |)
-                                              |)
-                                            ]
+                                            [ M.read (| β |); M.read (| mi |) ]
                                           |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
@@ -2624,382 +2962,65 @@ Module hash.
                                           M.call_closure (|
                                             Ty.path "u64",
                                             BinOp.Wrap.bit_xor,
-                                            [
-                                              M.read (| β |);
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::hash::sip::Hasher",
-                                                  "tail"
-                                                |)
-                                              |)
-                                            ]
+                                            [ M.read (| β |); M.read (| mi |) ]
                                           |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
+                                        let β := i in
                                         M.write (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::hash::sip::Hasher",
-                                            "ntail"
-                                          |),
-                                          Value.Integer IntegerKind.Usize 0
+                                          β,
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [ M.read (| β |); Value.Integer IntegerKind.Usize 8 ]
+                                          |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ len : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      BinOp.Wrap.sub,
-                      [ M.read (| length |); M.read (| needed |) ]
-                    |) in
-                  let~ left : Ty.path "usize" :=
-                    M.call_closure (|
-                      Ty.path "usize",
-                      BinOp.Wrap.bit_and,
-                      [ M.read (| len |); Value.Integer IntegerKind.Usize 7 ]
-                    |) in
-                  let~ i : Ty.path "usize" := M.read (| needed |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
+                                      M.alloc (| Value.Tuple [] |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
                                       (M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.lt,
-                                          [
-                                            M.read (| i |);
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.sub,
-                                              [ M.read (| len |); M.read (| left |) ]
-                                            |)
-                                          ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ mi : Ty.path "u64" :=
-                                    M.read (|
-                                      let~ _ : Ty.tuple [] :=
-                                        M.read (|
-                                          M.match_operator (|
-                                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ _ : Ty.tuple [] :=
-                                                    M.read (|
-                                                      M.match_operator (|
-                                                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                        M.alloc (| Value.Tuple [] |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let γ :=
-                                                                M.use
-                                                                  (M.alloc (|
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        BinOp.le,
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            BinOp.Wrap.add,
-                                                                            [
-                                                                              M.read (| i |);
-                                                                              M.call_closure (|
-                                                                                Ty.path "usize",
-                                                                                M.get_function (|
-                                                                                  "core::mem::size_of",
-                                                                                  [],
-                                                                                  [ Ty.path "u64" ]
-                                                                                |),
-                                                                                []
-                                                                              |)
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [ Ty.path "u8" ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (| msg |)
-                                                                                |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)) in
-                                                              let _ :=
-                                                                is_constant_or_break_match (|
-                                                                  M.read (| γ |),
-                                                                  Value.Bool true
-                                                                |) in
-                                                              M.alloc (|
-                                                                M.never_to_any (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "never",
-                                                                    M.get_function (|
-                                                                      "core::panicking::panic",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      mk_str (|
-                                                                        "assertion failed: i + mem::size_of::<u64>() <= msg.len()"
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |)
-                                                              |)));
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |)
-                                        |) in
-                                      let~ data : Ty.path "u64" :=
-                                        M.read (|
-                                          M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |))
-                                        |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.call_closure (|
-                                          Ty.tuple [],
-                                          M.get_function (|
-                                            "core::intrinsics::copy_nonoverlapping",
-                                            [],
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                "add",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    "as_ptr",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| msg |) |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.read (| i |)
-                                              ]
-                                            |);
-                                            M.cast
-                                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
-                                              (M.read (|
-                                                M.use
-                                                  (M.alloc (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.MutPointer,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.MutRef, data |)
-                                                      |)
-                                                    |)
-                                                  |))
-                                              |));
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_function (|
-                                                "core::mem::size_of",
-                                                [],
-                                                [ Ty.path "u64" ]
-                                              |),
-                                              []
-                                            |)
-                                          ]
-                                        |) in
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "u64",
-                                          M.get_associated_function (|
-                                            Ty.path "u64",
-                                            "to_le",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| data |) ]
-                                        |)
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    let β :=
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::hash::sip::Hasher",
-                                          "state"
-                                        |),
-                                        "core::hash::sip::State",
-                                        "v3"
-                                      |) in
-                                    M.write (|
-                                      β,
-                                      M.call_closure (|
-                                        Ty.path "u64",
-                                        BinOp.Wrap.bit_xor,
-                                        [ M.read (| β |); M.read (| mi |) ]
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    M.call_closure (|
-                                      Ty.tuple [],
-                                      M.get_trait_method (|
-                                        "core::hash::sip::Sip",
-                                        S,
-                                        [],
-                                        [],
-                                        "c_rounds",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::hash::sip::Hasher",
-                                                "state"
-                                              |)
-                                            |)
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Value.Tuple [] |)
                                           |)
                                         |)
-                                      ]
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    let β :=
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::hash::sip::Hasher",
-                                          "state"
-                                        |),
-                                        "core::hash::sip::State",
-                                        "v0"
-                                      |) in
-                                    M.write (|
-                                      β,
-                                      M.call_closure (|
-                                        Ty.path "u64",
-                                        BinOp.Wrap.bit_xor,
-                                        [ M.read (| β |); M.read (| mi |) ]
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    let β := i in
-                                    M.write (|
-                                      β,
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        BinOp.Wrap.add,
-                                        [ M.read (| β |); Value.Integer IntegerKind.Usize 8 ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)
-                                    |)
-                                  |)))
+                                      |)))
+                                ]
+                              |)))
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.write (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::Hasher",
+                            "tail"
+                          |),
+                          M.call_closure (|
+                            Ty.path "u64",
+                            M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
+                              M.read (| i |);
+                              M.read (| left |)
                             ]
-                          |)))
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "tail"
-                      |),
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
-                          M.read (| i |);
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.write (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::Hasher",
+                            "ntail"
+                          |),
                           M.read (| left |)
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "ntail"
-                      |),
-                      M.read (| left |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |)
-                |)))
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |)
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

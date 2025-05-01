@@ -101,16 +101,11 @@ Module hash.
             |) in
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
               [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                  ]
+                Ty.path "revm_precompile::interface::PrecompileOutput";
+                Ty.path "revm_precompile::interface::PrecompileErrors"
               ],
             M.alloc (| Value.Tuple [] |),
             [
@@ -492,16 +487,11 @@ Module hash.
             |) in
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
               [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "revm_precompile::interface::PrecompileOutput";
-                    Ty.path "revm_precompile::interface::PrecompileErrors"
-                  ]
+                Ty.path "revm_precompile::interface::PrecompileOutput";
+                Ty.path "revm_precompile::interface::PrecompileErrors"
               ],
             M.alloc (| Value.Tuple [] |),
             [

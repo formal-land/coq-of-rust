@@ -50,13 +50,13 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                Ty.path "core::net::socket_addr::SocketAddr",
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                        Ty.path "core::net::socket_addr::SocketAddr",
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -128,7 +128,7 @@ Module net.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                        Ty.path "bool",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -267,13 +267,13 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -335,7 +335,7 @@ Module net.
                   ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 self,
                 [
                   fun γ =>
@@ -441,11 +441,7 @@ Module net.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                 [
                   fun γ =>
@@ -606,7 +602,7 @@ Module net.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                Ty.path "core::cmp::Ordering",
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -636,7 +632,7 @@ Module net.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -790,16 +786,13 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                Ty.path "core::net::socket_addr::SocketAddrV4",
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                        Ty.path "core::net::socket_addr::SocketAddrV4",
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -833,13 +826,13 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -958,7 +951,7 @@ Module net.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                Ty.path "core::cmp::Ordering",
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -1078,11 +1071,7 @@ Module net.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -1319,25 +1308,19 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                Ty.path "core::net::socket_addr::SocketAddrV6",
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                        Ty.path "core::net::socket_addr::SocketAddrV6",
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                Ty.path "core::net::socket_addr::SocketAddrV6",
                                 Value.DeclaredButUndefined,
                                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                               |)))
@@ -1373,19 +1356,19 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 Value.DeclaredButUndefined,
                                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                               |)))
@@ -1552,7 +1535,7 @@ Module net.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                Ty.path "core::cmp::Ordering",
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -1600,7 +1583,7 @@ Module net.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
@@ -1648,7 +1631,7 @@ Module net.
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+                                Ty.path "core::cmp::Ordering",
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "core::cmp::Ordering",
@@ -1781,11 +1764,7 @@ Module net.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
-                Ty.apply
-                  (Ty.path "*")
-                  []
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
-                  ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -1840,14 +1819,9 @@ Module net.
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ]
-                          ],
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1905,14 +1879,9 @@ Module net.
                               let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.match_operator (|
                                 Ty.apply
-                                  (Ty.path "*")
+                                  (Ty.path "core::option::Option")
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "core::cmp::Ordering" ]
-                                  ],
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -2208,7 +2177,7 @@ Module net.
             let port := M.alloc (| port |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                Ty.path "core::net::socket_addr::SocketAddr",
                 ip,
                 [
                   fun γ =>
@@ -2295,7 +2264,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "core::net::ip_addr::IpAddr" ],
+                Ty.path "core::net::ip_addr::IpAddr",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2394,7 +2363,7 @@ Module net.
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| new_ip |) ] |),
                 [
                   fun γ =>
@@ -2524,7 +2493,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "u16" ],
+                Ty.path "u16",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2595,7 +2564,7 @@ Module net.
             let new_port := M.alloc (| new_port |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2669,7 +2638,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2704,7 +2673,7 @@ Module net.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.path "bool" ],
+                Ty.path "bool",
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3263,14 +3232,9 @@ Module net.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3422,14 +3386,9 @@ Module net.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3965,14 +3924,9 @@ Module net.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::result::Result")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                  ],
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4058,14 +4012,9 @@ Module net.
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Ty.apply
-                          (Ty.path "*")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                          ],
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "u32",
@@ -4451,14 +4400,9 @@ Module net.
                             M.read (|
                               M.match_operator (|
                                 Ty.apply
-                                  (Ty.path "*")
+                                  (Ty.path "core::result::Result")
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                                  ],
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "u32",

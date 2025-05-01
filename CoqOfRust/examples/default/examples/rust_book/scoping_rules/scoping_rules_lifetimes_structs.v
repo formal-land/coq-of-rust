@@ -183,14 +183,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
         M.read (|
           M.match_operator (|
             Ty.apply
-              (Ty.path "*")
+              (Ty.path "core::result::Result")
               []
-              [
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-              ],
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             self,
             [
               fun γ =>

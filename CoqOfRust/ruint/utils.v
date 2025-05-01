@@ -26,7 +26,7 @@ Module utils.
               [ M.read (| a |); M.read (| b |) ]
             |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "usize" ],
+            Ty.path "usize",
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -107,14 +107,9 @@ Module utils.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "*")
-                              []
-                              [
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                  (Ty.path "bool")
-                              ],
+                            Ty.function
+                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                              (Ty.path "bool"),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -150,10 +145,7 @@ Module utils.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply
-                          (Ty.path "*")
-                          []
-                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ],
+                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize"),
                         M.alloc (| α0 |),
                         [
                           fun γ =>

@@ -1448,25 +1448,17 @@ Module host.
             M.read (|
               M.match_operator (|
                 Ty.apply
-                  (Ty.path "*")
+                  (Ty.path "core::option::Option")
                   []
                   [
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "revm_context_interface::journaled_state::StateLoad")
                       []
                       [
                         Ty.apply
-                          (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "ruint::Uint")
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ]
-                              []
-                          ]
                       ]
                   ],
                 M.alloc (|

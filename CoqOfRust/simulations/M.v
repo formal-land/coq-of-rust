@@ -458,20 +458,3 @@ Module Notations.
     ).
 End Notations.
 Export Notations.
-
-Module Run.
-  Reserved Notation "{{ e 🌲 v }}".
-
-  Inductive t {R Output : Set} (output : Output.t R Output) : LowM.t R Output -> Prop :=
-  | Pure :
-    {{ LowM.Pure output 🌲 output }}
-  | Call {Output' : Set}
-    (e : LowM.t Output' Output') (output' : SuccessOrPanic.t Output')
-    (k : SuccessOrPanic.t Output' -> LowM.t R Output) :
-    {{ e 🌲 SuccessOrPanic.to_output output' }} ->
-    {{ k output' 🌲 output }} ->
-    {{ LowM.Call e k 🌲 output }}
-
-  where "{{ e 🌲 output }}" := (t output e).
-End Run.
-Export Run.

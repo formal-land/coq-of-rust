@@ -14,92 +14,96 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
-      M.catch_return
-        (Ty.apply
-          (Ty.path "std::io::Lines")
-          []
-          [
-            Ty.apply
-              (Ty.path "std::io::buffered::bufreader::BufReader")
-              []
-              [ Ty.path "std::fs::File" ]
-          ]) (|
-        ltac:(M.monadic
-          (M.never_to_any (|
-            M.read (|
-              let~ file : Ty.path "std::fs::File" :=
-                M.call_closure (|
-                  Ty.path "std::fs::File",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                    "unwrap",
-                    [],
-                    []
-                  |),
-                  [
+      M.read (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "std::io::Lines")
+            []
+            [
+              Ty.apply
+                (Ty.path "std::io::buffered::bufreader::BufReader")
+                []
+                [ Ty.path "std::fs::File" ]
+            ]) (|
+          ltac:(M.monadic
+            (M.alloc (|
+              M.never_to_any (|
+                M.read (|
+                  let~ file : Ty.path "std::fs::File" :=
                     M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                      Ty.path "std::fs::File",
                       M.get_associated_function (|
-                        Ty.path "std::fs::File",
-                        "open",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                        "unwrap",
                         [],
-                        [ Ty.path "alloc::string::String" ]
-                      |),
-                      [ M.read (| filename |) ]
-                    |)
-                  ]
-                |) in
-              M.return_ (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "std::io::Lines")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
                         []
-                        [ Ty.path "std::fs::File" ]
-                    ],
-                  M.get_trait_method (|
-                    "std::io::BufRead",
-                    Ty.apply
-                      (Ty.path "std::io::buffered::bufreader::BufReader")
-                      []
-                      [ Ty.path "std::fs::File" ],
-                    [],
-                    [],
-                    "lines",
-                    [],
-                    []
-                  |),
-                  [
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "std::fs::File",
+                            "open",
+                            [],
+                            [ Ty.path "alloc::string::String" ]
+                          |),
+                          [ M.read (| filename |) ]
+                        |)
+                      ]
+                    |) in
+                  M.return_ (|
                     M.call_closure (|
                       Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
+                        (Ty.path "std::io::Lines")
                         []
-                        [ Ty.path "std::fs::File" ],
-                      M.get_associated_function (|
+                        [
+                          Ty.apply
+                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                            []
+                            [ Ty.path "std::fs::File" ]
+                        ],
+                      M.get_trait_method (|
+                        "std::io::BufRead",
                         Ty.apply
                           (Ty.path "std::io::buffered::bufreader::BufReader")
                           []
                           [ Ty.path "std::fs::File" ],
-                        "new",
+                        [],
+                        [],
+                        "lines",
                         [],
                         []
                       |),
-                      [ M.read (| file |) ]
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                            []
+                            [ Ty.path "std::fs::File" ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "std::io::buffered::bufreader::BufReader")
+                              []
+                              [ Ty.path "std::fs::File" ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [ M.read (| file |) ]
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               |)
-            |)
-          |)))
+            |)))
+        |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -163,7 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.use
           (M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -200,12 +204,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let iter := M.copy (| γ |) in
                   M.loop (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply

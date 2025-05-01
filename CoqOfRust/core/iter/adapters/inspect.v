@@ -136,7 +136,7 @@ Module iter.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -328,17 +328,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ Acc; T ] ] Acc ],
+                        Ty.function [ Ty.tuple [ Acc; T ] ] Acc,
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| γ |) in
                               M.match_operator (|
-                                Ty.apply
-                                  (Ty.path "*")
-                                  []
-                                  [ Ty.function [ Ty.tuple [ Acc; T ] ] Acc ],
+                                Ty.function [ Ty.tuple [ Acc; T ] ] Acc,
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
@@ -427,14 +424,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ Acc; T ] ] R ],
+                        Ty.function [ Ty.tuple [ Acc; T ] ] R,
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| γ |) in
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ Acc; T ] ] R ],
+                                Ty.function [ Ty.tuple [ Acc; T ] ] R,
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>

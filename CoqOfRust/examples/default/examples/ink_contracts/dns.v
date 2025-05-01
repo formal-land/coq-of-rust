@@ -326,7 +326,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.path "dns::AccountId" ],
+            Ty.path "dns::AccountId",
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -1071,167 +1071,172 @@ Module Impl_dns_DomainNameService.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
-        M.catch_return
-          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ caller : Ty.path "dns::AccountId" :=
-                M.call_closure (|
-                  Ty.path "dns::AccountId",
-                  M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "dns::Env",
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |)
-                    |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.catch_return
+            (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
+            ltac:(M.monadic
+              (M.alloc (|
                 M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "dns::Mapping")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                          [ Ty.path "u8" ];
-                                        Ty.path "dns::AccountId"
-                                      ],
-                                    "contains",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "dns::DomainNameService",
-                                        "name_to_owner"
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let~ caller : Ty.path "dns::AccountId" :=
+                    M.call_closure (|
+                      Ty.path "dns::AccountId",
+                      M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
                           M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    []
-                                    [ Ty.tuple []; Ty.path "dns::Error" ]
-                                    [ Value.StructTuple "dns::Error::NameAlreadyExists" [] [] [] ]
-                                |)
-                              |)
+                            M.call_closure (|
+                              Ty.path "dns::Env",
+                              M.get_associated_function (|
+                                Ty.path "dns::DomainNameService",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "dns::Mapping")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ];
-                        Ty.path "dns::AccountId"
-                      ],
-                    "insert",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
-                      |)
-                    |);
-                    M.read (| name |);
-                    M.read (| caller |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "dns::Env",
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
-                      |)
-                    |);
-                    Value.StructTuple
-                      "dns::Event::Register"
-                      []
-                      []
-                      [
-                        Value.StructRecord
-                          "dns::Register"
-                          []
-                          []
-                          [ ("name", M.read (| name |)); ("from", M.read (| caller |)) ]
                       ]
-                  ]
-                |) in
-              M.alloc (|
-                Value.StructTuple
-                  "core::result::Result::Ok"
-                  []
-                  [ Ty.tuple []; Ty.path "dns::Error" ]
-                  [ Value.Tuple [] ]
-              |)
-            |)))
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "dns::Mapping")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [ Ty.path "u8" ];
+                                            Ty.path "dns::AccountId"
+                                          ],
+                                        "contains",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "dns::DomainNameService",
+                                            "name_to_owner"
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        []
+                                        [ Ty.tuple []; Ty.path "dns::Error" ]
+                                        [ Value.StructTuple "dns::Error::NameAlreadyExists" [] [] []
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
+                    |) in
+                  let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+                    M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "dns::Mapping")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "dns::AccountId"
+                          ],
+                        "insert",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "dns::DomainNameService",
+                            "name_to_owner"
+                          |)
+                        |);
+                        M.read (| name |);
+                        M.read (| caller |)
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.path "dns::Env",
+                              M.get_associated_function (|
+                                Ty.path "dns::DomainNameService",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |)
+                        |);
+                        Value.StructTuple
+                          "dns::Event::Register"
+                          []
+                          []
+                          [
+                            Value.StructRecord
+                              "dns::Register"
+                              []
+                              []
+                              [ ("name", M.read (| name |)); ("from", M.read (| caller |)) ]
+                          ]
+                      ]
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "dns::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
+                |)
+              |)))
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1335,204 +1340,209 @@ Module Impl_dns_DomainNameService.
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
         let new_address := M.alloc (| new_address |) in
-        M.catch_return
-          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ caller : Ty.path "dns::AccountId" :=
-                M.call_closure (|
-                  Ty.path "dns::AccountId",
-                  M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "dns::Env",
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |)
-                    |)
-                  ]
-                |) in
-              let~ owner : Ty.path "dns::AccountId" :=
-                M.call_closure (|
-                  Ty.path "dns::AccountId",
-                  M.get_associated_function (|
-                    Ty.path "dns::DomainNameService",
-                    "get_owner_or_default",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                    M.read (| name |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.catch_return
+            (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
+            ltac:(M.monadic
+              (M.alloc (|
                 M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.path "dns::AccountId",
-                                    [],
-                                    [ Ty.path "dns::AccountId" ],
-                                    "ne",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, caller |);
-                                    M.borrow (| Pointer.Kind.Ref, owner |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let~ caller : Ty.path "dns::AccountId" :=
+                    M.call_closure (|
+                      Ty.path "dns::AccountId",
+                      M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
                           M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    []
-                                    [ Ty.tuple []; Ty.path "dns::Error" ]
-                                    [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] [] [] ]
-                                |)
-                              |)
+                            M.call_closure (|
+                              Ty.path "dns::Env",
+                              M.get_associated_function (|
+                                Ty.path "dns::DomainNameService",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ old_address :
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] :=
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "dns::Mapping")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ];
-                        Ty.path "dns::AccountId"
-                      ],
-                    "get",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "dns::DomainNameService",
-                        "name_to_address"
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
-                    |)
-                  ]
-                |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "dns::Mapping")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ];
-                        Ty.path "dns::AccountId"
-                      ],
-                    "insert",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "dns::DomainNameService",
-                        "name_to_address"
-                      |)
-                    |);
-                    M.read (| name |);
-                    M.read (| new_address |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "dns::Env",
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
-                      |)
-                    |);
-                    Value.StructTuple
-                      "dns::Event::SetAddress"
-                      []
-                      []
+                      ]
+                    |) in
+                  let~ owner : Ty.path "dns::AccountId" :=
+                    M.call_closure (|
+                      Ty.path "dns::AccountId",
+                      M.get_associated_function (|
+                        Ty.path "dns::DomainNameService",
+                        "get_owner_or_default",
+                        [],
+                        []
+                      |),
                       [
-                        Value.StructRecord
-                          "dns::SetAddress"
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                        M.read (| name |)
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.path "dns::AccountId",
+                                        [],
+                                        [ Ty.path "dns::AccountId" ],
+                                        "ne",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, caller |);
+                                        M.borrow (| Pointer.Kind.Ref, owner |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        []
+                                        [ Ty.tuple []; Ty.path "dns::Error" ]
+                                        [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] [] []
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
+                    |) in
+                  let~ old_address :
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] :=
+                    M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "dns::Mapping")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "dns::AccountId"
+                          ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "dns::DomainNameService",
+                            "name_to_address"
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                        |)
+                      ]
+                    |) in
+                  let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+                    M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "dns::Mapping")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "dns::AccountId"
+                          ],
+                        "insert",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "dns::DomainNameService",
+                            "name_to_address"
+                          |)
+                        |);
+                        M.read (| name |);
+                        M.read (| new_address |)
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.path "dns::Env",
+                              M.get_associated_function (|
+                                Ty.path "dns::DomainNameService",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |)
+                        |);
+                        Value.StructTuple
+                          "dns::Event::SetAddress"
                           []
                           []
                           [
-                            ("name", M.read (| name |));
-                            ("from", M.read (| caller |));
-                            ("old_address", M.read (| old_address |));
-                            ("new_address", M.read (| new_address |))
+                            Value.StructRecord
+                              "dns::SetAddress"
+                              []
+                              []
+                              [
+                                ("name", M.read (| name |));
+                                ("from", M.read (| caller |));
+                                ("old_address", M.read (| old_address |));
+                                ("new_address", M.read (| new_address |))
+                              ]
                           ]
                       ]
-                  ]
-                |) in
-              M.alloc (|
-                Value.StructTuple
-                  "core::result::Result::Ok"
-                  []
-                  [ Ty.tuple []; Ty.path "dns::Error" ]
-                  [ Value.Tuple [] ]
-              |)
-            |)))
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "dns::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
+                |)
+              |)))
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1570,204 +1580,209 @@ Module Impl_dns_DomainNameService.
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
         let to := M.alloc (| to |) in
-        M.catch_return
-          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ caller : Ty.path "dns::AccountId" :=
-                M.call_closure (|
-                  Ty.path "dns::AccountId",
-                  M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "dns::Env",
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |)
-                    |)
-                  ]
-                |) in
-              let~ owner : Ty.path "dns::AccountId" :=
-                M.call_closure (|
-                  Ty.path "dns::AccountId",
-                  M.get_associated_function (|
-                    Ty.path "dns::DomainNameService",
-                    "get_owner_or_default",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                    M.read (| name |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.catch_return
+            (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
+            ltac:(M.monadic
+              (M.alloc (|
                 M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.path "dns::AccountId",
-                                    [],
-                                    [ Ty.path "dns::AccountId" ],
-                                    "ne",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, caller |);
-                                    M.borrow (| Pointer.Kind.Ref, owner |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let~ caller : Ty.path "dns::AccountId" :=
+                    M.call_closure (|
+                      Ty.path "dns::AccountId",
+                      M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
                           M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    []
-                                    [ Ty.tuple []; Ty.path "dns::Error" ]
-                                    [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] [] [] ]
-                                |)
-                              |)
+                            M.call_closure (|
+                              Ty.path "dns::Env",
+                              M.get_associated_function (|
+                                Ty.path "dns::DomainNameService",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ old_owner :
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] :=
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "dns::Mapping")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ];
-                        Ty.path "dns::AccountId"
-                      ],
-                    "get",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
-                    |)
-                  ]
-                |) in
-              let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "dns::Mapping")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ];
-                        Ty.path "dns::AccountId"
-                      ],
-                    "insert",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
-                      |)
-                    |);
-                    M.read (| name |);
-                    M.read (| to |)
-                  ]
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "dns::Env",
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
-                      |)
-                    |);
-                    Value.StructTuple
-                      "dns::Event::Transfer"
-                      []
-                      []
+                      ]
+                    |) in
+                  let~ owner : Ty.path "dns::AccountId" :=
+                    M.call_closure (|
+                      Ty.path "dns::AccountId",
+                      M.get_associated_function (|
+                        Ty.path "dns::DomainNameService",
+                        "get_owner_or_default",
+                        [],
+                        []
+                      |),
                       [
-                        Value.StructRecord
-                          "dns::Transfer"
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                        M.read (| name |)
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.path "dns::AccountId",
+                                        [],
+                                        [ Ty.path "dns::AccountId" ],
+                                        "ne",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, caller |);
+                                        M.borrow (| Pointer.Kind.Ref, owner |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        []
+                                        [ Ty.tuple []; Ty.path "dns::Error" ]
+                                        [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] [] []
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
+                    |) in
+                  let~ old_owner :
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ] :=
+                    M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "dns::Mapping")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "dns::AccountId"
+                          ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "dns::DomainNameService",
+                            "name_to_owner"
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                        |)
+                      ]
+                    |) in
+                  let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+                    M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "dns::Mapping")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "dns::AccountId"
+                          ],
+                        "insert",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "dns::DomainNameService",
+                            "name_to_owner"
+                          |)
+                        |);
+                        M.read (| name |);
+                        M.read (| to |)
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.path "dns::Env",
+                              M.get_associated_function (|
+                                Ty.path "dns::DomainNameService",
+                                "env",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |)
+                        |);
+                        Value.StructTuple
+                          "dns::Event::Transfer"
                           []
                           []
                           [
-                            ("name", M.read (| name |));
-                            ("from", M.read (| caller |));
-                            ("old_owner", M.read (| old_owner |));
-                            ("new_owner", M.read (| to |))
+                            Value.StructRecord
+                              "dns::Transfer"
+                              []
+                              []
+                              [
+                                ("name", M.read (| name |));
+                                ("from", M.read (| caller |));
+                                ("old_owner", M.read (| old_owner |));
+                                ("new_owner", M.read (| to |))
+                              ]
                           ]
                       ]
-                  ]
-                |) in
-              M.alloc (|
-                Value.StructTuple
-                  "core::result::Result::Ok"
-                  []
-                  [ Ty.tuple []; Ty.path "dns::Error" ]
-                  [ Value.Tuple [] ]
-              |)
-            |)))
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "dns::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
+                |)
+              |)))
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

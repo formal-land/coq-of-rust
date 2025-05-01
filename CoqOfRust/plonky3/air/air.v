@@ -379,7 +379,7 @@ Module air.
           M.read (|
             M.use
               (M.match_operator (|
-                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                Ty.tuple [],
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ I ],
@@ -400,12 +400,12 @@ Module air.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
-                        Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
-                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                Ty.tuple [],
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
@@ -519,19 +519,14 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ I ] ]
-                                    (Ty.associated_in_trait
-                                      "p3_air::air::AirBuilder"
-                                      []
-                                      []
-                                      Self
-                                      "Expr")
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ I ] ]
+                                (Ty.associated_in_trait
+                                  "p3_air::air::AirBuilder"
+                                  []
+                                  []
+                                  Self
+                                  "Expr"),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

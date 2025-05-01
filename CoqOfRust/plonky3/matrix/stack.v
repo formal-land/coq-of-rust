@@ -393,7 +393,7 @@ Module stack.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     Value.Tuple
                       [
@@ -443,7 +443,7 @@ Module stack.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -570,7 +570,7 @@ Module stack.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     Value.Tuple
                       [
@@ -620,7 +620,7 @@ Module stack.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -830,7 +830,7 @@ Module stack.
           let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -996,16 +996,11 @@ Module stack.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "p3_matrix::stack::EitherRow")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "p3_matrix::stack::EitherRow")
-                    []
-                    [
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
-                    ]
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
                 ],
               M.alloc (| Value.Tuple [] |),
               [
@@ -1173,16 +1168,11 @@ Module stack.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "p3_matrix::stack::EitherRow")
                 []
                 [
-                  Ty.apply
-                    (Ty.path "p3_matrix::stack::EitherRow")
-                    []
-                    [
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
-                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
-                    ]
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
+                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
                 ],
               M.alloc (| Value.Tuple [] |),
               [
@@ -1488,7 +1478,7 @@ Module stack.
           let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ T ],
+              T,
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1754,14 +1744,9 @@ Module stack.
           M.read (|
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               self,
               [
                 fun γ =>
@@ -1871,7 +1856,7 @@ Module stack.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ T ],
               self,
               [
                 fun γ =>
@@ -1970,10 +1955,7 @@ Module stack.
                 M.deref (|
                   M.read (|
                     M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       self,
                       [
                         fun γ =>

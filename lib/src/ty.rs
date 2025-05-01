@@ -87,14 +87,6 @@ impl CoqType {
 
         None
     }
-
-    pub(crate) fn make_raw_ref(self: Rc<CoqType>) -> Rc<CoqType> {
-        Rc::new(CoqType::Application {
-            func: CoqType::path(&["*"]),
-            consts: vec![],
-            tys: vec![self],
-        })
-    }
 }
 
 pub(crate) fn compile_type<'a>(

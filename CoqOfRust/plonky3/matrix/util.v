@@ -8,422 +8,274 @@ Module util.
     | [], [ F; _ as S ], [ mat ] =>
       ltac:(M.monadic
         (let mat := M.alloc (| mat |) in
-        M.catch_return (Ty.tuple []) (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ _ : Ty.tuple [] := Value.Tuple [] in
-              let __tracing_attr_span := M.read (| Value.DeclaredButUndefined |) in
-              let __tracing_attr_guard := M.read (| Value.DeclaredButUndefined |) in
-              let~ _ : Ty.tuple [] :=
+        M.read (|
+          M.catch_return (Ty.tuple []) (|
+            ltac:(M.monadic
+              (M.alloc (|
                 M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                LogicalOp.or (|
-                                  LogicalOp.and (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialOrd",
-                                        Ty.path "tracing_core::metadata::Level",
-                                        [],
-                                        [ Ty.path "tracing_core::metadata::LevelFilter" ],
-                                        "le",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          get_associated_constant (|
+                  let~ _ : Ty.tuple [] := Value.Tuple [] in
+                  let __tracing_attr_span := M.read (| Value.DeclaredButUndefined |) in
+                  let __tracing_attr_guard := M.read (| Value.DeclaredButUndefined |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    LogicalOp.or (|
+                                      LogicalOp.and (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialOrd",
                                             Ty.path "tracing_core::metadata::Level",
-                                            "DEBUG",
-                                            Ty.path "tracing_core::metadata::Level"
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          get_constant (|
-                                            "tracing::level_filters::STATIC_MAX_LEVEL",
-                                            Ty.path "tracing_core::metadata::LevelFilter"
-                                          |)
-                                        |)
-                                      ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialOrd",
-                                          Ty.path "tracing_core::metadata::Level",
-                                          [],
-                                          [ Ty.path "tracing_core::metadata::LevelFilter" ],
-                                          "le",
-                                          [],
-                                          []
+                                            [],
+                                            [ Ty.path "tracing_core::metadata::LevelFilter" ],
+                                            "le",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              get_associated_constant (|
+                                                Ty.path "tracing_core::metadata::Level",
+                                                "DEBUG",
+                                                Ty.path "tracing_core::metadata::Level"
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              get_constant (|
+                                                "tracing::level_filters::STATIC_MAX_LEVEL",
+                                                Ty.path "tracing_core::metadata::LevelFilter"
+                                              |)
+                                            |)
+                                          ]
                                         |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            get_associated_constant (|
-                                              Ty.path "tracing_core::metadata::Level",
-                                              "DEBUG",
-                                              Ty.path "tracing_core::metadata::Level"
-                                            |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.path "tracing_core::metadata::LevelFilter",
-                                                M.get_associated_function (|
-                                                  Ty.path "tracing_core::metadata::LevelFilter",
-                                                  "current",
-                                                  [],
-                                                  []
-                                                |),
-                                                []
-                                              |)
-                                            |)
-                                          |)
-                                        ]
-                                      |)))
-                                  |),
-                                  ltac:(M.monadic (Value.Bool false))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.write (|
-                              __tracing_attr_span,
-                              M.read (|
-                                let~ interest : Ty.path "tracing_core::subscriber::Interest" :=
-                                  M.call_closure (|
-                                    Ty.path "tracing_core::subscriber::Interest",
-                                    M.get_associated_function (|
-                                      Ty.path "tracing_core::subscriber::Interest",
-                                      "never",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |) in
-                                M.match_operator (|
-                                  Ty.apply (Ty.path "*") [] [ Ty.path "tracing::span::Span" ],
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              LogicalOp.and (|
-                                                LogicalOp.and (|
-                                                  LogicalOp.and (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      M.get_trait_method (|
-                                                        "core::cmp::PartialOrd",
-                                                        Ty.path "tracing_core::metadata::Level",
-                                                        [],
-                                                        [
-                                                          Ty.path
-                                                            "tracing_core::metadata::LevelFilter"
-                                                        ],
-                                                        "le",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          get_associated_constant (|
-                                                            Ty.path "tracing_core::metadata::Level",
-                                                            "DEBUG",
-                                                            Ty.path "tracing_core::metadata::Level"
-                                                          |)
-                                                        |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          get_constant (|
-                                                            "tracing::level_filters::STATIC_MAX_LEVEL",
-                                                            Ty.path
-                                                              "tracing_core::metadata::LevelFilter"
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |),
-                                                    ltac:(M.monadic
-                                                      (M.call_closure (|
-                                                        Ty.path "bool",
-                                                        M.get_trait_method (|
-                                                          "core::cmp::PartialOrd",
-                                                          Ty.path "tracing_core::metadata::Level",
-                                                          [],
-                                                          [
-                                                            Ty.path
-                                                              "tracing_core::metadata::LevelFilter"
-                                                          ],
-                                                          "le",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            get_associated_constant (|
-                                                              Ty.path
-                                                                "tracing_core::metadata::Level",
-                                                              "DEBUG",
-                                                              Ty.path
-                                                                "tracing_core::metadata::Level"
-                                                            |)
-                                                          |);
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.path
-                                                                  "tracing_core::metadata::LevelFilter",
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "tracing_core::metadata::LevelFilter",
-                                                                  "current",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                []
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        ]
-                                                      |)))
-                                                  |),
-                                                  ltac:(M.monadic
-                                                    (M.read (|
-                                                      let~ _ : Ty.tuple [] :=
-                                                        M.write (|
-                                                          interest,
-                                                          M.call_closure (|
-                                                            Ty.path
-                                                              "tracing_core::subscriber::Interest",
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "tracing_core::callsite::DefaultCallsite",
-                                                              "interest",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (|
-                                                                    get_constant (|
-                                                                      "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "tracing_core::callsite::DefaultCallsite"
-                                                                        ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |) in
-                                                      M.alloc (|
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "tracing_core::subscriber::Interest",
-                                                              "is_never",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                interest
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |)))
-                                                |),
-                                                ltac:(M.monadic
-                                                  (M.call_closure (|
-                                                    Ty.path "bool",
-                                                    M.get_function (|
-                                                      "tracing::__macro_support::__is_enabled",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "tracing_core::metadata::Metadata"
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "tracing_core::callsite::Callsite",
-                                                              Ty.path
-                                                                "tracing_core::callsite::DefaultCallsite",
-                                                              [],
-                                                              [],
-                                                              "metadata",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (|
-                                                                    get_constant (|
-                                                                      "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "tracing_core::callsite::DefaultCallsite"
-                                                                        ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |);
-                                                      M.read (| interest |)
-                                                    ]
-                                                  |)))
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        let~ meta :
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "tracing_core::metadata::Metadata" ] :=
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "tracing_core::metadata::Metadata" ],
+                                        ltac:(M.monadic
+                                          (M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
-                                              "tracing_core::callsite::Callsite",
-                                              Ty.path "tracing_core::callsite::DefaultCallsite",
+                                              "core::cmp::PartialOrd",
+                                              Ty.path "tracing_core::metadata::Level",
                                               [],
-                                              [],
-                                              "metadata",
+                                              [ Ty.path "tracing_core::metadata::LevelFilter" ],
+                                              "le",
                                               [],
                                               []
                                             |),
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "tracing_core::callsite::DefaultCallsite"
-                                                        ]
-                                                    |)
+                                                get_associated_constant (|
+                                                  Ty.path "tracing_core::metadata::Level",
+                                                  "DEBUG",
+                                                  Ty.path "tracing_core::metadata::Level"
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.path "tracing_core::metadata::LevelFilter",
+                                                    M.get_associated_function (|
+                                                      Ty.path "tracing_core::metadata::LevelFilter",
+                                                      "current",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    []
                                                   |)
                                                 |)
                                               |)
                                             ]
-                                          |) in
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.path "tracing::span::Span",
-                                            M.get_associated_function (|
-                                              Ty.path "tracing::span::Span",
-                                              "new",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| meta |) |)
-                                              |);
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "tracing_core::field::ValueSet",
-                                                        M.get_associated_function (|
-                                                          Ty.path "tracing_core::field::FieldSet",
-                                                          "value_set",
-                                                          [],
+                                          |)))
+                                      |),
+                                      ltac:(M.monadic (Value.Bool false))
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.write (|
+                                  __tracing_attr_span,
+                                  M.read (|
+                                    let~ interest : Ty.path "tracing_core::subscriber::Interest" :=
+                                      M.call_closure (|
+                                        Ty.path "tracing_core::subscriber::Interest",
+                                        M.get_associated_function (|
+                                          Ty.path "tracing_core::subscriber::Interest",
+                                          "never",
+                                          [],
+                                          []
+                                        |),
+                                        []
+                                      |) in
+                                    M.match_operator (|
+                                      Ty.path "tracing::span::Span",
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  LogicalOp.and (|
+                                                    LogicalOp.and (|
+                                                      LogicalOp.and (|
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          M.get_trait_method (|
+                                                            "core::cmp::PartialOrd",
+                                                            Ty.path "tracing_core::metadata::Level",
+                                                            [],
+                                                            [
+                                                              Ty.path
+                                                                "tracing_core::metadata::LevelFilter"
+                                                            ],
+                                                            "le",
+                                                            [],
+                                                            []
+                                                          |),
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Value.Integer IntegerKind.Usize 0 ]
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "tracing_core::field::Field"
-                                                                      ];
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.dyn
-                                                                              [
-                                                                                ("tracing_core::field::Value::Trait",
-                                                                                  [])
-                                                                              ]
-                                                                          ]
-                                                                      ]
-                                                                  ]
-                                                              ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              get_associated_constant (|
+                                                                Ty.path
+                                                                  "tracing_core::metadata::Level",
+                                                                "DEBUG",
+                                                                Ty.path
+                                                                  "tracing_core::metadata::Level"
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              get_constant (|
+                                                                "tracing::level_filters::STATIC_MAX_LEVEL",
+                                                                Ty.path
+                                                                  "tracing_core::metadata::LevelFilter"
+                                                              |)
+                                                            |)
                                                           ]
+                                                        |),
+                                                        ltac:(M.monadic
+                                                          (M.call_closure (|
+                                                            Ty.path "bool",
+                                                            M.get_trait_method (|
+                                                              "core::cmp::PartialOrd",
+                                                              Ty.path
+                                                                "tracing_core::metadata::Level",
+                                                              [],
+                                                              [
+                                                                Ty.path
+                                                                  "tracing_core::metadata::LevelFilter"
+                                                              ],
+                                                              "le",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                get_associated_constant (|
+                                                                  Ty.path
+                                                                    "tracing_core::metadata::Level",
+                                                                  "DEBUG",
+                                                                  Ty.path
+                                                                    "tracing_core::metadata::Level"
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.path
+                                                                      "tracing_core::metadata::LevelFilter",
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "tracing_core::metadata::LevelFilter",
+                                                                      "current",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    []
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)))
+                                                      |),
+                                                      ltac:(M.monadic
+                                                        (M.read (|
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.write (|
+                                                              interest,
+                                                              M.call_closure (|
+                                                                Ty.path
+                                                                  "tracing_core::subscriber::Interest",
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "tracing_core::callsite::DefaultCallsite",
+                                                                  "interest",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        get_constant (|
+                                                                          "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "tracing_core::callsite::DefaultCallsite"
+                                                                            ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          M.alloc (|
+                                                            UnOp.not (|
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "tracing_core::subscriber::Interest",
+                                                                  "is_never",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    interest
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)))
+                                                    |),
+                                                    ltac:(M.monadic
+                                                      (M.call_closure (|
+                                                        Ty.path "bool",
+                                                        M.get_function (|
+                                                          "tracing::__macro_support::__is_enabled",
+                                                          [],
+                                                          []
                                                         |),
                                                         [
                                                           M.borrow (|
@@ -435,30 +287,249 @@ Module util.
                                                                   []
                                                                   [
                                                                     Ty.path
-                                                                      "tracing_core::field::FieldSet"
+                                                                      "tracing_core::metadata::Metadata"
                                                                   ],
-                                                                M.get_associated_function (|
+                                                                M.get_trait_method (|
+                                                                  "tracing_core::callsite::Callsite",
                                                                   Ty.path
-                                                                    "tracing_core::metadata::Metadata",
-                                                                  "fields",
+                                                                    "tracing_core::callsite::DefaultCallsite",
+                                                                  [],
+                                                                  [],
+                                                                  "metadata",
                                                                   [],
                                                                   []
                                                                 |),
                                                                 [
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| meta |) |)
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        get_constant (|
+                                                                          "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "tracing_core::callsite::DefaultCallsite"
+                                                                            ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
                                                             |)
                                                           |);
+                                                          M.read (| interest |)
+                                                        ]
+                                                      |)))
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ meta :
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "tracing_core::metadata::Metadata" ] :=
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "tracing_core::metadata::Metadata" ],
+                                                M.get_trait_method (|
+                                                  "tracing_core::callsite::Callsite",
+                                                  Ty.path "tracing_core::callsite::DefaultCallsite",
+                                                  [],
+                                                  [],
+                                                  "metadata",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "tracing_core::callsite::DefaultCallsite"
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.path "tracing::span::Span",
+                                                M.get_associated_function (|
+                                                  Ty.path "tracing::span::Span",
+                                                  "new",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| meta |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.path "tracing_core::field::ValueSet",
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "tracing_core::field::FieldSet",
+                                                              "value_set",
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0
+                                                                  ]
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "tracing_core::field::Field"
+                                                                          ];
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.dyn
+                                                                                  [
+                                                                                    ("tracing_core::field::Value::Trait",
+                                                                                      [])
+                                                                                  ]
+                                                                              ]
+                                                                          ]
+                                                                      ]
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "tracing_core::field::FieldSet"
+                                                                      ],
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "tracing_core::metadata::Metadata",
+                                                                      "fields",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| meta |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (| Value.Array [] |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let~ span : Ty.path "tracing::span::Span" :=
+                                              M.call_closure (|
+                                                Ty.path "tracing::span::Span",
+                                                M.get_function (|
+                                                  "tracing::__macro_support::__disabled_span",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "tracing_core::metadata::Metadata"
+                                                          ],
+                                                        M.get_trait_method (|
+                                                          "tracing_core::callsite::Callsite",
+                                                          Ty.path
+                                                            "tracing_core::callsite::DefaultCallsite",
+                                                          [],
+                                                          [],
+                                                          "metadata",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.alloc (| Value.Array [] |)
+                                                              M.read (|
+                                                                get_constant (|
+                                                                  "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "tracing_core::callsite::DefaultCallsite"
+                                                                    ]
+                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -466,307 +537,256 @@ Module util.
                                                       |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let~ span : Ty.path "tracing::span::Span" :=
-                                          M.call_closure (|
-                                            Ty.path "tracing::span::Span",
-                                            M.get_function (|
-                                              "tracing::__macro_support::__disabled_span",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [ Ty.path "tracing_core::metadata::Metadata"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "tracing_core::callsite::Callsite",
-                                                      Ty.path
-                                                        "tracing_core::callsite::DefaultCallsite",
-                                                      [],
-                                                      [],
-                                                      "metadata",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "p3_matrix::util::reverse_matrix_index_bits::__CALLSITE",
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "tracing_core::callsite::DefaultCallsite"
-                                                                ]
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] := Value.Tuple [] in
-                                        span))
-                                  ]
-                                |)
-                              |)
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.write (|
-                              __tracing_attr_guard,
-                              M.call_closure (|
-                                Ty.path "tracing::span::Entered",
-                                M.get_associated_function (|
-                                  Ty.path "tracing::span::Span",
-                                  "enter",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, __tracing_attr_span |) ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ __tracing_attr_fake_return : Ty.tuple [] :=
-                                  M.never_to_any (|
-                                    M.read (|
-                                      M.loop (|
-                                        Ty.apply (Ty.path "*") [] [ Ty.path "never" ],
-                                        ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] := Value.Tuple [] in
+                                            span))
+                                      ]
                                     |)
-                                  |) in
-                                M.return_ (| M.read (| __tracing_attr_fake_return |) |)
-                              |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)
-                |) in
-              let~ w : Ty.path "usize" :=
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "p3_matrix::Matrix",
-                    Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ F; S ],
-                    [],
-                    [ F ],
-                    "width",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| mat |) |) |) ]
-                |) in
-              let~ h : Ty.path "usize" :=
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "p3_matrix::Matrix",
-                    Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ F; S ],
-                    [],
-                    [ F ],
-                    "height",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| mat |) |) |) ]
-                |) in
-              let~ log_h : Ty.path "usize" :=
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_function (| "p3_util::log2_strict_usize", [], [] |),
-                  [ M.read (| h |) ]
-                |) in
-              let~ values : Ty.path "usize" :=
-                M.cast
-                  (Ty.path "usize")
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ F ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ F ],
-                      "as_mut_ptr",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
-                            M.get_trait_method (|
-                              "core::borrow::BorrowMut",
-                              S,
-                              [],
-                              [ Ty.apply (Ty.path "slice") [] [ F ] ],
-                              "borrow_mut",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| mat |) |),
-                                  "p3_matrix::dense::DenseMatrix",
-                                  "values"
-                                |)
-                              |)
-                            ]
-                          |)
-                        |)
+                                  |)
+                                |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.write (|
+                                  __tracing_attr_guard,
+                                  M.call_closure (|
+                                    Ty.path "tracing::span::Entered",
+                                    M.get_associated_function (|
+                                      Ty.path "tracing::span::Span",
+                                      "enter",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, __tracing_attr_span |) ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
                       |)
-                    ]
-                  |)) in
-              let~ _ : Ty.tuple [] :=
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    [],
-                    [],
-                    "for_each",
-                    [],
-                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
-                  |),
-                  [
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ __tracing_attr_fake_return : Ty.tuple [] :=
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.loop (|
+                                            Ty.path "never",
+                                            ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          |)
+                                        |)
+                                      |) in
+                                    M.return_ (| M.read (| __tracing_attr_fake_return |) |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
+                    |) in
+                  let~ w : Ty.path "usize" :=
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                      Ty.path "usize",
                       M.get_trait_method (|
-                        "p3_maybe_rayon::serial::IntoParallelIterator",
-                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                        "p3_matrix::Matrix",
+                        Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ F; S ],
                         [],
-                        [],
-                        "into_par_iter",
+                        [ F ],
+                        "width",
                         [],
                         []
                       |),
-                      [
-                        Value.StructRecord
-                          "core::ops::range::Range"
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| mat |) |) |) ]
+                    |) in
+                  let~ h : Ty.path "usize" :=
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_trait_method (|
+                        "p3_matrix::Matrix",
+                        Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ F; S ],
+                        [],
+                        [ F ],
+                        "height",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| mat |) |) |) ]
+                    |) in
+                  let~ log_h : Ty.path "usize" :=
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_function (| "p3_util::log2_strict_usize", [], [] |),
+                      [ M.read (| h |) ]
+                    |) in
+                  let~ values : Ty.path "usize" :=
+                    M.cast
+                      (Ty.path "usize")
+                      (M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ F ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ F ],
+                          "as_mut_ptr",
+                          [],
                           []
-                          [ Ty.path "usize" ]
-                          [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| h |)) ]
-                      ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "*")
+                                  (Ty.path "&mut")
                                   []
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ],
-                                M.alloc (| α0 |),
+                                  [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                                M.get_trait_method (|
+                                  "core::borrow::BorrowMut",
+                                  S,
+                                  [],
+                                  [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                                  "borrow_mut",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let i := M.copy (| γ |) in
-                                      M.read (|
-                                        let~ values : Ty.apply (Ty.path "*mut") [] [ F ] :=
-                                          M.cast
-                                            (Ty.apply (Ty.path "*mut") [] [ F ])
-                                            (M.read (| values |)) in
-                                        let~ j : Ty.path "usize" :=
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_function (|
-                                              "p3_util::reverse_bits_len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| i |); M.read (| log_h |) ]
-                                          |) in
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "bool",
-                                                        BinOp.lt,
-                                                        [ M.read (| i |); M.read (| j |) ]
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.call_closure (|
-                                                    Ty.tuple [],
-                                                    M.get_function (|
-                                                      "p3_matrix::util::swap_rows_raw",
-                                                      [],
-                                                      [ F ]
-                                                    |),
-                                                    [
-                                                      M.read (| values |);
-                                                      M.read (| w |);
-                                                      M.read (| i |);
-                                                      M.read (| j |)
-                                                    ]
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |)
-                                      |)))
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| mat |) |),
+                                      "p3_matrix::dense::DenseMatrix",
+                                      "values"
+                                    |)
+                                  |)
                                 ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |) in
-              M.alloc (| Value.Tuple [] |)
-            |)))
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)) in
+                  let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                        [],
+                        [],
+                        "for_each",
+                        [],
+                        [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                          M.get_trait_method (|
+                            "p3_maybe_rayon::serial::IntoParallelIterator",
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            [],
+                            [],
+                            "into_par_iter",
+                            [],
+                            []
+                          |),
+                          [
+                            Value.StructRecord
+                              "core::ops::range::Range"
+                              []
+                              [ Ty.path "usize" ]
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| h |))
+                              ]
+                          ]
+                        |);
+                        M.closure
+                          (fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [ α0 ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []),
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let i := M.copy (| γ |) in
+                                          M.read (|
+                                            let~ values : Ty.apply (Ty.path "*mut") [] [ F ] :=
+                                              M.cast
+                                                (Ty.apply (Ty.path "*mut") [] [ F ])
+                                                (M.read (| values |)) in
+                                            let~ j : Ty.path "usize" :=
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_function (|
+                                                  "p3_util::reverse_bits_len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| i |); M.read (| log_h |) ]
+                                              |) in
+                                            M.match_operator (|
+                                              Ty.tuple [],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.lt,
+                                                            [ M.read (| i |); M.read (| j |) ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    let~ _ : Ty.tuple [] :=
+                                                      M.call_closure (|
+                                                        Ty.tuple [],
+                                                        M.get_function (|
+                                                          "p3_matrix::util::swap_rows_raw",
+                                                          [],
+                                                          [ F ]
+                                                        |),
+                                                        [
+                                                          M.read (| values |);
+                                                          M.read (| w |);
+                                                          M.read (| i |);
+                                                          M.read (| j |)
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      ]
+                    |) in
+                  M.alloc (| Value.Tuple [] |)
+                |)
+              |)))
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -812,7 +832,7 @@ Module util.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| mat |) |) |) ]
             |) in
           M.match_operator (|
-            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+            Ty.tuple [],
             M.alloc (|
               M.call_closure (|
                 Ty.tuple

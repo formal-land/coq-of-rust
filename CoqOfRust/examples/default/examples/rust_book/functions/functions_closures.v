@@ -44,10 +44,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ],
+                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -70,10 +67,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
-                        [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ],
+                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -271,7 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [] ] (Ty.path "i32") ],
+                      Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
                       M.alloc (| α0 |),
                       [ fun γ => ltac:(M.monadic (Value.Integer IntegerKind.I32 1)) ]
                     |)))

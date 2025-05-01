@@ -98,25 +98,20 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply
-                        (Ty.path "*")
-                        []
+                      Ty.function
                         [
-                          Ty.function
+                          Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                ]
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
-                        ],
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -165,14 +160,9 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.apply
-                                              (Ty.path "*")
-                                              []
-                                              [
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "i32" ] ]
-                                                  (Ty.path "i32")
-                                              ],
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "i32" ] ]
+                                              (Ty.path "i32"),
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>

@@ -87,7 +87,7 @@ Module instructions.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     self,
                     [
                       fun γ =>
@@ -512,7 +512,7 @@ Module instructions.
           (let val := M.alloc (| val |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
+              Ty.path "revm_interpreter::instructions::i256::Sign",
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -630,7 +630,7 @@ Module instructions.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -857,7 +857,7 @@ Module instructions.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| second |) |) |) ]
               |) in
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+              Ty.path "core::cmp::Ordering",
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -955,156 +955,86 @@ Module instructions.
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
-          M.catch_return
-            (Ty.apply
-              (Ty.path "ruint::Uint")
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-              []) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
-                  M.call_closure (|
-                    Ty.path "revm_interpreter::instructions::i256::Sign",
-                    M.get_function (|
-                      "revm_interpreter::instructions::i256::i256_sign_compl",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, second |) |)
-                      |)
-                    ]
-                  |) in
-                let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                []) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.path "revm_interpreter::instructions::i256::Sign",
-                                      [],
-                                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, second_sign |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Zero"
-                                            []
-                                            []
-                                            []
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.read (|
-                                      get_associated_constant (|
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
+                    let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                      M.call_closure (|
+                        Ty.path "revm_interpreter::instructions::i256::Sign",
+                        M.get_function (|
+                          "revm_interpreter::instructions::i256::i256_sign_compl",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, second |) |)
+                          |)
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialEq",
+                                          Ty.path "revm_interpreter::instructions::i256::Sign",
                                           [],
-                                        "ZERO",
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
+                                          [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
+                                          "eq",
+                                          [],
                                           []
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
-                  M.call_closure (|
-                    Ty.path "revm_interpreter::instructions::i256::Sign",
-                    M.get_function (|
-                      "revm_interpreter::instructions::i256::i256_sign_compl",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, first |) |)
-                      |)
-                    ]
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  LogicalOp.and (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [],
-                                        [],
+                                        |),
                                         [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ]
-                                            []
-                                        ],
-                                        "eq",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, first |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          get_constant (|
-                                            "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE",
+                                          M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.StructTuple
+                                                "revm_interpreter::instructions::i256::Sign::Zero"
+                                                []
+                                                []
+                                                []
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [],
+                                            "ZERO",
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
                                               [
@@ -1114,13 +1044,152 @@ Module instructions.
                                               []
                                           |)
                                         |)
-                                      ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                      M.call_closure (|
+                        Ty.path "revm_interpreter::instructions::i256::Sign",
+                        M.get_function (|
+                          "revm_interpreter::instructions::i256::i256_sign_compl",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, first |) |)
+                          |)
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      LogicalOp.and (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
+                                                []
+                                            ],
+                                            "eq",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, first |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              get_constant (|
+                                                "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              |)
+                                            |)
+                                          ]
+                                        |),
+                                        ltac:(M.monadic
+                                          (M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_trait_method (|
+                                              "core::cmp::PartialEq",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
+                                                [],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ],
+                                              "eq",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, second |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
+                                                      [],
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
+                                                        [],
+                                                      "from",
+                                                      [],
+                                                      [ Ty.path "i32" ]
+                                                    |),
+                                                    [ Value.Integer IntegerKind.I32 1 ]
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)))
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
                                             [
@@ -1128,246 +1197,104 @@ Module instructions.
                                               Value.Integer IntegerKind.Usize 4
                                             ]
                                             [],
-                                          [],
+                                          M.get_function (|
+                                            "revm_interpreter::instructions::i256::two_compl",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          ],
-                                          "eq",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (| Pointer.Kind.Ref, second |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              M.call_closure (|
+                                            M.read (|
+                                              get_constant (|
+                                                "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE",
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
                                                   [
                                                     Value.Integer IntegerKind.Usize 256;
                                                     Value.Integer IntegerKind.Usize 4
                                                   ]
-                                                  [],
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ]
-                                                    [],
-                                                  "from",
-                                                  [],
-                                                  [ Ty.path "i32" ]
-                                                |),
-                                                [ Value.Integer IntegerKind.I32 1 ]
+                                                  []
                                               |)
                                             |)
-                                          |)
-                                        ]
-                                      |)))
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ]
-                                        [],
-                                      M.get_function (|
-                                        "revm_interpreter::instructions::i256::two_compl",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE",
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ d :
-                    Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      [] :=
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      [],
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ d :
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [] :=
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        M.get_trait_method (|
+                          "core::ops::arith::Div",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          [],
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ],
+                          "div",
+                          [],
+                          []
+                        |),
+                        [ M.read (| first |); M.read (| second |) ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (|
+                          "revm_interpreter::instructions::i256::u256_remove_sign",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, d |) |)
+                          |)
+                        ]
+                      |) in
+                    M.match_operator (|
                       Ty.apply
                         (Ty.path "ruint::Uint")
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
-                      [],
+                      M.alloc (| Value.Tuple [] |),
                       [
-                        Ty.apply
-                          (Ty.path "ruint::Uint")
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []
-                      ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| first |); M.read (| second |) ]
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_function (|
-                      "revm_interpreter::instructions::i256::u256_remove_sign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, d |) |)
-                      |)
-                    ]
-                  |) in
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        []
-                    ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              LogicalOp.or (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.path "revm_interpreter::instructions::i256::Sign",
-                                      [],
-                                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, first_sign |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Minus"
-                                            []
-                                            []
-                                            []
-                                        |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.path "revm_interpreter::instructions::i256::Sign",
-                                        [],
-                                        [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                        "ne",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, second_sign |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.StructTuple
-                                              "revm_interpreter::instructions::i256::Sign::Minus"
-                                              []
-                                              []
-                                              []
-                                          |)
-                                        |)
-                                      ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic
-                                  (LogicalOp.and (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.path "revm_interpreter::instructions::i256::Sign",
-                                        [],
-                                        [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                        "eq",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, second_sign |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.StructTuple
-                                              "revm_interpreter::instructions::i256::Sign::Minus"
-                                              []
-                                              []
-                                              []
-                                          |)
-                                        |)
-                                      ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.or (|
+                                    LogicalOp.and (|
+                                      M.call_closure (|
                                         Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "revm_interpreter::instructions::i256::Sign",
                                           [],
                                           [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                          "ne",
+                                          "eq",
                                           [],
                                           []
                                         |),
@@ -1384,32 +1311,118 @@ Module instructions.
                                             |)
                                           |)
                                         ]
+                                      |),
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.path "revm_interpreter::instructions::i256::Sign",
+                                            [],
+                                            [ Ty.path "revm_interpreter::instructions::i256::Sign"
+                                            ],
+                                            "ne",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.StructTuple
+                                                  "revm_interpreter::instructions::i256::Sign::Minus"
+                                                  []
+                                                  []
+                                                  []
+                                              |)
+                                            |)
+                                          ]
+                                        |)))
+                                    |),
+                                    ltac:(M.monadic
+                                      (LogicalOp.and (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.path "revm_interpreter::instructions::i256::Sign",
+                                            [],
+                                            [ Ty.path "revm_interpreter::instructions::i256::Sign"
+                                            ],
+                                            "eq",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.StructTuple
+                                                  "revm_interpreter::instructions::i256::Sign::Minus"
+                                                  []
+                                                  []
+                                                  []
+                                              |)
+                                            |)
+                                          ]
+                                        |),
+                                        ltac:(M.monadic
+                                          (M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_trait_method (|
+                                              "core::cmp::PartialEq",
+                                              Ty.path "revm_interpreter::instructions::i256::Sign",
+                                              [],
+                                              [ Ty.path "revm_interpreter::instructions::i256::Sign"
+                                              ],
+                                              "ne",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, first_sign |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.StructTuple
+                                                    "revm_interpreter::instructions::i256::Sign::Minus"
+                                                    []
+                                                    []
+                                                    []
+                                                |)
+                                              |)
+                                            ]
+                                          |)))
                                       |)))
-                                  |)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [],
+                                M.get_function (|
+                                  "revm_interpreter::instructions::i256::two_compl",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| d |) ]
                               |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "ruint::Uint")
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ]
-                              [],
-                            M.get_function (|
-                              "revm_interpreter::instructions::i256::two_compl",
-                              [],
-                              []
-                            |),
-                            [ M.read (| d |) ]
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic d)
-                  ]
-                |)
-              |)))
+                            |)));
+                        fun γ => ltac:(M.monadic d)
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1449,32 +1462,244 @@ Module instructions.
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
-          M.catch_return
-            (Ty.apply
-              (Ty.path "ruint::Uint")
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-              []) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
-                  M.call_closure (|
-                    Ty.path "revm_interpreter::instructions::i256::Sign",
-                    M.get_function (|
-                      "revm_interpreter::instructions::i256::i256_sign_compl",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, first |) |)
-                      |)
-                    ]
-                  |) in
-                let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                []) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
+                    let~ first_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                      M.call_closure (|
+                        Ty.path "revm_interpreter::instructions::i256::Sign",
+                        M.get_function (|
+                          "revm_interpreter::instructions::i256::i256_sign_compl",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, first |) |)
+                          |)
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialEq",
+                                          Ty.path "revm_interpreter::instructions::i256::Sign",
+                                          [],
+                                          [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
+                                          "eq",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, first_sign |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.StructTuple
+                                                "revm_interpreter::instructions::i256::Sign::Zero"
+                                                []
+                                                []
+                                                []
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [],
+                                            "ZERO",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              []
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
+                      M.call_closure (|
+                        Ty.path "revm_interpreter::instructions::i256::Sign",
+                        M.get_function (|
+                          "revm_interpreter::instructions::i256::i256_sign_compl",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, second |) |)
+                          |)
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialEq",
+                                          Ty.path "revm_interpreter::instructions::i256::Sign",
+                                          [],
+                                          [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
+                                          "eq",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, second_sign |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.StructTuple
+                                                "revm_interpreter::instructions::i256::Sign::Zero"
+                                                []
+                                                []
+                                                []
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [],
+                                            "ZERO",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              []
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ r :
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [] :=
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        M.get_trait_method (|
+                          "core::ops::arith::Rem",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          [],
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ],
+                          "rem",
+                          [],
+                          []
+                        |),
+                        [ M.read (| first |); M.read (| second |) ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (|
+                          "revm_interpreter::instructions::i256::u256_remove_sign",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, r |) |)
+                          |)
+                        ]
+                      |) in
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1499,7 +1724,7 @@ Module instructions.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Zero"
+                                            "revm_interpreter::instructions::i256::Sign::Minus"
                                             []
                                             []
                                             []
@@ -1511,230 +1736,28 @@ Module instructions.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.read (|
-                                      get_associated_constant (|
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [],
-                                        "ZERO",
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          []
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ second_sign : Ty.path "revm_interpreter::instructions::i256::Sign" :=
-                  M.call_closure (|
-                    Ty.path "revm_interpreter::instructions::i256::Sign",
-                    M.get_function (|
-                      "revm_interpreter::instructions::i256::i256_sign_compl",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, second |) |)
-                      |)
-                    ]
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.path "revm_interpreter::instructions::i256::Sign",
-                                      [],
-                                      [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, second_sign |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "revm_interpreter::instructions::i256::Sign::Zero"
-                                            []
-                                            []
-                                            []
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.read (|
-                                      get_associated_constant (|
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [],
-                                        "ZERO",
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          []
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ r :
-                    Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      [] :=
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "ruint::Uint")
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                      [],
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        [],
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "ruint::Uint")
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []
-                      ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| first |); M.read (| second |) ]
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_function (|
-                      "revm_interpreter::instructions::i256::u256_remove_sign",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, r |) |)
-                      |)
-                    ]
-                  |) in
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        []
-                    ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
                               M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.path "revm_interpreter::instructions::i256::Sign",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [],
-                                  [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
-                                  "eq",
+                                M.get_function (|
+                                  "revm_interpreter::instructions::i256::two_compl",
                                   [],
                                   []
                                 |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, first_sign |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.StructTuple
-                                        "revm_interpreter::instructions::i256::Sign::Minus"
-                                        []
-                                        []
-                                        []
-                                    |)
-                                  |)
-                                ]
+                                [ M.read (| r |) ]
                               |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "ruint::Uint")
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ]
-                              [],
-                            M.get_function (|
-                              "revm_interpreter::instructions::i256::two_compl",
-                              [],
-                              []
-                            |),
-                            [ M.read (| r |) ]
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic r)
-                  ]
-                |)
-              |)))
+                            |)));
+                        fun γ => ltac:(M.monadic r)
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

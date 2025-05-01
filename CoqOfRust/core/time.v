@@ -93,7 +93,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Nanoseconds" ],
+              Ty.path "core::time::Nanoseconds",
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -191,7 +191,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -433,13 +433,13 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+                      Ty.path "core::time::Duration",
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -572,13 +572,13 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -610,10 +610,7 @@ Module time.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -742,7 +739,7 @@ Module time.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::cmp::Ordering" ],
+              Ty.path "core::cmp::Ordering",
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -1115,7 +1112,7 @@ Module time.
           let nanos := M.alloc (| nanos |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1467,7 +1464,7 @@ Module time.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1644,7 +1641,7 @@ Module time.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1802,7 +1799,7 @@ Module time.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1937,7 +1934,7 @@ Module time.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2403,7 +2400,7 @@ Module time.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2498,289 +2495,294 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.catch_return
-            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
+          M.read (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.read (|
+                    M.match_operator (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::time::Duration" ]
-                    ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                              M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::time::Duration",
-                                    "secs"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    rhs,
-                                    "core::time::Duration",
-                                    "secs"
-                                  |)
-                                |)
-                              ]
-                            |)
-                          |) in
-                        let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let secs := M.copy (| γ0_0 |) in
-                        let~ nanos : Ty.path "u32" :=
-                          M.call_closure (|
-                            Ty.path "u32",
-                            BinOp.Wrap.add,
-                            [
-                              M.read (|
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::time::Duration",
-                                    "nanos"
+                        [ Ty.path "core::time::Duration" ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u64",
+                                    "checked_add",
+                                    [],
+                                    []
                                   |),
-                                  "core::time::Nanoseconds",
-                                  0
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::time::Duration",
+                                        "secs"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        rhs,
+                                        "core::time::Duration",
+                                        "secs"
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              |);
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let secs := M.copy (| γ0_0 |) in
+                            let~ nanos : Ty.path "u32" :=
+                              M.call_closure (|
+                                Ty.path "u32",
+                                BinOp.Wrap.add,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::time::Duration",
+                                        "nanos"
+                                      |),
+                                      "core::time::Nanoseconds",
+                                      0
+                                    |)
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        rhs,
+                                        "core::time::Duration",
+                                        "nanos"
+                                      |),
+                                      "core::time::Nanoseconds",
+                                      0
+                                    |)
+                                  |)
+                                ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
                               M.read (|
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    rhs,
-                                    "core::time::Duration",
-                                    "nanos"
-                                  |),
-                                  "core::time::Nanoseconds",
-                                  0
-                                |)
-                              |)
-                            ]
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [
-                                              M.read (| nanos |);
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::time::NANOS_PER_SEC",
-                                                  Ty.path "u32"
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      let β := nanos in
-                                      M.write (|
-                                        β,
-                                        M.call_closure (|
-                                          Ty.path "u32",
-                                          BinOp.Wrap.sub,
-                                          [
-                                            M.read (| β |);
-                                            M.read (|
-                                              get_constant (|
-                                                "core::time::NANOS_PER_SEC",
-                                                Ty.path "u32"
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      |) in
-                                    M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "u64" ],
-                                                  M.get_associated_function (|
-                                                    Ty.path "u64",
-                                                    "checked_add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| secs |);
-                                                    Value.Integer IntegerKind.U64 1
-                                                  ]
-                                                |)
-                                              |) in
-                                            let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let new_secs := M.copy (| γ0_0 |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.write (| secs, M.read (| new_secs |) |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
+                                M.match_operator (|
+                                  Ty.tuple [],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
                                             (M.alloc (|
-                                              M.never_to_any (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| nanos |);
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "core::time::NANOS_PER_SEC",
+                                                      Ty.path "u32"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          let β := nanos in
+                                          M.write (|
+                                            β,
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.read (| β |);
                                                 M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
-                                                      [ Ty.path "core::time::Duration" ]
-                                                      []
+                                                  get_constant (|
+                                                    "core::time::NANOS_PER_SEC",
+                                                    Ty.path "u32"
                                                   |)
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.read (|
+                                              ]
+                                            |)
+                                          |) in
                                         M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.lt,
-                                                          [
-                                                            M.read (| nanos |);
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "core::time::NANOS_PER_SEC",
-                                                                Ty.path "u32"
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::panic",
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      M.get_associated_function (|
+                                                        Ty.path "u64",
+                                                        "checked_add",
                                                         [],
                                                         []
                                                       |),
                                                       [
-                                                        mk_str (|
-                                                          "assertion failed: nanos < NANOS_PER_SEC"
-                                                        |)
+                                                        M.read (| secs |);
+                                                        Value.Integer IntegerKind.U64 1
                                                       ]
                                                     |)
+                                                  |) in
+                                                let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let new_secs := M.copy (| γ0_0 |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.write (| secs, M.read (| new_secs |) |) in
+                                                M.alloc (| Value.Tuple [] |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                          [ Ty.path "core::time::Duration" ]
+                                                          []
+                                                      |)
+                                                    |)
                                                   |)
-                                                |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                |)))
                                           ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ Ty.path "core::time::Duration" ]
-                            [
-                              M.call_closure (|
-                                Ty.path "core::time::Duration",
-                                M.get_associated_function (|
-                                  Ty.path "core::time::Duration",
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| secs |); M.read (| nanos |) ]
-                              |)
-                            ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::None"
-                            []
-                            [ Ty.path "core::time::Duration" ]
-                            []
-                        |)))
-                  ]
-                |)
-              |)))
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.tuple [],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            M.match_operator (|
+                                              Ty.tuple [],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.lt,
+                                                              [
+                                                                M.read (| nanos |);
+                                                                M.read (|
+                                                                  get_constant (|
+                                                                    "core::time::NANOS_PER_SEC",
+                                                                    Ty.path "u32"
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          Ty.path "never",
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            mk_str (|
+                                                              "assertion failed: nanos < NANOS_PER_SEC"
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ Ty.path "core::time::Duration" ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::time::Duration",
+                                    M.get_associated_function (|
+                                      Ty.path "core::time::Duration",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| secs |); M.read (| nanos |) ]
+                                  |)
+                                ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [ Ty.path "core::time::Duration" ]
+                                []
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2806,7 +2808,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
@@ -2873,68 +2875,105 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.catch_return
-            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
+          M.read (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.read (|
+                    M.match_operator (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::time::Duration" ]
-                    ],
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                              M.get_associated_function (| Ty.path "u64", "checked_sub", [], [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::time::Duration",
-                                    "secs"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    rhs,
-                                    "core::time::Duration",
-                                    "secs"
-                                  |)
+                        [ Ty.path "core::time::Duration" ],
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u64",
+                                    "checked_sub",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::time::Duration",
+                                        "secs"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        rhs,
+                                        "core::time::Duration",
+                                        "secs"
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
-                            |)
-                          |) in
-                        let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let secs := M.copy (| γ0_0 |) in
-                        let~ nanos : Ty.path "u32" :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let secs := M.copy (| γ0_0 |) in
+                            let~ nanos : Ty.path "u32" :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.path "u32",
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        self,
+                                                        "core::time::Duration",
+                                                        "nanos"
+                                                      |),
+                                                      "core::time::Nanoseconds",
+                                                      0
+                                                    |)
+                                                  |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        rhs,
+                                                        "core::time::Duration",
+                                                        "nanos"
+                                                      |),
+                                                      "core::time::Nanoseconds",
+                                                      0
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
                                           M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
+                                            Ty.path "u32",
+                                            BinOp.Wrap.sub,
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_tuple_field (|
@@ -2960,242 +2999,210 @@ Module time.
                                               |)
                                             ]
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "u32",
-                                        BinOp.Wrap.sub,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::time::Duration",
-                                                "nanos"
-                                              |),
-                                              "core::time::Nanoseconds",
-                                              0
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                rhs,
-                                                "core::time::Duration",
-                                                "nanos"
-                                              |),
-                                              "core::time::Nanoseconds",
-                                              0
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Ty.apply (Ty.path "*") [] [ Ty.path "u32" ],
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "u64" ],
-                                                  M.get_associated_function (|
-                                                    Ty.path "u64",
-                                                    "checked_sub",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| secs |);
-                                                    Value.Integer IntegerKind.U64 1
-                                                  ]
-                                                |)
-                                              |) in
-                                            let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let sub_secs := M.copy (| γ0_0 |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.write (| secs, M.read (| sub_secs |) |) in
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.path "u32",
-                                                BinOp.Wrap.sub,
-                                                [
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          Ty.path "u32",
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      M.get_associated_function (|
+                                                        Ty.path "u64",
+                                                        "checked_sub",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (| secs |);
+                                                        Value.Integer IntegerKind.U64 1
+                                                      ]
+                                                    |)
+                                                  |) in
+                                                let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let sub_secs := M.copy (| γ0_0 |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.write (| secs, M.read (| sub_secs |) |) in
+                                                M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path "u32",
-                                                    BinOp.Wrap.add,
+                                                    BinOp.Wrap.sub,
                                                     [
+                                                      M.call_closure (|
+                                                        Ty.path "u32",
+                                                        BinOp.Wrap.add,
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                self,
+                                                                "core::time::Duration",
+                                                                "nanos"
+                                                              |),
+                                                              "core::time::Nanoseconds",
+                                                              0
+                                                            |)
+                                                          |);
+                                                          M.read (|
+                                                            get_constant (|
+                                                              "core::time::NANOS_PER_SEC",
+                                                              Ty.path "u32"
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |);
                                                       M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            self,
+                                                            rhs,
                                                             "core::time::Duration",
                                                             "nanos"
                                                           |),
                                                           "core::time::Nanoseconds",
                                                           0
                                                         |)
-                                                      |);
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "core::time::NANOS_PER_SEC",
-                                                          Ty.path "u32"
-                                                        |)
                                                       |)
                                                     ]
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        rhs,
-                                                        "core::time::Duration",
-                                                        "nanos"
-                                                      |),
-                                                      "core::time::Nanoseconds",
-                                                      0
-                                                    |)
                                                   |)
-                                                ]
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
-                                                      [ Ty.path "core::time::Duration" ]
-                                                      []
-                                                  |)
-                                                |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
+                                                |)));
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      UnOp.not (|
+                                                (M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                          [ Ty.path "core::time::Duration" ]
+                                                          []
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Ty.tuple [],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.read (|
+                                            M.match_operator (|
+                                              Ty.tuple [],
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.lt,
+                                                              [
+                                                                M.read (| nanos |);
+                                                                M.read (|
+                                                                  get_constant (|
+                                                                    "core::time::NANOS_PER_SEC",
+                                                                    Ty.path "u32"
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
                                                         M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.lt,
+                                                          Ty.path "never",
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
                                                           [
-                                                            M.read (| nanos |);
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "core::time::NANOS_PER_SEC",
-                                                                Ty.path "u32"
-                                                              |)
+                                                            mk_str (|
+                                                              "assertion failed: nanos < NANOS_PER_SEC"
                                                             |)
                                                           ]
                                                         |)
                                                       |)
-                                                    |)) in
-                                                let _ :=
-                                                  is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::panic",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        mk_str (|
-                                                          "assertion failed: nanos < NANOS_PER_SEC"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ Ty.path "core::time::Duration" ]
-                            [
-                              M.call_closure (|
-                                Ty.path "core::time::Duration",
-                                M.get_associated_function (|
-                                  Ty.path "core::time::Duration",
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| secs |); M.read (| nanos |) ]
-                              |)
-                            ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::None"
-                            []
-                            [ Ty.path "core::time::Duration" ]
-                            []
-                        |)))
-                  ]
-                |)
-              |)))
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ Ty.path "core::time::Duration" ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::time::Duration",
+                                    M.get_associated_function (|
+                                      Ty.path "core::time::Duration",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| secs |); M.read (| nanos |) ]
+                                  |)
+                                ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [ Ty.path "core::time::Duration" ]
+                                []
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3221,7 +3228,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
@@ -3286,241 +3293,252 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.catch_return
-            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ total_nanos : Ty.path "u64" :=
-                  M.call_closure (|
-                    Ty.path "u64",
-                    BinOp.Wrap.mul,
-                    [
-                      M.cast
-                        (Ty.path "u64")
-                        (M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "core::time::Duration",
-                              "nanos"
-                            |),
-                            "core::time::Nanoseconds",
-                            0
-                          |)
-                        |));
-                      M.cast (Ty.path "u64") (M.read (| rhs |))
-                    ]
-                  |) in
-                let~ extra_secs : Ty.path "u64" :=
-                  M.call_closure (|
-                    Ty.path "u64",
-                    BinOp.Wrap.div,
-                    [
-                      M.read (| total_nanos |);
-                      M.cast
-                        (Ty.path "u64")
-                        (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
-                    ]
-                  |) in
-                let~ nanos : Ty.path "u32" :=
-                  M.cast
-                    (Ty.path "u32")
-                    (M.call_closure (|
-                      Ty.path "u64",
-                      BinOp.Wrap.rem,
-                      [
-                        M.read (| total_nanos |);
-                        M.cast
-                          (Ty.path "u64")
-                          (M.read (|
-                            get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
-                          |))
-                      ]
-                    |)) in
-                let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.catch_return
+              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                                  M.get_associated_function (|
-                                    Ty.path "u64",
-                                    "checked_mul",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::time::Duration",
-                                        "secs"
-                                      |)
-                                    |);
-                                    M.cast (Ty.path "u64") (M.read (| rhs |))
-                                  ]
-                                |)
-                              |) in
-                            let γ0_0 :=
+                    let~ total_nanos : Ty.path "u64" :=
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.cast
+                            (Ty.path "u64")
+                            (M.read (|
                               M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::time::Duration",
+                                  "nanos"
+                                |),
+                                "core::time::Nanoseconds",
                                 0
-                              |) in
-                            let s := M.copy (| γ0_0 |) in
-                            M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "u64" ],
-                                          M.get_associated_function (|
-                                            Ty.path "u64",
-                                            "checked_add",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| s |); M.read (| extra_secs |) ]
-                                        |)
-                                      |) in
-                                    let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let secs := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
+                              |)
+                            |));
+                          M.cast (Ty.path "u64") (M.read (| rhs |))
+                        ]
+                      |) in
+                    let~ extra_secs : Ty.path "u64" :=
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.div,
+                        [
+                          M.read (| total_nanos |);
+                          M.cast
+                            (Ty.path "u64")
+                            (M.read (|
+                              get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                            |))
+                        ]
+                      |) in
+                    let~ nanos : Ty.path "u32" :=
+                      M.cast
+                        (Ty.path "u32")
+                        (M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.read (| total_nanos |);
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (|
+                                get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                              |))
+                          ]
+                        |)) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "u64" ],
+                                      M.get_associated_function (|
+                                        Ty.path "u64",
+                                        "checked_mul",
+                                        [],
+                                        []
+                                      |),
+                                      [
                                         M.read (|
-                                          let~ _ : Ty.tuple [] :=
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::time::Duration",
+                                            "secs"
+                                          |)
+                                        |);
+                                        M.cast (Ty.path "u64") (M.read (| rhs |))
+                                      ]
+                                    |)
+                                  |) in
+                                let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let s := M.copy (| γ0_0 |) in
+                                M.match_operator (|
+                                  Ty.tuple [],
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "u64" ],
+                                              M.get_associated_function (|
+                                                Ty.path "u64",
+                                                "checked_add",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| s |); M.read (| extra_secs |) ]
+                                            |)
+                                          |) in
+                                        let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let secs := M.copy (| γ0_0 |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
                                             M.read (|
-                                              M.match_operator (|
-                                                Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
-                                                      let _ :=
-                                                        is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      let~ _ : Ty.tuple [] :=
-                                                        M.read (|
-                                                          M.match_operator (|
-                                                            Ty.apply
-                                                              (Ty.path "*")
-                                                              []
-                                                              [ Ty.tuple [] ],
-                                                            M.alloc (| Value.Tuple [] |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ :=
-                                                                    M.use
-                                                                      (M.alloc (|
-                                                                        UnOp.not (|
+                                              let~ _ : Ty.tuple [] :=
+                                                M.read (|
+                                                  M.match_operator (|
+                                                    Ty.tuple [],
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use (M.alloc (| Value.Bool true |)) in
+                                                          let _ :=
+                                                            is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.read (|
+                                                              M.match_operator (|
+                                                                Ty.tuple [],
+                                                                M.alloc (| Value.Tuple [] |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ :=
+                                                                        M.use
+                                                                          (M.alloc (|
+                                                                            UnOp.not (|
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                BinOp.lt,
+                                                                                [
+                                                                                  M.read (|
+                                                                                    nanos
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    get_constant (|
+                                                                                      "core::time::NANOS_PER_SEC",
+                                                                                      Ty.path "u32"
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |)) in
+                                                                      let _ :=
+                                                                        is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.Bool true
+                                                                        |) in
+                                                                      M.alloc (|
+                                                                        M.never_to_any (|
                                                                           M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            BinOp.lt,
+                                                                            Ty.path "never",
+                                                                            M.get_function (|
+                                                                              "core::panicking::panic",
+                                                                              [],
+                                                                              []
+                                                                            |),
                                                                             [
-                                                                              M.read (| nanos |);
-                                                                              M.read (|
-                                                                                get_constant (|
-                                                                                  "core::time::NANOS_PER_SEC",
-                                                                                  Ty.path "u32"
-                                                                                |)
+                                                                              mk_str (|
+                                                                                "assertion failed: nanos < NANOS_PER_SEC"
                                                                               |)
                                                                             ]
                                                                           |)
                                                                         |)
-                                                                      |)) in
-                                                                  let _ :=
-                                                                    is_constant_or_break_match (|
-                                                                      M.read (| γ |),
-                                                                      Value.Bool true
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "never",
-                                                                        M.get_function (|
-                                                                          "core::panicking::panic",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          mk_str (|
-                                                                            "assertion failed: nanos < NANOS_PER_SEC"
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
-                                                            ]
-                                                          |)
-                                                        |) in
-                                                      M.alloc (| Value.Tuple [] |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                                ]
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        Value.Tuple []
+                                                                      |)))
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          M.alloc (| Value.Tuple [] |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Tuple [] |)))
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "core::option::Option::Some"
+                                                  []
+                                                  [ Ty.path "core::time::Duration" ]
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "core::time::Duration",
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::time::Duration",
+                                                        "new",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| secs |); M.read (| nanos |) ]
+                                                    |)
+                                                  ]
                                               |)
-                                            |) in
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::option::Option::Some"
-                                              []
-                                              [ Ty.path "core::time::Duration" ]
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "core::time::Duration",
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::time::Duration",
-                                                    "new",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| secs |); M.read (| nanos |) ]
-                                                |)
-                                              ]
+                                            |)
                                           |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::None"
+                        []
+                        [ Ty.path "core::time::Duration" ]
+                        []
                     |)
-                  |) in
-                M.alloc (|
-                  Value.StructTuple
-                    "core::option::Option::None"
-                    []
-                    [ Ty.path "core::time::Duration" ]
-                    []
-                |)
-              |)))
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3546,7 +3564,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
@@ -3611,10 +3629,7 @@ Module time.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply
-                (Ty.path "*")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -3631,14 +3646,9 @@ Module time.
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "core::option::Option")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::time::Duration" ]
-                        ],
+                        [ Ty.path "core::time::Duration" ],
                       M.alloc (|
                         Value.Tuple
                           [
@@ -3681,14 +3691,9 @@ Module time.
                             let extra_secs := M.copy (| γ0_1 |) in
                             M.match_operator (|
                               Ty.apply
-                                (Ty.path "*")
+                                (Ty.path "core::option::Option")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.path "core::time::Duration" ]
-                                ],
+                                [ Ty.path "core::time::Duration" ],
                               M.alloc (|
                                 Value.Tuple
                                   [
@@ -3785,7 +3790,7 @@ Module time.
                                     let~ _ : Ty.tuple [] :=
                                       M.read (|
                                         M.match_operator (|
-                                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                          Ty.tuple [],
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -3799,7 +3804,7 @@ Module time.
                                                 let~ _ : Ty.tuple [] :=
                                                   M.read (|
                                                     M.match_operator (|
-                                                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                                      Ty.tuple [],
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -4153,7 +4158,7 @@ Module time.
           (let secs := M.alloc (| secs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -4242,7 +4247,7 @@ Module time.
           (let secs := M.alloc (| secs |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::Duration" ],
+              Ty.path "core::time::Duration",
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -4708,516 +4713,449 @@ Module time.
       | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.path "core::time::Duration"; Ty.path "core::time::TryFromFloatSecsError" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "core::time::Duration"; Ty.path "core::time::TryFromFloatSecsError" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.lt,
-                                    [ M.read (| secs |); M.read (| UnsupportedLiteral |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "core::time::Duration";
-                                        Ty.path "core::time::TryFromFloatSecsError"
-                                      ]
-                                      [
-                                        Value.StructRecord
-                                          "core::time::TryFromFloatSecsError"
-                                          []
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [ M.read (| secs |); M.read (| UnsupportedLiteral |) ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
                                           []
                                           [
-                                            ("kind",
-                                              Value.StructTuple
-                                                "core::time::TryFromFloatSecsErrorKind::Negative"
-                                                []
-                                                []
-                                                [])
+                                            Ty.path "core::time::Duration";
+                                            Ty.path "core::time::TryFromFloatSecsError"
                                           ]
-                                      ]
+                                          [
+                                            Value.StructRecord
+                                              "core::time::TryFromFloatSecsError"
+                                              []
+                                              []
+                                              [
+                                                ("kind",
+                                                  Value.StructTuple
+                                                    "core::time::TryFromFloatSecsErrorKind::Negative"
+                                                    []
+                                                    []
+                                                    [])
+                                              ]
+                                          ]
+                                      |)
+                                    |)
                                   |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ bits : Ty.path "u32" :=
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
-                    [ M.read (| secs |) ]
-                  |) in
-                let~ mant : Ty.path "u32" :=
-                  M.call_closure (|
-                    Ty.path "u32",
-                    BinOp.Wrap.bit_or,
-                    [
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ bits : Ty.path "u32" :=
                       M.call_closure (|
                         Ty.path "u32",
-                        BinOp.Wrap.bit_and,
+                        M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
+                        [ M.read (| secs |) ]
+                      |) in
+                    let~ mant : Ty.path "u32" :=
+                      M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.bit_or,
                         [
-                          M.read (| bits |);
+                          M.call_closure (|
+                            Ty.path "u32",
+                            BinOp.Wrap.bit_and,
+                            [
+                              M.read (| bits |);
+                              M.read (|
+                                get_constant (|
+                                  "core::time::try_from_secs_f32::MANT_MASK",
+                                  Ty.path "u32"
+                                |)
+                              |)
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.path "u32",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (|
+                                get_constant (|
+                                  "core::time::try_from_secs_f32::MANT_MASK",
+                                  Ty.path "u32"
+                                |)
+                              |);
+                              Value.Integer IntegerKind.U32 1
+                            ]
+                          |)
+                        ]
+                      |) in
+                    let~ exp : Ty.path "i16" :=
+                      M.call_closure (|
+                        Ty.path "i16",
+                        BinOp.Wrap.add,
+                        [
+                          M.cast
+                            (Ty.path "i16")
+                            (M.call_closure (|
+                              Ty.path "u32",
+                              BinOp.Wrap.bit_and,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  BinOp.Wrap.shr,
+                                  [ M.read (| bits |); Value.Integer IntegerKind.I32 23 ]
+                                |);
+                                M.read (|
+                                  get_constant (|
+                                    "core::time::try_from_secs_f32::EXP_MASK",
+                                    Ty.path "u32"
+                                  |)
+                                |)
+                              ]
+                            |));
                           M.read (|
                             get_constant (|
-                              "core::time::try_from_secs_f32::MANT_MASK",
-                              Ty.path "u32"
+                              "core::time::try_from_secs_f32::MIN_EXP",
+                              Ty.path "i16"
                             |)
                           |)
                         ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.add,
-                        [
-                          M.read (|
-                            get_constant (|
-                              "core::time::try_from_secs_f32::MANT_MASK",
-                              Ty.path "u32"
-                            |)
-                          |);
-                          Value.Integer IntegerKind.U32 1
-                        ]
-                      |)
-                    ]
-                  |) in
-                let~ exp : Ty.path "i16" :=
-                  M.call_closure (|
-                    Ty.path "i16",
-                    BinOp.Wrap.add,
-                    [
-                      M.cast
-                        (Ty.path "i16")
-                        (M.call_closure (|
-                          Ty.path "u32",
-                          BinOp.Wrap.bit_and,
-                          [
-                            M.call_closure (|
-                              Ty.path "u32",
-                              BinOp.Wrap.shr,
-                              [ M.read (| bits |); Value.Integer IntegerKind.I32 23 ]
-                            |);
-                            M.read (|
-                              get_constant (|
-                                "core::time::try_from_secs_f32::EXP_MASK",
-                                Ty.path "u32"
-                              |)
-                            |)
-                          ]
-                        |));
-                      M.read (|
-                        get_constant (| "core::time::try_from_secs_f32::MIN_EXP", Ty.path "i16" |)
-                      |)
-                    ]
-                  |) in
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
+                      |) in
+                    M.match_operator (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
                         [
                           Ty.path "core::time::Duration";
                           Ty.path "core::time::TryFromFloatSecsError"
-                        ]
-                    ],
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.lt,
-                                  [ M.read (| exp |); Value.Integer IntegerKind.I16 (-31) ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            Value.Tuple
-                              [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U32 0 ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.lt,
-                                          [ M.read (| exp |); Value.Integer IntegerKind.I16 0 ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ t : Ty.path "u64" :=
+                        ],
+                      M.match_operator (|
+                        Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
                                     M.call_closure (|
-                                      Ty.path "u64",
-                                      BinOp.Wrap.shl,
-                                      [
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [ M.read (| exp |); Value.Integer IntegerKind.I16 (-31) ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                Value.Tuple
+                                  [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U32 0
+                                  ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.lt,
+                                              [ M.read (| exp |); Value.Integer IntegerKind.I16 0 ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ t : Ty.path "u64" :=
                                         M.call_closure (|
                                           Ty.path "u64",
-                                          M.get_trait_method (|
-                                            "core::convert::From",
-                                            Ty.path "u64",
-                                            [],
-                                            [ Ty.path "u32" ],
-                                            "from",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| mant |) ]
-                                        |);
-                                        M.call_closure (|
-                                          Ty.path "i16",
-                                          BinOp.Wrap.add,
-                                          [ Value.Integer IntegerKind.I16 41; M.read (| exp |) ]
-                                        |)
-                                      ]
-                                    |) in
-                                  let~ nanos_offset : Ty.path "i32" :=
-                                    M.call_closure (|
-                                      Ty.path "i32",
-                                      BinOp.Wrap.add,
-                                      [
-                                        Value.Integer IntegerKind.I32 23;
-                                        Value.Integer IntegerKind.I32 41
-                                      ]
-                                    |) in
-                                  let~ nanos_tmp : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.mul,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "u128",
-                                          M.get_trait_method (|
-                                            "core::convert::From",
-                                            Ty.path "u128",
-                                            [],
-                                            [ Ty.path "u32" ],
-                                            "from",
-                                            [],
-                                            []
-                                          |),
+                                          BinOp.Wrap.shl,
                                           [
-                                            M.read (|
-                                              get_constant (|
-                                                "core::time::NANOS_PER_SEC",
-                                                Ty.path "u32"
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "u64",
+                                                [],
+                                                [ Ty.path "u32" ],
+                                                "from",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| mant |) ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "i16",
+                                              BinOp.Wrap.add,
+                                              [ Value.Integer IntegerKind.I16 41; M.read (| exp |) ]
                                             |)
                                           ]
-                                        |);
+                                        |) in
+                                      let~ nanos_offset : Ty.path "i32" :=
+                                        M.call_closure (|
+                                          Ty.path "i32",
+                                          BinOp.Wrap.add,
+                                          [
+                                            Value.Integer IntegerKind.I32 23;
+                                            Value.Integer IntegerKind.I32 41
+                                          ]
+                                        |) in
+                                      let~ nanos_tmp : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
-                                          M.get_trait_method (|
-                                            "core::convert::From",
+                                          BinOp.Wrap.mul,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "u128",
+                                                [],
+                                                [ Ty.path "u32" ],
+                                                "from",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::time::NANOS_PER_SEC",
+                                                    Ty.path "u32"
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "u128",
+                                                [],
+                                                [ Ty.path "u64" ],
+                                                "from",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| t |) ]
+                                            |)
+                                          ]
+                                        |) in
+                                      let~ nanos : Ty.path "u32" :=
+                                        M.cast
+                                          (Ty.path "u32")
+                                          (M.call_closure (|
                                             Ty.path "u128",
-                                            [],
-                                            [ Ty.path "u64" ],
-                                            "from",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| t |) ]
-                                        |)
-                                      ]
-                                    |) in
-                                  let~ nanos : Ty.path "u32" :=
-                                    M.cast
-                                      (Ty.path "u32")
-                                      (M.call_closure (|
-                                        Ty.path "u128",
-                                        BinOp.Wrap.shr,
-                                        [ M.read (| nanos_tmp |); M.read (| nanos_offset |) ]
-                                      |)) in
-                                  let~ rem_mask : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.sub,
-                                      [
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| nanos_tmp |); M.read (| nanos_offset |) ]
+                                          |)) in
+                                      let~ rem_mask : Ty.path "u128" :=
+                                        M.call_closure (|
+                                          Ty.path "u128",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.shl,
+                                              [
+                                                Value.Integer IntegerKind.U128 1;
+                                                M.read (| nanos_offset |)
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.U128 1
+                                          ]
+                                        |) in
+                                      let~ rem_msb_mask : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
                                           BinOp.Wrap.shl,
                                           [
                                             Value.Integer IntegerKind.U128 1;
-                                            M.read (| nanos_offset |)
+                                            M.call_closure (|
+                                              Ty.path "i32",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.read (| nanos_offset |);
+                                                Value.Integer IntegerKind.I32 1
+                                              ]
+                                            |)
                                           ]
-                                        |);
-                                        Value.Integer IntegerKind.U128 1
-                                      ]
-                                    |) in
-                                  let~ rem_msb_mask : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.shl,
-                                      [
-                                        Value.Integer IntegerKind.U128 1;
-                                        M.call_closure (|
-                                          Ty.path "i32",
-                                          BinOp.Wrap.sub,
-                                          [
-                                            M.read (| nanos_offset |);
-                                            Value.Integer IntegerKind.I32 1
-                                          ]
-                                        |)
-                                      ]
-                                    |) in
-                                  let~ rem : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.bit_and,
-                                      [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
-                                    |) in
-                                  let~ is_tie : Ty.path "bool" :=
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [ M.read (| rem |); M.read (| rem_msb_mask |) ]
-                                    |) in
-                                  let~ is_even : Ty.path "bool" :=
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "u32",
-                                          BinOp.Wrap.bit_and,
-                                          [ M.read (| nanos |); Value.Integer IntegerKind.U32 1 ]
-                                        |);
-                                        Value.Integer IntegerKind.U32 0
-                                      ]
-                                    |) in
-                                  let~ rem_msb : Ty.path "bool" :=
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
+                                        |) in
+                                      let~ rem : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
                                           BinOp.Wrap.bit_and,
-                                          [ M.read (| nanos_tmp |); M.read (| rem_msb_mask |) ]
-                                        |);
-                                        Value.Integer IntegerKind.U128 0
-                                      ]
-                                    |) in
-                                  let~ add_ns : Ty.path "bool" :=
-                                    UnOp.not (|
-                                      LogicalOp.or (|
-                                        M.read (| rem_msb |),
-                                        ltac:(M.monadic
-                                          (LogicalOp.and (|
-                                            M.read (| is_even |),
-                                            ltac:(M.monadic (M.read (| is_tie |)))
-                                          |)))
-                                      |)
-                                    |) in
-                                  let~ nanos : Ty.path "u32" :=
-                                    M.call_closure (|
-                                      Ty.path "u32",
-                                      BinOp.Wrap.add,
-                                      [
-                                        M.read (| nanos |);
-                                        M.cast (Ty.path "u32") (M.read (| add_ns |))
-                                      ]
-                                    |) in
-                                  M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
+                                          [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
+                                        |) in
+                                      let~ is_tie : Ty.path "bool" :=
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| rem |); M.read (| rem_msb_mask |) ]
+                                        |) in
+                                      let~ is_even : Ty.path "bool" :=
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.bit_and,
+                                              [ M.read (| nanos |); Value.Integer IntegerKind.U32 1
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.U32 0
+                                          ]
+                                        |) in
+                                      let~ rem_msb : Ty.path "bool" :=
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.bit_and,
+                                              [ M.read (| nanos_tmp |); M.read (| rem_msb_mask |) ]
+                                            |);
+                                            Value.Integer IntegerKind.U128 0
+                                          ]
+                                        |) in
+                                      let~ add_ns : Ty.path "bool" :=
+                                        UnOp.not (|
+                                          LogicalOp.or (|
+                                            M.read (| rem_msb |),
+                                            ltac:(M.monadic
+                                              (LogicalOp.and (|
+                                                M.read (| is_even |),
+                                                ltac:(M.monadic (M.read (| is_tie |)))
+                                              |)))
+                                          |)
+                                        |) in
+                                      let~ nanos : Ty.path "u32" :=
+                                        M.call_closure (|
+                                          Ty.path "u32",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| nanos |);
+                                            M.cast (Ty.path "u32") (M.read (| add_ns |))
+                                          ]
+                                        |) in
+                                      M.match_operator (|
+                                        Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    LogicalOp.or (|
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          Value.Integer IntegerKind.I32 23;
+                                                          Value.Integer IntegerKind.I32 23
+                                                        ]
+                                                      |),
+                                                      ltac:(M.monadic
+                                                        (M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ne,
+                                                          [
+                                                            M.read (| nanos |);
+                                                            M.read (|
+                                                              get_constant (|
+                                                                "core::time::NANOS_PER_SEC",
+                                                                Ty.path "u32"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)))
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                Value.Tuple
+                                                  [
+                                                    Value.Integer IntegerKind.U64 0;
+                                                    M.read (| nanos |)
+                                                  ]
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
                                               (M.alloc (|
-                                                LogicalOp.or (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      Value.Integer IntegerKind.I32 23;
-                                                      Value.Integer IntegerKind.I32 23
-                                                    ]
-                                                  |),
-                                                  ltac:(M.monadic
-                                                    (M.call_closure (|
+                                                Value.Tuple
+                                                  [
+                                                    Value.Integer IntegerKind.U64 1;
+                                                    Value.Integer IntegerKind.U32 0
+                                                  ]
+                                              |)))
+                                        ]
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
                                                       Ty.path "bool",
-                                                      BinOp.ne,
+                                                      BinOp.lt,
                                                       [
-                                                        M.read (| nanos |);
-                                                        M.read (|
-                                                          get_constant (|
-                                                            "core::time::NANOS_PER_SEC",
-                                                            Ty.path "u32"
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |)))
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            Value.Tuple
-                                              [ Value.Integer IntegerKind.U64 0; M.read (| nanos |)
-                                              ]
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (|
-                                            Value.Tuple
-                                              [
-                                                Value.Integer IntegerKind.U64 1;
-                                                Value.Integer IntegerKind.U32 0
-                                              ]
-                                          |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.lt,
-                                                  [
-                                                    M.read (| exp |);
-                                                    Value.Integer IntegerKind.I16 23
-                                                  ]
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          let~ secs : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "u64",
-                                                [],
-                                                [ Ty.path "u32" ],
-                                                "from",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u32",
-                                                  BinOp.Wrap.shr,
-                                                  [
-                                                    M.read (| mant |);
-                                                    M.call_closure (|
-                                                      Ty.path "i16",
-                                                      BinOp.Wrap.sub,
-                                                      [
-                                                        Value.Integer IntegerKind.I16 23;
-                                                        M.read (| exp |)
+                                                        M.read (| exp |);
+                                                        Value.Integer IntegerKind.I16 23
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |) in
-                                          let~ t : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "u64",
-                                                [],
-                                                [ Ty.path "u32" ],
-                                                "from",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u32",
-                                                  BinOp.Wrap.bit_and,
-                                                  [
-                                                    M.call_closure (|
-                                                      Ty.path "u32",
-                                                      BinOp.Wrap.shl,
-                                                      [ M.read (| mant |); M.read (| exp |) ]
-                                                    |);
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::time::try_from_secs_f32::MANT_MASK",
-                                                        Ty.path "u32"
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |) in
-                                          let~ nanos_offset : Ty.path "i32" :=
-                                            Value.Integer IntegerKind.I32 23 in
-                                          let~ nanos_tmp : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              BinOp.Wrap.mul,
-                                              [
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              let~ secs : Ty.path "u64" :=
                                                 M.call_closure (|
                                                   Ty.path "u64",
                                                   M.get_trait_method (|
@@ -5230,320 +5168,386 @@ Module time.
                                                     []
                                                   |),
                                                   [
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::time::NANOS_PER_SEC",
-                                                        Ty.path "u32"
-                                                      |)
+                                                    M.call_closure (|
+                                                      Ty.path "u32",
+                                                      BinOp.Wrap.shr,
+                                                      [
+                                                        M.read (| mant |);
+                                                        M.call_closure (|
+                                                          Ty.path "i16",
+                                                          BinOp.Wrap.sub,
+                                                          [
+                                                            Value.Integer IntegerKind.I16 23;
+                                                            M.read (| exp |)
+                                                          ]
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
-                                                |);
-                                                M.read (| t |)
-                                              ]
-                                            |) in
-                                          let~ nanos : Ty.path "u32" :=
-                                            M.cast
-                                              (Ty.path "u32")
-                                              (M.call_closure (|
-                                                Ty.path "u64",
-                                                BinOp.Wrap.shr,
-                                                [ M.read (| nanos_tmp |); M.read (| nanos_offset |)
-                                                ]
-                                              |)) in
-                                          let~ rem_mask : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              BinOp.Wrap.sub,
-                                              [
+                                                |) in
+                                              let~ t : Ty.path "u64" :=
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "u64",
+                                                    [],
+                                                    [ Ty.path "u32" ],
+                                                    "from",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u32",
+                                                      BinOp.Wrap.bit_and,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "u32",
+                                                          BinOp.Wrap.shl,
+                                                          [ M.read (| mant |); M.read (| exp |) ]
+                                                        |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "core::time::try_from_secs_f32::MANT_MASK",
+                                                            Ty.path "u32"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |) in
+                                              let~ nanos_offset : Ty.path "i32" :=
+                                                Value.Integer IntegerKind.I32 23 in
+                                              let~ nanos_tmp : Ty.path "u64" :=
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  BinOp.Wrap.mul,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      M.get_trait_method (|
+                                                        "core::convert::From",
+                                                        Ty.path "u64",
+                                                        [],
+                                                        [ Ty.path "u32" ],
+                                                        "from",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "core::time::NANOS_PER_SEC",
+                                                            Ty.path "u32"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (| t |)
+                                                  ]
+                                                |) in
+                                              let~ nanos : Ty.path "u32" :=
+                                                M.cast
+                                                  (Ty.path "u32")
+                                                  (M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shr,
+                                                    [
+                                                      M.read (| nanos_tmp |);
+                                                      M.read (| nanos_offset |)
+                                                    ]
+                                                  |)) in
+                                              let~ rem_mask : Ty.path "u64" :=
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      BinOp.Wrap.shl,
+                                                      [
+                                                        Value.Integer IntegerKind.U64 1;
+                                                        M.read (| nanos_offset |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U64 1
+                                                  ]
+                                                |) in
+                                              let~ rem_msb_mask : Ty.path "u64" :=
                                                 M.call_closure (|
                                                   Ty.path "u64",
                                                   BinOp.Wrap.shl,
                                                   [
                                                     Value.Integer IntegerKind.U64 1;
-                                                    M.read (| nanos_offset |)
+                                                    M.call_closure (|
+                                                      Ty.path "i32",
+                                                      BinOp.Wrap.sub,
+                                                      [
+                                                        M.read (| nanos_offset |);
+                                                        Value.Integer IntegerKind.I32 1
+                                                      ]
+                                                    |)
                                                   ]
-                                                |);
-                                                Value.Integer IntegerKind.U64 1
-                                              ]
-                                            |) in
-                                          let~ rem_msb_mask : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              BinOp.Wrap.shl,
-                                              [
-                                                Value.Integer IntegerKind.U64 1;
-                                                M.call_closure (|
-                                                  Ty.path "i32",
-                                                  BinOp.Wrap.sub,
-                                                  [
-                                                    M.read (| nanos_offset |);
-                                                    Value.Integer IntegerKind.I32 1
-                                                  ]
-                                                |)
-                                              ]
-                                            |) in
-                                          let~ rem : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              BinOp.Wrap.bit_and,
-                                              [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
-                                            |) in
-                                          let~ is_tie : Ty.path "bool" :=
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [ M.read (| rem |); M.read (| rem_msb_mask |) ]
-                                            |) in
-                                          let~ is_even : Ty.path "bool" :=
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u32",
-                                                  BinOp.Wrap.bit_and,
-                                                  [
-                                                    M.read (| nanos |);
-                                                    Value.Integer IntegerKind.U32 1
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.U32 0
-                                              ]
-                                            |) in
-                                          let~ rem_msb : Ty.path "bool" :=
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
+                                                |) in
+                                              let~ rem : Ty.path "u64" :=
                                                 M.call_closure (|
                                                   Ty.path "u64",
                                                   BinOp.Wrap.bit_and,
+                                                  [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
+                                                |) in
+                                              let~ is_tie : Ty.path "bool" :=
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [ M.read (| rem |); M.read (| rem_msb_mask |) ]
+                                                |) in
+                                              let~ is_even : Ty.path "bool" :=
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
                                                   [
-                                                    M.read (| nanos_tmp |);
-                                                    M.read (| rem_msb_mask |)
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.U64 0
-                                              ]
-                                            |) in
-                                          let~ add_ns : Ty.path "bool" :=
-                                            UnOp.not (|
-                                              LogicalOp.or (|
-                                                M.read (| rem_msb |),
-                                                ltac:(M.monadic
-                                                  (LogicalOp.and (|
-                                                    M.read (| is_even |),
-                                                    ltac:(M.monadic (M.read (| is_tie |)))
-                                                  |)))
-                                              |)
-                                            |) in
-                                          let~ nanos : Ty.path "u32" :=
-                                            M.call_closure (|
-                                              Ty.path "u32",
-                                              BinOp.Wrap.add,
-                                              [
-                                                M.read (| nanos |);
-                                                M.cast (Ty.path "u32") (M.read (| add_ns |))
-                                              ]
-                                            |) in
-                                          M.match_operator (|
-                                            Ty.apply
-                                              (Ty.path "*")
-                                              []
-                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        LogicalOp.or (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.eq,
-                                                            [
-                                                              Value.Integer IntegerKind.I32 23;
-                                                              Value.Integer IntegerKind.I32 23
-                                                            ]
-                                                          |),
-                                                          ltac:(M.monadic
-                                                            (M.call_closure (|
-                                                              Ty.path "bool",
-                                                              BinOp.ne,
-                                                              [
-                                                                M.read (| nanos |);
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "core::time::NANOS_PER_SEC",
-                                                                    Ty.path "u32"
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)))
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  M.alloc (|
-                                                    Value.Tuple
-                                                      [ M.read (| secs |); M.read (| nanos |) ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    Value.Tuple
+                                                    M.call_closure (|
+                                                      Ty.path "u32",
+                                                      BinOp.Wrap.bit_and,
                                                       [
-                                                        M.call_closure (|
-                                                          Ty.path "u64",
-                                                          BinOp.Wrap.add,
-                                                          [
-                                                            M.read (| secs |);
-                                                            Value.Integer IntegerKind.U64 1
-                                                          ]
-                                                        |);
-                                                        Value.Integer IntegerKind.U32 0
+                                                        M.read (| nanos |);
+                                                        Value.Integer IntegerKind.U32 1
                                                       ]
-                                                  |)))
-                                            ]
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.match_operator (|
-                                            Ty.apply
-                                              (Ty.path "*")
-                                              []
-                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.lt,
-                                                          [
-                                                            M.read (| exp |);
-                                                            Value.Integer IntegerKind.I16 64
-                                                          ]
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ secs : Ty.path "u64" :=
+                                                    |);
+                                                    Value.Integer IntegerKind.U32 0
+                                                  ]
+                                                |) in
+                                              let~ rem_msb : Ty.path "bool" :=
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
                                                     M.call_closure (|
                                                       Ty.path "u64",
-                                                      BinOp.Wrap.shl,
+                                                      BinOp.Wrap.bit_and,
                                                       [
+                                                        M.read (| nanos_tmp |);
+                                                        M.read (| rem_msb_mask |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U64 0
+                                                  ]
+                                                |) in
+                                              let~ add_ns : Ty.path "bool" :=
+                                                UnOp.not (|
+                                                  LogicalOp.or (|
+                                                    M.read (| rem_msb |),
+                                                    ltac:(M.monadic
+                                                      (LogicalOp.and (|
+                                                        M.read (| is_even |),
+                                                        ltac:(M.monadic (M.read (| is_tie |)))
+                                                      |)))
+                                                  |)
+                                                |) in
+                                              let~ nanos : Ty.path "u32" :=
+                                                M.call_closure (|
+                                                  Ty.path "u32",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| nanos |);
+                                                    M.cast (Ty.path "u32") (M.read (| add_ns |))
+                                                  ]
+                                                |) in
+                                              M.match_operator (|
+                                                Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            LogicalOp.or (|
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  Value.Integer IntegerKind.I32 23;
+                                                                  Value.Integer IntegerKind.I32 23
+                                                                ]
+                                                              |),
+                                                              ltac:(M.monadic
+                                                                (M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ne,
+                                                                  [
+                                                                    M.read (| nanos |);
+                                                                    M.read (|
+                                                                      get_constant (|
+                                                                        "core::time::NANOS_PER_SEC",
+                                                                        Ty.path "u32"
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)))
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [ M.read (| secs |); M.read (| nanos |) ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "u64",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.read (| secs |);
+                                                                Value.Integer IntegerKind.U64 1
+                                                              ]
+                                                            |);
+                                                            Value.Integer IntegerKind.U32 0
+                                                          ]
+                                                      |)))
+                                                ]
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.lt,
+                                                              [
+                                                                M.read (| exp |);
+                                                                Value.Integer IntegerKind.I16 64
+                                                              ]
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      let~ secs : Ty.path "u64" :=
                                                         M.call_closure (|
                                                           Ty.path "u64",
-                                                          M.get_trait_method (|
-                                                            "core::convert::From",
-                                                            Ty.path "u64",
-                                                            [],
-                                                            [ Ty.path "u32" ],
-                                                            "from",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| mant |) ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          Ty.path "i16",
-                                                          BinOp.Wrap.sub,
+                                                          BinOp.Wrap.shl,
                                                           [
-                                                            M.read (| exp |);
-                                                            Value.Integer IntegerKind.I16 23
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |) in
-                                                  M.alloc (|
-                                                    Value.Tuple
-                                                      [
-                                                        M.read (| secs |);
-                                                        Value.Integer IntegerKind.U32 0
-                                                      ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::result::Result::Err"
-                                                            []
-                                                            [
-                                                              Ty.path "core::time::Duration";
-                                                              Ty.path
-                                                                "core::time::TryFromFloatSecsError"
-                                                            ]
-                                                            [
-                                                              Value.StructRecord
-                                                                "core::time::TryFromFloatSecsError"
+                                                            M.call_closure (|
+                                                              Ty.path "u64",
+                                                              M.get_trait_method (|
+                                                                "core::convert::From",
+                                                                Ty.path "u64",
+                                                                [],
+                                                                [ Ty.path "u32" ],
+                                                                "from",
+                                                                [],
                                                                 []
+                                                              |),
+                                                              [ M.read (| mant |) ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "i16",
+                                                              BinOp.Wrap.sub,
+                                                              [
+                                                                M.read (| exp |);
+                                                                Value.Integer IntegerKind.I16 23
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |) in
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (| secs |);
+                                                            Value.Integer IntegerKind.U32 0
+                                                          ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::result::Result::Err"
                                                                 []
                                                                 [
-                                                                  ("kind",
-                                                                    Value.StructTuple
-                                                                      "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
-                                                                      []
-                                                                      []
-                                                                      [])
+                                                                  Ty.path "core::time::Duration";
+                                                                  Ty.path
+                                                                    "core::time::TryFromFloatSecsError"
                                                                 ]
-                                                            ]
+                                                                [
+                                                                  Value.StructRecord
+                                                                    "core::time::TryFromFloatSecsError"
+                                                                    []
+                                                                    []
+                                                                    [
+                                                                      ("kind",
+                                                                        Value.StructTuple
+                                                                          "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                                                                          []
+                                                                          []
+                                                                          [])
+                                                                    ]
+                                                                ]
+                                                            |)
+                                                          |)
                                                         |)
-                                                      |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let secs := M.copy (| γ0_0 |) in
-                        let nanos := M.copy (| γ0_1 |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            []
-                            [
-                              Ty.path "core::time::Duration";
-                              Ty.path "core::time::TryFromFloatSecsError"
-                            ]
-                            [
-                              M.call_closure (|
-                                Ty.path "core::time::Duration",
-                                M.get_associated_function (|
-                                  Ty.path "core::time::Duration",
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| secs |); M.read (| nanos |) ]
-                              |)
-                            ]
-                        |)))
-                  ]
-                |)
-              |)))
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let secs := M.copy (| γ0_0 |) in
+                            let nanos := M.copy (| γ0_1 |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.path "core::time::Duration";
+                                  Ty.path "core::time::TryFromFloatSecsError"
+                                ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::time::Duration",
+                                    M.get_associated_function (|
+                                      Ty.path "core::time::Duration",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| secs |); M.read (| nanos |) ]
+                                  |)
+                                ]
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5570,388 +5574,529 @@ Module time.
       | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.path "core::time::Duration"; Ty.path "core::time::TryFromFloatSecsError" ]) (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "core::time::Duration"; Ty.path "core::time::TryFromFloatSecsError" ]) (|
+              ltac:(M.monadic
+                (M.alloc (|
                   M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.lt,
-                                    [ M.read (| secs |); M.read (| UnsupportedLiteral |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.path "core::time::Duration";
-                                        Ty.path "core::time::TryFromFloatSecsError"
-                                      ]
-                                      [
-                                        Value.StructRecord
-                                          "core::time::TryFromFloatSecsError"
-                                          []
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [ M.read (| secs |); M.read (| UnsupportedLiteral |) ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
                                           []
                                           [
-                                            ("kind",
-                                              Value.StructTuple
-                                                "core::time::TryFromFloatSecsErrorKind::Negative"
-                                                []
-                                                []
-                                                [])
+                                            Ty.path "core::time::Duration";
+                                            Ty.path "core::time::TryFromFloatSecsError"
                                           ]
-                                      ]
+                                          [
+                                            Value.StructRecord
+                                              "core::time::TryFromFloatSecsError"
+                                              []
+                                              []
+                                              [
+                                                ("kind",
+                                                  Value.StructTuple
+                                                    "core::time::TryFromFloatSecsErrorKind::Negative"
+                                                    []
+                                                    []
+                                                    [])
+                                              ]
+                                          ]
+                                      |)
+                                    |)
                                   |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                let~ bits : Ty.path "u64" :=
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
-                    [ M.read (| secs |) ]
-                  |) in
-                let~ mant : Ty.path "u64" :=
-                  M.call_closure (|
-                    Ty.path "u64",
-                    BinOp.Wrap.bit_or,
-                    [
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)
+                      |) in
+                    let~ bits : Ty.path "u64" :=
                       M.call_closure (|
                         Ty.path "u64",
-                        BinOp.Wrap.bit_and,
+                        M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
+                        [ M.read (| secs |) ]
+                      |) in
+                    let~ mant : Ty.path "u64" :=
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.bit_or,
                         [
-                          M.read (| bits |);
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.bit_and,
+                            [
+                              M.read (| bits |);
+                              M.read (|
+                                get_constant (|
+                                  "core::time::try_from_secs_f64::MANT_MASK",
+                                  Ty.path "u64"
+                                |)
+                              |)
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (|
+                                get_constant (|
+                                  "core::time::try_from_secs_f64::MANT_MASK",
+                                  Ty.path "u64"
+                                |)
+                              |);
+                              Value.Integer IntegerKind.U64 1
+                            ]
+                          |)
+                        ]
+                      |) in
+                    let~ exp : Ty.path "i16" :=
+                      M.call_closure (|
+                        Ty.path "i16",
+                        BinOp.Wrap.add,
+                        [
+                          M.cast
+                            (Ty.path "i16")
+                            (M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.bit_and,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  BinOp.Wrap.shr,
+                                  [ M.read (| bits |); Value.Integer IntegerKind.I32 52 ]
+                                |);
+                                M.read (|
+                                  get_constant (|
+                                    "core::time::try_from_secs_f64::EXP_MASK",
+                                    Ty.path "u64"
+                                  |)
+                                |)
+                              ]
+                            |));
                           M.read (|
                             get_constant (|
-                              "core::time::try_from_secs_f64::MANT_MASK",
-                              Ty.path "u64"
+                              "core::time::try_from_secs_f64::MIN_EXP",
+                              Ty.path "i16"
                             |)
                           |)
                         ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u64",
-                        BinOp.Wrap.add,
-                        [
-                          M.read (|
-                            get_constant (|
-                              "core::time::try_from_secs_f64::MANT_MASK",
-                              Ty.path "u64"
-                            |)
-                          |);
-                          Value.Integer IntegerKind.U64 1
-                        ]
-                      |)
-                    ]
-                  |) in
-                let~ exp : Ty.path "i16" :=
-                  M.call_closure (|
-                    Ty.path "i16",
-                    BinOp.Wrap.add,
-                    [
-                      M.cast
-                        (Ty.path "i16")
-                        (M.call_closure (|
-                          Ty.path "u64",
-                          BinOp.Wrap.bit_and,
-                          [
-                            M.call_closure (|
-                              Ty.path "u64",
-                              BinOp.Wrap.shr,
-                              [ M.read (| bits |); Value.Integer IntegerKind.I32 52 ]
-                            |);
-                            M.read (|
-                              get_constant (|
-                                "core::time::try_from_secs_f64::EXP_MASK",
-                                Ty.path "u64"
-                              |)
-                            |)
-                          ]
-                        |));
-                      M.read (|
-                        get_constant (| "core::time::try_from_secs_f64::MIN_EXP", Ty.path "i16" |)
-                      |)
-                    ]
-                  |) in
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "*")
-                    []
-                    [
+                      |) in
+                    M.match_operator (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
                         [
                           Ty.path "core::time::Duration";
                           Ty.path "core::time::TryFromFloatSecsError"
-                        ]
-                    ],
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.lt,
-                                  [ M.read (| exp |); Value.Integer IntegerKind.I16 (-31) ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            Value.Tuple
-                              [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U32 0 ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.lt,
-                                          [ M.read (| exp |); Value.Integer IntegerKind.I16 0 ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ t : Ty.path "u128" :=
+                        ],
+                      M.match_operator (|
+                        Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
                                     M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.shl,
-                                      [
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [ M.read (| exp |); Value.Integer IntegerKind.I16 (-31) ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.alloc (|
+                                Value.Tuple
+                                  [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U32 0
+                                  ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.lt,
+                                              [ M.read (| exp |); Value.Integer IntegerKind.I16 0 ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ t : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
-                                          M.get_trait_method (|
-                                            "core::convert::From",
-                                            Ty.path "u128",
-                                            [],
-                                            [ Ty.path "u64" ],
-                                            "from",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| mant |) ]
-                                        |);
-                                        M.call_closure (|
-                                          Ty.path "i16",
-                                          BinOp.Wrap.add,
-                                          [ Value.Integer IntegerKind.I16 44; M.read (| exp |) ]
-                                        |)
-                                      ]
-                                    |) in
-                                  let~ nanos_offset : Ty.path "i32" :=
-                                    M.call_closure (|
-                                      Ty.path "i32",
-                                      BinOp.Wrap.add,
-                                      [
-                                        Value.Integer IntegerKind.I32 52;
-                                        Value.Integer IntegerKind.I32 44
-                                      ]
-                                    |) in
-                                  let~ nanos_tmp : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.mul,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "u128",
-                                          M.get_trait_method (|
-                                            "core::convert::From",
-                                            Ty.path "u128",
-                                            [],
-                                            [ Ty.path "u32" ],
-                                            "from",
-                                            [],
-                                            []
-                                          |),
+                                          BinOp.Wrap.shl,
                                           [
-                                            M.read (|
-                                              get_constant (|
-                                                "core::time::NANOS_PER_SEC",
-                                                Ty.path "u32"
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "u128",
+                                                [],
+                                                [ Ty.path "u64" ],
+                                                "from",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| mant |) ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "i16",
+                                              BinOp.Wrap.add,
+                                              [ Value.Integer IntegerKind.I16 44; M.read (| exp |) ]
                                             |)
                                           ]
-                                        |);
+                                        |) in
+                                      let~ nanos_offset : Ty.path "i32" :=
+                                        M.call_closure (|
+                                          Ty.path "i32",
+                                          BinOp.Wrap.add,
+                                          [
+                                            Value.Integer IntegerKind.I32 52;
+                                            Value.Integer IntegerKind.I32 44
+                                          ]
+                                        |) in
+                                      let~ nanos_tmp : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
-                                          M.get_trait_method (|
-                                            "core::convert::From",
+                                          BinOp.Wrap.mul,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "u128",
+                                                [],
+                                                [ Ty.path "u32" ],
+                                                "from",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  get_constant (|
+                                                    "core::time::NANOS_PER_SEC",
+                                                    Ty.path "u32"
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              M.get_trait_method (|
+                                                "core::convert::From",
+                                                Ty.path "u128",
+                                                [],
+                                                [ Ty.path "u128" ],
+                                                "from",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| t |) ]
+                                            |)
+                                          ]
+                                        |) in
+                                      let~ nanos : Ty.path "u32" :=
+                                        M.cast
+                                          (Ty.path "u32")
+                                          (M.call_closure (|
                                             Ty.path "u128",
-                                            [],
-                                            [ Ty.path "u128" ],
-                                            "from",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| t |) ]
-                                        |)
-                                      ]
-                                    |) in
-                                  let~ nanos : Ty.path "u32" :=
-                                    M.cast
-                                      (Ty.path "u32")
-                                      (M.call_closure (|
-                                        Ty.path "u128",
-                                        BinOp.Wrap.shr,
-                                        [ M.read (| nanos_tmp |); M.read (| nanos_offset |) ]
-                                      |)) in
-                                  let~ rem_mask : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.sub,
-                                      [
+                                            BinOp.Wrap.shr,
+                                            [ M.read (| nanos_tmp |); M.read (| nanos_offset |) ]
+                                          |)) in
+                                      let~ rem_mask : Ty.path "u128" :=
+                                        M.call_closure (|
+                                          Ty.path "u128",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.shl,
+                                              [
+                                                Value.Integer IntegerKind.U128 1;
+                                                M.read (| nanos_offset |)
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.U128 1
+                                          ]
+                                        |) in
+                                      let~ rem_msb_mask : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
                                           BinOp.Wrap.shl,
                                           [
                                             Value.Integer IntegerKind.U128 1;
-                                            M.read (| nanos_offset |)
+                                            M.call_closure (|
+                                              Ty.path "i32",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.read (| nanos_offset |);
+                                                Value.Integer IntegerKind.I32 1
+                                              ]
+                                            |)
                                           ]
-                                        |);
-                                        Value.Integer IntegerKind.U128 1
-                                      ]
-                                    |) in
-                                  let~ rem_msb_mask : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.shl,
-                                      [
-                                        Value.Integer IntegerKind.U128 1;
-                                        M.call_closure (|
-                                          Ty.path "i32",
-                                          BinOp.Wrap.sub,
-                                          [
-                                            M.read (| nanos_offset |);
-                                            Value.Integer IntegerKind.I32 1
-                                          ]
-                                        |)
-                                      ]
-                                    |) in
-                                  let~ rem : Ty.path "u128" :=
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      BinOp.Wrap.bit_and,
-                                      [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
-                                    |) in
-                                  let~ is_tie : Ty.path "bool" :=
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [ M.read (| rem |); M.read (| rem_msb_mask |) ]
-                                    |) in
-                                  let~ is_even : Ty.path "bool" :=
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "u32",
-                                          BinOp.Wrap.bit_and,
-                                          [ M.read (| nanos |); Value.Integer IntegerKind.U32 1 ]
-                                        |);
-                                        Value.Integer IntegerKind.U32 0
-                                      ]
-                                    |) in
-                                  let~ rem_msb : Ty.path "bool" :=
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
+                                        |) in
+                                      let~ rem : Ty.path "u128" :=
                                         M.call_closure (|
                                           Ty.path "u128",
                                           BinOp.Wrap.bit_and,
-                                          [ M.read (| nanos_tmp |); M.read (| rem_msb_mask |) ]
-                                        |);
-                                        Value.Integer IntegerKind.U128 0
-                                      ]
-                                    |) in
-                                  let~ add_ns : Ty.path "bool" :=
-                                    UnOp.not (|
-                                      LogicalOp.or (|
-                                        M.read (| rem_msb |),
-                                        ltac:(M.monadic
-                                          (LogicalOp.and (|
-                                            M.read (| is_even |),
-                                            ltac:(M.monadic (M.read (| is_tie |)))
-                                          |)))
-                                      |)
-                                    |) in
-                                  let~ nanos : Ty.path "u32" :=
-                                    M.call_closure (|
-                                      Ty.path "u32",
-                                      BinOp.Wrap.add,
-                                      [
-                                        M.read (| nanos |);
-                                        M.cast (Ty.path "u32") (M.read (| add_ns |))
-                                      ]
-                                    |) in
-                                  M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
+                                          [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
+                                        |) in
+                                      let~ is_tie : Ty.path "bool" :=
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| rem |); M.read (| rem_msb_mask |) ]
+                                        |) in
+                                      let~ is_even : Ty.path "bool" :=
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.bit_and,
+                                              [ M.read (| nanos |); Value.Integer IntegerKind.U32 1
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.U32 0
+                                          ]
+                                        |) in
+                                      let~ rem_msb : Ty.path "bool" :=
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.bit_and,
+                                              [ M.read (| nanos_tmp |); M.read (| rem_msb_mask |) ]
+                                            |);
+                                            Value.Integer IntegerKind.U128 0
+                                          ]
+                                        |) in
+                                      let~ add_ns : Ty.path "bool" :=
+                                        UnOp.not (|
+                                          LogicalOp.or (|
+                                            M.read (| rem_msb |),
+                                            ltac:(M.monadic
+                                              (LogicalOp.and (|
+                                                M.read (| is_even |),
+                                                ltac:(M.monadic (M.read (| is_tie |)))
+                                              |)))
+                                          |)
+                                        |) in
+                                      let~ nanos : Ty.path "u32" :=
+                                        M.call_closure (|
+                                          Ty.path "u32",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| nanos |);
+                                            M.cast (Ty.path "u32") (M.read (| add_ns |))
+                                          ]
+                                        |) in
+                                      M.match_operator (|
+                                        Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    LogicalOp.or (|
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          Value.Integer IntegerKind.I32 52;
+                                                          Value.Integer IntegerKind.I32 23
+                                                        ]
+                                                      |),
+                                                      ltac:(M.monadic
+                                                        (M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ne,
+                                                          [
+                                                            M.read (| nanos |);
+                                                            M.read (|
+                                                              get_constant (|
+                                                                "core::time::NANOS_PER_SEC",
+                                                                Ty.path "u32"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)))
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                Value.Tuple
+                                                  [
+                                                    Value.Integer IntegerKind.U64 0;
+                                                    M.read (| nanos |)
+                                                  ]
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
                                               (M.alloc (|
-                                                LogicalOp.or (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      Value.Integer IntegerKind.I32 52;
-                                                      Value.Integer IntegerKind.I32 23
-                                                    ]
-                                                  |),
-                                                  ltac:(M.monadic
-                                                    (M.call_closure (|
+                                                Value.Tuple
+                                                  [
+                                                    Value.Integer IntegerKind.U64 1;
+                                                    Value.Integer IntegerKind.U32 0
+                                                  ]
+                                              |)))
+                                        ]
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
                                                       Ty.path "bool",
-                                                      BinOp.ne,
+                                                      BinOp.lt,
                                                       [
-                                                        M.read (| nanos |);
+                                                        M.read (| exp |);
+                                                        Value.Integer IntegerKind.I16 52
+                                                      ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              let~ secs : Ty.path "u64" :=
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "u64",
+                                                    [],
+                                                    [ Ty.path "u64" ],
+                                                    "from",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      BinOp.Wrap.shr,
+                                                      [
+                                                        M.read (| mant |);
+                                                        M.call_closure (|
+                                                          Ty.path "i16",
+                                                          BinOp.Wrap.sub,
+                                                          [
+                                                            Value.Integer IntegerKind.I16 52;
+                                                            M.read (| exp |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |) in
+                                              let~ t : Ty.path "u128" :=
+                                                M.call_closure (|
+                                                  Ty.path "u128",
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "u128",
+                                                    [],
+                                                    [ Ty.path "u64" ],
+                                                    "from",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      BinOp.Wrap.bit_and,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "u64",
+                                                          BinOp.Wrap.shl,
+                                                          [ M.read (| mant |); M.read (| exp |) ]
+                                                        |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "core::time::try_from_secs_f64::MANT_MASK",
+                                                            Ty.path "u64"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |) in
+                                              let~ nanos_offset : Ty.path "i32" :=
+                                                Value.Integer IntegerKind.I32 52 in
+                                              let~ nanos_tmp : Ty.path "u128" :=
+                                                M.call_closure (|
+                                                  Ty.path "u128",
+                                                  BinOp.Wrap.mul,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u128",
+                                                      M.get_trait_method (|
+                                                        "core::convert::From",
+                                                        Ty.path "u128",
+                                                        [],
+                                                        [ Ty.path "u32" ],
+                                                        "from",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
                                                         M.read (|
                                                           get_constant (|
                                                             "core::time::NANOS_PER_SEC",
@@ -5959,453 +6104,311 @@ Module time.
                                                           |)
                                                         |)
                                                       ]
-                                                    |)))
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            Value.Tuple
-                                              [ Value.Integer IntegerKind.U64 0; M.read (| nanos |)
-                                              ]
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (|
-                                            Value.Tuple
-                                              [
-                                                Value.Integer IntegerKind.U64 1;
-                                                Value.Integer IntegerKind.U32 0
-                                              ]
-                                          |)))
-                                    ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    Ty.apply
-                                      (Ty.path "*")
-                                      []
-                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.lt,
-                                                  [
-                                                    M.read (| exp |);
-                                                    Value.Integer IntegerKind.I16 52
-                                                  ]
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          let~ secs : Ty.path "u64" :=
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "u64",
-                                                [],
-                                                [ Ty.path "u64" ],
-                                                "from",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shr,
-                                                  [
-                                                    M.read (| mant |);
-                                                    M.call_closure (|
-                                                      Ty.path "i16",
-                                                      BinOp.Wrap.sub,
-                                                      [
-                                                        Value.Integer IntegerKind.I16 52;
-                                                        M.read (| exp |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |) in
-                                          let~ t : Ty.path "u128" :=
-                                            M.call_closure (|
-                                              Ty.path "u128",
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "u128",
-                                                [],
-                                                [ Ty.path "u64" ],
-                                                "from",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.bit_and,
-                                                  [
-                                                    M.call_closure (|
-                                                      Ty.path "u64",
-                                                      BinOp.Wrap.shl,
-                                                      [ M.read (| mant |); M.read (| exp |) ]
                                                     |);
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::time::try_from_secs_f64::MANT_MASK",
-                                                        Ty.path "u64"
-                                                      |)
-                                                    |)
+                                                    M.read (| t |)
                                                   ]
-                                                |)
-                                              ]
-                                            |) in
-                                          let~ nanos_offset : Ty.path "i32" :=
-                                            Value.Integer IntegerKind.I32 52 in
-                                          let~ nanos_tmp : Ty.path "u128" :=
-                                            M.call_closure (|
-                                              Ty.path "u128",
-                                              BinOp.Wrap.mul,
-                                              [
+                                                |) in
+                                              let~ nanos : Ty.path "u32" :=
+                                                M.cast
+                                                  (Ty.path "u32")
+                                                  (M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shr,
+                                                    [
+                                                      M.read (| nanos_tmp |);
+                                                      M.read (| nanos_offset |)
+                                                    ]
+                                                  |)) in
+                                              let~ rem_mask : Ty.path "u128" :=
                                                 M.call_closure (|
                                                   Ty.path "u128",
-                                                  M.get_trait_method (|
-                                                    "core::convert::From",
-                                                    Ty.path "u128",
-                                                    [],
-                                                    [ Ty.path "u32" ],
-                                                    "from",
-                                                    [],
-                                                    []
-                                                  |),
+                                                  BinOp.Wrap.sub,
                                                   [
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::time::NANOS_PER_SEC",
-                                                        Ty.path "u32"
-                                                      |)
-                                                    |)
+                                                    M.call_closure (|
+                                                      Ty.path "u128",
+                                                      BinOp.Wrap.shl,
+                                                      [
+                                                        Value.Integer IntegerKind.U128 1;
+                                                        M.read (| nanos_offset |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U128 1
                                                   ]
-                                                |);
-                                                M.read (| t |)
-                                              ]
-                                            |) in
-                                          let~ nanos : Ty.path "u32" :=
-                                            M.cast
-                                              (Ty.path "u32")
-                                              (M.call_closure (|
-                                                Ty.path "u128",
-                                                BinOp.Wrap.shr,
-                                                [ M.read (| nanos_tmp |); M.read (| nanos_offset |)
-                                                ]
-                                              |)) in
-                                          let~ rem_mask : Ty.path "u128" :=
-                                            M.call_closure (|
-                                              Ty.path "u128",
-                                              BinOp.Wrap.sub,
-                                              [
+                                                |) in
+                                              let~ rem_msb_mask : Ty.path "u128" :=
                                                 M.call_closure (|
                                                   Ty.path "u128",
                                                   BinOp.Wrap.shl,
                                                   [
                                                     Value.Integer IntegerKind.U128 1;
-                                                    M.read (| nanos_offset |)
+                                                    M.call_closure (|
+                                                      Ty.path "i32",
+                                                      BinOp.Wrap.sub,
+                                                      [
+                                                        M.read (| nanos_offset |);
+                                                        Value.Integer IntegerKind.I32 1
+                                                      ]
+                                                    |)
                                                   ]
-                                                |);
-                                                Value.Integer IntegerKind.U128 1
-                                              ]
-                                            |) in
-                                          let~ rem_msb_mask : Ty.path "u128" :=
-                                            M.call_closure (|
-                                              Ty.path "u128",
-                                              BinOp.Wrap.shl,
-                                              [
-                                                Value.Integer IntegerKind.U128 1;
-                                                M.call_closure (|
-                                                  Ty.path "i32",
-                                                  BinOp.Wrap.sub,
-                                                  [
-                                                    M.read (| nanos_offset |);
-                                                    Value.Integer IntegerKind.I32 1
-                                                  ]
-                                                |)
-                                              ]
-                                            |) in
-                                          let~ rem : Ty.path "u128" :=
-                                            M.call_closure (|
-                                              Ty.path "u128",
-                                              BinOp.Wrap.bit_and,
-                                              [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
-                                            |) in
-                                          let~ is_tie : Ty.path "bool" :=
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [ M.read (| rem |); M.read (| rem_msb_mask |) ]
-                                            |) in
-                                          let~ is_even : Ty.path "bool" :=
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u32",
-                                                  BinOp.Wrap.bit_and,
-                                                  [
-                                                    M.read (| nanos |);
-                                                    Value.Integer IntegerKind.U32 1
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.U32 0
-                                              ]
-                                            |) in
-                                          let~ rem_msb : Ty.path "bool" :=
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
+                                                |) in
+                                              let~ rem : Ty.path "u128" :=
                                                 M.call_closure (|
                                                   Ty.path "u128",
                                                   BinOp.Wrap.bit_and,
+                                                  [ M.read (| nanos_tmp |); M.read (| rem_mask |) ]
+                                                |) in
+                                              let~ is_tie : Ty.path "bool" :=
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [ M.read (| rem |); M.read (| rem_msb_mask |) ]
+                                                |) in
+                                              let~ is_even : Ty.path "bool" :=
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
                                                   [
-                                                    M.read (| nanos_tmp |);
-                                                    M.read (| rem_msb_mask |)
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.U128 0
-                                              ]
-                                            |) in
-                                          let~ add_ns : Ty.path "bool" :=
-                                            UnOp.not (|
-                                              LogicalOp.or (|
-                                                M.read (| rem_msb |),
-                                                ltac:(M.monadic
-                                                  (LogicalOp.and (|
-                                                    M.read (| is_even |),
-                                                    ltac:(M.monadic (M.read (| is_tie |)))
-                                                  |)))
-                                              |)
-                                            |) in
-                                          let~ nanos : Ty.path "u32" :=
-                                            M.call_closure (|
-                                              Ty.path "u32",
-                                              BinOp.Wrap.add,
-                                              [
-                                                M.read (| nanos |);
-                                                M.cast (Ty.path "u32") (M.read (| add_ns |))
-                                              ]
-                                            |) in
-                                          M.match_operator (|
-                                            Ty.apply
-                                              (Ty.path "*")
-                                              []
-                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        LogicalOp.or (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.eq,
-                                                            [
-                                                              Value.Integer IntegerKind.I32 52;
-                                                              Value.Integer IntegerKind.I32 23
-                                                            ]
-                                                          |),
-                                                          ltac:(M.monadic
-                                                            (M.call_closure (|
-                                                              Ty.path "bool",
-                                                              BinOp.ne,
-                                                              [
-                                                                M.read (| nanos |);
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "core::time::NANOS_PER_SEC",
-                                                                    Ty.path "u32"
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)))
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  M.alloc (|
-                                                    Value.Tuple
-                                                      [ M.read (| secs |); M.read (| nanos |) ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    Value.Tuple
+                                                    M.call_closure (|
+                                                      Ty.path "u32",
+                                                      BinOp.Wrap.bit_and,
                                                       [
+                                                        M.read (| nanos |);
+                                                        Value.Integer IntegerKind.U32 1
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U32 0
+                                                  ]
+                                                |) in
+                                              let~ rem_msb : Ty.path "bool" :=
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u128",
+                                                      BinOp.Wrap.bit_and,
+                                                      [
+                                                        M.read (| nanos_tmp |);
+                                                        M.read (| rem_msb_mask |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U128 0
+                                                  ]
+                                                |) in
+                                              let~ add_ns : Ty.path "bool" :=
+                                                UnOp.not (|
+                                                  LogicalOp.or (|
+                                                    M.read (| rem_msb |),
+                                                    ltac:(M.monadic
+                                                      (LogicalOp.and (|
+                                                        M.read (| is_even |),
+                                                        ltac:(M.monadic (M.read (| is_tie |)))
+                                                      |)))
+                                                  |)
+                                                |) in
+                                              let~ nanos : Ty.path "u32" :=
+                                                M.call_closure (|
+                                                  Ty.path "u32",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| nanos |);
+                                                    M.cast (Ty.path "u32") (M.read (| add_ns |))
+                                                  ]
+                                                |) in
+                                              M.match_operator (|
+                                                Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            LogicalOp.or (|
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  Value.Integer IntegerKind.I32 52;
+                                                                  Value.Integer IntegerKind.I32 23
+                                                                ]
+                                                              |),
+                                                              ltac:(M.monadic
+                                                                (M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ne,
+                                                                  [
+                                                                    M.read (| nanos |);
+                                                                    M.read (|
+                                                                      get_constant (|
+                                                                        "core::time::NANOS_PER_SEC",
+                                                                        Ty.path "u32"
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)))
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [ M.read (| secs |); M.read (| nanos |) ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "u64",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.read (| secs |);
+                                                                Value.Integer IntegerKind.U64 1
+                                                              ]
+                                                            |);
+                                                            Value.Integer IntegerKind.U32 0
+                                                          ]
+                                                      |)))
+                                                ]
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                Ty.tuple [ Ty.path "u64"; Ty.path "u32" ],
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.lt,
+                                                              [
+                                                                M.read (| exp |);
+                                                                Value.Integer IntegerKind.I16 64
+                                                              ]
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      let~ secs : Ty.path "u64" :=
                                                         M.call_closure (|
                                                           Ty.path "u64",
-                                                          BinOp.Wrap.add,
+                                                          BinOp.Wrap.shl,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "u64",
+                                                              M.get_trait_method (|
+                                                                "core::convert::From",
+                                                                Ty.path "u64",
+                                                                [],
+                                                                [ Ty.path "u64" ],
+                                                                "from",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| mant |) ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "i16",
+                                                              BinOp.Wrap.sub,
+                                                              [
+                                                                M.read (| exp |);
+                                                                Value.Integer IntegerKind.I16 52
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |) in
+                                                      M.alloc (|
+                                                        Value.Tuple
                                                           [
                                                             M.read (| secs |);
-                                                            Value.Integer IntegerKind.U64 1
+                                                            Value.Integer IntegerKind.U32 0
                                                           ]
-                                                        |);
-                                                        Value.Integer IntegerKind.U32 0
-                                                      ]
-                                                  |)))
-                                            ]
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.match_operator (|
-                                            Ty.apply
-                                              (Ty.path "*")
-                                              []
-                                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u32" ] ],
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
                                                       (M.alloc (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.lt,
-                                                          [
-                                                            M.read (| exp |);
-                                                            Value.Integer IntegerKind.I16 64
-                                                          ]
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ secs : Ty.path "u64" :=
-                                                    M.call_closure (|
-                                                      Ty.path "u64",
-                                                      BinOp.Wrap.shl,
-                                                      [
-                                                        M.call_closure (|
-                                                          Ty.path "u64",
-                                                          M.get_trait_method (|
-                                                            "core::convert::From",
-                                                            Ty.path "u64",
-                                                            [],
-                                                            [ Ty.path "u64" ],
-                                                            "from",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| mant |) ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          Ty.path "i16",
-                                                          BinOp.Wrap.sub,
-                                                          [
-                                                            M.read (| exp |);
-                                                            Value.Integer IntegerKind.I16 52
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |) in
-                                                  M.alloc (|
-                                                    Value.Tuple
-                                                      [
-                                                        M.read (| secs |);
-                                                        Value.Integer IntegerKind.U32 0
-                                                      ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::result::Result::Err"
-                                                            []
-                                                            [
-                                                              Ty.path "core::time::Duration";
-                                                              Ty.path
-                                                                "core::time::TryFromFloatSecsError"
-                                                            ]
-                                                            [
-                                                              Value.StructRecord
-                                                                "core::time::TryFromFloatSecsError"
-                                                                []
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::result::Result::Err"
                                                                 []
                                                                 [
-                                                                  ("kind",
-                                                                    Value.StructTuple
-                                                                      "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
-                                                                      []
-                                                                      []
-                                                                      [])
+                                                                  Ty.path "core::time::Duration";
+                                                                  Ty.path
+                                                                    "core::time::TryFromFloatSecsError"
                                                                 ]
-                                                            ]
+                                                                [
+                                                                  Value.StructRecord
+                                                                    "core::time::TryFromFloatSecsError"
+                                                                    []
+                                                                    []
+                                                                    [
+                                                                      ("kind",
+                                                                        Value.StructTuple
+                                                                          "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                                                                          []
+                                                                          []
+                                                                          [])
+                                                                    ]
+                                                                ]
+                                                            |)
+                                                          |)
                                                         |)
-                                                      |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let secs := M.copy (| γ0_0 |) in
-                        let nanos := M.copy (| γ0_1 |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            []
-                            [
-                              Ty.path "core::time::Duration";
-                              Ty.path "core::time::TryFromFloatSecsError"
-                            ]
-                            [
-                              M.call_closure (|
-                                Ty.path "core::time::Duration",
-                                M.get_associated_function (|
-                                  Ty.path "core::time::Duration",
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| secs |); M.read (| nanos |) ]
-                              |)
-                            ]
-                        |)))
-                  ]
-                |)
-              |)))
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let secs := M.copy (| γ0_0 |) in
+                            let nanos := M.copy (| γ0_1 |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.path "core::time::Duration";
+                                  Ty.path "core::time::TryFromFloatSecsError"
+                                ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::time::Duration",
+                                    M.get_associated_function (|
+                                      Ty.path "core::time::Duration",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| secs |); M.read (| nanos |) ]
+                                  |)
+                                ]
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)))
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6878,7 +6881,7 @@ Module time.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         I,
@@ -6899,12 +6902,12 @@ Module time.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -7001,7 +7004,7 @@ Module time.
                                               total_nanos,
                                               M.read (|
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                                                  Ty.path "u64",
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -7247,7 +7250,7 @@ Module time.
               M.read (|
                 M.use
                   (M.match_operator (|
-                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                    Ty.tuple [],
                     M.alloc (|
                       M.call_closure (|
                         I,
@@ -7268,12 +7271,12 @@ Module time.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
-                            Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
-                                    Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                                    Ty.tuple [],
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -7375,7 +7378,7 @@ Module time.
                                               total_nanos,
                                               M.read (|
                                                 M.match_operator (|
-                                                  Ty.apply (Ty.path "*") [] [ Ty.path "u64" ],
+                                                  Ty.path "u64",
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -7806,7 +7809,7 @@ Module time.
             let~ prefix : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7837,14 +7840,9 @@ Module time.
               |) in
             M.match_operator (|
               Ty.apply
-                (Ty.path "*")
+                (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ],
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7914,14 +7912,9 @@ Module time.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.apply
-                        (Ty.path "*")
+                        (Ty.path "core::result::Result")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                        ],
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -8037,14 +8030,9 @@ Module time.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.apply
-                                (Ty.path "*")
+                                (Ty.path "core::result::Result")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                                ],
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -8435,7 +8423,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -8475,7 +8463,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
                 "core::time::TryFromFloatSecsError",
@@ -8611,7 +8599,7 @@ Module time.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   self,
                   [
                     fun γ =>
@@ -8667,7 +8655,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "core::time::TryFromFloatSecsErrorKind" ],
+              Ty.path "core::time::TryFromFloatSecsErrorKind",
               self,
               [
                 fun γ =>

@@ -173,7 +173,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -352,7 +352,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ F ] ] F ],
+                              Ty.function [ Ty.tuple [ F ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -736,7 +736,7 @@ Module array.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
-                  Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                  Ty.tuple [],
                   M.alloc (|
                     Value.Tuple
                       [
@@ -769,7 +769,7 @@ Module array.
                         let left_val := M.copy (| γ0_0 |) in
                         let right_val := M.copy (| γ0_1 |) in
                         M.match_operator (|
-                          Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                          Ty.tuple [],
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -912,7 +912,7 @@ Module array.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|
-                      Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                      Ty.tuple [],
                       M.alloc (|
                         Value.Tuple
                           [
@@ -953,7 +953,7 @@ Module array.
                             let left_val := M.copy (| γ0_0 |) in
                             let right_val := M.copy (| γ0_1 |) in
                             M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+                              Ty.tuple [],
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1264,10 +1264,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ],
+                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1387,7 +1384,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ F ] ] F ],
+                              Ty.function [ Ty.tuple [ F ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1529,17 +1526,9 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ]
-                                    ]
-                                    (Ty.tuple [])
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1653,14 +1642,9 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                    (Ty.tuple [])
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1759,10 +1743,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ],
+                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -1882,7 +1863,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ F ] ] F ],
+                              Ty.function [ Ty.tuple [ F ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2024,17 +2005,9 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ]
-                                    ]
-                                    (Ty.tuple [])
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2148,14 +2121,9 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                    (Ty.tuple [])
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2257,7 +2225,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ F ] ] F ],
+                              Ty.function [ Ty.tuple [ F ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2351,10 +2319,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ],
+                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2474,7 +2439,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply (Ty.path "*") [] [ Ty.function [ Ty.tuple [ F ] ] F ],
+                              Ty.function [ Ty.tuple [ F ] ] F,
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2616,17 +2581,9 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ]
-                                    ]
-                                    (Ty.tuple [])
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2740,14 +2697,9 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
-                                [
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                    (Ty.tuple [])
-                                ],
+                              Ty.function
+                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
+                                (Ty.tuple []),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -2923,55 +2875,39 @@ Module array.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "p3_field::array::FieldArray")
-                                            [ N ]
-                                            [ F ];
-                                          Ty.apply
-                                            (Ty.path "p3_field::array::FieldArray")
-                                            [ N ]
-                                            [ F ]
-                                        ]
+                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
+                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
                                     ]
-                                    (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
-                                ],
+                                ]
+                                (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let lhs := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "p3_field::array::FieldArray")
-                                                    [ N ]
-                                                    [ F ];
-                                                  Ty.apply
-                                                    (Ty.path "p3_field::array::FieldArray")
-                                                    [ N ]
-                                                    [ F ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "p3_field::array::FieldArray")
+                                                [ N ]
+                                                [ F ];
+                                              Ty.apply
+                                                (Ty.path "p3_field::array::FieldArray")
+                                                [ N ]
+                                                [ F ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "p3_field::array::FieldArray")
-                                              [ N ]
-                                              [ F ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "p3_field::array::FieldArray")
+                                          [ N ]
+                                          [ F ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>
@@ -3097,55 +3033,39 @@ Module array.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "*")
-                                []
+                              Ty.function
                                 [
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "p3_field::array::FieldArray")
-                                            [ N ]
-                                            [ F ];
-                                          Ty.apply
-                                            (Ty.path "p3_field::array::FieldArray")
-                                            [ N ]
-                                            [ F ]
-                                        ]
+                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
+                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
                                     ]
-                                    (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
-                                ],
+                                ]
+                                (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let lhs := M.copy (| γ |) in
                                     M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "*")
-                                        []
+                                      Ty.function
                                         [
-                                          Ty.function
+                                          Ty.tuple
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "p3_field::array::FieldArray")
-                                                    [ N ]
-                                                    [ F ];
-                                                  Ty.apply
-                                                    (Ty.path "p3_field::array::FieldArray")
-                                                    [ N ]
-                                                    [ F ]
-                                                ]
+                                              Ty.apply
+                                                (Ty.path "p3_field::array::FieldArray")
+                                                [ N ]
+                                                [ F ];
+                                              Ty.apply
+                                                (Ty.path "p3_field::array::FieldArray")
+                                                [ N ]
+                                                [ F ]
                                             ]
-                                            (Ty.apply
-                                              (Ty.path "p3_field::array::FieldArray")
-                                              [ N ]
-                                              [ F ])
-                                        ],
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "p3_field::array::FieldArray")
+                                          [ N ]
+                                          [ F ]),
                                       M.alloc (| α1 |),
                                       [
                                         fun γ =>

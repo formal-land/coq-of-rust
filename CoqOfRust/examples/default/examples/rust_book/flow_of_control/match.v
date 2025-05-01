@@ -103,7 +103,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.tuple [] ],
+              Ty.tuple [],
               number,
               [
                 fun γ =>
@@ -154,7 +154,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.I32 2
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -162,7 +162,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.I32 3
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -170,7 +170,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.I32 5
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -178,7 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.I32 7
                               |) in
-                            Value.Tuple []));
+                            M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -186,7 +186,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.I32 11
                               |) in
-                            Value.Tuple []))
+                            M.alloc (| Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -296,7 +296,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ binary : Ty.path "i32" :=
           M.read (|
             M.match_operator (|
-              Ty.apply (Ty.path "*") [] [ Ty.path "i32" ],
+              Ty.path "i32",
               boolean,
               [
                 fun γ =>

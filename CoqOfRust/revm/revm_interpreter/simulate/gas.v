@@ -52,7 +52,7 @@ Module Impl_Gas.
     }}.
   Proof.
     cbn.
-    repeat get_can_access.
+    progress repeat get_can_access.
     eapply Run.Call. {
       apply (Impl_MemoryGas.new_eq [_]).
     }
@@ -153,50 +153,24 @@ Module Impl_Gas.
     }}.
   Proof.
     intros.
-    destruct record_cost eqn:?.
-    cbn.
-    progress repeat get_can_access.
+    destruct record_cost eqn:?; unfold record_cost in *.
+    cbn; progress repeat get_can_access.
     eapply Run.Call. {
       apply u64_overflowing_sub_eq.
     }
     destruct u64_overflowing_sub eqn:?.
-    Time cbn; progress repeat get_can_access; eapply Run.Call. {
-    Show.
+    cbn; progress repeat get_can_access.
+    eapply Run.Call. {
       apply Run.Pure.
     }
-    (* Show. *)
     cbn.
     destruct negb eqn:?.
-    { Show.
-      progress repeat get_can_access.
-      Show.
-    apply Run.Pure.
-      idtac.
-      (* pose proof u64_overflowing_sub_eq. *)
-      pose proof (u64_overflowing_sub_eq [_; _; _] (self, (ref_self, cost)) self.(Gas.remaining) cost).
-      unfold StackM.eval_f, links.mod.Impl_u64.Self, U64.t, Stack.to_Set, Stack.to_Set_aux in H.
-      Check (@Output.Success (Integer.t IntegerKind.U64 * bool) (Integer.t IntegerKind.U64 * bool) (u64_overflowing_sub self.(Gas.remaining) cost), (self, (ref_self, cost))).
-      exact H.
-      cbn in *.
-
-
-
-      exact H0.
-      instantiate (1 := (Output.Success (_, _), _)).
-      admit.
+    { cbn; progress repeat get_can_access.
+      hauto l: on.
     }
-    Time hnf.
-    Time unfold StackM.let_.
-    Time hnf.
-    (* instantiate (1 := (_, _)). *)
-    Time cbn.
-    progress repeat get_can_access.
-    Show.
-    idtac.
-    get_can_access.
-    Unshelve.
-    2: {
-
+    { cbn; progress repeat get_can_access.
+      hauto l: on.
     }
   Qed.
+  Global Opaque Impl_Gas.run_record_cost.
 End Impl_Gas.
